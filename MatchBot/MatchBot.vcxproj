@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -83,7 +83,7 @@
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
