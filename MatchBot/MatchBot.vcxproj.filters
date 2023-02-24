@@ -85,7 +85,7 @@
     <Filter Include="MatchBot\MatchVoteSwapTeam">
       <UniqueIdentifier>{82ccb417-6c0a-479a-9259-bc9ccc326010}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MatchBot\MatcMessage">
+    <Filter Include="MatchBot\MatchMessage">
       <UniqueIdentifier>{9847f1f7-69dd-4ccf-8dfd-5e647b951e36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -178,7 +178,7 @@
       <Filter>MatchBot\MatchVoteSwapTeam</Filter>
     </ClInclude>
     <ClInclude Include="MatchMessage.h">
-      <Filter>MatchBot\MatcMessage</Filter>
+      <Filter>MatchBot\MatchMessage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,7 +269,7 @@
       <Filter>MatchBot\MatchVoteSwapTeam</Filter>
     </ClCompile>
     <ClCompile Include="MatchMessage.cpp">
-      <Filter>MatchBot\MatcMessage</Filter>
+      <Filter>MatchBot\MatchMessage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
