@@ -20,11 +20,11 @@
 #endif
 
 // System Includes
+#include <string>
+#include <string_view>
 #include <array>
 #include <fstream>
 #include <map>
-#include <string>
-#include <string_view>
 #include <vector>
 
 // CSSDK
@@ -51,11 +51,11 @@
 #include "ReAPI.h"
 #include "ReGameDLL.h"
 
-// Time Format Class
-#include "TimeFormat.h"
-
 // Hash Class
 #include "Hash.h"
+
+// Time Format Class
+#include "TimeFormat.h"
 
 // Match Bot
 #include "MatchMenu.h"
