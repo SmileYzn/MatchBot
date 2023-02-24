@@ -1,6 +1,3 @@
-# MatchBot
-Counter-Strike 1.6 Match Plugin for ReHLDS and ReGameDLL_CS
-
 <h1 align="center">CS Match BOT</h1>
 <p align="center">Counter-Strike 1.6 Match BOT Plugin for Metamod</p>
 
