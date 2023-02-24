@@ -11,12 +11,12 @@ namespace Hash
 		constexpr std::uint32_t Prime{ 0x1000193 };
 	}
 
-	inline constexpr std::uint32_t GetConst( const std::string_view& string, const std::uint32_t value = internal::Basis ) noexcept
+	static inline constexpr std::uint32_t GetConst( const std::string_view& string, const std::uint32_t value = internal::Basis ) noexcept
 	{
 		return ( string[ 0 ] == '\0' ) ? value : Hash::GetConst( &string[ 1 ], ( value ^ static_cast< std::uint32_t >( string[ 0 ] ) ) * internal::Prime );
 	}
 
-	inline std::uint32_t Get( const std::string_view& string )
+	static inline std::uint32_t Get( const std::string_view& string )
 	{
 		auto ret{ internal::Basis };
 
