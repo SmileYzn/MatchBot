@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="MatchBot">
+      <UniqueIdentifier>{7585f78f-8edf-4e97-b339-b7f3a026ce21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchBot">
+      <UniqueIdentifier>{c3505b84-bcb0-44b0-95df-c3072ce8e186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod">
+      <UniqueIdentifier>{609f0f2f-1850-43ec-94ac-5e16550d6d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod\MetaDLL">
+      <UniqueIdentifier>{bd968d6a-40fe-47ea-ae1f-23bf2da6b4b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod\MetaEngine">
+      <UniqueIdentifier>{137fa059-58d0-4974-9e90-26866749d39f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReAPI">
+      <UniqueIdentifier>{70eb3410-f251-4412-b4da-411701b101a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReGameDLL">
+      <UniqueIdentifier>{b12beddc-a754-41f2-b9a8-950ac06557f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchTask">
+      <UniqueIdentifier>{9ba3ba5b-c6c1-4fca-8929-2f69a3779f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchUtil">
+      <UniqueIdentifier>{32dcc93f-97a8-493e-814d-5ac66aeadc65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchReady">
+      <UniqueIdentifier>{873f5729-a0a0-44b7-8bd2-e5dba9311af7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchCommand">
+      <UniqueIdentifier>{81ac7fbf-655a-41cb-80b8-6de56eeac3e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchWarmup">
+      <UniqueIdentifier>{72a726c3-36b9-41b7-98fc-7e99df64a88a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchTimer">
+      <UniqueIdentifier>{bc3c7dda-2b51-4aa6-837b-a01037338942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchLO3">
+      <UniqueIdentifier>{8f502ccc-ede3-4413-b6ce-4c5255467b7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchMenu">
+      <UniqueIdentifier>{b14974c1-5da2-4871-bd0d-1618e02ecd03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchVoteTeam">
+      <UniqueIdentifier>{d985bb6d-b986-430e-8f9d-f18eaaa98b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchCaptain">
+      <UniqueIdentifier>{4564bed4-20ee-4f89-b4bc-6d2867467913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchAdmin">
+      <UniqueIdentifier>{360c8840-32f6-49c1-8036-0f11e4fa3b90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchVoteMap">
+      <UniqueIdentifier>{0d71851c-c454-48dc-a57a-747925d1f86b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchVoteOvertime">
+      <UniqueIdentifier>{dfc8de48-5630-4028-b494-81d056e189ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchAdminMenu">
+      <UniqueIdentifier>{aaa2110e-95b5-4654-b778-45c6d5e78fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod\Precompiled">
+      <UniqueIdentifier>{8409f983-aca8-47c7-bc99-ddecf18efa94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchStats">
+      <UniqueIdentifier>{80673ccc-358f-4df3-8322-1a77e26aa2a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchPause">
+      <UniqueIdentifier>{a182acc5-8b25-4692-ac35-0ae0c7253333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchVoteMenu">
+      <UniqueIdentifier>{e0700fa0-5895-4c5c-a4f0-1ac7b7224448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchChangeMap">
+      <UniqueIdentifier>{afcaaa8e-7cb1-4862-990a-1aaf369e48ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchLanguage">
+      <UniqueIdentifier>{69cae0de-c96a-40b3-a441-06dc5d6d5e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchVoteSwapTeam">
+      <UniqueIdentifier>{82ccb417-6c0a-479a-9259-bc9ccc326010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatcMessage">
+      <UniqueIdentifier>{9847f1f7-69dd-4ccf-8dfd-5e647b951e36}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MatchBot.h">
+      <Filter>MatchBot\MatchBot</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaMod.h">
+      <Filter>MetaMod</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaDLL.h">
+      <Filter>MetaMod\MetaDLL</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaEngine.h">
+      <Filter>MetaMod\MetaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ReAPI.h">
+      <Filter>ReAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="ReGameDLL.h">
+      <Filter>ReGameDLL</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchTask.h">
+      <Filter>MatchBot\MatchTask</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchUtil.h">
+      <Filter>MatchBot\MatchUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchReady.h">
+      <Filter>MatchBot\MatchReady</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchCommand.h">
+      <Filter>MatchBot\MatchCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="precompiled.h">
+      <Filter>MetaMod\Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchWarmup.h">
+      <Filter>MatchBot\MatchWarmup</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchTimer.h">
+      <Filter>MatchBot\MatchTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchLO3.h">
+      <Filter>MatchBot\MatchLO3</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchMenu.h">
+      <Filter>MatchBot\MatchMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchStats.h">
+      <Filter>MatchBot\MatchStats</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchVoteTeam.h">
+      <Filter>MatchBot\MatchVoteTeam</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchCaptain.h">
+      <Filter>MatchBot\MatchCaptain</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchAdmin.h">
+      <Filter>MatchBot\MatchAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchVoteMap.h">
+      <Filter>MatchBot\MatchVoteMap</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchVoteOvertime.h">
+      <Filter>MatchBot\MatchVoteOvertime</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchAdminMenu.h">
+      <Filter>MatchBot\MatchAdminMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeFormat.h">
+      <Filter>MatchBot</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchPause.h">
+      <Filter>MatchBot\MatchPause</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash.h">
+      <Filter>MatchBot</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchVoteMenu.h">
+      <Filter>MatchBot\MatchVoteMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchChangeMap.h">
+      <Filter>MatchBot\MatchChangeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchLanguage.h">
+      <Filter>MatchBot\MatchLanguage</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchVoteSwapTeam.h">
+      <Filter>MatchBot\MatchVoteSwapTeam</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchMessage.h">
+      <Filter>MatchBot\MatcMessage</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MatchBot.def">
+      <Filter>MatchBot</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MatchBot.cpp">
+      <Filter>MatchBot\MatchBot</Filter>
+    </ClCompile>
+    <ClCompile Include="MetaMod.cpp">
+      <Filter>MetaMod</Filter>
+    </ClCompile>
+    <ClCompile Include="MetaDLL.cpp">
+      <Filter>MetaMod\MetaDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="MetaEngine.cpp">
+      <Filter>MetaMod\MetaEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="precompiled.cpp">
+      <Filter>MetaMod\Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="ReAPI.cpp">
+      <Filter>ReAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="ReGameDLL.cpp">
+      <Filter>ReGameDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchTask.cpp">
+      <Filter>MatchBot\MatchTask</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchUtil.cpp">
+      <Filter>MatchBot\MatchUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchReady.cpp">
+      <Filter>MatchBot\MatchReady</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchCommand.cpp">
+      <Filter>MatchBot\MatchCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchWarmup.cpp">
+      <Filter>MatchBot\MatchWarmup</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchTimer.cpp">
+      <Filter>MatchBot\MatchTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchLO3.cpp">
+      <Filter>MatchBot\MatchLO3</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchMenu.cpp">
+      <Filter>MatchBot\MatchMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchStats.cpp">
+      <Filter>MatchBot\MatchStats</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchVoteTeam.cpp">
+      <Filter>MatchBot\MatchVoteTeam</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchCaptain.cpp">
+      <Filter>MatchBot\MatchCaptain</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchAdmin.cpp">
+      <Filter>MatchBot\MatchAdmin</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchVoteMap.cpp">
+      <Filter>MatchBot\MatchVoteMap</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchVoteOvertime.cpp">
+      <Filter>MatchBot\MatchVoteOvertime</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchAdminMenu.cpp">
+      <Filter>MatchBot\MatchAdminMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchPause.cpp">
+      <Filter>MatchBot\MatchPause</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchVoteMenu.cpp">
+      <Filter>MatchBot\MatchVoteMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchChangeMap.cpp">
+      <Filter>MatchBot\MatchChangeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchLanguage.cpp">
+      <Filter>MatchBot\MatchLanguage</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchVoteSwapTeam.cpp">
+      <Filter>MatchBot\MatchVoteSwapTeam</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchMessage.cpp">
+      <Filter>MatchBot\MatcMessage</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

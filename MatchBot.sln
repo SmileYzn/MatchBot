@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33027.164
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MatchBot", "MatchBot\MatchBot.vcxproj", "{2472C23C-FBC7-4639-9BE8-05DA1064CDD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2472C23C-FBC7-4639-9BE8-05DA1064CDD2}.Debug|x86.ActiveCfg = Release|Win32
+		{2472C23C-FBC7-4639-9BE8-05DA1064CDD2}.Debug|x86.Build.0 = Release|Win32
+		{2472C23C-FBC7-4639-9BE8-05DA1064CDD2}.Release|x86.ActiveCfg = Release|Win32
+		{2472C23C-FBC7-4639-9BE8-05DA1064CDD2}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F2264EC-571C-431E-9163-F5E874E48386}
+	EndGlobalSection
+EndGlobal

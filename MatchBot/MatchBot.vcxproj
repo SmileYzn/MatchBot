@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{2472c23c-fbc7-4639-9be8-05da1064cdd2}</ProjectGuid>
+    <RootNamespace>MatchBot</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>matchbot_mm</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>matchbot_mm</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>MatchBot.def</ModuleDefinitionFile>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ModuleDefinitionFile>MatchBot.def</ModuleDefinitionFile>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>.\PostCompile.bat</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="MatchBot.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Hash.h" />
+    <ClInclude Include="MatchAdmin.h" />
+    <ClInclude Include="MatchAdminMenu.h" />
+    <ClInclude Include="MatchBot.h" />
+    <ClInclude Include="MatchCaptain.h" />
+    <ClInclude Include="MatchChangeMap.h" />
+    <ClInclude Include="MatchCommand.h" />
+    <ClInclude Include="MatchLanguage.h" />
+    <ClInclude Include="MatchLO3.h" />
+    <ClInclude Include="MatchMenu.h" />
+    <ClInclude Include="MatchMessage.h" />
+    <ClInclude Include="MatchPause.h" />
+    <ClInclude Include="MatchStats.h" />
+    <ClInclude Include="MatchTask.h" />
+    <ClInclude Include="MatchTimer.h" />
+    <ClInclude Include="MatchUtil.h" />
+    <ClInclude Include="MatchVoteMap.h" />
+    <ClInclude Include="MatchVoteMenu.h" />
+    <ClInclude Include="MatchVoteOvertime.h" />
+    <ClInclude Include="MatchVoteSwapTeam.h" />
+    <ClInclude Include="MatchVoteTeam.h" />
+    <ClInclude Include="MatchWarmup.h" />
+    <ClInclude Include="MatchReady.h" />
+    <ClInclude Include="MetaDLL.h" />
+    <ClInclude Include="MetaEngine.h" />
+    <ClInclude Include="MetaMod.h" />
+    <ClInclude Include="precompiled.h" />
+    <ClInclude Include="ReAPI.h" />
+    <ClInclude Include="ReGameDLL.h" />
+    <ClInclude Include="TimeFormat.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MatchAdmin.cpp" />
+    <ClCompile Include="MatchAdminMenu.cpp" />
+    <ClCompile Include="MatchCaptain.cpp" />
+    <ClCompile Include="MatchChangeMap.cpp" />
+    <ClCompile Include="MatchLanguage.cpp" />
+    <ClCompile Include="MatchMenu.cpp" />
+    <ClCompile Include="MatchCommand.cpp" />
+    <ClCompile Include="MatchLO3.cpp" />
+    <ClCompile Include="MatchMessage.cpp" />
+    <ClCompile Include="MatchPause.cpp" />
+    <ClCompile Include="MatchStats.cpp" />
+    <ClCompile Include="MatchTimer.cpp" />
+    <ClCompile Include="MatchVoteMap.cpp" />
+    <ClCompile Include="MatchVoteMenu.cpp" />
+    <ClCompile Include="MatchVoteOvertime.cpp" />
+    <ClCompile Include="MatchVoteSwapTeam.cpp" />
+    <ClCompile Include="MatchVoteTeam.cpp" />
+    <ClCompile Include="MatchWarmup.cpp" />
+    <ClCompile Include="MatchReady.cpp" />
+    <ClCompile Include="MatchBot.cpp" />
+    <ClCompile Include="MatchTask.cpp" />
+    <ClCompile Include="MatchUtil.cpp" />
+    <ClCompile Include="MetaDLL.cpp" />
+    <ClCompile Include="MetaEngine.cpp" />
+    <ClCompile Include="MetaMod.cpp" />
+    <ClCompile Include="precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ReAPI.cpp" />
+    <ClCompile Include="ReGameDLL.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
