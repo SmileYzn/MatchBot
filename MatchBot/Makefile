@@ -9,7 +9,7 @@ OBJECTS = *.cpp
 
 LINK = -static-libstdc++
 
-OPT_FLAGS = -std=c++17 -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
+OPT_FLAGS = -std=c17 -std=c++17 -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
 
 INCLUDE = -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
 
