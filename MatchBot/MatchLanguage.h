@@ -21,7 +21,7 @@ public:
 private:
 	cvar_t* m_Language = nullptr;
 
-	std::unordered_map<std::string, std::string> m_Data;
+	std::map<std::string, std::string> m_Data;
 };
 
 extern CMatchLanguage gMatchLanguage;
