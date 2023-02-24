@@ -64,7 +64,7 @@ public:
 	bool VoteRestart(CBasePlayer* Player);
 
 	// Player Votes
-	std::array<P_PLAYER_VOTES, MAX_CLIENTS + 1> m_Votes = { 0 };
+ 	std::array<P_PLAYER_VOTES, MAX_CLIENTS + 1> m_Votes = { 0 };
 
 	// Map List
 	std::map<size_t, std::string> m_MapList;
