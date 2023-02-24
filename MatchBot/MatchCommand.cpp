@@ -3,7 +3,7 @@
 CMatchCommand gMatchCommand;
 
 // Match BOT Commands Hash
-enum MatchCommandConst : std::uint32_t
+enum MatchCommandConst : unsigned int
 {
 	// Basic Stuff
 	Command_Say = Hash::GetConst("say"),
