@@ -11,7 +11,7 @@ namespace Hash
 		constexpr std::uint32_t Prime{ 0x1000193 };
 	}
 
-	inline constexpr std::uint32_t GetConst(const std::string_view& string, const std::uint32_t value = internal::Basis) noexcept
+	inline constexpr const std::uint32_t GetConst(const std::string_view& string, const std::uint32_t value = internal::Basis) noexcept
 	{
 		return (string[0] == '\0') ? value : GetConst(&string[1], (value ^ static_cast<std::uint32_t>(string[0])) * internal::Prime);
 	}
