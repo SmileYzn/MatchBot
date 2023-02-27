@@ -71,16 +71,32 @@ void CMatchBot::ServerActivate()
 	// Run Match Bot
 	this->SetState(STATE_DEAD);
 
-	gMatchMessage.RegisterMessage("TeamScore", nullptr, this->TeamScore);
+	//
+	gMatchMessage.RegisterHook("TeamScore", this->TeamScore);
+
+	//
+	gMatchMessage.RegisterHook("ScoreInfo", this->ScoreInfo);
 }
 
-void CMatchBot::TeamScore()
+void CMatchBot::TeamScore(void*)
 {
-	auto TeamName = (const char*)(gMatchMessage.GetParam(0));
+	auto TeamName = gMatchMessage.GetString(0);
 
-	auto TeamFrag = (int)(gMatchMessage.GetParam(1));
+	auto Score = gMatchMessage.GetShort(1);
 
-	LOG_CONSOLE(PLID, "[%s] %s %d", __func__, TeamName, TeamFrag);
+	if (TeamName)
+	{
+		LOG_CONSOLE(PLID, "[%s] %s %d", __func__, TeamName, Score);
+	}
+}
+
+void CMatchBot::ScoreInfo(void*)
+{
+	//auto PlayerID = gMatchMessage.GetByte(0);
+	//auto Score = gMatchMessage.GetShort(1);
+	//auto Deaths = gMatchMessage.GetShort(2);
+	//auto ClassID = gMatchMessage.GetShort(3);
+	//auto TeamID = gMatchMessage.GetShort(4);
 }
 
 // On server deactivate

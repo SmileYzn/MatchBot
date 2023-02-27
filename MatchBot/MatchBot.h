@@ -47,7 +47,8 @@ public:
 	void ServerActivate();
 	void ServerDeactivate();
 
-	static void TeamScore();
+	static void TeamScore(void*);
+	static void ScoreInfo(void*);
 
 	void Enable();
 	void Disable();

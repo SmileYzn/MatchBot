@@ -2,237 +2,339 @@
 
 CMatchMessage gMatchMessage;
 
-// On Server Activate
-void CMatchMessage::ServerActivate()
+void CMatchMessage::RegisterHook(char* MessageName, void (*Function)(void*))
 {
-	/**/
-}
+	auto MessgeIndex = GET_USER_MSG_ID(PLID, MessageName, 0);
 
-// On Server Deactivate
-void CMatchMessage::ServerDeactivate()
-{
-	// Clear messages
-	this->Reset();
-}
-
-// Reset message poll
-void CMatchMessage::Reset()
-{
-	// Clear message poll
-	this->m_Messages.clear();
-
-	// Clear Message PRE poll
-	this->m_MessageBegin.clear();
-
-	// Clear Message POST poll
-	this->m_MessageEnd.clear();
-
-	// Clear message states
-	this->m_MsgState = 0;
-
-	// Clear current message index
-	this->m_MsgCurrent = 0;
-
-	// Clear current message origin
-	this->m_MsgOrigin = nullptr;
-
-	// Clear current message edict_t
-	this->m_MsgEdict = nullptr;
-
-	// Clear current message param index
-	this->m_MsgParamId = 0;
-
-	// Clear current message parameters
-	this->m_MsgData = { 0 };
-}
-
-void CMatchMessage::RegisterMessage(std::string Name, MESSAGE_EVENT_CALL FunctionPre, MESSAGE_EVENT_CALL_END FunctionPost)
-{
-	// If name is not empty
-	if (!Name.empty())
+	if (MessgeIndex)
 	{
-		// If has functions to register (PRE) AND (POST)
-		if (FunctionPre != nullptr || FunctionPost != nullptr)
-		{
-			// Find Message data
-			auto Msg = this->m_Messages.find(Name);
-			//
-			// If found
-			if (Msg != this->m_Messages.end())
-			{
-				// Get message index
-				auto MsgId = Msg->second.Index;
-				//
-				// Update message data
-				this->m_Messages[Name] =
-				{
-					Name,
-					Msg->second.Index,
-					Msg->second.Size,
-					FunctionPre,
-					FunctionPost
-				};
-				//
-				// Message (PRE) register
-				this->m_MessageBegin[MsgId] = FunctionPre;
-				//
-				// Message (POST) register
-				this->m_MessageEnd[MsgId] = FunctionPost;
-			}
-		}
+		this->MessageHooks[MessgeIndex].function = Function;
 	}
 }
 
-void* CMatchMessage::GetParam(int Param)
+void CMatchMessage::MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
-	for (auto This = 0; This <= this->m_MsgCurrent; This++)
-	{
-		if (this->m_MsgData[This])
-		{
-			if (Param == This)
-			{
-				return this->m_MsgData[This];
-			}
-		}
-	}
+	this->CurrentMessageIndex = 0;
 
-	return nullptr;
+	this->CurrentMessageType = msg_type;
+
+	if (this->MessageHooks[this->CurrentMessageType].function)
+	{
+		this->MessageActive = true;
+
+		this->pCurentEntity = pEntity;
+	}
+	else
+	{
+		this->MessageActive = false;
+	}
 }
 
-// Register user message
-META_RES CMatchMessage::RegUserMsg(const char* pszName, int iSize)
+void CMatchMessage::MessageEnd()
 {
-	if (pszName)
+	if (this->MessageHooks[this->CurrentMessageType].function)
 	{
-		this->m_Messages[pszName] = { pszName, META_RESULT_ORIG_RET(int), iSize, nullptr, nullptr };
+		(*this->MessageHooks[this->CurrentMessageType].function)(nullptr);
 	}
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+void CMatchMessage::WriteByte(int iValue)
 {
-	this->m_MsgOrigin = pOrigin;
+	if (this->MessageActive)
+	{
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
 
-	this->m_MsgEdict = pEntity;
+		message_var.iValue = iValue;
 
-	this->m_MsgState = 0;
+		//SERVER_PRINT(temp->sValue);
 
-	this->m_MsgCurrent = (msg_type <= 0 || msg_type >= MAX_USER_REG_MESSAGE) ? 0 : msg_type;
+		message.iType = MESSAGE_TYPE_BYTE;
 
-	this->m_MsgParamId = 0;
+		message.mValue = message_var;
 
-	this->m_MsgData = { nullptr };
+		//CLEAR_VAR(CurrentMessageIndex);
 
-	this->FunctionBegin = this->m_MessageBegin[this->m_MsgCurrent];
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
 
-	this->FunctionEnd = this->m_MessageEnd[this->m_MsgCurrent];
-
-	return MRES_IGNORED;
+		this->CurrentMessageIndex++;
+	}
 }
 
-META_RES CMatchMessage::MessageEnd(void)
+void CMatchMessage::WriteChar(int iValue)
 {
-	if (this->FunctionEnd)
+	if (this->MessageActive)
 	{
-		(*this->FunctionEnd)();
-	}
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
 
-	return MRES_IGNORED;
+		message_var.iValue = iValue;
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_CHAR;
+
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
+	}
 }
 
-META_RES CMatchMessage::WriteByte(int iValue)
+void CMatchMessage::WriteShort(int iValue)
 {
-	if (this->FunctionBegin)
+	if (this->MessageActive)
 	{
-		(*this->FunctionBegin)((void*)&iValue);
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
+
+		message_var.iValue = iValue;
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_SHORT;
+
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
 	}
-
-	this->m_MsgData[this->m_MsgParamId++] = (void*)iValue;
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::WriteChar(int iValue)
+void CMatchMessage::WriteLong(int iValue)
 {
-	if (this->FunctionBegin)
+	if (this->MessageActive)
 	{
-		(*this->FunctionBegin)((void*)&iValue);
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
+
+		message_var.iValue = iValue;
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_LONG;
+
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
 	}
-
-	this->m_MsgData[this->m_MsgParamId++] = (void*)iValue;
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::WriteShort(int iValue)
+void CMatchMessage::WriteAngle(float flValue)
 {
-	if (this->FunctionBegin)
+	if (this->MessageActive)
 	{
-		(*this->FunctionBegin)((void*)&iValue);
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
+
+		message_var.fValue = flValue;
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_ANGLE;
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
 	}
-
-	this->m_MsgData[this->m_MsgParamId++] = (void*)iValue;
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::WriteLong(int iValue)
+void CMatchMessage::WriteCoord(float flValue)
 {
-	if (this->FunctionBegin)
+	if (this->MessageActive)
 	{
-		(*this->FunctionBegin)((void*)&iValue);
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
+
+		message_var.fValue = flValue;
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_COORD;
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
 	}
-
-	this->m_MsgData[this->m_MsgParamId++] = (void*)iValue;
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::WriteAngle(float flValue)
+void CMatchMessage::WriteString(const char* szValue)
 {
-	if (this->FunctionBegin)
+	if (this->MessageActive)
 	{
-		(*this->FunctionBegin)((void*)&flValue);
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
+
+		Q_strncpy(message_var.sValue, szValue, sizeof(message_var.sValue));
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_STRING;
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
 	}
-
-	this->m_MsgData[this->m_MsgParamId++] = (void*)&flValue;
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::WriteCoord(float flValue)
+void CMatchMessage::WriteEntity(int iValue)
 {
-	if (this->FunctionBegin)
+	if (this->MessageActive)
 	{
-		(*this->FunctionBegin)((void*)&flValue);
+		message_var_t message_var = { 0 };
+		message_t message = { 0 };
+
+		message_var.iValue = iValue;
+
+		//SERVER_PRINT(temp->sValue);
+
+		message.iType = MESSAGE_TYPE_ENTITY;
+
+		message.mValue = message_var;
+
+		//CLEAR_VAR(CurrentMessageIndex);
+
+		this->CurrentMessage[this->CurrentMessageIndex] = message;
+
+		this->CurrentMessageIndex++;
 	}
-
-	this->m_MsgData[this->m_MsgParamId++] = (void*)&flValue;
-
-	return MRES_IGNORED;
 }
 
-META_RES CMatchMessage::WriteString(const char* sz)
+int CMatchMessage::GetByte(int ParamIndex)
 {
-	if (this->FunctionBegin)
+	if (ParamIndex >= this->CurrentMessageIndex)
 	{
-		(*this->FunctionBegin)((void*)sz);
+		return -1;
 	}
 
-	this->m_MsgData[this->m_MsgParamId++] = (void*)sz;
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_BYTE)
+	{
+		return -2;
+	}
 
-	return MRES_IGNORED;
+	return this->CurrentMessage[ParamIndex].mValue.iValue;
 }
 
-META_RES CMatchMessage::WriteEntity(int iValue)
+int CMatchMessage::GetChar(int ParamIndex)
 {
-	if (this->FunctionBegin)
+	if (ParamIndex >= this->CurrentMessageIndex)
 	{
-		(*this->FunctionBegin)((void*)&iValue);
+		return -1;
 	}
 
-	this->m_MsgData[this->m_MsgParamId++] = (void*)iValue;
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_CHAR)
+	{
+		return -2;
+	}
 
-	return MRES_IGNORED;
+	return this->CurrentMessage[ParamIndex].mValue.iValue;
+}
+
+int CMatchMessage::GetShort(int ParamIndex)
+{
+	if (ParamIndex >= this->CurrentMessageIndex)
+	{
+		return -1;
+	}
+
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_SHORT)
+	{
+		return -2;
+	}
+
+	return this->CurrentMessage[ParamIndex].mValue.iValue;
+}
+
+int CMatchMessage::GetLong(int ParamIndex)
+{
+	if (ParamIndex >= this->CurrentMessageIndex)
+	{
+		return -1;
+	}
+
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_LONG)
+	{
+		return -2;
+	}
+
+	return this->CurrentMessage[ParamIndex].mValue.iValue;
+}
+
+float CMatchMessage::GetAngle(int ParamIndex)
+{
+	if (ParamIndex >= this->CurrentMessageIndex)
+	{
+		return -1;
+	}
+
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_ANGLE)
+	{
+		return -2;
+	}
+
+	return this->CurrentMessage[ParamIndex].mValue.fValue;
+}
+
+float CMatchMessage::GetCoord(int ParamIndex)
+{
+	if (ParamIndex >= this->CurrentMessageIndex)
+	{
+		return -1;
+	}
+
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_COORD)
+	{
+		return -2;
+	}
+
+	return this->CurrentMessage[ParamIndex].mValue.fValue;
+}
+
+char* CMatchMessage::GetString(int ParamIndex)
+{
+	if (ParamIndex >= this->CurrentMessageIndex)
+	{
+		return nullptr;
+	}
+
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_STRING)
+	{
+		return nullptr;
+	}
+
+	return this->CurrentMessage[ParamIndex].mValue.sValue;
+}
+
+int CMatchMessage::GetEntity(int ParamIndex)
+{
+	if (ParamIndex >= this->CurrentMessageIndex)
+	{
+		return -1;
+	}
+
+	if (this->CurrentMessage[ParamIndex].iType != MESSAGE_TYPE_ENTITY)
+	{
+		return -2;
+	}
+
+	return this->CurrentMessage[ParamIndex].mValue.iValue;
 }
