@@ -73,30 +73,11 @@ void CMatchBot::ServerActivate()
 
 	//
 	gMatchMessage.RegisterHook("TeamScore", this->TeamScore);
-
-	//
-	gMatchMessage.RegisterHook("ScoreInfo", this->ScoreInfo);
 }
 
-void CMatchBot::TeamScore(void*)
+void CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
-	auto TeamName = gMatchMessage.GetString(0);
 
-	auto Score = gMatchMessage.GetShort(1);
-
-	if (TeamName)
-	{
-		LOG_CONSOLE(PLID, "[%s] %s %d", __func__, TeamName, Score);
-	}
-}
-
-void CMatchBot::ScoreInfo(void*)
-{
-	//auto PlayerID = gMatchMessage.GetByte(0);
-	//auto Score = gMatchMessage.GetShort(1);
-	//auto Deaths = gMatchMessage.GetShort(2);
-	//auto ClassID = gMatchMessage.GetShort(3);
-	//auto TeamID = gMatchMessage.GetShort(4);
 }
 
 // On server deactivate
@@ -479,7 +460,7 @@ void CMatchBot::SwapTeams()
 	}
 
 	// Swap scores for each state
-	for (unsigned int State = STATE_DEAD; State <= STATE_END; State++)
+	for (auto State = STATE_DEAD; State < STATE_END; State++)
 	{
 		SWAP(this->m_Score[TERRORIST][State], this->m_Score[CT][State]);
 	}

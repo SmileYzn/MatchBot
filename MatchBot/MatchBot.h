@@ -1,14 +1,14 @@
 #pragma once
 
 // Match Bot States
-#define STATE_DEAD			0
-#define STATE_WARMUP		1
-#define STATE_START			2
-#define STATE_FIRST_HALF	3
-#define STATE_HALFTIME		4
-#define STATE_SECOND_HALF	5
-#define STATE_OVERTIME		6
-#define STATE_END			7
+constexpr int STATE_DEAD = 0;
+constexpr int STATE_WARMUP = 1;
+constexpr int STATE_START = 2;
+constexpr int STATE_FIRST_HALF = 3;
+constexpr int STATE_HALFTIME = 4;
+constexpr int STATE_SECOND_HALF = 5;
+constexpr int STATE_OVERTIME = 6;
+constexpr int STATE_END = 7;
 
 // Match Bot State Names
 const char MATCH_BOT_STATES[][32] =
@@ -47,8 +47,7 @@ public:
 	void ServerActivate();
 	void ServerDeactivate();
 
-	static void TeamScore(void*);
-	static void ScoreInfo(void*);
+	static void TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
 	void Enable();
 	void Disable();
