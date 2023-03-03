@@ -650,3 +650,24 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player)
 
 	return false;
 }
+
+// Get Player data
+CMatchPlayerData* CMatchStats::GetData(CBasePlayer* Player)
+{
+	// Get user Auth Index
+	auto Auth = GET_USER_AUTH(Player->edict());
+	
+	// If is not null
+	if (Auth)
+	{
+		// Find player data
+		if (this->m_Player.find(Auth) != this->m_Player.end())
+		{
+			// Return data
+			return &this->m_Player[Auth];
+		}
+	}
+
+	// Return empty values if not found
+	return nullptr;
+}

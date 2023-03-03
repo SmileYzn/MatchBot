@@ -71,13 +71,71 @@ void CMatchBot::ServerActivate()
 	// Run Match Bot
 	this->SetState(STATE_DEAD);
 
-	//
+	// Register TeamScore message hook
 	gMatchMessage.RegisterHook("TeamScore", this->TeamScore);
+
+	// Register ScoreInfo message hook
+	gMatchMessage.RegisterHook("ScoreInfo", this->ScoreInfo);
 }
 
-void CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+// TeamScore HL1 message
+bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
+	// Get Team Name
+	auto TeamID = gMatchMessage.GetString(0);
 
+	// If is not null
+	if (TeamID)
+	{
+		// Terrorists
+		if (TeamID[0] == 'T')
+		{
+			// Set Score for Terrorists
+			gMatchMessage.SetArgInt(1, gMatchBot.GetScore(TERRORIST));
+		}
+		else if (TeamID[0] == 'C')
+		{
+			// Set Score for CTs
+			gMatchMessage.SetArgInt(1, gMatchBot.GetScore(CT));
+		}
+	}
+
+	// Do not block original message call
+	return false;
+}
+
+// ScoreInfo HL1 message
+bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+{
+	// Player Index
+	auto PlayerID = gMatchMessage.GetByte(0);
+
+	// If is player
+	if (PlayerID)
+	{
+		// Get Player
+		auto Player = UTIL_PlayerByIndexSafe(PlayerID);
+
+		// If found
+		if (Player)
+		{
+			// Get player match data
+			auto PlayerData = gMatchStats.GetData(Player);
+
+			// if has data
+			if (PlayerData)
+			{
+				// Set player score to message
+				gMatchMessage.SetArgInt(1, PlayerData->GetScore());
+
+				// Set player deaths to message
+				gMatchMessage.SetArgInt(2, PlayerData->GetDeaths());
+			}
+		}
+	}
+
+	// Do not block original message call
+	return false;
 }
 
 // On server deactivate

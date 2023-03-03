@@ -47,7 +47,8 @@ public:
 	void ServerActivate();
 	void ServerDeactivate();
 
-	static void TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+	static bool TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
 	void Enable();
 	void Disable();

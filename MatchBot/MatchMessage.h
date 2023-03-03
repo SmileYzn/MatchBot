@@ -10,43 +10,104 @@ constexpr auto MESSAGE_TYPE_COORD = 5;
 constexpr auto MESSAGE_TYPE_STRING = 6;
 constexpr auto MESSAGE_TYPE_ENTITY = 7;
 
+// Message parameters
+typedef struct MESSAGE_PARAM_S
+{
+	int Type;
+	int iValue;
+	float flValue;
+	char szValue[200];
+} P_MESSAGE_PARAM, *LP_MESSAGE_PARAM;
+
+// Message data
+typedef struct MESSAGE_DATA_S
+{
+	int msg_dest;
+	int msg_type;
+	const float* pOrigin;
+	edict_t* pEntity;
+	std::map<int, P_MESSAGE_PARAM> Param;
+} P_MESSAGE_DATA, *LP_MESSAGE_DATA;
+
 class CMatchMessage
 {
 public:
-	//
-	void RegisterHook(char* MessageName, void (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity));
+	// Register hook message
+	void RegisterHook(char* MessageName, bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity));
 
 	// Begin message hook
-	void MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+	bool MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
 	// End message hook
-	void MessageEnd();
+	bool MessageEnd();
 
 	// Write parameter byte
-	void WriteByte(int iValue);
+	bool WriteByte(int iValue);
 
 	// Write parameter character
-	void WriteChar(int iValue);
+	bool WriteChar(int iValue);
 
 	// Write parameter short
-	void WriteShort(int iValue);
+	bool WriteShort(int iValue);
 
 	// Write parameter long
-	void WriteLong(int iValue);
+	bool WriteLong(int iValue);
 
 	// Write parameter angle
-	void WriteAngle(float flValue);
+	bool WriteAngle(float flValue);
 
 	// Write parameter coordinate
-	void WriteCoord(float flValue);
+	bool WriteCoord(float flValue);
 
 	// Write parameter string
-	void WriteString(const char* szValue);
+	bool WriteString(const char* szValue);
 
 	// Write parameter entity index
-	void WriteEntity(int iValue);
+	bool WriteEntity(int iValue);
+
+	// Get parameter byte
+	int GetByte(int Id);
+
+	// Get parameter character
+	int GetChar(int Id);
+
+	// Get parameter short
+	int GetShort(int Id);
+
+	// Get parameter long
+	int GetLong(int Id);
+
+	// Get parameter angle
+	float GetAngle(int Id);
+
+	// Get parameter coordinate
+	float GetCoord(int Id);
+
+	// Get parameter string
+	const char* GetString(int Id);
+
+	// Get parameter entity index
+	int GetEntity(int Id);
+
+	// Set parameter integer
+	void SetArgInt(int Id, int iValue);
+
+	// Set parameter float
+	void SetArgFloat(int Id, float flValue);
+
+	// Set parameter string
+	void SetArgString(int Id, const char* szValue);
+
 
 private:
+	// Message is hooked
+	int m_MsgId = 0;
+
+	// Message Data
+	P_MESSAGE_DATA m_Data = { 0 };
+
+	// Message Hooks
+	std::map<int, void*> m_Hook;
 };
 
 extern CMatchMessage gMatchMessage;

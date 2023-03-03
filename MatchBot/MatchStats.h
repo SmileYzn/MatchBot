@@ -108,7 +108,7 @@ typedef struct S_PLAYER_STATS
 		this->BombDefused = 0;
 		this->BombDefusingKit = 0;
 		this->BombDefusedKit = 0;
-	}
+	};
 } P_PLAYER_STATS, *LP_PLAYER_STATS;
 
 class CMatchPlayerData
@@ -124,6 +124,31 @@ public:
 
 	// Stats by match states
 	std::array<P_PLAYER_STATS, STATE_END + 1> Stats;
+	
+	// Return score
+	int GetScore()
+	{
+		auto Score = 0;
+
+		for (const auto& Data : this->Stats)
+		{
+			Score += (Data.Frags + (Data.BombExploded * 3) + (Data.BombDefused * 3));
+		}
+
+		return Score;
+	}
+
+	int GetDeaths()
+	{
+		auto Deaths = 0;
+
+		for (const auto & Data : this->Stats)
+		{
+			Deaths += Data.Deaths;
+		}
+
+		return Deaths;
+	}
 };
 
 class CMatchStats
@@ -195,6 +220,10 @@ public:
 	// Show Round Summary
 	bool ShowSummary(CBasePlayer* Player);
 
+	// Get Player Data
+	CMatchPlayerData* GetData(CBasePlayer* Player);
+
+private:
 	// Match Data
 
 	// Player Data

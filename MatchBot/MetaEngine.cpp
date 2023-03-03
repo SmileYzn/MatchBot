@@ -31,72 +31,122 @@ C_DLLEXPORT int GetEngineFunctions(enginefuncs_t *pengfuncsFromEngine, int *inte
 
 void ENGINE_PRE_MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
 {
-	gMatchMessage.MessageBegin(msg_dest, msg_type, pOrigin, ed);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.MessageBegin(msg_dest, msg_type, pOrigin, ed))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_MessageEnd(void)
 {
-	gMatchMessage.MessageEnd();
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.MessageEnd())
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteByte(int iValue)
 {
-	gMatchMessage.WriteByte(iValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteByte(iValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteChar(int iValue)
 {
-	gMatchMessage.WriteChar(iValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteChar(iValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteShort(int iValue)
 {
-	gMatchMessage.WriteShort(iValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteShort(iValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteLong(int iValue)
 {
-	gMatchMessage.WriteLong(iValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteLong(iValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteAngle(float flValue)
 {
-	gMatchMessage.WriteAngle(flValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteAngle(flValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteCoord(float flValue)
 {
-	gMatchMessage.WriteCoord(flValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteCoord(flValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteString(const char* sz)
 {
-	gMatchMessage.WriteString(sz);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteString(sz))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 
 void ENGINE_PRE_WriteEntity(int iValue)
 {
-	gMatchMessage.WriteEntity(iValue);
-
-	RETURN_META(MRES_IGNORED);
+	if (gMatchMessage.WriteEntity(iValue))
+	{
+		RETURN_META(MRES_SUPERCEDE);
+	}
+	else
+	{
+		RETURN_META(MRES_IGNORED);
+	}
 }
 #pragma endregion
 
