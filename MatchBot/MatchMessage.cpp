@@ -3,14 +3,14 @@
 CMatchMessage gMatchMessage;
 
 // Register message hook
-void CMatchMessage::RegisterHook(char* MsgName, bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity))
+void CMatchMessage::RegisterHook(const char* MsgName, bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity))
 {
 	// Get message index from message name
 	auto MsgId = GET_USER_MSG_ID(PLID, MsgName, 0);
 	
 	if (MsgId)
 	{
-		this->m_Hook[MsgId] = Function;
+		this->m_Hook[MsgId].Function = Function;
 	}
 }
 
@@ -56,9 +56,9 @@ bool CMatchMessage::MessageEnd()
 
 		if (Hook != this->m_Hook.end())
 		{
-			if (Hook->second)
+			if (Hook->second.Function)
 			{
-				auto BlockMessage = ((bool(*)(int msg_dest, int msg_type, const float* pOrigin, edict_t * pEntity))Hook->second)(this->m_Data.msg_dest, this->m_Data.msg_type, this->m_Data.pOrigin, this->m_Data.pEntity);
+				auto BlockMessage = ((bool(*)(int msg_dest, int msg_type, const float* pOrigin, edict_t * pEntity))Hook->second.Function)(this->m_Data.msg_dest, this->m_Data.msg_type, this->m_Data.pOrigin, this->m_Data.pEntity);
 
 				if (!BlockMessage)
 				{

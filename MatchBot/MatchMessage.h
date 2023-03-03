@@ -10,6 +10,12 @@ constexpr auto MESSAGE_TYPE_COORD = 5;
 constexpr auto MESSAGE_TYPE_STRING = 6;
 constexpr auto MESSAGE_TYPE_ENTITY = 7;
 
+// MessageBegin function header
+struct MESSAGE_BEGIN_FUNC
+{
+	bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+};
+
 // Message parameters
 typedef struct MESSAGE_PARAM_S
 {
@@ -33,7 +39,7 @@ class CMatchMessage
 {
 public:
 	// Register hook message
-	void RegisterHook(char* MessageName, bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity));
+	void RegisterHook(const char* MsgName, bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity));
 
 	// Begin message hook
 	bool MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
@@ -107,7 +113,7 @@ private:
 	P_MESSAGE_DATA m_Data = { 0 };
 
 	// Message Hooks
-	std::map<int, void*> m_Hook;
+	std::map<int, MESSAGE_BEGIN_FUNC> m_Hook;
 };
 
 extern CMatchMessage gMatchMessage;
