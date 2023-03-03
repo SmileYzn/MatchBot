@@ -44,48 +44,103 @@ const char MATCH_BOT_TEAM_SHORT[][20] =
 class CMatchBot
 {
 public:
+	// On Server Activate Event
 	void ServerActivate();
+
+	// On Server Deactivate Event
 	void ServerDeactivate();
 
-	static bool TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
-	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
-
+	// Enable match bot
 	void Enable();
+
+	// Disable match bot
 	void Disable();
 
+	// Set match to run next stage
 	static void NextState(int State);
 
+	// Get current match state
 	int GetState();
+
+	// Get current match state name
 	const char* GetState(int State);
+
+	// Set a new match state
 	void SetState(int State);
 
+	// TeamScore HL1 Message
+	static bool TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+
+	// ScoreInfo HL1 Message
+	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+
+	// Reset all match scores data
+	void ResetScores();
+
+	// Get score of team
 	int GetScore(TeamName Team);
+
+	// Get Overtime score of team
 	int GetScoreOT(TeamName Team);
+
+	// Get current match round
 	int GetRound();
 
+	// Get Match BOT tag
 	const char* GetTag();
+
+	// Get team name
 	const char* GetTeam(TeamName Team, bool ShortName);
 
+	// Get current player frags and deatgs after swap teams
+	int* GetPlayerScore(int EntityIndex);
+
+	// Swap teams event
 	void SwapTeams();
 
+	// On player connect
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
+
+	// On player select a new team
 	bool PlayerJoinTeam(CBasePlayer* Player, int NewTeam);
+
+	// On player get into game
 	void PlayerGetIntoGame(CBasePlayer* Player);
+
+	// On player disconnect
 	void PlayerDisconnect(edict_t* pEdict);
+
+	// Check restrictions of items for players
 	bool PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type);
 
+	// Show match bot status
 	void Status(CBasePlayer* Player);
+
+	// Show match scores
 	void Scores(CBasePlayer* Player, bool Method);
+
+	// Show MOTD help
 	void Help(CBasePlayer* Player, bool AdminHelp);
 
+	// Round estart event
 	void RoundStart();
+
+	// Round end event
 	void RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDelay);
 
+	// Start vote map
 	void StartVoteMap(CBasePlayer* Player);
+
+	// Start vote team
 	void StartVoteTeam(CBasePlayer* Player);
 
+	// Start match (Without play knife round)
 	void StartMatch(CBasePlayer* Player);
+
+	// Stop current running match
 	void StopMatch(CBasePlayer* Player);
+
+	// Restart current match
 	void RestartMatch(CBasePlayer* Player);
 
 private:
@@ -117,6 +172,9 @@ private:
 
 	// Match Bot Config Variables
 	cvar_t* m_Config[STATE_END + 1] = { nullptr };
+
+	// Player Scores
+	int m_PlayerScore[MAX_CLIENTS + 1][2] = { 0 };
 };
 
 extern CMatchBot gMatchBot;

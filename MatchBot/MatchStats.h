@@ -124,31 +124,6 @@ public:
 
 	// Stats by match states
 	std::array<P_PLAYER_STATS, STATE_END + 1> Stats;
-	
-	// Return score
-	int GetScore()
-	{
-		auto Score = 0;
-
-		for (const auto& Data : this->Stats)
-		{
-			Score += (Data.Frags + (Data.BombExploded * 3) + (Data.BombDefused * 3));
-		}
-
-		return Score;
-	}
-
-	int GetDeaths()
-	{
-		auto Deaths = 0;
-
-		for (const auto & Data : this->Stats)
-		{
-			Deaths += Data.Deaths;
-		}
-
-		return Deaths;
-	}
 };
 
 class CMatchStats
@@ -220,11 +195,9 @@ public:
 	// Show Round Summary
 	bool ShowSummary(CBasePlayer* Player);
 
-	// Get Player Data
-	CMatchPlayerData* GetData(CBasePlayer* Player);
-
 private:
 	// Match Data
+	// Match Server Data Goes Here!
 
 	// Player Data
 	std::map<std::string, CMatchPlayerData> m_Player;

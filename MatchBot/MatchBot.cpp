@@ -68,82 +68,14 @@ void CMatchBot::ServerActivate()
 	// End config
 	this->m_Config[STATE_END] = gMatchUtil.CvarRegister("mb_cfg_end", "end.cfg");
 
-	// Run Match Bot
-	this->SetState(STATE_DEAD);
-
 	// Register TeamScore message hook
 	gMatchMessage.RegisterHook("TeamScore", this->TeamScore);
 
 	// Register ScoreInfo message hook
 	gMatchMessage.RegisterHook("ScoreInfo", this->ScoreInfo);
-}
 
-// TeamScore HL1 message
-bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
-{
-	// If match running after first half
-	if(gMatchBot.GetState() > STATE_FIRST_HALF)
-	{
-		// Get Team Name
-		auto TeamID = gMatchMessage.GetString(0);
-
-		// If is not null
-		if (TeamID)
-		{
-			// Terrorists
-			if (TeamID[0] == 'T')
-			{
-				// Set Score for Terrorists to avoid sv_restart reset
-				gMatchMessage.SetArgInt(1, gMatchBot.GetScore(TERRORIST));
-			}
-			else if (TeamID[0] == 'C')
-			{
-				// Set Score for CTs  to avoid sv_restart reset
-				gMatchMessage.SetArgInt(1, gMatchBot.GetScore(CT));
-			}
-		}
-	}
-
-	// Do not block original message call
-	return false;
-}
-
-// ScoreInfo HL1 message
-bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
-{
-	// If match running after first half
-	if(gMatchBot.GetState() > STATE_FIRST_HALF)
-	{
-		// Player Index
-		auto PlayerID = gMatchMessage.GetByte(0);
-
-		// If is player
-		if (PlayerID)
-		{
-			// Get Player
-			auto Player = UTIL_PlayerByIndexSafe(PlayerID);
-
-			// If found
-			if (Player)
-			{
-				// Get player match data
-				auto PlayerData = gMatchStats.GetData(Player);
-
-				// if has data
-				if (PlayerData)
-				{
-					// Set player score to message
-					gMatchMessage.SetArgInt(1, PlayerData->GetScore());
-
-					// Set player deaths to message
-					gMatchMessage.SetArgInt(2, PlayerData->GetDeaths());
-				}
-			}
-		}
-	}
-
-	// Do not block original message call
-	return false;
+	// Run Match Bot
+	this->SetState(STATE_DEAD);
 }
 
 // On server deactivate
@@ -239,6 +171,9 @@ void CMatchBot::SetState(int State)
 		// Match BOT is Dead, nothing is running
 		case STATE_DEAD:
 		{
+			// Reset all scores
+			this->ResetScores();
+
 			// Run next Warmup State
 			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
 			break;
@@ -321,11 +256,8 @@ void CMatchBot::SetState(int State)
 			// Stop warmup things
 			gMatchWarmup.Stop();
 
-			// Clear Scores
-			memset(this->m_Score, 0, sizeof(this->m_Score));
-
-			// Clear OT Scores
-			memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
+			// Reset all scores from match
+			this->ResetScores();
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -439,6 +371,9 @@ void CMatchBot::SetState(int State)
 			// Send scores
 			this->Scores(nullptr, false);
 
+			// Reset all scores
+			this->ResetScores();
+
 			// Set next state to warmup, match needed to run again
 			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
 
@@ -462,6 +397,100 @@ void CMatchBot::SetState(int State)
 			gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State]->string);
 		}
 	}
+}
+
+// TeamScore HL1 message
+bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+{
+	// If match running after first half
+	if (gMatchBot.GetState() > STATE_FIRST_HALF)
+	{
+		// Get Team Name
+		auto TeamID = gMatchMessage.GetString(0);
+
+		// If is not null
+		if (TeamID)
+		{
+			// Terrorists
+			if (TeamID[0] == 'T')
+			{
+				// Set Score for Terrorists to avoid sv_restart reset
+				gMatchMessage.SetArgInt(1, gMatchBot.GetScore(TERRORIST));
+			}
+			else if (TeamID[0] == 'C')
+			{
+				// Set Score for CTs  to avoid sv_restart reset
+				gMatchMessage.SetArgInt(1, gMatchBot.GetScore(CT));
+			}
+		}
+	}
+
+	// Do not block original message call
+	return false;
+}
+
+// ScoreInfo HL1 message
+bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+{
+	// If match running after first half
+	if (gMatchBot.GetState() > STATE_FIRST_HALF)
+	{
+		// Player Index
+		auto PlayerID = gMatchMessage.GetByte(0);
+
+		// If is player
+		if (PlayerID)
+		{
+			// Get Score parameter
+			auto Frags = gMatchMessage.GetShort(1);
+
+			// Get Deaths Parameter
+			auto Deaths = gMatchMessage.GetShort(2);
+
+			// Get player match scores data
+			auto Score = gMatchBot.GetPlayerScore(PlayerID);
+
+			// if has data
+			if (Score != nullptr)
+			{
+				// If has frags
+				if (Score[0])
+				{
+					// Increment it
+					Frags += Score[0];
+				}
+
+				// If has deaths
+				if (Score[1])
+				{
+					// Increment it
+					Deaths += Score[1];
+				}
+			}
+
+			// Set player score to message
+			gMatchMessage.SetArgInt(1, Frags);
+
+			// Set player deaths to message
+			gMatchMessage.SetArgInt(2, Deaths);
+		}
+	}
+
+	// Do not block original message call
+	return false;
+}
+
+// Reset scores of match
+void CMatchBot::ResetScores()
+{
+	// Clear Scores
+	memset(this->m_Score, 0, sizeof(this->m_Score));
+
+	// Clear OT Scores
+	memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
+
+	// Clear Player Scores of match
+	memset(this->m_PlayerScore, 0, sizeof(m_PlayerScore));
 }
 
 // Get Final score for a team
@@ -504,12 +533,38 @@ const char* CMatchBot::GetTeam(TeamName Team, bool ShortName)
 {
 	return ShortName ? _T(MATCH_BOT_TEAM_SHORT[Team]) : _T(MATCH_BOT_TEAM_STR[Team]);
 }
+// Return player scores
+int* CMatchBot::GetPlayerScore(int EntityIndex)
+{
+	// If has entity In
+	if (likely(EntityIndex > 0 && EntityIndex <= gpGlobals->maxClients))
+	{
+		// Return data
+		return this->m_PlayerScore[EntityIndex];
+	}
+
+	// Return empty data
+	return nullptr;
+}
 
 // Swap teams function
 void CMatchBot::SwapTeams()
 {
 	// Send message to all players
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing teams automatically."));
+
+	// Get in game players
+	auto Players = gMatchUtil.GetPlayers(true, true);
+
+	// Loop players
+	for (auto const & Player : Players)
+	{
+		// Store player scores on swap teams to avoid sv_restart
+		this->m_PlayerScore[Player->entindex()][0] = Player->edict()->v.frags;
+
+		// Store player deaths on swap teams to avoid sv_restart
+		this->m_PlayerScore[Player->entindex()][1] = Player->m_iDeaths;
+	}
 
 	// If we played more than maximum of rounds in match (We in Overtime)
 	if (this->GetRound() >= this->m_PlayRounds->value)
@@ -544,11 +599,14 @@ void CMatchBot::SwapTeams()
 // On Player Connect
 bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
+	// Get Entity Index
+	auto EntityIndex = ENTINDEX(pEntity);
+
 	// If we not allow spectaors
 	if (!CVAR_GET_FLOAT("allow_spectators"))
 	{
 		// If player do not have reserved slots
-		if (!gMatchAdmin.Access(ENTINDEX(pEntity), ADMIN_LEVEL_B))
+		if (!gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B))
 		{
 			// Get Player Count
 			auto Players = gMatchUtil.GetPlayers(true, false);
@@ -564,6 +622,12 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 			}
 		}
 	}
+
+	// Rese player frags
+	this->m_PlayerScore[EntityIndex][0] = 0;
+
+	// Reset player deaths
+	this->m_PlayerScore[EntityIndex][1] = 0;
 
 	// Return to engine allowing connection
 	return true;
