@@ -81,22 +81,26 @@ void CMatchBot::ServerActivate()
 // TeamScore HL1 message
 bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
-	// Get Team Name
-	auto TeamID = gMatchMessage.GetString(0);
-
-	// If is not null
-	if (TeamID)
+	// If match running after first half
+	if(gMatchBot.GetState() > STATE_FIRST_HALF)
 	{
-		// Terrorists
-		if (TeamID[0] == 'T')
+		// Get Team Name
+		auto TeamID = gMatchMessage.GetString(0);
+
+		// If is not null
+		if (TeamID)
 		{
-			// Set Score for Terrorists
-			gMatchMessage.SetArgInt(1, gMatchBot.GetScore(TERRORIST));
-		}
-		else if (TeamID[0] == 'C')
-		{
-			// Set Score for CTs
-			gMatchMessage.SetArgInt(1, gMatchBot.GetScore(CT));
+			// Terrorists
+			if (TeamID[0] == 'T')
+			{
+				// Set Score for Terrorists to avoid sv_restart reset
+				gMatchMessage.SetArgInt(1, gMatchBot.GetScore(TERRORIST));
+			}
+			else if (TeamID[0] == 'C')
+			{
+				// Set Score for CTs  to avoid sv_restart reset
+				gMatchMessage.SetArgInt(1, gMatchBot.GetScore(CT));
+			}
 		}
 	}
 
@@ -107,29 +111,33 @@ bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edic
 // ScoreInfo HL1 message
 bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
-	// Player Index
-	auto PlayerID = gMatchMessage.GetByte(0);
-
-	// If is player
-	if (PlayerID)
+	// If match running after first half
+	if(gMatchBot.GetState() > STATE_FIRST_HALF)
 	{
-		// Get Player
-		auto Player = UTIL_PlayerByIndexSafe(PlayerID);
+		// Player Index
+		auto PlayerID = gMatchMessage.GetByte(0);
 
-		// If found
-		if (Player)
+		// If is player
+		if (PlayerID)
 		{
-			// Get player match data
-			auto PlayerData = gMatchStats.GetData(Player);
+			// Get Player
+			auto Player = UTIL_PlayerByIndexSafe(PlayerID);
 
-			// if has data
-			if (PlayerData)
+			// If found
+			if (Player)
 			{
-				// Set player score to message
-				gMatchMessage.SetArgInt(1, PlayerData->GetScore());
+				// Get player match data
+				auto PlayerData = gMatchStats.GetData(Player);
 
-				// Set player deaths to message
-				gMatchMessage.SetArgInt(2, PlayerData->GetDeaths());
+				// if has data
+				if (PlayerData)
+				{
+					// Set player score to message
+					gMatchMessage.SetArgInt(1, PlayerData->GetScore());
+
+					// Set player deaths to message
+					gMatchMessage.SetArgInt(2, PlayerData->GetDeaths());
+				}
 			}
 		}
 	}
