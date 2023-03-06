@@ -171,9 +171,6 @@ void CMatchBot::SetState(int State)
 		// Match BOT is Dead, nothing is running
 		case STATE_DEAD:
 		{
-			// Reset all scores
-			this->ResetScores();
-
 			// Run next Warmup State
 			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
 			break;
@@ -256,8 +253,11 @@ void CMatchBot::SetState(int State)
 			// Stop warmup things
 			gMatchWarmup.Stop();
 
-			// Reset all scores from match
-			this->ResetScores();
+			// Clear Scores
+			memset(this->m_Score, 0, sizeof(this->m_Score));
+
+			// Clear OT Scores
+			memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -371,9 +371,6 @@ void CMatchBot::SetState(int State)
 			// Send scores
 			this->Scores(nullptr, false);
 
-			// Reset all scores
-			this->ResetScores();
-
 			// Set next state to warmup, match needed to run again
 			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
 
@@ -447,25 +444,17 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 			// Get Deaths Parameter
 			auto Deaths = gMatchMessage.GetShort(2);
 
-			// Get player match scores data
-			auto Score = gMatchBot.GetPlayerScore(PlayerID);
+			// Get Frags and Deaths from stats
+			auto Score = gMatchStats.GetScore(PlayerID);
 
-			// if has data
-			if (Score != nullptr)
+			// If is not null
+			if(Score)
 			{
-				// If has frags
-				if (Score[0])
-				{
-					// Increment it
-					Frags += Score[0];
-				}
+				// Increment with current frags
+				Frags += Score[0];
 
-				// If has deaths
-				if (Score[1])
-				{
-					// Increment it
-					Deaths += Score[1];
-				}
+				// Increment with current deaths
+				Deaths += Score[1];
 			}
 
 			// Set player score to message
@@ -478,19 +467,6 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 
 	// Do not block original message call
 	return false;
-}
-
-// Reset scores of match
-void CMatchBot::ResetScores()
-{
-	// Clear Scores
-	memset(this->m_Score, 0, sizeof(this->m_Score));
-
-	// Clear OT Scores
-	memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
-
-	// Clear Player Scores of match
-	memset(this->m_PlayerScore, 0, sizeof(m_PlayerScore));
 }
 
 // Get Final score for a team
@@ -533,19 +509,6 @@ const char* CMatchBot::GetTeam(TeamName Team, bool ShortName)
 {
 	return ShortName ? _T(MATCH_BOT_TEAM_SHORT[Team]) : _T(MATCH_BOT_TEAM_STR[Team]);
 }
-// Return player scores
-int* CMatchBot::GetPlayerScore(int EntityIndex)
-{
-	// If has entity In
-	if (likely(EntityIndex > 0 && EntityIndex <= gpGlobals->maxClients))
-	{
-		// Return data
-		return this->m_PlayerScore[EntityIndex];
-	}
-
-	// Return empty data
-	return nullptr;
-}
 
 // Swap teams function
 void CMatchBot::SwapTeams()
@@ -555,16 +518,6 @@ void CMatchBot::SwapTeams()
 
 	// Get in game players
 	auto Players = gMatchUtil.GetPlayers(true, true);
-
-	// Loop players
-	for (auto const & Player : Players)
-	{
-		// Store player scores on swap teams to avoid sv_restart
-		this->m_PlayerScore[Player->entindex()][0] = Player->edict()->v.frags;
-
-		// Store player deaths on swap teams to avoid sv_restart
-		this->m_PlayerScore[Player->entindex()][1] = Player->m_iDeaths;
-	}
 
 	// If we played more than maximum of rounds in match (We in Overtime)
 	if (this->GetRound() >= this->m_PlayRounds->value)
@@ -622,12 +575,6 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 			}
 		}
 	}
-
-	// Rese player frags
-	this->m_PlayerScore[EntityIndex][0] = 0;
-
-	// Reset player deaths
-	this->m_PlayerScore[EntityIndex][1] = 0;
 
 	// Return to engine allowing connection
 	return true;

@@ -74,9 +74,6 @@ public:
 	// ScoreInfo HL1 Message
 	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
-	// Reset all match scores data
-	void ResetScores();
-
 	// Get score of team
 	int GetScore(TeamName Team);
 
@@ -91,9 +88,6 @@ public:
 
 	// Get team name
 	const char* GetTeam(TeamName Team, bool ShortName);
-
-	// Get current player frags and deatgs after swap teams
-	int* GetPlayerScore(int EntityIndex);
 
 	// Swap teams event
 	void SwapTeams();
@@ -172,9 +166,6 @@ private:
 
 	// Match Bot Config Variables
 	cvar_t* m_Config[STATE_END + 1] = { nullptr };
-
-	// Player Scores
-	int m_PlayerScore[MAX_CLIENTS + 1][2] = { 0 };
 };
 
 extern CMatchBot gMatchBot;

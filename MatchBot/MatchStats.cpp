@@ -8,24 +8,42 @@ void CMatchStats::SetState(int State)
 	// New Match State
 	this->m_State = State;
 
-	// 
-	switch (State)
+	// Store star time if is First Half
+	if(State == STATE_FIRST_HALF)
 	{
-		case STATE_START:
+		this->m_Data.StartTime = time(0);
+	}
+	// Store scores in each halftime
+	else if(State == STATE_HALFTIME)
+	{
+		// Get Players
+		auto Players = gMatchUtil.GetPlayers(true, true);
+
+		// Loop Players
+		for(auto & Player : Players)
 		{
-			break;
-		}
-		case STATE_FIRST_HALF:
-		{
-			this->m_Data.StartTime = time(0);
-			break;
-		}
-		case STATE_END:
-		{
-			this->m_Data.EndTime = time(0);
-			break;
+			// Get player entity index
+			auto EntityIndex = Player->entindex();
+
+			// Store Frags
+			this->m_Score[EntityIndex][0] = (int)Player->edict()->v.frags;
+
+			// Store deaths
+			this->m_Score[EntityIndex][1] = (int)Player->m_iDeaths;
 		}
 	}
+	// Store end time if is end
+	else if(State == STATE_END)
+	{
+		this->m_Data.EndTime = time(0);
+	}
+}
+
+// Get Player Score
+int* CMatchStats::GetScore(int EntityIndex)
+{
+	// Return Scores
+	return this->m_Score[EntityIndex];
 }
 
 // On Player Connect
@@ -37,6 +55,12 @@ bool CMatchStats::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
 	{
 		// Set Connection time
 		this->m_Player[Auth].ConnectTime = time(0);
+
+		// Reset Frags
+		this->m_Score[ENTINDEX(pEntity)][0] = 0;
+
+		// Reset Deaths
+		this->m_Score[ENTINDEX(pEntity)][1] = 0;
 	}
 
 	return true;

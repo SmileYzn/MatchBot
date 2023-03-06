@@ -131,6 +131,9 @@ class CMatchStats
 public:
 	// Match State
 	void SetState(int State);
+
+	// Get Score
+	int* GetScore(int EntityIndex);
 	
 	// Connect
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
@@ -205,6 +208,9 @@ private:
 	// Round Stats (Damage and Hits)
 	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1] = { 0 };
 	int m_RoundHit[MAX_CLIENTS + 1][MAX_CLIENTS + 1] = { 0 };
+
+	// Player Scores
+	int m_Score[MAX_CLIENTS + 1][2] = { 0 };
 
 	// Match State
 	size_t m_State = STATE_DEAD;
