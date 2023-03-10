@@ -254,10 +254,10 @@ void CMatchBot::SetState(int State)
 			gMatchWarmup.Stop();
 
 			// Clear Scores
-			memset(this->m_Score, 0, sizeof(this->m_Score));
+			memset(&this->m_Score, 0, sizeof(this->m_Score));
 
 			// Clear OT Scores
-			memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
+			memset(&this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -526,7 +526,7 @@ void CMatchBot::SwapTeams()
 		if (this->GetScore(TERRORIST) == this->GetScore(CT))
 		{
 			// Reset Overtime scores (We are restarting OT)
-			memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
+			memset(&this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
 
 			// Do not swap teams or scores in first Overtime Half
 			return;
