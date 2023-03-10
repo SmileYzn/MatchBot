@@ -1,0 +1,115 @@
+/*
+*
+*    This program is free software; you can redistribute it and/or modify it
+*    under the terms of the GNU General Public License as published by the
+*    Free Software Foundation; either version 2 of the License, or (at
+*    your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful, but
+*    WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+*    General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program; if not, write to the Free Software Foundation,
+*    Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*
+*    In addition, as a special exception, the author gives permission to
+*    link the code of this program with the Half-Life Game Engine ("HL
+*    Engine") and Modified Game Libraries ("MODs") developed by Valve,
+*    L.L.C ("Valve").  You must obey the GNU General Public License in all
+*    respects for all of the code used other than the HL Engine and MODs
+*    from Valve.  If you modify this file, you may extend this exception
+*    to your version of the file, but you are not obligated to do so.  If
+*    you do not wish to do so, delete this exception statement from your
+*    version.
+*
+*/
+
+#pragma once
+
+class CBaseEntity;
+class CCSEntity
+{
+	DECLARE_CLASS_TYPES(CCSEntity, CCSEntity);
+public:
+	CCSEntity() :
+		m_pContainingEntity(nullptr)
+	{
+	}
+
+	virtual ~CCSEntity() {}
+	virtual void FireBullets(int iShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker) = 0;
+	virtual void FireBuckshots(ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker) = 0;
+	virtual Vector FireBullets3(Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand) = 0;
+
+#if defined(_MSC_VER)
+#pragma region reserve_vfuncs_Region
+#endif
+	virtual void func_reserve1() {};
+	virtual void func_reserve2() {};
+	virtual void func_reserve3() {};
+	virtual void func_reserve4() {};
+	virtual void func_reserve5() {};
+	virtual void func_reserve6() {};
+	virtual void func_reserve7() {};
+	virtual void func_reserve8() {};
+	virtual void func_reserve9() {};
+	virtual void func_reserve10() {};
+	virtual void func_reserve11() {};
+	virtual void func_reserve12() {};
+	virtual void func_reserve13() {};
+	virtual void func_reserve14() {};
+	virtual void func_reserve15() {};
+	virtual void func_reserve16() {};
+	virtual void func_reserve17() {};
+	virtual void func_reserve18() {};
+	virtual void func_reserve19() {};
+	virtual void func_reserve20() {};
+	virtual void func_reserve21() {};
+	virtual void func_reserve22() {};
+	virtual void func_reserve23() {};
+	virtual void func_reserve24() {};
+	virtual void func_reserve25() {};
+	virtual void func_reserve26() {};
+	virtual void func_reserve27() {};
+	virtual void func_reserve28() {};
+	virtual void func_reserve29() {};
+	virtual void func_reserve30() {};
+#if defined(_MSC_VER)
+#pragma endregion
+#endif
+
+public:
+	CBaseEntity *m_pContainingEntity;
+};
+
+class CCSDelay: public CCSEntity
+{
+	DECLARE_CLASS_TYPES(CCSDelay, CCSEntity);
+public:
+
+};
+
+class CCSAnimating: public CCSDelay
+{
+	DECLARE_CLASS_TYPES(CCSAnimating, CCSDelay);
+public:
+
+};
+
+class CCSToggle: public CCSAnimating
+{
+	DECLARE_CLASS_TYPES(CCSToggle, CCSAnimating);
+public:
+
+};
+
+class CCSMonster: public CCSToggle
+{
+	DECLARE_CLASS_TYPES(CCSMonster, CCSToggle);
+public:
+
+};
+
+#define CSENTITY_API_INTERFACE_VERSION "CSENTITY_API_INTERFACE_VERSION002"
