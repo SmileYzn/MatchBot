@@ -71,6 +71,7 @@
 #include "MatchPause.h"
 #include "MatchReady.h"
 #include "MatchStats.h"
+#include "MatchScore.h"
 #include "MatchTimer.h"
 #include "MatchTask.h"
 #include "MatchVoteMap.h"

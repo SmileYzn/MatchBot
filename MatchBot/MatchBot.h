@@ -68,12 +68,6 @@ public:
 	// Set a new match state
 	void SetState(int State);
 
-	// TeamScore HL1 Message
-	static bool TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
-
-	// ScoreInfo HL1 Message
-	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
-
 	// Get score of team
 	int GetScore(TeamName Team);
 

@@ -67,6 +67,8 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 	gMatchBot.ServerActivate();
 
+	gMatchScore.ServerActivate();
+
 	gMatchAdmin.ServerActivate();
 
 	gMatchVoteMenu.ServerActivate();
