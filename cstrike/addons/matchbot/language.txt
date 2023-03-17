@@ -352,7 +352,7 @@ bp:"Todos os jogadores estão prontos!"
 
 "Not Ready (%d of %d):"
 en:"Not Ready (%d of %d):"
-bp:"Auecendo (%d de %d):"
+bp:"Aquecendo (%d de %d):"
 
 "Ready (%d of %d):"
 en:"Ready (%d of %d):"
