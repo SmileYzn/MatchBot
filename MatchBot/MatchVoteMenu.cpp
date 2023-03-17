@@ -19,10 +19,10 @@ void CMatchVoteMenu::ServerActivate()
 	auto Maps = gMatchUtil.GetMapList(false);
 
 	// Loop Map List
-	for (auto const & [MapIndex, MapName] : Maps)
+	for (auto const & row : Maps)
 	{
 		// Add to map pool
-		this->m_MapList[MapIndex] = MapName;
+		this->m_MapList[row.first] = row.second;
 	}
 }
 
@@ -253,7 +253,7 @@ bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 			auto VotesNeed = (Players.size() * VOTE_MENU_PERCENTAGE);
 
 			// Loop Map List
-			for (auto const& [MapIndex, MapName] : this->m_MapList)
+			for (auto const& row : this->m_MapList)
 			{
 				// Get Vote Count
 				auto VoteCount = 0;
@@ -262,7 +262,7 @@ bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 				for (const auto& Temp : Players)
 				{
 					// If has voted on that map
-					if (this->m_Votes[Temp->entindex()].VoteMap[MapIndex])
+					if (this->m_Votes[Temp->entindex()].VoteMap[row.first])
 					{
 						// Count vote
 						VoteCount++;
@@ -270,7 +270,7 @@ bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 				}
 
 				// Add Menu Item
-				gMatchMenu[Player->entindex()].AddItem(MapIndex, gMatchUtil.FormatString("%s \\y\\R%2.0f%%", MapName.c_str(), (float)((VoteCount * 100) / VotesNeed)), this->m_Votes[Player->entindex()].VoteMap[MapIndex]);
+				gMatchMenu[Player->entindex()].AddItem(row.first, gMatchUtil.FormatString("%s \\y\\R%2.0f%%", row.second.c_str(), (float)((VoteCount * 100) / VotesNeed)), this->m_Votes[Player->entindex()].VoteMap[row.first]);
 			}
 
 			// Show Menu to player

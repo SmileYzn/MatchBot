@@ -64,48 +64,48 @@ bool CMatchMessage::MessageEnd()
 				{
 					MESSAGE_BEGIN(this->m_Data.msg_dest, this->m_Data.msg_type, this->m_Data.pOrigin, this->m_Data.pEntity);
 
-					for (const auto [Id, Param] : this->m_Data.Param)
+					for (const auto row : this->m_Data.Param)
 					{
-						switch (Param.Type)
+						switch (row.second.Type)
 						{
 							case MESSAGE_TYPE_BYTE:
 							{
-								WRITE_BYTE(Param.iValue);
+								WRITE_BYTE(row.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_CHAR:
 							{
-								WRITE_CHAR(Param.iValue);
+								WRITE_CHAR(row.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_SHORT:
 							{
-								WRITE_SHORT(Param.iValue);
+								WRITE_SHORT(row.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_LONG:
 							{
-								WRITE_LONG(Param.iValue);
+								WRITE_LONG(row.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_ANGLE:
 							{
-								WRITE_ANGLE(Param.flValue);
+								WRITE_ANGLE(row.second.flValue);
 								break;
 							}
 							case MESSAGE_TYPE_COORD:
 							{
-								WRITE_COORD(Param.flValue);
+								WRITE_COORD(row.second.flValue);
 								break;
 							}
 							case MESSAGE_TYPE_STRING:
 							{
-								WRITE_STRING(Param.szValue);
+								WRITE_STRING(row.second.szValue);
 								break;
 							}
 							case MESSAGE_TYPE_ENTITY:
 							{
-								WRITE_ENTITY(Param.iValue);
+								WRITE_ENTITY(row.second.iValue);
 								break;
 							}
 						}

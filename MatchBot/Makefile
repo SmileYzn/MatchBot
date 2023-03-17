@@ -9,7 +9,7 @@ OBJECTS = *.cpp
 
 LINK = 
 
-OPT_FLAGS = -pipe -std=c++17 -g0 -O3 -s -flto=auto -funroll-loops -fno-stack-protector
+OPT_FLAGS = -pipe -std=c++14 -g0 -O3 -s -flto=auto -funroll-loops -fno-stack-protector
 
 INCLUDE = -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
 
@@ -33,7 +33,7 @@ $(NAME): $(OBJ_LINUX)
 	$(COMPILER) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINK) -o$(BIN_DIR)/$(NAME)_mm.so
 
 check:
-	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=c++17 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
+	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=c++14 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
 
 default: all
 

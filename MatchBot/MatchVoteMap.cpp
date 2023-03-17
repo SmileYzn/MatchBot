@@ -77,10 +77,10 @@ std::vector<P_MAP_ITEM> CMatchVoteMap::Load()
     auto Maps = gMatchUtil.GetMapList(false);
 
     // Loop loaded map list
-    for (auto const& [MapIndex, MapName] : Maps)
+    for (auto const& row : Maps)
     {
         // Add to vote pool
-        MapList.push_back({ MapIndex, 0, MapName });
+        MapList.push_back({ row.first, 0, row.second });
     }
 
     // Return

@@ -118,10 +118,10 @@ void CMatchStats::RoundRestart(bool PreRestart)
 			if (CSGameRules()->m_bCompleteReset)
 			{
 				// Loop all saved players
-				for (auto & [Auth, PlayerData] : this->m_Player)
+				for (auto & row : this->m_Player)
 				{
 					// Reset Player Stats of state
-					PlayerData.Stats[this->m_State].Reset();
+					row.second.Stats[this->m_State].Reset();
 				}
 			}
 		}

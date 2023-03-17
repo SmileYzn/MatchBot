@@ -21,7 +21,6 @@
 
 // System Includes
 #include <string>
-#include <string_view>
 #include <array>
 #include <fstream>
 #include <map>
@@ -50,9 +49,6 @@
 // ReAPI & ReGameDLL
 #include "ReAPI.h"
 #include "ReGameDLL.h"
-
-// Hash Class
-#include "Hash.h"
 
 // Time Format Class
 #include "TimeFormat.h"

@@ -457,7 +457,9 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 
 		while(std::getline(fp, Map))
 		{
-			if (IS_MAP_VALID(Map.data()))
+			auto MapName = strdup(Map.data());
+
+			if (IS_MAP_VALID(MapName))
 			{
 				if (!CurrentMap)
 				{

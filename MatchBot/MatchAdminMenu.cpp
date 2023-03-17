@@ -350,9 +350,9 @@ void CMatchAdminMenu::MapMenu(int EntityIndex)
 	{
 		gMatchMenu[EntityIndex].Create(_T("Change Map"), true, (void*)this->MapMenuHandle);
 
-		for (auto const& [MapIndex, MapName] : MapList)
+		for (auto const& row : MapList)
 		{
-			gMatchMenu[EntityIndex].AddItem(MapIndex, MapName, !MapName.compare(STRING(gpGlobals->mapname)), MapIndex);
+			gMatchMenu[EntityIndex].AddItem(row.first, row.second, !row.second.compare(STRING(gpGlobals->mapname)), row.first);
 		}
 
 		gMatchMenu[EntityIndex].Show(EntityIndex);
