@@ -67,6 +67,9 @@
     <Filter Include="MetaMod\Precompiled">
       <UniqueIdentifier>{8409f983-aca8-47c7-bc99-ddecf18efa94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MatchBot\MatchScore">
+      <UniqueIdentifier>{9f4dce76-c4dd-11ed-afa1-0242ac120002}</UniqueIdentifier>
+    </Filter>
     <Filter Include="MatchBot\MatchStats">
       <UniqueIdentifier>{80673ccc-358f-4df3-8322-1a77e26aa2a0}</UniqueIdentifier>
     </Filter>
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="MatchMenu.h">
       <Filter>MatchBot\MatchMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchScore.h">
+      <Filter>MatchBot\MatchScore</Filter>
     </ClInclude>
     <ClInclude Include="MatchStats.h">
       <Filter>MatchBot\MatchStats</Filter>
@@ -231,6 +237,9 @@
     </ClCompile>
     <ClCompile Include="MatchMenu.cpp">
       <Filter>MatchBot\MatchMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchScore.cpp">
+      <Filter>MatchBot\MatchScore</Filter>
     </ClCompile>
     <ClCompile Include="MatchStats.cpp">
       <Filter>MatchBot\MatchStats</Filter>
