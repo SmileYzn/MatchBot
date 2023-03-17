@@ -16,12 +16,15 @@ jobs:
       
     - name: Add i386 architecture
       run: sudo dpkg --add-architecture i386
+
+    - name: Add new source into apt
+      run: sudo sh -c "sudo echo 'deb http://dk.archive.ubuntu.com/ubuntu/ bionic main universe' >> /etc/apt/sources.list.d/ubuntu.universe.list"
       
     - name: Update repository
       run: sudo apt-get update
       
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y build-essential g++-multilib g++-7 gcc-7
+      run: sudo apt-get install -qq -y build-essential g++-6-multilib g++-6 gcc-6
 
     - name: Run build
       working-directory: ./MatchBot
