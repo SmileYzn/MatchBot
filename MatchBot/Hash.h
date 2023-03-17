@@ -16,7 +16,7 @@ namespace Hash
 		return (string[ 0 ] == '\0') ? value : GetConst(&string[1], (value ^ static_cast<unsigned int>(string[0])) * internal::Prime);
 	}
 
-	static inline unsigned int Get(const std::string_view& string)
+	static inline unsigned int Get(const std::string& string)
 	{
 		auto result { internal::Basis };
 
