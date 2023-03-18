@@ -131,7 +131,7 @@ bool CMatchMessage::WriteByte(int iValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_BYTE;
 		Param.iValue = iValue;
@@ -148,7 +148,7 @@ bool CMatchMessage::WriteChar(int iValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_CHAR;
 		Param.iValue = iValue;
@@ -165,7 +165,7 @@ bool CMatchMessage::WriteShort(int iValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_SHORT;
 		Param.iValue = iValue;
@@ -182,7 +182,7 @@ bool CMatchMessage::WriteLong(int iValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_LONG;
 		Param.iValue = iValue;
@@ -199,7 +199,7 @@ bool CMatchMessage::WriteAngle(float flValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_ANGLE;
 		Param.flValue = flValue;
@@ -216,7 +216,7 @@ bool CMatchMessage::WriteCoord(float flValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_COORD;
 		Param.flValue = flValue;
@@ -233,7 +233,7 @@ bool CMatchMessage::WriteString(const char* szValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_STRING;
 
@@ -251,7 +251,7 @@ bool CMatchMessage::WriteEntity(int iValue)
 {
 	if (this->m_MsgId)
 	{
-		P_MESSAGE_PARAM Param = { 0 };
+		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_ENTITY;
 		Param.iValue = iValue;

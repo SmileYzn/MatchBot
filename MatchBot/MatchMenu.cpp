@@ -218,7 +218,7 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Menu
 				{
 					Player->m_iMenu = Menu_OFF;
 
-					char BufferMenu[MAX_BUFFER_MENU * 6] = { 0 };
+					char BufferMenu[MAX_BUFFER_MENU * 6];
 
 					MenuText.copy(BufferMenu, MenuText.length() + 1);
 
@@ -229,7 +229,7 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Menu
 
 					while (pMenuList && *pMenuList)
 					{
-						char szChunk[MAX_BUFFER_MENU + 1] = { 0 };
+						char szChunk[MAX_BUFFER_MENU + 1];
 
 						strncpy(szChunk, pMenuList, MAX_BUFFER_MENU);
 

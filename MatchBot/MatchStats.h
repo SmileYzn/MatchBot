@@ -206,17 +206,17 @@ private:
 	std::map<std::string, CMatchPlayerData> m_Player;
 
 	// Round Stats (Damage and Hits)
-	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1] = { 0 };
-	int m_RoundHit[MAX_CLIENTS + 1][MAX_CLIENTS + 1] = { 0 };
+	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
+	int m_RoundHit[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
 
 	// Player Scores
-	int m_Score[MAX_CLIENTS + 1][2] = { 0 };
+	int m_Score[MAX_CLIENTS + 1][2];
 
 	// Match State
 	size_t m_State = STATE_DEAD;
 
 	// Match Data
-	P_MATCH_DATA m_Data = { 0 };
+	P_MATCH_DATA m_Data ;
 };
 
 extern CMatchStats gMatchStats;

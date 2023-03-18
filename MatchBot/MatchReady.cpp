@@ -34,7 +34,7 @@ void CMatchReady::Task(int PlayersMin)
 {
 	std::string PlayerList[2];
 
-	std::array<int, 2> PlayerCount = { 0 };
+	std::array<int, 2> PlayerCount ;
 
 	for (int i = 1; i <= gpGlobals->maxClients; ++i)
 	{

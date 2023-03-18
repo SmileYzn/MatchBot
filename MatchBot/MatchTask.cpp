@@ -35,7 +35,7 @@ void CMatchTask::Delete(int Index)
 
 void CMatchTask::Frame()
 {
-	P_TASK_INFO Task = { 0 };
+	P_TASK_INFO Task ;
 
 	for (std::map<int, P_TASK_INFO>::iterator it = this->m_Data.begin(); it != this->m_Data.end();)
 	{

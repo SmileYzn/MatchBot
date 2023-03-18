@@ -56,13 +56,13 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 
 		va_start(argList, Format);
 
-		char Buffer[191] = { 0 };
+		char Buffer[191];
 
 		vsnprintf(Buffer, sizeof(Buffer), Format, argList);
 
 		va_end(argList);
 
-		char SayText[191] = { 0 };
+		char SayText[191];
 
 		snprintf(SayText, sizeof(SayText), "\4[%s]\1 %s", gMatchBot.GetTag(), Buffer);
 
@@ -114,7 +114,7 @@ void CMatchUtil::ClientPrint(edict_t* pEntity, int msg_dest, const char* Format,
 
 	va_start(argList, Format);
 
-	char Buffer[188] = { 0 };
+	char Buffer[188];
 
 	int Length = vsnprintf(Buffer, sizeof(Buffer), Format, argList);
 
@@ -276,7 +276,7 @@ void CMatchUtil::ServerCommand(const char* Format, ...)
 
 	va_start(argList, Format);
 
-	char Buffer[255] = { 0 };
+	char Buffer[255];
 
 	int Length = vsnprintf(Buffer, sizeof(Buffer), Format, argList);
 
@@ -326,7 +326,7 @@ short CMatchUtil::FixedSigned16(float value, float scale)
 
 hudtextparms_t CMatchUtil::HudParam(int red, int green, int blue, float x, float y, int effects, float fxtime, float holdtime, float fadeintime, float fadeouttime, int channel)
 {
-	hudtextparms_t hud = { 0 };
+	hudtextparms_t hud ;
 
 	hud.r1 = red;
 	hud.g1 = green;
@@ -354,7 +354,7 @@ void CMatchUtil::HudMessage(edict_t* pEntity, hudtextparms_t textparms, const ch
 
 	va_start(argList, Format);
 
-	char Buffer[511] = { 0 };
+	char Buffer[511];
 
 	vsnprintf(Buffer, sizeof(Buffer), Format, argList);
 
@@ -408,7 +408,7 @@ void CMatchUtil::ClientCommand(edict_t* pEntity, const char* Format, ...)
 
 		va_start(argList, Format);
 
-		char Buffer[255] = { 0 };
+		char Buffer[255];
 
 		int Length = vsnprintf(Buffer, sizeof(Buffer), Format, argList);
 

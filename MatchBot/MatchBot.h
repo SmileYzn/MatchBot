@@ -139,10 +139,10 @@ private:
 	bool m_PlayKnifeRound = false;
 
 	// Scores
-	int m_Score[SPECTATOR + 1][STATE_END] = { 0 };
+	int m_Score[SPECTATOR + 1][STATE_END];
 
 	// Overtime Scores
-	int m_ScoreOT[SPECTATOR + 1] = { 0 };
+	int m_ScoreOT[SPECTATOR + 1];
 
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;
