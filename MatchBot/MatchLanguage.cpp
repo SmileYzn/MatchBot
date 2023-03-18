@@ -33,7 +33,7 @@ void CMatchLanguage::ServerActivate()
 						this->ReplaceAll(Line, "\\4", "\4");
 						this->ReplaceAll(Line, "\\n", "\n");
 
-						if (Line.at(0) == '"')
+						if (Line[0] == '"')
 						{
 							Line.erase(std::remove(Line.begin(), Line.end(), '\"'), Line.end());
 

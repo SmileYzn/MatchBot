@@ -89,22 +89,15 @@ std::vector<P_MAP_ITEM> CMatchVoteMap::Load()
 
 void CMatchVoteMap::AddVote(int ItemIndex, int Vote)
 {
-    try
+    this->m_Data[ItemIndex].Votes += Vote;
+
+    this->m_VoteCount++;
+
+    this->VoteList();
+
+    if (this->m_VoteCount >= this->m_PlayerNum)
     {
-        this->m_Data.at(ItemIndex).Votes += Vote;
-
-        this->m_VoteCount++;
-
-        this->VoteList();
-
-        if (this->m_VoteCount >= this->m_PlayerNum)
-        {
-            this->Stop();
-        }
-    }
-    catch (std::out_of_range const& exc)
-    {
-        LOG_CONSOLE(PLID, "[%s] %s", __func__, exc.what());
+        this->Stop();
     }
 }
 
@@ -147,7 +140,7 @@ void CMatchVoteMap::VoteList()
 
 P_MAP_ITEM CMatchVoteMap::GetWinner()
 {
-    auto Winner = this->m_Data.at(0);
+    auto Winner = this->m_Data[0];
 
     for (auto const& Item : this->m_Data)
     {

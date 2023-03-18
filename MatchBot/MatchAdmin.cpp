@@ -30,7 +30,7 @@ void CMatchAdmin::ServerActivate()
             if (!Line.empty())
             {
                 // If is not commented
-                if (Line.at(0) != ';')
+                if (Line[0] != ';')
                 {
                     // Get string stream
                     std::stringstream LinePointer(Line);
