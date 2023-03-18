@@ -3,13 +3,13 @@ METAMOD = include/metamod
 
 NAME = matchbot
 
-COMPILER = g++-6
+COMPILER = g++6
 
 OBJECTS = *.cpp
 
 LINK = 
 
-OPT_FLAGS = -pipe -std=c++14 -g0 -O3 -s -flto=auto -funroll-loops -fno-stack-protector -fPIC
+OPT_FLAGS = -pipe -std=c++11 -g0 -O3 -s -flto=auto -funroll-loops -fno-stack-protector -fPIC
 
 INCLUDE = -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
 
@@ -33,7 +33,7 @@ $(NAME): $(OBJ_LINUX)
 	$(COMPILER) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINK) -o$(BIN_DIR)/$(NAME)_mm.so
 
 check:
-	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=c++14 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
+	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=c++11 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
 
 default: all
 

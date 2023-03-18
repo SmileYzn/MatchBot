@@ -36,8 +36,17 @@ void CMatchAdmin::ServerActivate()
                     std::stringstream LinePointer(Line);
 
                     // While pointer can put values into struct
-                    while (LinePointer >> std::quoted(Info.Auth) >> std::quoted(Info.Name) >> std::quoted(Info.Flag))
+                    while (LinePointer >> Info.Auth >> Info.Name >> Info.Flag)
                     {
+                        // Remove auth quotes
+                        Info.Auth.erase(std::remove(Info.Auth.begin(),Info.Auth.end(), '\"' ), Info.Auth.end());
+
+                        // Remove name quotes
+                        Info.Auth.erase(std::remove(Info.Name.begin(),Info.Name.end(), '\"' ), Info.Name.end());
+
+                        // Remove flag quotes
+                        Info.Auth.erase(std::remove(Info.Flag.begin(),Info.Flag.end(), '\"' ), Info.Flag.end());
+                        
                         // If SteamID, Name and Flags is not empty
                         if (!Info.Auth.empty() && !Info.Name.empty() && !Info.Flag.empty())
                         {
