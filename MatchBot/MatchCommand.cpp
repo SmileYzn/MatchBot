@@ -33,7 +33,9 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		{
 			if (parg1[0u] == '!' || parg1[0u] == '.')
 			{
-				if (auto pCmdArgs{ CMD_ARGS() })
+				auto pCmdArgs = CMD_ARGS();
+
+				if (pCmdArgs)
 				{
                     char pCmdFormat[] = "%s\n";
 				    
