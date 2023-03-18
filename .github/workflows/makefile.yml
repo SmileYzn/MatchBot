@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -17,27 +17,17 @@ jobs:
     - name: Add i386 architecture
       run: sudo dpkg --add-architecture i386
 
-    - name: Add new source into apt
-      run: sudo sh -c "sudo echo 'deb http://dk.archive.ubuntu.com/ubuntu/ bionic main universe' >> /etc/apt/sources.list.d/ubuntu.universe.list"
-      
     - name: Update repository
       run: sudo apt-get update
       
     - name: Install build dependencies
-      run: sudo apt-get install -y -qq --no-install-recommends gcc-multilib g++-multilib libstdc++6 lib32stdc++6 libc6-dev libc6-dev-i386 linux-libc-dev linux-libc-dev:i386 lib32z1-dev gcc-6 g++6 g++-6-multilib
-
-    - name: Select compiler
-      run: |
-        echo "CC=6" >> $GITHUB_ENV
-        echo "CXX=6" >> $GITHUB_ENV
-        gcc-6 --version
-        g++-6 --version
+      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib
 
     - name: Run build
       working-directory: ./MatchBot
       run: make
     
-    - name: Move files
+    - name: Move release file
       run: |
         mkdir -p publish/addons/matchbot/dlls
         mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
