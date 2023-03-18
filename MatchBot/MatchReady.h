@@ -18,7 +18,7 @@ public:
 
 private:
 	bool m_Running = false;
-	std::array<bool, MAX_CLIENTS + 1> m_Ready = { false };
+	std::array<bool, MAX_CLIENTS + 1> m_Ready;
 };
 
 extern CMatchReady gMatchReady;

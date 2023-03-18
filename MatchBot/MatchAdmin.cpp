@@ -21,7 +21,7 @@ void CMatchAdmin::ServerActivate()
     if (fp.is_open())
     {
         // Admin info struct
-        P_ADMIN_INFO Info = { "", "", "" };
+        P_ADMIN_INFO Info;
 
         // While we can read file lines
         for (std::string Line; std::getline(fp, Line);)
