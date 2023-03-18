@@ -1,7 +1,5 @@
 #include "precompiled.h"
 
-#include <regex>
-
 CMatchLanguage gMatchLanguage;
 
 void CMatchLanguage::ServerActivate()
