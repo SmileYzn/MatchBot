@@ -67,11 +67,11 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 	gMatchBot.ServerActivate();
 
-	//gMatchScore.ServerActivate();
+	gMatchScore.ServerActivate();
 
-	//gMatchAdmin.ServerActivate();
+	gMatchAdmin.ServerActivate();
 
-	//gMatchVoteMenu.ServerActivate();
+	gMatchVoteMenu.ServerActivate();
 
 	RETURN_META(MRES_IGNORED);
 }
