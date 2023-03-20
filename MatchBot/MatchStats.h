@@ -88,10 +88,10 @@ typedef struct S_PLAYER_STATS
 		this->BlindFrags = 0;
 
 		// Hitbox Attacker
-		memset(&this->HitBoxAttack, 0, sizeof(this->HitBoxAttack));
+		memset(this->HitBoxAttack, 0, sizeof(this->HitBoxAttack));
 
 		// Hitbox Victim
-		memset(&this->HitBoxVictim, 0, sizeof(this->HitBoxVictim));
+		memset(this->HitBoxVictim, 0, sizeof(this->HitBoxVictim));
 
 		// Rounds
 		this->RoundsPlay = 0;

@@ -179,7 +179,7 @@ int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly)
 {
 	int Num = 0;
 
-	memset(&Players, 0, MAX_CLIENTS);
+	memset(Players, 0, MAX_CLIENTS);
 
 	for (int i = 1; i <= gpGlobals->maxClients; ++i)
 	{

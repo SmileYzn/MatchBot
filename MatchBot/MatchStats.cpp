@@ -134,10 +134,10 @@ void CMatchStats::RoundStart()
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
 		// Clear Round Damage
-		memset(&this->m_RoundDmg, 0, sizeof(this->m_RoundDmg));
+		memset(this->m_RoundDmg, 0, sizeof(this->m_RoundDmg));
 
 		// Clear Round Hits
-		memset(&this->m_RoundHit, 0, sizeof(this->m_RoundHit));
+		memset(this->m_RoundHit, 0, sizeof(this->m_RoundHit));
 	}
 }
 
