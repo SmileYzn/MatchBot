@@ -38,20 +38,23 @@ void CMatchAdmin::ServerActivate()
                     // While pointer can put values into struct
                     while (LinePointer >> Info.Auth >> Info.Name >> Info.Flag)
                     {
+                        // Crash here, fix it!
                         // Remove Auth quotes
-                        Info.Auth.erase(std::remove(Info.Auth.begin(), Info.Auth.end(), '\"' ), Info.Auth.end());
+                        // Info.Auth.erase(std::remove(Info.Auth.begin(), Info.Auth.end(), '\"' ), Info.Auth.end());
 
-                        // Remove Name quotes
-                        Info.Auth.erase(std::remove(Info.Name.begin(), Info.Name.end(), '\"' ), Info.Name.end());
+                        // // Remove Name quotes
+                        // Info.Auth.erase(std::remove(Info.Name.begin(), Info.Name.end(), '\"' ), Info.Name.end());
 
-                        // Remove Flag quotes
-                        Info.Flag.erase(std::remove(Info.Flag.begin(), Info.Flag.end(), '\"' ), Info.Flag.end());
+                        // // Remove Flag quotes
+                        // Info.Flag.erase(std::remove(Info.Flag.begin(), Info.Flag.end(), '\"' ), Info.Flag.end());
 
                         // If SteamID, Name and Flags is not empty
                         if (!Info.Auth.empty() && !Info.Name.empty() && !Info.Flag.empty())
                         {
                             // Insert into admin Data
                             this->m_Data[Info.Auth] = Info;
+
+                            LOG_CONSOLE(PLID,"[%s] %s %s %s ", __func__, Info.Auth, Info.Name, Info.Flag);
                         }
                     }
                 }
