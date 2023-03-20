@@ -19,7 +19,7 @@ public:
 	const char* Get(const char* Key);
 
 private:
-	cvar_t* m_Language = nullptr;
+	cvar_t m_Language;
 
 	std::map<std::string, std::string> m_Data;
 };

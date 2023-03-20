@@ -20,7 +20,7 @@ class CMatchUtil
 {
 public:
 	// Register console variable
-	cvar_t* CvarRegister(const char* Name, const char* Value);
+	void CvarRegister(cvar_t& VariableData, const char* Name, const char* Value);
 
 	// Send Team Info to player
 	void TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName);

@@ -2,21 +2,18 @@
 
 CMatchUtil gMatchUtil;
 
-cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
+void CMatchUtil::CvarRegister(cvar_t& VariableData, const char* Name, const char* Value)
 {
-	// Get Pointer by variable name
+	// Get cvar pointer
 	cvar_t* Pointer = CVAR_GET_POINTER(Name);
 
 	// If not exists
 	if (!Pointer)
 	{
-		// Variable Data
-		static cvar_t VariableData;
-
 		// Set name
 		VariableData.name = Name;
 
-		// Set value
+		// Set string
 		VariableData.string = (char*)Value;
 
 		// Set flags
@@ -25,12 +22,16 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 		// Register the variable
 		CVAR_REGISTER(&VariableData);
 
-		// Return created pointer
-		return CVAR_GET_POINTER(Name);
-	}
+		// Get created pointer
+		Pointer = CVAR_GET_POINTER(VariableData.name);
 
-	// Return existing pointer to variable
-	return Pointer;
+		// If is not null
+		if(Pointer)
+		{
+			// We can set values
+			g_engfuncs.pfnCvar_DirectSet(Pointer, Value);
+		}
+	}
 }
 
 void CMatchUtil::TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName)

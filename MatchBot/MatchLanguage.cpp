@@ -5,14 +5,16 @@ CMatchLanguage gMatchLanguage;
 void CMatchLanguage::ServerActivate()
 {
 	// Server Language
-	this->m_Language = gMatchUtil.CvarRegister("mb_language", "bp");
+	gMatchUtil.CvarRegister(this->m_Language, "mb_language", "bp");
 
 	// Clear Current translation system data
 	this->m_Data.clear();
-
-	if (this->m_Language->string)
+ 
+	// If string is not null
+	if (this->m_Language.string)
 	{
-		if (this->m_Language->string[0] != '\0')
+		// If string is not empty
+		if (this->m_Language.string[0] != '\0')
 		{
 			std::ifstream fp;
 
@@ -37,7 +39,7 @@ void CMatchLanguage::ServerActivate()
 
 							Key = Line;
 						}
-						else if (Line.substr(0, 2).compare(this->m_Language->string) == 0)
+						else if (Line.substr(0, 2).compare(this->m_Language.string) == 0)
 						{
 							Line = Line.substr(3);
 
@@ -75,8 +77,6 @@ const char* CMatchLanguage::Get(const char* Key)
 		{
 			return this->m_Data[Key].c_str();
 		}
-		
-		LOG_CONSOLE(PLID, "[%s][KEY_NOT_FOUND] %s", __func__, Key);
 	}
 
 	return Key;

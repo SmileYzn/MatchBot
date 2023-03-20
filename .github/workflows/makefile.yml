@@ -21,7 +21,7 @@ jobs:
       run: sudo apt-get update
       
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib
+      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
 
     - name: Run build
       working-directory: ./MatchBot

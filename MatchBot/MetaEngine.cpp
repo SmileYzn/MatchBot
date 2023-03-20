@@ -28,7 +28,6 @@ C_DLLEXPORT int GetEngineFunctions(enginefuncs_t *pengfuncsFromEngine, int *inte
 	return 1;
 }
 
-
 void ENGINE_PRE_MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
 {
 	if (gMatchMessage.MessageBegin(msg_dest, msg_type, pOrigin, ed))
@@ -155,89 +154,10 @@ C_DLLEXPORT int GetEngineFunctions_Post(enginefuncs_t *pengfuncsFromEngine, int 
 {
 	memset(&gENGINE_FunctionTable_Post, 0, sizeof(enginefuncs_t));
 
-	//gENGINE_FunctionTable_Post.pfnMessageBegin = ENGINE_POST_MessageBegin;
-	//gENGINE_FunctionTable_Post.pfnMessageEnd = ENGINE_POST_MessageEnd;
-	//gENGINE_FunctionTable_Post.pfnWriteByte = ENGINE_POST_WriteByte;
-	//gENGINE_FunctionTable_Post.pfnWriteChar = ENGINE_POST_WriteChar;
-	//gENGINE_FunctionTable_Post.pfnWriteShort = ENGINE_POST_WriteShort;
-	//gENGINE_FunctionTable_Post.pfnWriteLong = ENGINE_POST_WriteLong;
-	//gENGINE_FunctionTable_Post.pfnWriteAngle = ENGINE_POST_WriteAngle;
-	//gENGINE_FunctionTable_Post.pfnWriteCoord = ENGINE_POST_WriteCoord;
-	//gENGINE_FunctionTable_Post.pfnWriteString = ENGINE_POST_WriteString;
-	//gENGINE_FunctionTable_Post.pfnWriteEntity = ENGINE_POST_WriteEntity;
+	// Register here
 
 	memcpy(pengfuncsFromEngine, &gENGINE_FunctionTable_Post, sizeof(enginefuncs_t));
 
 	return 1;
 }
-
-//void ENGINE_POST_MessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
-//{
-//	gMatchMessage.MessageBegin(msg_dest, msg_type, pOrigin, ed);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_MessageEnd(void)
-//{
-//	gMatchMessage.MessageEnd();
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteByte(int iValue)
-//{
-//	gMatchMessage.WriteByte(iValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteChar(int iValue)
-//{
-//	gMatchMessage.WriteChar(iValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteShort(int iValue)
-//{
-//	gMatchMessage.WriteShort(iValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteLong(int iValue)
-//{
-//	gMatchMessage.WriteLong(iValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteAngle(float flValue)
-//{
-//	gMatchMessage.WriteAngle(flValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteCoord(float flValue)
-//{
-//	gMatchMessage.WriteCoord(flValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteString(const char* sz)
-//{
-//	gMatchMessage.WriteString(sz);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
-//
-//void ENGINE_POST_WriteEntity(int iValue)
-//{
-//	gMatchMessage.WriteEntity(iValue);
-//
-//	RETURN_META(MRES_IGNORED);
-//}
 #pragma endregion
