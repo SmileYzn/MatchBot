@@ -20,7 +20,7 @@ class CMatchUtil
 {
 public:
 	// Register console variable
-	void CvarRegister(cvar_t& VariableData, const char* Name, const char* Value);
+	cvar_t* CvarRegister(const char* Name, const char* Value);
 
 	// Send Team Info to player
 	void TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName);
@@ -57,9 +57,6 @@ public:
 
 	// Send hudmessage
 	void HudMessage(edict_t* pEntity, hudtextparms_t textparms, const char* Format, ...);
-
-	// Execute client command
-	//void ClientCommand(edict_t* pEntity, const char* Format, ...);
 
 	// Format string returning constant char array result
 	const char* FormatString(const char* Format, ...);

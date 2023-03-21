@@ -2,7 +2,7 @@
 
 CMatchUtil gMatchUtil;
 
-void CMatchUtil::CvarRegister(cvar_t& VariableData, const char* Name, const char* Value)
+cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 {
 	// Get cvar pointer
 	cvar_t* Pointer = CVAR_GET_POINTER(Name);
@@ -10,20 +10,22 @@ void CMatchUtil::CvarRegister(cvar_t& VariableData, const char* Name, const char
 	// If not exists
 	if (!Pointer)
 	{
+		static cvar_t CvarHelper;
+
 		// Set name
-		VariableData.name = Name;
+		CvarHelper.name = Name;
 
 		// Set string
-		VariableData.string = (char*)Value;
+		CvarHelper.string = (char*)Value;
 
 		// Set flags
-		VariableData.flags = (FCVAR_SERVER | FCVAR_EXTDLL | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
+		CvarHelper.flags = (FCVAR_SERVER | FCVAR_EXTDLL | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
 
 		// Register the variable
-		CVAR_REGISTER(&VariableData);
+		CVAR_REGISTER(&CvarHelper);
 
 		// Get created pointer
-		Pointer = CVAR_GET_POINTER(VariableData.name);
+		Pointer = CVAR_GET_POINTER(CvarHelper.name);
 
 		// If is not null
 		if(Pointer)
@@ -32,6 +34,8 @@ void CMatchUtil::CvarRegister(cvar_t& VariableData, const char* Name, const char
 			g_engfuncs.pfnCvar_DirectSet(Pointer, Value);
 		}
 	}
+
+	return Pointer;
 }
 
 void CMatchUtil::TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName)
@@ -400,32 +404,6 @@ void CMatchUtil::HudMessage(edict_t* pEntity, hudtextparms_t textparms, const ch
 	WRITE_STRING(Buffer);
 	MESSAGE_END();
 }
-/*
-void CMatchUtil::ClientCommand(edict_t* pEntity, const char* Format, ...)
-{
-	if (pEntity)
-	{
-		va_list argList;
-
-		va_start(argList, Format);
-
-		char Buffer[255];
-
-		int Length = vsnprintf(Buffer, sizeof(Buffer), Format, argList);
-
-		va_end(argList);
-
-		if (Length > 254)
-		{
-			Length = 254;
-		}
-
-		Buffer[Length++] = '\n';
-		Buffer[Length] = 0;
-
-		CLIENT_COMMAND(pEntity, Buffer);
-	}
-}*/
 
 const char* CMatchUtil::FormatString(const char* Format, ...)
 {

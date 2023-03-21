@@ -9,64 +9,64 @@ void CMatchBot::ServerActivate()
 	this->m_State = STATE_DEAD;
 
 	// Match BOT Log Tag
-	gMatchUtil.CvarRegister(this->m_MatchTag, "mb_log_tag", "BOT");
+	this->m_MatchTag = gMatchUtil.CvarRegister("mb_log_tag", "BOT");
 
 	// Minimun players in game to start match
-	gMatchUtil.CvarRegister(this->m_PlayersMin, "mb_players_min", "10");
+	this->m_PlayersMin = gMatchUtil.CvarRegister("mb_players_min", "10");
 
 	// Maximum allowed players in game
-	gMatchUtil.CvarRegister(this->m_PlayersMax, "mb_players_max", "10");
+	this->m_PlayersMax = gMatchUtil.CvarRegister("mb_players_max", "10");
 
 	// Rounds to play before overtime
-	gMatchUtil.CvarRegister(this->m_PlayRounds, "mb_play_rounds", "30");
+	this->m_PlayRounds = gMatchUtil.CvarRegister("mb_play_rounds", "30");
 
 	// Round to play in overtime
-	gMatchUtil.CvarRegister(this->m_PlayRoundsOT, "mb_play_rounds_ot", "6");
+	this->m_PlayRoundsOT = gMatchUtil.CvarRegister("mb_play_rounds_ot", "6");
 
 	// Overtime Type (0 Sudden Death Round, 1 Play Overtime, 2 End Match Tied, 3 Users Vote If Tied)
-	gMatchUtil.CvarRegister(this->m_PlayMode, "mb_play_ot_mode", "3");
+	this->m_PlayMode = gMatchUtil.CvarRegister("mb_play_ot_mode", "3");
 
 	// Ready System type (0 Disabled, 1 Ready System, 2 Ready Timer)
-	gMatchUtil.CvarRegister(this->m_ReadyType, "mb_ready_type", "1");
+	this->m_ReadyType = gMatchUtil.CvarRegister("mb_ready_type", "1");
 
 	// Ready System timer delay in seconds
-	gMatchUtil.CvarRegister(this->m_ReadyTime, "mb_ready_time", "60.0");
+	this->m_ReadyTime = gMatchUtil.CvarRegister("mb_ready_time", "60.0");
 
 	// Team Pickup Type (-1 Enable vote, 0 Leaders, 1 Random, 2 None, 3 Skill Balanced, 4 Swap Teams)
-	gMatchUtil.CvarRegister(this->m_TeamPickupType, "mb_team_pick_type", "-1");
+	this->m_TeamPickupType = gMatchUtil.CvarRegister("mb_team_pick_type", "-1");
 
 	// Vote Map (Not used at settings file)
-	gMatchUtil.CvarRegister(this->m_VoteMap, "mb_vote_map", "0");
+	this->m_VoteMap = gMatchUtil.CvarRegister("mb_vote_map", "0");
 
 	// Vote Map type (1 Vote Map, 2 Random Map)
-	gMatchUtil.CvarRegister(this->m_VoteMapType, "mb_vote_map_type", "1");
+	this->m_VoteMapType = gMatchUtil.CvarRegister("mb_vote_map_type", "1");
 
 	// Play Knife round to pick starting sides
-	gMatchUtil.CvarRegister(this->m_KnifeRound, "mb_knife_round", "0");
+	this->m_KnifeRound = gMatchUtil.CvarRegister("mb_knife_round", "0");
 
 	// Match Bot main config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_DEAD], "mb_cfg_match_bot", "matchbot.cfg");
+	this->m_Config[STATE_DEAD] = gMatchUtil.CvarRegister("mb_cfg_match_bot", "matchbot.cfg");
 
 	// Warmup config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_WARMUP], "mb_cfg_warmup", "warmup.cfg");
+	this->m_Config[STATE_WARMUP] = gMatchUtil.CvarRegister("mb_cfg_warmup", "warmup.cfg");
 
 	// Start config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_START], "mb_cfg_start", "start.cfg");
+	this->m_Config[STATE_START] = gMatchUtil.CvarRegister("mb_cfg_start", "start.cfg");
 
 	// First Half config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_FIRST_HALF], "mb_cfg_1st", "esl.cfg");
+	this->m_Config[STATE_FIRST_HALF] = gMatchUtil.CvarRegister("mb_cfg_1st", "esl.cfg");
 
 	// Half Time config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_HALFTIME], "mb_cfg_halftime", "halftime.cfg");
+	this->m_Config[STATE_HALFTIME] = gMatchUtil.CvarRegister("mb_cfg_halftime", "halftime.cfg");
 
 	// Second Half config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_SECOND_HALF], "mb_cfg_2nd", "esl.cfg");
+	this->m_Config[STATE_SECOND_HALF] = gMatchUtil.CvarRegister("mb_cfg_2nd", "esl.cfg");
 	
 	// Overtime config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_OVERTIME], "mb_cfg_overtime", "esl-ot.cfg");
+	this->m_Config[STATE_OVERTIME] = gMatchUtil.CvarRegister("mb_cfg_overtime", "esl-ot.cfg");
 
 	// End config
-	gMatchUtil.CvarRegister(this->m_Config[STATE_END], "mb_cfg_end", "end.cfg");
+	this->m_Config[STATE_END] = gMatchUtil.CvarRegister("mb_cfg_end", "end.cfg");
 
 	// Run Match Bot
 	this->SetState(STATE_DEAD);
@@ -178,15 +178,15 @@ void CMatchBot::SetState(int State)
 			// Start Warmup things
 			gMatchWarmup.Init();
 
-			if (this->m_ReadyType.value == 1)
+			if (this->m_ReadyType->value == 1)
 			{
 				// Use Ready System
-				gMatchReady.Init(this->m_PlayersMin.value);
+				gMatchReady.Init(this->m_PlayersMin->value);
 			}
-			else if (this->m_ReadyType.value > 1)
+			else if (this->m_ReadyType->value > 1)
 			{
 				// Use Timer System
-				gMatchTimer.Init(this->m_PlayersMin.value, this->m_ReadyTime.value);
+				gMatchTimer.Init(this->m_PlayersMin->value, this->m_ReadyTime->value);
 			}
 
 			break;
@@ -195,9 +195,9 @@ void CMatchBot::SetState(int State)
 		case STATE_START:
 		{
 			// If has votemap
-			if (this->m_VoteMap.value)
+			if (this->m_VoteMap->value)
 			{
-				if (this->m_VoteMapType.value == 1.0f)
+				if (this->m_VoteMapType->value == 1.0f)
 				{
 					// Init Vote Map
 					gMatchVoteMap.Init();
@@ -221,19 +221,19 @@ void CMatchBot::SetState(int State)
 				}
 
 				// Set Variable to zero
-				this->m_VoteMap.value = 0.0f;
+				this->m_VoteMap->value = 0.0f;
 			}
 			else
 			{
 				// Init Team pickup methods
-				gMatchVoteTeam.Init(this->m_TeamPickupType.value, this->m_PlayersMin.value);
+				gMatchVoteTeam.Init(this->m_TeamPickupType->value, this->m_PlayersMin->value);
 
 				// Enable votemap to next map
-				this->m_VoteMap.value = 1.0f;
+				this->m_VoteMap->value = 1.0f;
 			}
 
 			// If has Knife Round variable
-			if (this->m_KnifeRound.value)
+			if (this->m_KnifeRound->value)
 			{
 				// Set to play knife round on first half
 				this->m_PlayKnifeRound = true;
@@ -295,7 +295,7 @@ void CMatchBot::SetState(int State)
 			this->SwapTeams();
 
 			// If has less players than minimum required
-			if ((int)gMatchUtil.GetPlayers(true, true).size() < this->m_PlayersMin.value)
+			if ((int)gMatchUtil.GetPlayers(true, true).size() < this->m_PlayersMin->value)
 			{
 				// Send message
 				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
@@ -303,21 +303,21 @@ void CMatchBot::SetState(int State)
 				// Init Warmup things
 				gMatchWarmup.Init();
 
-				if (this->m_ReadyType.value == 1)
+				if (this->m_ReadyType->value == 1)
 				{
 					// Init Ready System
-					gMatchReady.Init(this->m_PlayersMin.value);
+					gMatchReady.Init(this->m_PlayersMin->value);
 				}
-				else if (this->m_ReadyType.value > 1)
+				else if (this->m_ReadyType->value > 1)
 				{
 					// Init Timer System
-					gMatchTimer.Init(this->m_PlayersMin.value, this->m_ReadyTime.value);
+					gMatchTimer.Init(this->m_PlayersMin->value, this->m_ReadyTime->value);
 				}
 			}
 			else
 			{
 				// If match is not played in total of rounds
-				if (this->GetRound() < this->m_PlayRounds.value)
+				if (this->GetRound() < this->m_PlayRounds->value)
 				{
 					// Play second Half
 					gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_SECOND_HALF);
@@ -369,7 +369,7 @@ void CMatchBot::SetState(int State)
 			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
 
 			// Enable it
-			this->m_VoteMap.value = 1.0f;
+			this->m_VoteMap->value = 1.0f;
 
 			break;
 		}
@@ -379,13 +379,13 @@ void CMatchBot::SetState(int State)
 	gMatchStats.SetState(this->m_State);
 
 	// If string is not null
-	if(this->m_Config[this->m_State].string)
+	if(this->m_Config[this->m_State]->string)
 	{
 		// If cvar string is not empty
-		if (this->m_Config[this->m_State].string[0] != '\0')
+		if (this->m_Config[this->m_State]->string[0] != '\0')
 		{
 			// Execute config file
-			gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State].string);
+			gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State]->string);
 		}
 	}
 }
@@ -412,13 +412,13 @@ int CMatchBot::GetRound()
 const char* CMatchBot::GetTag()
 {
 	// If variable is not null
-	if (this->m_MatchTag.string)
+	if (this->m_MatchTag->string)
 	{
 		// If string is not empty
-		if (this->m_MatchTag.string[0] != '\0')
+		if (this->m_MatchTag->string[0] != '\0')
 		{
 			// Return string
-			return this->m_MatchTag.string;
+			return this->m_MatchTag->string;
 		}
 	}
 
@@ -441,7 +441,7 @@ void CMatchBot::SwapTeams()
 	auto Players = gMatchUtil.GetPlayers(true, true);
 
 	// If we played more than maximum of rounds in match (We in Overtime)
-	if (this->GetRound() >= this->m_PlayRounds.value)
+	if (this->GetRound() >= this->m_PlayRounds->value)
 	{
 		// If scores are tied (This dettermine that OT is starting or restarting)
 		if (this->GetScore(TERRORIST) == this->GetScore(CT))
@@ -486,7 +486,7 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 			auto Players = gMatchUtil.GetPlayers(true, false);
 
 			// If players in team reached maximum of players
-			if (Players.size() >= this->m_PlayersMax.value)
+			if (Players.size() >= this->m_PlayersMax->value)
 			{
 				// Reject connection: Server is Full
 				Q_strcpy(szRejectReason, _T("Server is full."));
@@ -564,7 +564,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	if (Slot == TERRORIST || Slot == CT)
 	{
 		// Count player count in desired team, and check if is not full
-		if (gMatchUtil.GetCount((TeamName)Slot) >= (this->m_PlayersMax.value / 2))
+		if (gMatchUtil.GetCount((TeamName)Slot) >= (this->m_PlayersMax->value / 2))
 		{
 			// Send message
 			gMatchUtil.SayText(Player->edict(), (Slot == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("The \3%s\1 team is complete."), this->GetTeam((TeamName)Slot, false));
@@ -600,7 +600,7 @@ void CMatchBot::PlayerDisconnect(edict_t* pEdict)
 		auto Players = gMatchUtil.GetPlayers(true, true);
 
 		// If has less players than a number of players in team
-		if (Players.size() < (this->m_PlayersMin.value / 2))
+		if (Players.size() < (this->m_PlayersMin->value / 2))
 		{
 			// End match
 			this->SetState(STATE_END);
@@ -630,7 +630,7 @@ bool CMatchBot::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRest
 void CMatchBot::Status(CBasePlayer* Player)
 {
 	// Send message
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3%s\1: Players %d, (%d Required of %d Allowed)"), this->GetState(this->m_State), gMatchUtil.GetPlayers(true, true).size(), (int)m_PlayersMin.value, (int)m_PlayersMax.value);
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3%s\1: Players %d, (%d Required of %d Allowed)"), this->GetState(this->m_State), gMatchUtil.GetPlayers(true, true).size(), (int)m_PlayersMin->value, (int)m_PlayersMax->value);
 
 	// If match is running
 	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_END)
@@ -782,7 +782,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 					}
 
 					// If sum of scores reached half of total rounds to play
-					if (this->GetRound() >= (this->m_PlayRounds.value / 2))
+					if (this->GetRound() >= (this->m_PlayRounds->value / 2))
 					{
 						// Change State
 						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_HALFTIME);
@@ -794,7 +794,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				case STATE_SECOND_HALF:
 				{
 					// Get total of rounds divided by 2
-					auto Half = (this->m_PlayRounds.value / 2);
+					auto Half = (this->m_PlayRounds->value / 2);
 
 					// If any team reached Half rounds + 1, end match
 					if (this->GetScore(TERRORIST) > Half || this->GetScore(CT) > Half)
@@ -805,17 +805,17 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 					else if ((this->GetScore(TERRORIST) == Half) && (this->GetScore(CT) == Half))
 					{
 						// Play Overtime directly (mb_play_ot_mode = 1)
-						if (this->m_PlayMode.value == 1)
+						if (this->m_PlayMode->value == 1)
 						{
 							gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_HALFTIME);
 						}
 						// End match tied (mb_play_ot_mode = 2)
-						else if (this->m_PlayMode.value == 2)
+						else if (this->m_PlayMode->value == 2)
 						{
 							gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_END);
 						}
 						// Start Overtime vote (mb_play_ot_mode = 3)
-						else if (this->m_PlayMode.value == 3)
+						else if (this->m_PlayMode->value == 3)
 						{
 							gMatchVoteOvertime.Init();
 						}
@@ -827,7 +827,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				case STATE_OVERTIME:
 				{
 					// Get total of overtime rounds divided by 2
-					auto Half = (this->m_PlayRoundsOT.value / 2);
+					auto Half = (this->m_PlayRoundsOT->value / 2);
 
 					// If any team reached required number of rounds to win
 					if (this->GetScoreOT(TERRORIST) > Half || this->GetScoreOT(CT) > Half)
@@ -864,7 +864,7 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 			gMatchTimer.Stop(0);
 
 			// Disable vote map for this map session
-			this->m_VoteMap.value = 1.0f;
+			this->m_VoteMap->value = 1.0f;
 
 			// Start Match
 			this->SetState(STATE_START);
@@ -896,10 +896,10 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 			gMatchTimer.Stop(0);
 
 			// Disable vote map for this map session
-			this->m_VoteMap.value = 0.0f;
+			this->m_VoteMap->value = 0.0f;
 
 			// Enable team pickup vote for this map session
-			this->m_TeamPickupType.value = -1.0f;
+			this->m_TeamPickupType->value = -1.0f;
 
 			// Start Match
 			this->SetState(STATE_START);
@@ -943,7 +943,7 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 				State = STATE_SECOND_HALF;
 
 				// If we playing Overtime
-				if (this->GetRound() >= this->m_PlayRounds.value)
+				if (this->GetRound() >= this->m_PlayRounds->value)
 				{
 					// Next state is Overtime
 					State = STATE_OVERTIME;
