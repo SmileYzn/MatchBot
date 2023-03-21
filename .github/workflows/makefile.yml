@@ -16,13 +16,13 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Update repository
-      run: sudo yum update
+      run: yum update
 
     - name: Install build dependencies
-      run: sudo yum group install -y "Development Tools"
+      run: yum group install -y "Development Tools"
 
     - name: Install library dependencies
-      run: sudo yum install -y libgcc.i686 glibc6.i686 glibc6-devel.i686
+      run: yum install -y libgcc.i686 glibc6.i686 glibc6-devel.i686
 
     - name: Run build
       working-directory: ./MatchBot
