@@ -7,7 +7,7 @@ COMPILER = g++
 
 OBJECTS = *.cpp
 
-LINK = -static-libstdc++ -static-libgcc
+LINK =
 
 OPT_FLAGS = -std=c++11 -pipe -g0 -O3 -s -flto -funroll-loops -fomit-frame-pointer -fno-stack-protector -fPIC
 
