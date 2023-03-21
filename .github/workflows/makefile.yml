@@ -22,7 +22,7 @@ jobs:
       run: sudo yum group install -y "Development Tools"
 
     - name: Install library dependencies
-      run: sudo yum install -y glibc6.i686
+      run: sudo yum install -y glibc6.i686 glibc6-devel.i686
 
     - name: Run build
       working-directory: ./MatchBot
