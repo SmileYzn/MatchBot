@@ -20,9 +20,6 @@ void CMatchAdmin::ServerActivate()
     // If file was opened
     if (fp.is_open())
     {
-        // Admin info struct
-        P_ADMIN_INFO Info;
-
         // While we can read file lines
         for (std::string Line; std::getline(fp, Line);)
         {
@@ -35,26 +32,26 @@ void CMatchAdmin::ServerActivate()
                     // Get string stream
                     std::stringstream LinePointer(Line);
 
+                    // Admin info struct
+                    P_ADMIN_INFO Info = {"", "", ""};
+
                     // While pointer can put values into struct
                     while (LinePointer >> Info.Auth >> Info.Name >> Info.Flag)
                     {
-                        // Crash here, fix it!
-                        // Remove Auth quotes
-                        // Info.Auth.erase(std::remove(Info.Auth.begin(), Info.Auth.end(), '\"' ), Info.Auth.end());
-
-                        // // Remove Name quotes
-                        // Info.Auth.erase(std::remove(Info.Name.begin(), Info.Name.end(), '\"' ), Info.Name.end());
-
-                        // // Remove Flag quotes
-                        // Info.Flag.erase(std::remove(Info.Flag.begin(), Info.Flag.end(), '\"' ), Info.Flag.end());
-
                         // If SteamID, Name and Flags is not empty
                         if (!Info.Auth.empty() && !Info.Name.empty() && !Info.Flag.empty())
                         {
+                            // // Remove Auth quotes
+                            Info.Auth.erase(std::remove(Info.Auth.begin(), Info.Auth.end(), '\"'), Info.Auth.end());
+
+                            // // Remove Name quotes
+                            Info.Name.erase(std::remove(Info.Name.begin(), Info.Name.end(), '\"'), Info.Name.end());
+
+                            // // Remove Flag quotes
+                            Info.Flag.erase(std::remove(Info.Flag.begin(), Info.Flag.end(), '\"'), Info.Flag.end());
+
                             // Insert into admin Data
                             this->m_Data[Info.Auth] = Info;
-
-                            LOG_CONSOLE(PLID,"[%s] %s %s %s ", __func__, Info.Auth, Info.Name, Info.Flag);
                         }
                     }
                 }

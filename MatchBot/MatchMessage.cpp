@@ -134,7 +134,12 @@ bool CMatchMessage::WriteByte(int iValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_BYTE;
+
 		Param.iValue = iValue;
+
+		Param.flValue = 0.0f;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -151,7 +156,12 @@ bool CMatchMessage::WriteChar(int iValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_CHAR;
+
 		Param.iValue = iValue;
+
+		Param.flValue = 0.0f;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -168,7 +178,12 @@ bool CMatchMessage::WriteShort(int iValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_SHORT;
+
 		Param.iValue = iValue;
+
+		Param.flValue = 0.0f;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -185,7 +200,12 @@ bool CMatchMessage::WriteLong(int iValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_LONG;
+
 		Param.iValue = iValue;
+
+		Param.flValue = 0.0f;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -202,7 +222,12 @@ bool CMatchMessage::WriteAngle(float flValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_ANGLE;
+
+		Param.iValue = 0;
+
 		Param.flValue = flValue;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -219,7 +244,12 @@ bool CMatchMessage::WriteCoord(float flValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_COORD;
+		
+		Param.iValue = 0;
+
 		Param.flValue = flValue;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -236,6 +266,10 @@ bool CMatchMessage::WriteString(const char* szValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_STRING;
+
+		Param.iValue = 0;
+
+		Param.flValue = 0.0f;
 
 		Q_strncpy(Param.szValue, szValue, sizeof(Param.szValue));
 
@@ -254,7 +288,12 @@ bool CMatchMessage::WriteEntity(int iValue)
 		P_MESSAGE_PARAM Param ;
 
 		Param.Type = MESSAGE_TYPE_ENTITY;
+
 		Param.iValue = iValue;
+
+		Param.flValue = 0.0f;
+
+		Param.szValue[0] = '\0';
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 

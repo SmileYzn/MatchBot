@@ -249,7 +249,7 @@ void CMatchCaptain::PlayerList(int PlayersMin)
 {
 	std::string PlayerList[SPECTATOR + 1];
 
-	int Count[SPECTATOR + 1];
+	int Count[SPECTATOR + 1] = { 0 };
 
 	for (int i = 1; i <= gpGlobals->maxClients; ++i)
 	{
