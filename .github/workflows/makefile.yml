@@ -19,10 +19,10 @@ jobs:
       run: yum update
 
     - name: Install build dependencies
-      run: yum group install -y "Development Tools"
+      run: yum -y group install "Development Tools"
 
     - name: Install library dependencies
-      run: yum install -y libgcc.i686 glibc6.i686 glibc6-devel.i686
+      run: yum -y install libgcc.i686 glibc6.i686 glibc6-devel.i686
 
     - name: Run build
       working-directory: ./MatchBot
