@@ -19,7 +19,7 @@ jobs:
       run: yes | yum -y --assumeyes group install "Development Tools"
 
     - name: Install library dependencies
-      run: yes | yum -y --assumeyes install libgcc.i686 glibc6.i686 glibc6-devel.i686
+      run: yes | yum -y --assumeyes install glibc-devel.i686
 
     - name: Run build
       working-directory: ./MatchBot
