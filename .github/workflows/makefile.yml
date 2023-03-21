@@ -10,23 +10,24 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container: centos:7
 
     steps:
     - uses: actions/checkout@v3
-      
-    - name: Add i386 architecture
-      run: sudo dpkg --add-architecture i386
 
     - name: Update repository
-      run: sudo apt-get update
-      
+      run: sudo yum update
+
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
+      run: sudo yum group install -y "Development Tools"
+
+    - name: Install library dependencies
+      run: sudo yum install -y glibc6.i686
 
     - name: Run build
       working-directory: ./MatchBot
       run: make
-    
+
     - name: Move release file
       run: |
         mkdir -p publish/addons/matchbot/dlls
