@@ -15,11 +15,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install build dependencies
+    - name: Update cache
       run: yes | yum -y --assumeyes makecache
 
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools'
+
+    - name: Export path
+      run: echo 'export CPLUS_INCLUDE_PATH=/usr/include/c++/4.8.5' >> ~/.bashrc
 
     - name: Run build
       working-directory: ./MatchBot
