@@ -21,8 +21,10 @@ jobs:
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools'
 
-    - name: Export path
-      run: echo 'export CPLUS_INCLUDE_PATH=/usr/include/c++/4.8.5' >> ~/.bashrc
+    - name: Export CPLUS_INCLUDE_PATH
+      run: |
+        export CPLUS_INCLUDE_PATH="/usr/include/c++/4.8.5"
+        echo $CPLUS_INCLUDE_PATH
 
     - name: Run build
       working-directory: ./MatchBot
