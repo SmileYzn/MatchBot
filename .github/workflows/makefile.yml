@@ -21,8 +21,8 @@ jobs:
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libstdc++-devel.i686
 
-    - name: Install build dependencies
-      run: yes | yum -y --assumeyes reinstall gcc gcc-c++
+    - name: Set LD_LIBRARY_PATH
+      run: export LD_LIBRARY_PATH=/usr/include/c++/4.8.5/i686-redhat-linux
 
     - name: Run build
       working-directory: ./MatchBot
