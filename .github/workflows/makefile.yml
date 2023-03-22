@@ -18,11 +18,11 @@ jobs:
     - name: Update repository
       run: yes | yum -y makecache
 
-   - name: Install Development Tools
-      run: yes | yum -y -assumeyes groupinstall 'Development Tools'
-
     - name: Install Library
       run: yes | yum -y --assumeyes install glibc-devel.i686 libstdc++-devel.i686
+
+   - name: Install Development Tools
+      run: yes | yum -y -assumeyes groupinstall 'Development Tools'
 
     - name: Run build
       working-directory: ./MatchBot
