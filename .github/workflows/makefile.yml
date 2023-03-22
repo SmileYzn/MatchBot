@@ -19,10 +19,7 @@ jobs:
       run: yes | yum -y --assumeyes makecache
 
     - name: Install build dependencies
-      run: yes | yum -y --assumeyes install glibc-devel.i686 libstdc++-devel.i686
-
-    - name: Install build dependencies
-      run: yes | yum -y --assumeyes group install 'Development Tools'
+      run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libstdc++-devel.i686
 
     - name: Run build
       working-directory: ./MatchBot
