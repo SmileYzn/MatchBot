@@ -39,6 +39,11 @@ jobs:
         mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
         cp -ar cstrike/. publish
 
+    - name: Download metamod-r latest release
+      run: |
+        wget $(curl -s https://api.github.com/repos/theAsmodai/metamod-r/releases/latest | grep 'browser_' | cut -d\" -f4)
+        unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > publish/addons/metamod/metamod_i386.so
+
     - name: Deploy artifacts
       uses: actions/upload-artifact@v3
       with:
