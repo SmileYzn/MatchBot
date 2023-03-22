@@ -9,27 +9,36 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-    container: centos:7
+    runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v3
+      
+    - name: Add i386 architecture
+      run: sudo dpkg --add-architecture i386
 
-    - name: Update cache
-      run: yes | yum -y --assumeyes makecache
-
+    - name: Update repository
+      run: sudo apt-get update
+      
     - name: Install build dependencies
-      run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686
+      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
+
+    - name: Install GCC 4
+      run: |
+        sudo apt-get install gcc-4 g++-4 g++-4-multilib
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4
+        sudo update-alternatives --config gcc
 
     - name: Run build
       working-directory: ./MatchBot
       run: make
-
+    
     - name: Move release file
       run: |
         mkdir -p publish/addons/matchbot/dlls
         mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
         cp -ar cstrike/. publish
+
     - name: Deploy artifacts
       uses: actions/upload-artifact@v3
       with:
