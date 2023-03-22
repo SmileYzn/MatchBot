@@ -3,7 +3,7 @@ METAMOD = include/metamod
 
 NAME = matchbot
 
-COMPILER = g++
+COMPILER = c++
 
 OBJECTS = *.cpp
 
