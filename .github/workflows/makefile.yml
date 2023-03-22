@@ -21,6 +21,9 @@ jobs:
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libstdc++-devel.i686
 
+    - name: Install build dependencies
+      run: yes | yum -y --assumeyes reinstall gcc gcc-c++
+
     - name: Run build
       working-directory: ./MatchBot
       run: make
