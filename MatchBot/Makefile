@@ -12,7 +12,7 @@ LINK =
 
 OPT_FLAGS = -std=c++11 -pipe -g0 -O3 -s -flto -funroll-loops -fomit-frame-pointer -fno-stack-protector -fPIC
 
-INCLUDE = -I. -I$(C_INCLUDE_PATH) -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
+INCLUDE = -I. -I$(CPLUS_INCLUDE_PATH) -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
 
 CFLAGS = $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
 
