@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Update repository
-      run: yes | yum -y check-update
+      run: yes | yum -y makecache
 
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libstdc++-devel.i686
