@@ -35,14 +35,30 @@ jobs:
     
     - name: Move release file to publish
       run: |
+        # Make Match BOT path
         mkdir -p publish/addons/matchbot/dlls
+
+        # Move released file to dlls
         mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
+
+        # Copy cstrike contents to publish dir
         cp -ar cstrike/. publish
 
     - name: Download metamod-r
       run: |
+        # Get latest release version of metamod-r
         wget $(curl -s https://api.github.com/repos/theAsmodai/metamod-r/releases/latest | grep 'browser_' | cut -d\" -f4)
+
+        # Unzip metamod library to metamod folder
         unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > publish/addons/metamod/metamod_i386.so
+
+    - name: Download hitbox_fixer
+      run: |
+        # Get latest release version of hitbox_fixer
+        wget $(curl -s https://api.github.com/repos/Garey27/hitbox_fixer/releases/latest | grep 'browser_' | cut -d\" -f4)
+
+        # Unzip hitbox_fixer library to metamod folder
+        unzip -p hitbox_fix-bin*.zip addons/hitbox_fix/hitbox_fix_mm_i386.so > publish/addons/hitbox_fix/hitbox_fix_mm_i386.so
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v3
