@@ -1,4 +1,4 @@
-name: MSBuild
+name: Windows Build CI
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 
 env:
   SOLUTION_FILE_PATH: .
-
   BUILD_CONFIGURATION: Release
 
 permissions:
@@ -28,11 +27,11 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Build
+    - name: Run Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Move files
+    - name: Move release file to publish
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
         move ${{env.SOLUTION_FILE_PATH}}\cstrike publish
@@ -40,8 +39,13 @@ jobs:
         mkdir publish\addons\matchbot\dlls
         move ${{env.BUILD_CONFIGURATION}}\*.dll publish\addons\matchbot\dlls
 
+    - name: Download metamod-r
+      run: |
+        wget $(curl -s https://api.github.com/repos/theAsmodai/metamod-r/releases/latest | grep 'browser_' | cut -d\" -f4)
+        unzip -p metamod-bin*.zip addons/metamod/metamod.dll > publish/addons/metamod/metamod.dll
+
     - name: Deploy artifacts
       uses: actions/upload-artifact@main
       with:
-        name: win32
+        name: matchbot-windows
         path: publish/*

@@ -2,7 +2,7 @@
 <p align="center">Counter-Strike 1.6 Match BOT Plugin for Metamod</p>
 
 <p align="center">
-    <a href="https://github.com/SmileYzn/MatchBot/issues"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/issues-raw/smileyzn/MatchBot?style=flat-square"></a>
+    <a href="https://github.com/SmileYzn/MatchBot/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues-raw/smileyzn/MatchBot?style=flat-square"></a>
     <a href="https://github.com/SmileYzn/MatchBot/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/SmileYzn/MatchBot/msbuild.yml?branch=main&label=Windows&style=flat-square"></a>
     <a href="https://github.com/SmileYzn/MatchBot/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/smileyzn/MatchBot/makefile.yml?branch=main&label=Linux&style=flat-square"></a>
 </p>
