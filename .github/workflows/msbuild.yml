@@ -26,7 +26,7 @@ jobs:
         Expand-Archive metamod.zip
         dir
         mkdir publish\addons\metamod
-        Copy-Item -Path ".\addons\metamod\metamod.dll" -Destination ".\publish\addons\metamod"
+        Copy-Item -Path ".\metamod\addons\metamod\metamod.dll" -Destination ".\publish\addons\metamod"
         dir
 
     - name: Deploy artifacts
