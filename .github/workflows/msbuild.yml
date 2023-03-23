@@ -20,14 +20,28 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Download metamod-r
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.3
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Run Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Move release file to publish
+      working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        Invoke-WebRequest -Uri ((Invoke-WebRequest "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest" | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url -Out metamod.zip
+        move ${{env.SOLUTION_FILE_PATH}}\cstrike publish
+        move ${{env.BUILD_CONFIGURATION}}\*.dll publish\addons\matchbot\dlls
+
+    - name: Download Metamod-r
+      run: |
+        Invoke-WebRequest -Uri ((Invoke-WebRequest "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest" | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url
         Expand-Archive metamod.zip
-        dir
-        mkdir publish\addons\metamod
         Copy-Item -Path ".\metamod\addons\metamod\metamod.dll" -Destination ".\publish\addons\metamod"
-        dir
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@main
