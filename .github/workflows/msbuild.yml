@@ -25,10 +25,10 @@ jobs:
         # Set Repository path
         $repoUrl = "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest"
 
-        // Set assets data
+        # Set assets data
         $assets = ((Invoke-WebRequest $repoUrl | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip")
 
-        // Get ZIP file name
+        # Get ZIP file name
         $zipName  = $assets.name
 
         # Download ZIP file
@@ -43,7 +43,7 @@ jobs:
         # DLL from path
         $fromPath = ".\" + $baseName + "\addons\metamod\metamod.dll"
 
-        // DLL dest path
+        # DLL dest path
         $DestPath = ".\publish\addons\metamod"
         
         # Copy item
