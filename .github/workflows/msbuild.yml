@@ -22,8 +22,10 @@ jobs:
 
     - name: Download Metamod-r
       run: |
-        $repo = "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest"
-        Invoke-WebRequest -Uri ((Invoke-WebRequest $repo | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url
+        $repo   = "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest"
+        $assets = ((Invoke-WebRequest $repo | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip")
+        $name   = $assets.name
+        $url    = Invoke-WebRequest -Uri $assets.browser_download_url -Out $name
         dir
 #Expand-Archive metamod-bin.zip
 #dir
