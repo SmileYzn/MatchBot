@@ -24,13 +24,13 @@ At the end, server will start a vote map to changelevel to next map automaticall
 <h3>Features</h3>
 <ul>
 <li>Automatic Ready System (Timer based like CS:GO does or Ready System method)</li>
-<li>Custom configs changes bettwen pug states</li>
+<li>Custom configs changes bettwen match states</li>
 <li>Server slots management with spectators and HLTV slots support</li>
 <li>Automatic ban players that use rage quit from game</li>
 <li>Automatic LO3 (Live on three restarts)</li>
 <li>Automatic Teams balancer (Players are balanced when enter in game)</li>
 <li>Support for block players pick teams, or ender directly in game</li>
-<li>Many commands to admin control the PUG server and the players</li>
+<li>Many commands to admin control the match server and the players</li>
 <li>Configurable required players to start match, also minimum players to stop if players left</li>
 <li>Game based on max rounds rules (MR15 like)</li>
 <li>Mod support overtime rule, sudden death or end directly (In case of tied match)</li>
@@ -47,7 +47,7 @@ At the end, server will start a vote map to changelevel to next map automaticall
 <li>Dead talk support (Dead teammate's can talk)</li>
 <li>Anti Flood for chat and radio messages</li>
 <li>Mod runs into ReHLDS with ReGameDLL_CS server</li>
-<li>Pug Mod can run on Windows or Linux servers</li>
+<li>Match BOT can run on Windows or Linux servers</li>
 <li>Custom server configuration to optmize the game</li>
 <li>Other features that is not listed here you can see in your wiki</li>
 </ul>
@@ -61,6 +61,6 @@ I think i can help community to have more clean servers that want to play a comp
 </p>
 
 <h3>I need Help!</h3>
-<p>Visit your <a href="https://github.com/SmileYzn/RePugMod/wiki">wiki</a> to know what more you can do with Pug Mod</p>
+<p>Visit your <a href="https://github.com/SmileYzn/MatchBot/wiki">wiki</a> to know what more you can do with Match Bot</p>
 <p><a href="https://discord.gg/jFxKr9RSRc" target="_new">Discord Server</a></p>
 <p>Before open an issue, make sure that you have updated ReHLDS with ReGameDLL_CS</p>
