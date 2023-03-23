@@ -22,11 +22,8 @@ jobs:
 
     - name: Download metamod-r
       run: |
-        curl -s https://api.github.com/repos/theAsmodai/metamod-r/releases/latest |
-        grep "browser_download_url.*.zip"  |
-        cut -d : -f 2,3  |
-        tr -d "'" |
-        Invoke-WebRequest -Uri -
+        Invoke-WebRequest -Uri ((Invoke-WebRequest "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest" | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url -Out metamod.zip
+        dir
 
     - name: Expand metamod-r
       run: |
