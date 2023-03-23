@@ -35,8 +35,9 @@ jobs:
     
     - name: Move release file to publish
       run: |
-        cp -ar cstrike/. publish
+        mkdir -p publish/addons/matchbot/dlls
         mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
+        cp -ar cstrike/. publish
 
     - name: Download metamod-r
       run: |

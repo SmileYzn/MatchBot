@@ -34,6 +34,7 @@ jobs:
     - name: Move release file to publish
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
+        mkdir publish\addons\matchbot\dlls
         move ${{env.SOLUTION_FILE_PATH}}\cstrike publish
         move ${{env.BUILD_CONFIGURATION}}\*.dll publish\addons\matchbot\dlls
 
