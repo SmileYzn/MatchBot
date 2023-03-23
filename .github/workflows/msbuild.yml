@@ -26,11 +26,13 @@ jobs:
         grep "browser_download_url.*.zip"  |
         cut -d : -f 2,3  |
         tr -d "'" |
-        Invoke-WebRequest -OutFile metamod.zip -Uri - |
-        dir
+        Invoke-WebRequest -Uri - |
+
+    - name: Expand metamod-r
+      run: |
         Expand-Archive metamod.zip addons/metamod/metamod.dll > publish/addons/metamod/metamod.dll
         dir
-        
+
     - name: Deploy artifacts
       uses: actions/upload-artifact@main
       with:
