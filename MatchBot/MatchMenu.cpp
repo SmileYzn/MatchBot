@@ -131,7 +131,7 @@ void CMatchMenu::Display(int EntityIndex, int Page)
 		Start = Page = this->m_Page = 0;
 	}
 
-	int PageCount = (int)this->m_Data.size() > this->m_PageOption ? (this->m_Data.size() / this->m_PageOption + ((this->m_Data.size() % this->m_PageOption) ? 1 : 0)) : 1;
+	auto PageCount = (int)this->m_Data.size() > this->m_PageOption ? (this->m_Data.size() / this->m_PageOption + ((this->m_Data.size() % this->m_PageOption) ? 1 : 0)) : 1;
 
 	std::string MenuText = "";
 
@@ -154,7 +154,7 @@ void CMatchMenu::Display(int EntityIndex, int Page)
 		End = this->m_Data.size();
 	}
 
-	int Slots = (1 << 9); // MENU_KEY_0
+	int Slots = MENU_KEY_0; // MENU_KEY_0
 	int BitSum = 0;
 
 	for (unsigned int b = Start; b < End; b++)
@@ -204,7 +204,7 @@ void CMatchMenu::Display(int EntityIndex, int Page)
 	this->ShowMenu(EntityIndex, Slots, -1, MenuText);
 }
 
-void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string MenuText)
+void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text)
 {
 	auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
 
@@ -220,9 +220,9 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Menu
 				{
 					Player->m_iMenu = Menu_OFF;
 
-					char BufferMenu[MAX_BUFFER_MENU * 6];
+					char BufferMenu[MAX_BUFFER_MENU * 6] = { 0 };
 
-					MenuText.copy(BufferMenu, MenuText.length() + 1);
+					Text.copy(BufferMenu, Text.length() + 1);
 
 					char* pMenuList = BufferMenu;
 					char* aMenuList = BufferMenu;
@@ -231,7 +231,7 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Menu
 
 					while (pMenuList && *pMenuList)
 					{
-						char szChunk[MAX_BUFFER_MENU + 1];
+						char szChunk[MAX_BUFFER_MENU + 1] = { 0 };
 
 						strncpy(szChunk, pMenuList, MAX_BUFFER_MENU);
 
