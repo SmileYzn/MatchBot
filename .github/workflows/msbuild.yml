@@ -26,7 +26,7 @@ jobs:
         grep "browser_download_url.*.zip"  |
         cut -d : -f 2,3  |
         tr -d "'" |
-        Invoke-WebRequest -Uri - |
+        Invoke-WebRequest -Uri -
 
     - name: Expand metamod-r
       run: |
