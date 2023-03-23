@@ -4,7 +4,7 @@ std::array<CMatchMenu, MAX_CLIENTS + 1> gMatchMenu;
 
 void CMatchMenu::Clear()
 {
-	this->m_Text.clear();
+	this->m_Text = "";
 
 	this->m_Data.clear();
 
@@ -168,7 +168,7 @@ void CMatchMenu::Display(int EntityIndex, int Page)
 
 	if (End != this->m_Data.size())
 	{
-		Slots |= (1 << 8); // MENU_KEY_9;
+		Slots |= MENU_KEY_9; // MENU_KEY_9;
 
 		if (Page)
 		{

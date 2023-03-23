@@ -6,7 +6,7 @@ CMatchLanguage gMatchLanguage;
 void CMatchLanguage::ServerActivate()
 {
 	// Server Language
-	this->m_Language = gMatchUtil.CvarRegister("mb_language", "bp");
+	this->m_Language = gMatchUtil.CvarRegister("mb_language", "en");
 
 	// Clear Current translation system data
 	this->m_Data.clear();
