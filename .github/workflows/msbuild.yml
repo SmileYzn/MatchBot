@@ -39,8 +39,8 @@ jobs:
 
     - name: Download Metamod-r
       run: |
-        Invoke-WebRequest -Uri ((Invoke-WebRequest "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest" | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url
-        Expand-Archive metamod.zip
+        Invoke-WebRequest -Uri ((Invoke-WebRequest "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest" | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url -Out metamod-bin.zip
+        Expand-Archive metamod-bin.zip
         Copy-Item -Path ".\metamod\addons\metamod\metamod.dll" -Destination ".\publish\addons\metamod"
 
     - name: Deploy artifacts
