@@ -20,6 +20,29 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.3
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Run Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Move release file to publish
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        # Make publish directory
+        mkdir publish\addons\matchbot\dlls
+
+        # Move cstrike files to publish
+        move ${{env.SOLUTION_FILE_PATH}}\cstrike publish
+
+        # Move released dll to publish
+        move ${{env.BUILD_CONFIGURATION}}\*.dll publish\addons\matchbot\dlls
+
     - name: Download Metamod-r
       run: |
         # Set Repository path
