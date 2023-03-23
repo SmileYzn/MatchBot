@@ -24,11 +24,7 @@ jobs:
       run: |
         Invoke-WebRequest -Uri ((Invoke-WebRequest "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest" | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip").browser_download_url -Out metamod.zip
         dir
-
-    - name: Expand metamod-r
-      run: |
-        Expand-Archive metamod.zip addons/metamod/metamod.dll > publish/addons/metamod/metamod.dll
-        dir
+        ls
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@main
