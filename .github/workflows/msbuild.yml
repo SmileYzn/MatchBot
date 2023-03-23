@@ -67,7 +67,7 @@ jobs:
         $fromPath = ".\" + $baseName + "\addons\metamod\metamod.dll"
 
         # DLL dest path
-        $DestPath = ".\publish\addons\metamod"
+        $DestPath = ".\publish\cstrike\addons\metamod\metamod.dll"
         
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
