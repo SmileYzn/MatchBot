@@ -26,9 +26,8 @@ jobs:
         $assets = ((Invoke-WebRequest $repo | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip")
         $name   = $assets.name
         $url    = Invoke-WebRequest -Uri $assets.browser_download_url -Out $name
+        Expand-Archive $name
         dir
-#Expand-Archive metamod-bin.zip
-#dir
 #Copy-Item -Path ".\metamod\addons\metamod\metamod.dll" -Destination ".\publish\addons\metamod"
 
     - name: Deploy artifacts
