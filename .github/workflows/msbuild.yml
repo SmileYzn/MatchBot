@@ -45,7 +45,7 @@ jobs:
         grep "browser_download_url.*.zip"  |
         cut -d : -f 2,3  |
         tr -d "'" |
-        wget -i -
+        wget -i - |
         unzip -p metamod-bin*.zip addons/metamod/metamod.dll > publish/addons/metamod/metamod.dll
 
     - name: Deploy artifacts
