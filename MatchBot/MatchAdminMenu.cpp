@@ -365,7 +365,7 @@ void CMatchAdminMenu::MapMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 
 	if (Player)
 	{
-		gMatchChangeMap.ChangeMap(Item.Text, 5.0f, true);
+		gMatchChangeMap.ChangeMap(Item.Text.c_str(), 5.0f, true);
 
 		gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 changed map to: \4%s\1..."), STRING(Player->edict()->v.netname), Item.Text.c_str());
 	}

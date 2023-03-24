@@ -2,13 +2,11 @@
 
 CMatchChangeMap gMatchChangeMap;
 
-void CMatchChangeMap::ChangeMap(std::string MapName, float Delay, bool IntermissionMsg)
+void CMatchChangeMap::ChangeMap(const char* MapName, float Delay, bool IntermissionMsg)
 {
-	if (!MapName.empty())
+	if (MapName)
 	{
-		this->m_NextMap = MapName;
-
-		LOG_CONSOLE(PLID,"[%s] %s", __func__, MapName.c_str());
+		Q_strncpy(this->m_NextMap, MapName, sizeof(this->m_NextMap));
 
 		gMatchTask.Create(TASK_CHANGE_MAP, 5.0f, false, (void*)this->ChangeLevel, RANDOM_LONG(0, 1));
 
@@ -32,22 +30,15 @@ void CMatchChangeMap::ChangeMap(std::string MapName, float Delay, bool Intermiss
 
 void CMatchChangeMap::ChangeLevel(int MapIndex)
 {
-	auto NextMap = gMatchChangeMap.GetNextMap();
+	auto Map = gMatchChangeMap.GetNextMap();
 
-	if (!NextMap)
+	if (Map)
 	{
-		LOG_CONSOLE(PLID,"[%s] changelevel %s", __func__, NextMap);
-		
-		//gMatchUtil.ServerCommand("changelevel %s", Map.c_str());
+		gMatchUtil.ServerCommand("changelevel %s", Map);
 	}
 }
 
 const char* CMatchChangeMap::GetNextMap()
 {
-	if(!this->m_NextMap.empty())
-	{
-		return this->m_NextMap.c_str();
-	}
-	
-	return nullptr;
+	return this->m_NextMap;
 }

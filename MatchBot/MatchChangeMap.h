@@ -3,12 +3,12 @@
 class CMatchChangeMap
 {
 public:
-	void ChangeMap(std::string MapName, float Delay, bool IntermissionMsg);
+	void ChangeMap(const char* MapName, float Delay, bool IntermissionMsg);
 	static void ChangeLevel(int MapIndex);
 	const char* GetNextMap();
 
 private:
-	std::string m_NextMap = "";
+	char m_NextMap[32] = { 0 };
 };
 
 extern CMatchChangeMap gMatchChangeMap;

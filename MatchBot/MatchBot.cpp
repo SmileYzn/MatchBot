@@ -217,7 +217,7 @@ void CMatchBot::SetState(int State)
 					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
 
 					// Change map
-					gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
+					gMatchChangeMap.ChangeMap(Item->second.c_str(), 5.0f, true);
 				}
 
 				// Set Variable to zero
@@ -378,14 +378,21 @@ void CMatchBot::SetState(int State)
 	// Match Stats
 	gMatchStats.SetState(this->m_State);
 
-	// If string is not null
-	if(this->m_Config[this->m_State]->string)
+	// Match Scores Game Name
+	gMatchScore.UpdateGameName();
+
+	// If is not null
+	if(this->m_Config[this->m_State])
 	{
-		// If cvar string is not empty
-		if (this->m_Config[this->m_State]->string[0] != '\0')
+		// If string is not null
+		if(this->m_Config[this->m_State]->string)
 		{
-			// Execute config file
-			gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State]->string);
+			// If cvar string is not empty
+			if (this->m_Config[this->m_State]->string[0] != '\0')
+			{
+				// Execute config file
+				gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State]->string);
+			}
 		}
 	}
 }
@@ -412,16 +419,21 @@ int CMatchBot::GetRound()
 const char* CMatchBot::GetTag()
 {
 	// If variable is not null
-	if (this->m_MatchTag->string)
+	if(this->m_MatchTag)
 	{
-		// If string is not empty
-		if (this->m_MatchTag->string[0] != '\0')
+		// If string is not null
+		if (this->m_MatchTag->string)
 		{
-			// Return string
-			return this->m_MatchTag->string;
+			// If string is not empty
+			if (this->m_MatchTag->string[0] != '\0')
+			{
+				// Return string
+				return this->m_MatchTag->string;
+			}
 		}
 	}
 
+	// Return default log tag
 	return Plugin_info.logtag;
 }
 
@@ -457,6 +469,7 @@ void CMatchBot::SwapTeams()
 	// Swap scores for each state
 	for (auto State = STATE_DEAD; State < STATE_END; State++)
 	{
+		// Swap scores for each state
 		SWAP(this->m_Score[TERRORIST][State], this->m_Score[CT][State]);
 	}
 
@@ -846,6 +859,9 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				}
 			}
 		}
+
+		// Match Scores Game Name
+		gMatchScore.UpdateGameName();
 	}
 }
 
