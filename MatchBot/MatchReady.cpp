@@ -60,7 +60,7 @@ void CMatchReady::Task(int PlayersMin)
 
 	if (PlayerCount[1] >= PlayersMin)
 	{
-		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("All playres are ready!"));
+		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("All players are ready!"));
 
 		gMatchReady.Stop(1);
 	}

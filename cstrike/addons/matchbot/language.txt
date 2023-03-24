@@ -346,8 +346,8 @@ bp:"JOGO PAUSADO\n%s RESTANTES"
 en:"Say \4.ready\1 to continue."
 bp:"Say \4.ready\1 para continuar."
 
-"All playres are ready!"
-en:"All playres are ready!"
+"All players are ready!"
+en:"All players are ready!"
 bp:"Todos os jogadores estão prontos!"
 
 "Not Ready (%d of %d):"
