@@ -351,4 +351,5 @@ MigrationBackup/
 .ionide/
 
 # Visual Studio code settings
-.vscode/
+#.vscode/
+
