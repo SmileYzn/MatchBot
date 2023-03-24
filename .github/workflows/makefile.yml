@@ -21,11 +21,11 @@ jobs:
       run: sudo apt-get update
       
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
+      run: sudo apt-get -qq install -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
 
     - name: Install GCC 4
       run: |
-        sudo apt-get install -qq -y gcc-4.8 g++-4.8 g++-4.8-multilib
+        sudo apt-get -qq install -y gcc-4.8 g++-4.8 g++-4.8-multilib
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 48 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
         sudo update-alternatives --config gcc
 
