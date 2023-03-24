@@ -30,15 +30,22 @@ void CMatchChangeMap::ChangeMap(std::string MapName, float Delay, bool Intermiss
 
 void CMatchChangeMap::ChangeLevel(int MapIndex)
 {
-	auto Map = gMatchChangeMap.GetNextMap();
+	auto NextMap = gMatchChangeMap.GetNextMap();
 
-	if (!Map.empty())
+	if (!NextMap)
 	{
-		gMatchUtil.ServerCommand("changelevel %s", Map.c_str());
+		LOG_CONSOLE(PLID,"[%s] changelevel %s", __func__, NextMap);
+		
+		//gMatchUtil.ServerCommand("changelevel %s", Map.c_str());
 	}
 }
 
-std::string CMatchChangeMap::GetNextMap()
+const char* CMatchChangeMap::GetNextMap()
 {
-	return this->m_NextMap;
+	if(!this->m_NextMap.empty())
+	{
+		return this->m_NextMap.c_str();
+	}
+	
+	return nullptr;
 }
