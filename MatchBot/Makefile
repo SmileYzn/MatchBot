@@ -1,26 +1,44 @@
-CSSDK 	= include/cssdk
-METAMOD = include/metamod
+# Include CSSDK and MetaMod SDK
+CSSDK 		= include/cssdk
+METAMOD 	= include/metamod
 
-NAME = matchbot
+# Release file output name
+NAME 		= matchbot
 
-COMPILER = g++
+# Release directory
+BIN_DIR 	= Release
 
-OBJECTS = *.cpp
+# G++
+COMPILER 	= g++
+OBJECTS 	= *.cpp
 
-LINK =
+# Static linker 
+LINK 		=
 
-OPT_FLAGS = -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fomit-frame-pointer -fno-stack-protector -fPIC
+# Compiler version check to static linking
+RES_COMPILER_VERSION := $(shell expr "`$(COMPILER) -dumpversion`" ">" "4")
 
-INCLUDE = -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
+# Link static lib if compiler is newer than minimum version
+ifeq "$(RES_COMPILER_VERSION)" "1"
+    LINK += -static-libstdc++
+endif
 
-CFLAGS = $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
+# Optional flags
+OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fomit-frame-pointer -fno-stack-protector -fPIC
 
-BIN_DIR = Release
+# C flags
+CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
 
-OBJ_LINUX := $(OBJECTS:%.c=$(BIN_DIR)/%.o)
+# Include directory
+INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
 
+# Linux objects to build
+OBJ_LINUX 	:= $(OBJECTS:%.c=$(BIN_DIR)/%.o)
+
+# Objects output path
 $(BIN_DIR)/%.o: %.c
 
+# Compile command
 	$(COMPILER) $(INCLUDE) $(CFLAGS) -o $@ -c $<
 
 all:
