@@ -8,6 +8,8 @@ void CMatchChangeMap::ChangeMap(std::string MapName, float Delay, bool Intermiss
 	{
 		this->m_NextMap = MapName;
 
+		LOG_CONSOLE(PLID,"[%s] %s", __func__, MapName.c_str());
+
 		gMatchTask.Create(TASK_CHANGE_MAP, 5.0f, false, (void*)this->ChangeLevel, RANDOM_LONG(0, 1));
 
 		if (IntermissionMsg)
