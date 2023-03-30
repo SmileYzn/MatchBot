@@ -233,10 +233,14 @@ void CMatchBot::SetState(int State)
 			}
 
 			// If has Knife Round variable
-			if (this->m_KnifeRound->value)
+			if (this->m_KnifeRound)
 			{
-				// Set to play knife round on first half
-				this->m_PlayKnifeRound = true;
+				// If Knife Round is set
+				if (this->m_KnifeRound->value)
+				{
+					// Set to play knife round on first half
+					this->m_PlayKnifeRound = true;
+				}
 			}
 
 			break;
@@ -963,6 +967,21 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 				{
 					// Next state is Overtime
 					State = STATE_OVERTIME;
+				}
+			}
+
+			// If state is first half respect knife round
+			if (State == STATE_FIRST_HALF)
+			{
+				// If has Knife Round variable
+				if (this->m_KnifeRound)
+				{
+					// If Knife Round is set
+					if (this->m_KnifeRound->value)
+					{
+						// Set to play knife round on first half
+						this->m_PlayKnifeRound = true;
+					}
 				}
 			}
 
