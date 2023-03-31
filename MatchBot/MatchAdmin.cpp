@@ -20,8 +20,11 @@ void CMatchAdmin::ServerActivate()
     // If file was opened
     if (fp.is_open())
     {
+        // Line
+        std::string Line = "";
+
         // While we can read file lines
-        for (std::string Line; std::getline(fp, Line);)
+        while(std::getline(fp, Line))
         {
             // If line is not empty
             if (!Line.empty())
