@@ -23,10 +23,10 @@ jobs:
     - name: Install build dependencies
       run: sudo apt-get -qq install -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
 
-    - name: Get GCC 4.8.5 packages
+    - name: Get GCC 4.8.5 packages and install it
       run: |
-        mkdir gcc_install
-        cd gcc_install
+        mkdir gcc_48_install
+        cd gcc_48_install
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8_4.8.5-4ubuntu8_amd64.deb
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
@@ -39,6 +39,7 @@ jobs:
 
     - name: Install GCC 4.8.5 packages
       run: |
+	cd gcc_48_install
         sudo dpkg -i ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb
         sudo dpkg -i ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
         sudo dpkg -i ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
