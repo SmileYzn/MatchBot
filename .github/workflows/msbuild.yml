@@ -67,7 +67,7 @@ jobs:
         $fromPath = ".\" + $baseName + "\addons\metamod\metamod.dll"
 
         # DLL dest path
-        $DestPath = ".\publish\cstrike\addons\metamod\metamod.dll"
+        $DestPath = ".\publish\addons\metamod\metamod.dll"
         
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
@@ -96,7 +96,7 @@ jobs:
         $fromPath = ".\" + $baseName + "\addons\hitbox_fix\hitbox_fix_mm.dll"
 
         # DLL dest path
-        $DestPath = ".\publish\cstrike\addons\hitbox_fix\hitbox_fix_mm.dll"
+        $DestPath = ".\publish\addons\hitbox_fix\hitbox_fix_mm.dll"
         
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
