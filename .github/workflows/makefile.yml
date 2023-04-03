@@ -17,23 +17,23 @@ jobs:
     - name: Add i386 architecture
       run: sudo dpkg --add-architecture i386
 
-    - name: Add repository sources
-      run: |
-        sudo add-apt-repository universe
-        sudo add-apt-repository multiverse
-        sudo add-apt-repository restricted
-
     - name: Update repository
       run: sudo apt-get update
       
-    - name: Install build dependencies
-      run: sudo apt-get -qq install -y build-essential gcc-multilib g++-multilib g++-4.8 gcc-4.8-multilib g++-4.8-multilib libc6-dev libc6-dev-i386
+    - name: Install build packages
+      run: sudo apt-get -qq install -y build-essential gcc-multilib g++-multilib libc6-dev libc6-dev-i386
 
-    - name: Update GCC 4.8.5 alternatives
+    - name: Install GCC 4.8.5
       run: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 48 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
-        sudo update-alternatives --config gcc
-        sudo update-alternatives --config g++
+        wget https://ftp.gnu.org/gnu/gcc/gcc-4.8.5/gcc-4.8.5.tar.bz2 --no-check-certificate
+        tar xf gcc-4.8.5.tar.bz2
+        sed -i -e 's/__attribute__/\/\/__attribute__/g' gcc-4.8.5/gcc/cp/cfns.h
+        sed -i 's/struct ucontext/ucontext_t/g' gcc-4.8.5/libgcc/config/i386/linux-unwind.h
+        mkdir xgcc-4.8.5
+        pushd xgcc-4.8.5
+        $PWD/../gcc-4.8.5/configure --enable-languages=c,c++ --prefix=/usr --enable-shared --enable-plugin --program-suffix=-4.8.5
+        make MAKEINFO="makeinfo --force" -j
+        sudo make install -j
 
     - name: Run build
       working-directory: ./MatchBot
