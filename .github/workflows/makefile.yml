@@ -39,15 +39,15 @@ jobs:
 
     - name: Install GCC 4.8.5 packages
       run: |
-        sudo apt-get -qq install -y ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./libasan0_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./gcc-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./g++-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./libasan0_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./gcc-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
+        sudo dpkg -i ./g++-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
 
     - name: Update GCC 4.8.5 alternatives
       run: |
