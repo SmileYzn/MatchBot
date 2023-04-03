@@ -55,7 +55,7 @@ public:
 
 private:
 	// User Admin Info Data container
-	std::map<std::string, P_ADMIN_INFO> m_Data;
+	std::map<std::string, std::vector<std::string>> m_Data;
 
 	// Entity flags 
 	std::map<int, int> m_Flag;

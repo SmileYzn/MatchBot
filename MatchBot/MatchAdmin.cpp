@@ -23,6 +23,18 @@ void CMatchAdmin::ServerActivate()
         // Line
         std::string Line = "";
 
+        // Double quotes delimiter
+        std::string delimiter = "\"";
+
+        // Starting position
+        size_t Position = 0;
+
+        // Current token
+        std::string Token = "";
+
+        // Admin info
+        std::vector<std::string> Info;
+
         // While we can read file lines
         while(std::getline(fp, Line))
         {
@@ -32,31 +44,32 @@ void CMatchAdmin::ServerActivate()
                 // If is not commented
                 if (Line[0] != ';')
                 {
-                    // Get string stream
-                    std::stringstream LinePointer(Line);
-
-                    // Admin info struct
-                    P_ADMIN_INFO Info = {"", "", ""};
-
-                    // While pointer can put values into struct
-                    while (LinePointer >> Info.Auth >> Info.Name >> Info.Flag)
+                    // Find double quote delimiter
+                    while ((Position = Line.find(delimiter)) != std::string::npos) 
                     {
-                        // If SteamID, Name and Flags is not empty
-                        if (!Info.Auth.empty() && !Info.Name.empty() && !Info.Flag.empty())
+                        // Get token inside quotes
+                        Token = Line.substr(0, Position);
+
+                        // If token is not empty
+                        if (!Token.empty() && !std::all_of(Token.begin(), Token.end(), isspace))
                         {
-                            // // Remove Auth quotes
-                            Info.Auth.erase(std::remove(Info.Auth.begin(), Info.Auth.end(), '\"'), Info.Auth.end());
-
-                            // // Remove Name quotes
-                            Info.Name.erase(std::remove(Info.Name.begin(), Info.Name.end(), '\"'), Info.Name.end());
-
-                            // // Remove Flag quotes
-                            Info.Flag.erase(std::remove(Info.Flag.begin(), Info.Flag.end(), '\"'), Info.Flag.end());
-
-                            // Insert into admin Data
-                            this->m_Data[Info.Auth] = Info;
+                            // Insert at vector
+                            Info.push_back(Token);
                         }
+
+                        // Erease current token from line
+                        Line.erase(0, Position + delimiter.length());
                     }
+
+                    // If has SteamID, Name and Flags in vector
+                    if (Info.size() >= 3)
+                    {
+                        // Insert info on admin data
+                        this->m_Data.insert(std::make_pair(Info[0], Info));
+                    }
+
+                    // Clear current line info
+                    Info.clear();
                 }
             }
         }
@@ -104,15 +117,11 @@ bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
             // If found
             if (Admin != this->m_Data.end())
             {
-                // And flags is not empty
-                if (!Admin->second.Flag.empty())
-                {
-                    // Set Flags to this entity
-                    this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags(Admin->second.Flag.c_str());
+                // Set Flags to this entity
+                this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags(Admin->second[2].c_str());
 
-                    // Return true to allow player connection
-                    return true;
-                }
+                // Return true to allow player connection
+                return true;
             }
         }
     }
