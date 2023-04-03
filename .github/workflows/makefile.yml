@@ -19,19 +19,15 @@ jobs:
       run: yes | yum -y --assumeyes makecache
 
     - name: Install build dependencies
-      run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686
-
-    - name: Run test
-      run: |
-        g++ --version
-        gcc --version
-        cd /usr/include
-        ls
+      run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 wget
 
     - name: Run build
       working-directory: ./MatchBot
       run: |
+	# Export compiler include path
         export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
+
+	# Make build
         make
     
     - name: Move release file to publish
