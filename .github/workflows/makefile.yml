@@ -25,7 +25,7 @@ jobs:
       run: |
         g++ --version
         gcc --version
-        export  LD_LIBRARY_PATH=/usr/include/c++/4.8.5/i686-redhat-linux
+        export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
 
     - name: Run build
       working-directory: ./MatchBot
