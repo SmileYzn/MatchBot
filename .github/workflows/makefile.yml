@@ -22,7 +22,10 @@ jobs:
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686
 
     - name: Run test
-      run: g++ --version
+      run: |
+        g++ --version
+	gcc --version
+	export  LD_LIBRARY_PATH=/usr/include/c++/4.8.5/i686-redhat-linux
 
     - name: Run build
       working-directory: ./MatchBot
