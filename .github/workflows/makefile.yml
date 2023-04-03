@@ -19,8 +19,8 @@ jobs:
 
     - name: Add repository sources
       run: |
-        sudo deb http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse
-        sudo deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe multiverse
+        echo "deb http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverset" | sudo tee -a /etc/apt/sources.list
+        echo "deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
 
     - name: Update repository
       run: sudo apt-get update
