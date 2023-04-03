@@ -19,14 +19,21 @@ jobs:
 
     - name: Add repository sources
       run: |
-        echo "deb http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverset" | sudo tee -a /etc/apt/sources.list
-        echo "deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+        sudo add-apt-repository universe
+        sudo add-apt-repository multiverse
+        sudo add-apt-repository restricted
 
     - name: Update repository
       run: sudo apt-get update
       
     - name: Install build dependencies
-      run: sudo apt-get -qq install -y build-essential 	g++-4.8 gcc-4.8-multilib g++-4.8-multilib libc6-dev libc6-dev-i386
+      run: sudo apt-get -qq install -y build-essential gcc-multilib g++-multilib g++-4.8 gcc-4.8-multilib g++-4.8-multilib libc6-dev libc6-dev-i386
+
+    - name: Update GCC 4.8.5 alternatives
+      run: |
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 48 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+        sudo update-alternatives --config gcc
+        sudo update-alternatives --config g++
 
     - name: Run build
       working-directory: ./MatchBot
