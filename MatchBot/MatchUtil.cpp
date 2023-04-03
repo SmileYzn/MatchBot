@@ -119,7 +119,7 @@ void CMatchUtil::ClientPrint(edict_t* pEntity, int msg_dest, const char* Format,
 
 	va_start(argList, Format);
 
-	char Buffer[188];
+	char Buffer[188] = { 0 };
 
 	int Length = vsnprintf(Buffer, sizeof(Buffer), Format, argList);
 
@@ -277,23 +277,20 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(TeamName Team, bool ReturnBots)
 
 void CMatchUtil::ServerCommand(const char* Format, ...)
 {
-	va_list argList;
+	char cmd[255] = { 0 };
 
-	va_start(argList, Format);
+	va_list	argptr;
 
-	char Buffer[255];
+	va_start(argptr, Format);
 
-	int Length = vsnprintf(Buffer, sizeof(Buffer), Format, argList);
+	vsnprintf(cmd, sizeof(cmd), Format, argptr);
 
-	va_end(argList);
+	va_end(argptr);
 
-	Buffer[Length++] = '\n';
-	Buffer[Length] = 0;
+	Q_strncat(cmd, "\n", 1);
 
-	SERVER_COMMAND(Buffer);
-	SERVER_EXECUTE();
+	SERVER_COMMAND(cmd);
 }
-
 
 unsigned short CMatchUtil::FixedUnsigned16(float value, float scale)
 {
