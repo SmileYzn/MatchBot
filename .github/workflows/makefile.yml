@@ -24,10 +24,10 @@ jobs:
     - name: Run build
       working-directory: ./MatchBot
       run: |
-	# Export compiler include path
+        # Export compiler include path
         export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
 
-	# Make build
+        # Make build
         make
     
     - name: Move release file to publish
