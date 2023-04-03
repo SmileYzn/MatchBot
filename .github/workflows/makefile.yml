@@ -16,13 +16,13 @@ jobs:
     - uses: actions/checkout@v3
       
     - name: Add i386 architecture
-      run: sudo dpkg --add-architecture i386
+      run: dpkg --add-architecture i386
 
     - name: Update repository
-      run: sudo apt-get update
+      run: apt-get update
       
     - name: Install build packages
-      run: sudo apt-get -qq install -y build-essential gcc-multilib g++-multilib libc6-dev libc6-dev-i386
+      run:apt-get -qq install -y build-essential gcc-multilib g++-multilib libc6-dev libc6-dev-i386
 
     - name: Run build
       working-directory: ./MatchBot
