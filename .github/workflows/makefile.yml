@@ -23,7 +23,7 @@ jobs:
     - name: Install build dependencies
       run: sudo apt-get -qq install -y build-essential g++ gcc-multilib g++-multilib libc6-dev libc6-dev-i386
 
-    - name: Install GCC 4.8.5
+    - name: Get GCC 4.8.5 packages
       run: |
         mkdir gcc_install
         cd gcc_install
@@ -36,12 +36,24 @@ jobs:
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_amd64.deb
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
-        sudo apt-get -qq install -y ./*.deb
 
-    - name: GCC 4.8.5 alternative
+    - name: Install GCC 4.8.5 packages
+      run: |
+	sudo apt -qq install -y ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./libasan0_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./gcc-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
+	sudo apt -qq install -y ./g++-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
+
+    - name: Update GCC 4.8.5 alternatives
       run: |
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 48 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
         sudo update-alternatives --config gcc
+        sudo update-alternatives --config g++
 
     - name: Run build
       working-directory: ./MatchBot
