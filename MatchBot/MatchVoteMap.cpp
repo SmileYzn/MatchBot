@@ -144,24 +144,29 @@ void CMatchVoteMap::VoteList()
 
     gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 1), _T("Vote Map:"));
 
-    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
+    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 2), "\n%s", (!VoteList.empty() && VoteList.length() > 0) ? VoteList.c_str() : _T("No votes..."));
 }
 
 P_MAP_ITEM CMatchVoteMap::GetWinner()
 {
-    auto Winner = this->m_Data[0];
+    P_MAP_ITEM Winner = {0, 0, "de_dust2"};
 
-    for (auto const& Item : this->m_Data)
+    if (!this->m_Data.empty())
     {
-        if (Item.Votes > Winner.Votes)
+        Winner = this->m_Data.front();
+
+        for (auto const& Item : this->m_Data)
         {
-            Winner = Item;
-        }
-        else if (Item.Votes == Winner.Votes)
-        {
-            if (RANDOM_LONG(0, 1))
+            if (Item.Votes > Winner.Votes)
             {
                 Winner = Item;
+            }
+            else if (Item.Votes == Winner.Votes)
+            {
+                if (RANDOM_LONG(0, 1))
+                {
+                    Winner = Item;
+                }
             }
         }
     }
