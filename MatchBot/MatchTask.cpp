@@ -54,7 +54,7 @@ void CMatchTask::Frame()
 				it = this->m_Data.erase(it);
 			}
 
-			if (Task.FunctionCallback)
+			if (Task.FunctionCallback != nullptr)
 			{
 				((void(*)(int))Task.FunctionCallback)(Task.FunctionParameter);
 			}
