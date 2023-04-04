@@ -166,8 +166,12 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				if (pCmdArgs[0u] != '\0')
 				{
 					gMatchAdminMenu.Message(Player->entindex(), CMD_ARGS());
+
+					return true;
 				}
 			}
+
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !msg \3<Text Message>\1"));
 
 			return true;
 		}
@@ -180,8 +184,12 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				if (pCmdArgs[0u] != '\0')
 				{
 					gMatchAdminMenu.Rcon(Player->entindex(), pCmdArgs);
+
+					return true;
 				}
 			}
+
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !cmd \3<Server Command>\1"));
 			
 			return true;
 		}

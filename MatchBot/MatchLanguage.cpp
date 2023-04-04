@@ -67,6 +67,12 @@ void CMatchLanguage::ServerActivate()
 
 				// Close file pointer
 				fp.close();
+
+				// Test
+				for (auto const& row : this->m_Data)
+				{
+					SERVER_PRINT(gMatchUtil.FormatString("[%s] %s %s\n", __func__, row.first.c_str(), row.second.c_str()));
+				}
 			}
 		}
 	}
