@@ -284,7 +284,7 @@ void CMatchAdminMenu::TeamMenu(int EntityIndex)
 	{
 		if (!gMatchAdmin.Access(Player->entindex(), ADMIN_IMMUNITY))
 		{
-			if (Player->m_iTeam)
+			if (Player->m_iTeam != UNASSIGNED)
 			{
 				gMatchMenu[EntityIndex].AddItem(Player->entindex(), gMatchUtil.FormatString("%s \\R\\y%s", STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, true)), false, (int)UNASSIGNED);
 			}
