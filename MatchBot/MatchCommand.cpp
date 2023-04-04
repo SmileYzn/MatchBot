@@ -37,10 +37,13 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 
 				if (pCmdArgs)
 				{
-                    char pCmdFormat[] = "%s\n";
-				    
-					CLIENT_COMMAND(Player->edict(), pCmdFormat, pCmdArgs);
-					return true;
+					if (pCmdArgs[0u] != '\0')
+					{
+						char pCmdFormat[] = "%s\n";
+
+						CLIENT_COMMAND(Player->edict(), pCmdFormat, pCmdArgs);
+						return true;
+					}
 				}
 			}
 		}
@@ -156,12 +159,30 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,"!msg") || !Q_stricmp(pcmd,"mb_message"))
 		{
-			gMatchAdminMenu.Message(Player->entindex(), CMD_ARGS());
+			auto pCmdArgs = CMD_ARGS();
+
+			if (pCmdArgs)
+			{
+				if (pCmdArgs[0u] != '\0')
+				{
+					gMatchAdminMenu.Message(Player->entindex(), CMD_ARGS());
+				}
+			}
+
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,"!cmd") || !Q_stricmp(pcmd,"mb_command"))
 		{
-			gMatchAdminMenu.Rcon(Player->entindex(), CMD_ARGS());
+			auto pCmdArgs = CMD_ARGS();
+
+			if (pCmdArgs)
+			{
+				if (pCmdArgs[0u] != '\0')
+				{
+					gMatchAdminMenu.Rcon(Player->entindex(), pCmdArgs);
+				}
+			}
+			
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,"!swap") || !Q_stricmp(pcmd,"mb_swap_teams"))
