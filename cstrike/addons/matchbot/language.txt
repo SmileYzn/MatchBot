@@ -186,6 +186,14 @@ bp:"Pode mudar os times apenas no período \4%s\1."
 en:"Starting \4%s\1, Get Ready!"
 bp:"Iniciando \4%s\1, Fique Atento!"
 
+"Knife Round"
+en:"Knife Round"
+bp:"Round Faca"
+
+"Knife Round Enabled"
+en:"Knife Round Enabled"
+bp:"Round Faca Habilitado"
+
 "Starting \4Knife Round\1, Get Ready!"
 en:"Starting \4Knife Round\1, Get Ready!"
 bp:"Iniciando \4Knife Round\1, Fique Atento!"
