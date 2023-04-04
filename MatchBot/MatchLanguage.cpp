@@ -3,19 +3,16 @@
 CMatchLanguage gMatchLanguage;
 
 // On server activate
-void CMatchLanguage::ServerActivate()
+void CMatchLanguage::Load(const char* Language)
 {
-	// Server Language
-	this->m_Language = gMatchUtil.CvarRegister("mb_language", "en");
-
 	// Clear Current translation system data
 	this->m_Data.clear();
  
 	// If string is not null
-	if (this->m_Language->string)
+	if (Language)
 	{
 		// If string is not empty
-		if (this->m_Language->string[0] != '\0')
+		if (Language[0] != '\0')
 		{
 			// File stream
 			std::ifstream fp;
@@ -51,7 +48,7 @@ void CMatchLanguage::ServerActivate()
 							Key = Line;
 						}
 						// Compare language setting with key
-						else if (Line.substr(0, 2).compare(this->m_Language->string) == 0)
+						else if (Line.substr(0, 2).compare(Language) == 0)
 						{
 							// Get line after third character
 							Line = Line.substr(3);
@@ -67,12 +64,6 @@ void CMatchLanguage::ServerActivate()
 
 				// Close file pointer
 				fp.close();
-
-				// Test
-				for (auto const& row : this->m_Data)
-				{
-					SERVER_PRINT(gMatchUtil.FormatString("[%s] %s %s\n", __func__, row.first.c_str(), row.second.c_str()));
-				}
 			}
 		}
 	}

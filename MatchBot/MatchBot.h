@@ -148,20 +148,21 @@ private:
 	int m_ScoreOT[SPECTATOR + 1];
 
 	// Match Bot Variables
-	cvar_t* m_MatchTag;
-	cvar_t* m_PlayersMin;
-	cvar_t* m_PlayersMax;
-	cvar_t* m_PlayRounds;
-	cvar_t* m_PlayRoundsOT;
-	cvar_t* m_PlayMode;
-	cvar_t* m_ReadyType;
-	cvar_t* m_ReadyTime;
-	cvar_t* m_TeamPickupType;
-	cvar_t* m_VoteMap;
-	cvar_t* m_VoteMapType;
-	cvar_t* m_KnifeRound;
-	cvar_t* m_HelpFile;
-	cvar_t* m_HelpFileAdmin;
+	cvar_t* m_MatchTag = nullptr;
+	cvar_t* m_Language = nullptr;
+	cvar_t* m_PlayersMin = nullptr;
+	cvar_t* m_PlayersMax = nullptr;
+	cvar_t* m_PlayRounds = nullptr;
+	cvar_t* m_PlayRoundsOT = nullptr;
+	cvar_t* m_PlayMode = nullptr;
+	cvar_t* m_ReadyType = nullptr;
+	cvar_t* m_ReadyTime = nullptr;
+	cvar_t* m_TeamPickupType = nullptr;
+	cvar_t* m_VoteMap = nullptr;
+	cvar_t* m_VoteMapType = nullptr;
+	cvar_t* m_KnifeRound = nullptr;
+	cvar_t* m_HelpFile = nullptr;
+	cvar_t* m_HelpFileAdmin = nullptr;
 
 	// Match Bot Config Variables
 	cvar_t* m_Config[STATE_END + 1];

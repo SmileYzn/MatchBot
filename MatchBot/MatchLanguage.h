@@ -10,7 +10,7 @@ class CMatchLanguage
 {
 public:
 	//
-	void ServerActivate();
+	void Load(const char* Language);
 
 	//
 	void ReplaceAll(std::string& String, const std::string& From, const std::string& To);
@@ -19,8 +19,6 @@ public:
 	const char* Get(const char* Key);
 
 private:
-	cvar_t* m_Language = nullptr;
-
 	std::unordered_map<std::string, std::string> m_Data;
 };
 

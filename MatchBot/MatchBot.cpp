@@ -11,6 +11,9 @@ void CMatchBot::ServerActivate()
 	// Match BOT Log Tag
 	this->m_MatchTag = gMatchUtil.CvarRegister("mb_log_tag", "BOT");
 
+	// Server Language
+	this->m_Language = gMatchUtil.CvarRegister("mb_language", "en");
+
 	// Minimun players in game to start match
 	this->m_PlayersMin = gMatchUtil.CvarRegister("mb_players_min", "10");
 
@@ -76,6 +79,9 @@ void CMatchBot::ServerActivate()
 
 	// Run Match Bot
 	this->SetState(STATE_DEAD);
+
+	// Load Language
+	gMatchLanguage.Load(this->m_Language->string);
 }
 
 // On server deactivate
@@ -408,6 +414,9 @@ void CMatchBot::SetState(int State)
 			{
 				// Execute config file
 				gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State]->string);
+
+				// Force execute in current frame
+				SERVER_EXECUTE();
 			}
 		}
 	}
