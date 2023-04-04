@@ -44,6 +44,12 @@ void CMatchBot::ServerActivate()
 	// Play Knife round to pick starting sides
 	this->m_KnifeRound = gMatchUtil.CvarRegister("mb_knife_round", "0");
 
+	// Users Help File or Website url (Without HTTPS)
+	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
+
+	// Admin Help File or Website url (Without HTTPS)
+	this->m_HelpFileAdmin = gMatchUtil.CvarRegister("mb_help_file_admin", "cstrike/addons/matchbot/admin_help.html");
+
 	// Match Bot main config
 	this->m_Config[STATE_DEAD] = gMatchUtil.CvarRegister("mb_cfg_match_bot", "matchbot.cfg");
 
@@ -732,25 +738,39 @@ void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 // View Admin / Users Help MOTD
 void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 {
-	if (AdminHelp)
+	// Default Help File Path
+	char Path[MAX_PATH] = "cstrike/addons/matchbot/users_help.html";
+
+	// If has admin flag
+	if (AdminHelp && gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_C))
 	{
-		// If has admin flag
-		if (gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_C))
+		// If has admin help variable
+		if (this->m_HelpFileAdmin)
 		{
-			// Help Admin File
-			char HELP_ADMIN_HTML_FILE[] = "cstrike/addons/matchbot/admin_help.html";
-			
-			// Show motd
-			gMatchUtil.ShowMotd(Player->edict(), HELP_ADMIN_HTML_FILE, 0);
-			return;
+			// If string is not null
+			if (this->m_HelpFileAdmin->string)
+			{
+				// Show motd
+				Q_strcpy_s(Path, this->m_HelpFileAdmin->string);
+			}
+		}
+	}
+	else
+	{
+		// If has help variable
+		if (this->m_HelpFile)
+		{
+			// If string is not null
+			if (this->m_HelpFile->string)
+			{
+				// Show motd
+				Q_strcpy_s(Path, this->m_HelpFile->string);
+			}
 		}
 	}
 
-	// Help File
-	char HELP_USERS_HTML_FILE[] = "cstrike/addons/matchbot/users_help.html";
-
 	// Show motd
-	gMatchUtil.ShowMotd(Player->edict(), HELP_USERS_HTML_FILE, 0);
+	gMatchUtil.ShowMotd(Player->edict(), Path, MAX_PATH);
 }
 
 // On Round Start: After freezetime end

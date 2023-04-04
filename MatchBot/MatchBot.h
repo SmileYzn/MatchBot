@@ -160,6 +160,8 @@ private:
 	cvar_t* m_VoteMap;
 	cvar_t* m_VoteMapType;
 	cvar_t* m_KnifeRound;
+	cvar_t* m_HelpFile;
+	cvar_t* m_HelpFileAdmin;
 
 	// Match Bot Config Variables
 	cvar_t* m_Config[STATE_END + 1];
