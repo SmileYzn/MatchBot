@@ -86,6 +86,9 @@ public:
 	// Swap teams event
 	void SwapTeams();
 
+	// Set Knife Round
+	void SetKnifeRound(bool PlayKnifeRound);
+
 	// On player connect
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 

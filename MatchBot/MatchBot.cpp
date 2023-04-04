@@ -487,6 +487,12 @@ void CMatchBot::SwapTeams()
 	}
 }
 
+// Set Knife Round Mode
+void CMatchBot::SetKnifeRound(bool PlayKnifeRound)
+{
+	this->m_PlayKnifeRound = PlayKnifeRound;
+}
+
 // On Player Connect
 bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
