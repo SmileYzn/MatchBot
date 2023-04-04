@@ -5,7 +5,7 @@ class CMatchChangeMap
 public:
 	void ChangeMap(const char* MapName, float Delay, bool IntermissionMsg);
 	static void ChangeLevel(int MapIndex);
-	const char* GetNextMap();
+	char* GetNextMap();
 
 private:
 	char m_NextMap[32] = { 0 };
