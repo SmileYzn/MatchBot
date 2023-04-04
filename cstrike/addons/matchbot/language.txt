@@ -286,9 +286,9 @@ bp:"\3%s\1 parou a partida."
 en:"Cannot stop match in \3%s\1 state."
 bp:"Não é possível parar a partida no estado \3%s\1."
 
-"\3%s\1 restarted match, get ready!"
-en:"\3%s\1 restarted match, get ready!"
-bp:"\3%s\1 reiniciou a partida, fique atento!"
+"\3%s\1 restarted %s, get ready!"
+en:"\3%s\1 restarted %s, get ready!"
+bp:"\3%s\1 reiniciou o %s, fique atento!"
 
 "Cannot restart match in \3%s\1 state."
 en:"Cannot restart match in \3%s\1 state."

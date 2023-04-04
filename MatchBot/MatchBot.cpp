@@ -344,6 +344,12 @@ void CMatchBot::SetState(int State)
 		// Second Half: Match is running
 		case STATE_SECOND_HALF:
 		{
+			// Clear Terrorists Scores
+			this->m_Score[TERRORIST][STATE_SECOND_HALF] = 0;
+
+			// Clear CTs Scores
+			this->m_Score[CT][STATE_SECOND_HALF] = 0;
+
 			// Send messages
 			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting \4%s\1, Get Ready!"), this->GetState(this->m_State));
 
@@ -1058,18 +1064,22 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 	// Check Access
 	if (Player == nullptr || gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_B))
 	{
-		// If match is live
-		if (this->m_State == STATE_FIRST_HALF)
+		// If match is in first half
+		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
 			// If command send by admin
 			if (Player)
 			{
 				// Send message
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 restarted match, get ready!"), STRING(Player->edict()->v.netname), this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 restarted %s, get ready!"), STRING(Player->edict()->v.netname), this->GetState(this->m_State));
 			}
 
 			// Restart current state
 			this->SetState(this->m_State);
+		}
+		else if (this->m_State == STATE_SECOND_HALF)
+		{
+
 		}
 		else
 		{

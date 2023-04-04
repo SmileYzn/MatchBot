@@ -60,13 +60,13 @@ void CMatchScore::UpdateGameName()
 				Q_snprintf(GameName, sizeof(GameName), "%s « %d : %d » %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 
 				// Get to game description
-				Q_strcpy(CSGameRules()->m_GameDesc, GameName);
+				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);
 			}
 		}
 		else
 		{
 			// Restore default game name
-			Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc);
+			Q_strcpy_s(CSGameRules()->m_GameDesc, this->m_GameDesc);
 		}
 	}
 }

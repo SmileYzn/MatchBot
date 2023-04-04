@@ -381,21 +381,25 @@ void CMatchAdminMenu::ControlMenu(int EntityIndex)
 
 	auto State = gMatchBot.GetState();
 
+	auto AccessVote = gMatchAdmin.Access(EntityIndex, ADMIN_VOTE);
+
+	auto AccessControl = gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B);
+
 	gMatchMenu[EntityIndex].Create(_T("Match Control"), true, (void*)this->ControlMenuHandle);
 
-	gMatchMenu[EntityIndex].AddItem(0, _T("Run Vote Map"), (State == STATE_DEAD || State == STATE_START || State == STATE_END || !gMatchAdmin.Access(EntityIndex, ADMIN_VOTE)));
+	gMatchMenu[EntityIndex].AddItem(0, _T("Run Vote Map"), (State == STATE_DEAD || State == STATE_START || State == STATE_END || !AccessVote));
 
-	gMatchMenu[EntityIndex].AddItem(1, _T("Run Vote Teams"), ((State != STATE_WARMUP) || !gMatchAdmin.Access(EntityIndex, ADMIN_VOTE)));
+	gMatchMenu[EntityIndex].AddItem(1, _T("Run Vote Teams"), ((State != STATE_WARMUP) || !AccessVote));
 
-	gMatchMenu[EntityIndex].AddItem(2, (State == STATE_HALFTIME) ? _T("Continue Match") : _T("Start Match"), ((State != STATE_WARMUP && State != STATE_HALFTIME) || !gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B)));
+	gMatchMenu[EntityIndex].AddItem(2, (State == STATE_HALFTIME) ? _T("Continue Match") : _T("Start Match"), ((State != STATE_WARMUP && State != STATE_HALFTIME) || !AccessControl));
 
-	gMatchMenu[EntityIndex].AddItem(3, _T("Stop Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_END) || !gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B)));
+	gMatchMenu[EntityIndex].AddItem(3, _T("Stop Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_END) || !AccessControl));
 
-	gMatchMenu[EntityIndex].AddItem(4, _T("Restart Match"), ((State != STATE_FIRST_HALF) || !gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B)));
+	gMatchMenu[EntityIndex].AddItem(4, _T("Restart Match"), ((State != STATE_FIRST_HALF && State != STATE_SECOND_HALF && State != STATE_OVERTIME) || !AccessControl));
 
-	gMatchMenu[EntityIndex].AddItem(5, _T("Pause Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_END) || !gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B)));
+	gMatchMenu[EntityIndex].AddItem(5, _T("Pause Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_HALFTIME || State == STATE_END) || !AccessControl));
 
-	gMatchMenu[EntityIndex].AddItem(6, _T("Toggle Match BOT"), ((State != STATE_DEAD && State != STATE_WARMUP) || !gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B)));
+	gMatchMenu[EntityIndex].AddItem(6, _T("Toggle Match BOT"), ((State != STATE_DEAD && State != STATE_WARMUP) || !AccessControl));
 
 	gMatchMenu[EntityIndex].Show(EntityIndex);
 }
