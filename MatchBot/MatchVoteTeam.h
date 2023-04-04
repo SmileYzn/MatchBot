@@ -16,6 +16,7 @@ public:
 	void AddVote(int Item, int Vote);
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
 	
+	static void UpdateVoteList(int PlayerCount);
 	void VoteList();
 
 	P_TEAM_ITEM GetWinner();

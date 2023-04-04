@@ -17,6 +17,7 @@ public:
 
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
 
+	static void UpdateVoteList(int DummyIndex);
 	void VoteList();
 
 	P_OT_ITEM GetWinner();

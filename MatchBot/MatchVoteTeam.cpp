@@ -13,6 +13,7 @@ void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 		this->m_Data.push_back({ 2, 0, _T("Not Sorted") });
 		this->m_Data.push_back({ 3, 0, _T("Skill Sorted") });
 		this->m_Data.push_back({ 4, 0, _T("Swap Teams") });
+		this->m_Data.push_back({ 5, 0, _T("Knife Round") });
 
 		this->m_PlayerMin = PlayersMin;
 		this->m_PlayerNum = 0;
@@ -38,7 +39,9 @@ void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 
 		this->VoteList();
 
-		gMatchTask.Create(TASK_VOTE_TIMER, 15.0f, false, (void*)this->Stop, 0);
+		gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
+
+		gMatchTask.Create(TASK_VOTE_TIMER, 15.0f, false, (void*)this->Stop, 1);
 
 		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Select teams started."));
 	}
@@ -60,6 +63,8 @@ void CMatchVoteTeam::Stop()
 	}
 
 	gMatchVoteTeam.VoteList();
+
+	gMatchTask.Delete(TASK_VOTE_LIST);
 
 	gMatchTask.Delete(TASK_VOTE_TIMER);
 
@@ -103,6 +108,11 @@ void CMatchVoteTeam::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
 	}
 }
 
+void CMatchVoteTeam::UpdateVoteList(int PlayerCount)
+{
+	gMatchVoteTeam.VoteList();
+}
+
 void CMatchVoteTeam::VoteList()
 {
 	std::string VoteList;
@@ -120,9 +130,9 @@ void CMatchVoteTeam::VoteList()
 		}
 	}
 
-	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 15.0f, 0.0, 0.0, 1), _T("Game Mode:"));
+	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 1), _T("Game Mode:"));
 
-	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 15.0f, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
+	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
 }
 
 P_TEAM_ITEM CMatchVoteTeam::GetWinner()
@@ -183,6 +193,13 @@ void CMatchVoteTeam::SetMode(int GameMode)
 			}
 
 			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Swaping teams now."));
+			break;
+		}
+		case 5:
+		{
+			gMatchBot.SetKnifeRound(true);
+
+			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Knife Round Enabled"));
 			break;
 		}
 	}

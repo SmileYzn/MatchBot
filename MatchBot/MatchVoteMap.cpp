@@ -31,7 +31,9 @@ void CMatchVoteMap::Init()
 
     this->VoteList();
 
-    gMatchTask.Create(TASK_VOTE_TIMER, 15.0f, false, (void*)this->Stop, 0);
+    gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
+
+    gMatchTask.Create(TASK_VOTE_TIMER, 15.0f, false, (void*)this->Stop, 1);
 
     gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting Vote Map."));
 }
@@ -48,6 +50,8 @@ void CMatchVoteMap::Stop()
     }
 
     gMatchVoteMap.VoteList();
+
+    gMatchTask.Delete(TASK_VOTE_LIST);
 
     gMatchTask.Delete(TASK_VOTE_TIMER);
 
@@ -116,6 +120,11 @@ void CMatchVoteMap::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
     }
 }
 
+void CMatchVoteMap::UpdateVoteList(int DummyIndex)
+{
+    gMatchVoteMap.VoteList();
+}
+
 void CMatchVoteMap::VoteList()
 {
     std::string VoteList;
@@ -133,9 +142,9 @@ void CMatchVoteMap::VoteList()
         }
     }
 
-    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 15.0f, 0.0, 0.0, 1), _T("Vote Map:"));
+    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 1), _T("Vote Map:"));
 
-    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 15.0f, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
+    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
 }
 
 P_MAP_ITEM CMatchVoteMap::GetWinner()

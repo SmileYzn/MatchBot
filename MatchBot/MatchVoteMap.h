@@ -18,6 +18,7 @@ public:
 
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
 
+	static void UpdateVoteList(int PlayerCount);
 	void VoteList();
 
 	P_MAP_ITEM GetWinner();

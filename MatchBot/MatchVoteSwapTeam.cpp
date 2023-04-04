@@ -59,6 +59,9 @@ void CMatchVoteSwapTeam::Init(TeamName Winner)
     // Display hud vote list
     this->VoteList();
 
+    // Update vote list
+    gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
+
     // Create task to end vote
     gMatchTask.Create(TASK_VOTE_TIMER, 10.0f, false, (void*)this->Stop, (int)Winner);
 
@@ -84,6 +87,9 @@ void CMatchVoteSwapTeam::Stop(int WinnerTeam)
 
     // Update vote list for result
     gMatchVoteSwapTeam.VoteList();
+
+    // Delete vote list task
+    gMatchTask.Delete(TASK_VOTE_LIST);
 
     // Delete vote task
     gMatchTask.Delete(TASK_VOTE_TIMER);
@@ -153,6 +159,11 @@ void CMatchVoteSwapTeam::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
     }
 }
 
+void CMatchVoteSwapTeam::UpdateVoteList(int DummyIndex)
+{
+    gMatchVoteSwapTeam.VoteList();
+}
+
 void CMatchVoteSwapTeam::VoteList()
 {
     std::string VoteList;
@@ -170,9 +181,9 @@ void CMatchVoteSwapTeam::VoteList()
         }
     }
 
-    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 15.0f, 0.0, 0.0, 1), _T("Swap Teams Vote:"));
+    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 1), _T("Swap Teams Vote:"));
 
-    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 15.0f, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
+    gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 2), "\n%s", VoteList.length() ? VoteList.c_str() : _T("No votes..."));
 }
 
 P_SWAP_TEAM_ITEM CMatchVoteSwapTeam::GetWinner()

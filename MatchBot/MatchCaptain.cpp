@@ -288,20 +288,20 @@ void CMatchCaptain::PlayerList(int PlayersMin)
 		PlayerList[CT] += "\n";
 	}
 
-	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.75, 0.02, 0, 0.0, 5.5, 0.0, 0.0, 1), "%s (%d / %d):", gMatchBot.GetTeam(TERRORIST, false), Count[TERRORIST], (PlayersMin / 2));
+	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.75, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 1), "%s (%d / %d):", gMatchBot.GetTeam(TERRORIST, false), Count[TERRORIST], (PlayersMin / 2));
 
-	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 255, 0.75, 0.02, 0, 0.0, 5.5, 0.0, 0.0, 2), "\n%s", PlayerList[TERRORIST].c_str());
+	gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 255, 0.75, 0.02, 0, 0.0, 0.8, 0.0, 0.0, 2), "\n%s", PlayerList[TERRORIST].c_str());
 
 	if (Count[SPECTATOR])
 	{
-		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.75, 0.28, 0, 0.0, 5.5, 0.0, 0.0, 3), "%s (%d / %d):\n\n\n\n\n\n%s (%d):", gMatchBot.GetTeam(CT, false), Count[CT], (PlayersMin / 2), gMatchBot.GetTeam(SPECTATOR, false), Count[SPECTATOR]);
+		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.75, 0.28, 0, 0.0, 0.8, 0.0, 0.0, 3), "%s (%d / %d):\n\n\n\n\n\n%s (%d):", gMatchBot.GetTeam(CT, false), Count[CT], (PlayersMin / 2), gMatchBot.GetTeam(SPECTATOR, false), Count[SPECTATOR]);
 
-		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 255, 0.75, 0.28, 0, 0.0, 5.5, 0.0, 0.0, 4), "\n%s\n%s", PlayerList[CT].c_str(), PlayerList[SPECTATOR].c_str());
+		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 255, 0.75, 0.28, 0, 0.0, 0.8, 0.0, 0.0, 4), "\n%s\n%s", PlayerList[CT].c_str(), PlayerList[SPECTATOR].c_str());
 	}
 	else
 	{
-		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.75, 0.28, 0, 0.0, 5.5, 0.0, 0.0, 3), "%s (%d / %d):", gMatchBot.GetTeam(CT, false), Count[CT], (PlayersMin / 2));
+		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, 0.75, 0.28, 0, 0.0, 0.8, 0.0, 0.0, 3), "%s (%d / %d):", gMatchBot.GetTeam(CT, false), Count[CT], (PlayersMin / 2));
 
-		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 255, 0.75, 0.28, 0, 0.0, 5.5, 0.0, 0.0, 4), "\n%s", PlayerList[CT].c_str());
+		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(255, 255, 255, 0.75, 0.28, 0, 0.0, 0.8, 0.0, 0.0, 4), "\n%s", PlayerList[CT].c_str());
 	}
 }
