@@ -294,7 +294,7 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 	if (Player)
 	{
 		// Get Voted Map
-		auto MapName = gMatchVoteMenu.m_MapList[Item.Info].c_str();
+		auto MapName = gMatchVoteMenu.m_MapList[Item.Info];
 
 		// If can vote in that map
 		if (!Item.Disabled)
@@ -328,19 +328,19 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 			// If need more votes to change map
 			if (VoteProgress < 100.0f)
 			{
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 nomitated \4%s\1: %2.0f%% of votes to change map."), STRING(Player->edict()->v.netname), MapName, VoteProgress);
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 nomitated \4%s\1: %2.0f%% of votes to change map."), STRING(Player->edict()->v.netname), MapName.c_str(), VoteProgress);
 				gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say \3.vote\1 to nominate a map."));
 			}
 			else
 			{
 				gMatchChangeMap.ChangeMap(MapName, 5.0f, true);
 
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("Changing map to \4%s\1..."), MapName);
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("Changing map to \4%s\1..."), MapName.c_str());
 			}
 		}
 		else
 		{
-			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("Already nominated \3%s\1..."), MapName);
+			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("Already nominated \3%s\1..."), MapName.c_str());
 		}
 	}
 }

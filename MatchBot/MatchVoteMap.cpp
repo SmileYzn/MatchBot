@@ -59,7 +59,7 @@ void CMatchVoteMap::Stop()
 
     if (Winner.Votes > 0)
     {
-        gMatchChangeMap.ChangeMap(Winner.Name.c_str(), 5.0f, true);
+        gMatchChangeMap.ChangeMap(Winner.Name, 5.0f, true);
 
         gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Winner.Name.c_str());
     }

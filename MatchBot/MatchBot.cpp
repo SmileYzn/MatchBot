@@ -232,7 +232,7 @@ void CMatchBot::SetState(int State)
 					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
 
 					// Change map
-					gMatchChangeMap.ChangeMap(Item->second.c_str(), 5.0f, true);
+					gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
 				}
 
 				// Set Variable to zero
