@@ -14,7 +14,7 @@ void CMatchBot::ServerActivate()
 	// Server Language
 	this->m_Language = gMatchUtil.CvarRegister("mb_language", "en");
 
-	// Minimun players in game to start match
+	// Minimum players in game to start match
 	this->m_PlayersMin = gMatchUtil.CvarRegister("mb_players_min", "10");
 
 	// Maximum allowed players in game
@@ -43,6 +43,9 @@ void CMatchBot::ServerActivate()
 
 	// Vote Map type (1 Vote Map, 2 Random Map)
 	this->m_VoteMapType = gMatchUtil.CvarRegister("mb_vote_map_type", "1");
+
+	// Start Vote Map at match end (0 Disabled, 1 Enabled, 2 Only when minimum players reached)
+	this->m_VoteMapAuto = gMatchUtil.CvarRegister("mb_vote_map_auto", "2");
 
 	// Play Knife round to pick starting sides
 	this->m_KnifeRound = gMatchUtil.CvarRegister("mb_knife_round", "0");
@@ -387,11 +390,38 @@ void CMatchBot::SetState(int State)
 			// Send scores
 			this->Scores(nullptr, false);
 
-			// Set next state to warmup, match needed to run again
-			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
-
-			// Enable it
+			// Enable Vote Map
 			this->m_VoteMap->value = 1.0f;
+
+			// Next State, Warmup by default
+			auto NextState = STATE_WARMUP;
+
+			// If has auto vote map on end
+			if (this->m_VoteMapAuto)
+			{
+				// If is enabled with 1
+				if (this->m_VoteMapAuto->value == 1.0f)
+				{
+					// In next state, start Vote Map
+					NextState = STATE_START;
+				}
+				// If is 2.0f, execute only if has mininum of players
+				else if (this->m_VoteMapAuto->value == 2.0f)
+				{
+					// Get player count
+					auto Players = gMatchUtil.GetPlayers(true, true);
+
+					// If reached minimum of players
+					if ((int)Players.size() > (this->m_PlayersMin->value / 2))
+					{
+						// In next state, start Vote Map
+						NextState = STATE_START;
+					}
+				}
+			}
+
+			// Set next state, match needed to run again
+			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, NextState);
 
 			break;
 		}
