@@ -479,11 +479,9 @@ void CMatchAdminMenu::Message(int EntityIndex, std::string Args)
 
 		if (!Args.empty())
 		{
-			std::string Message = Args;
+			Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
 
-			Message.erase(std::remove(Message.begin(), Message.end(), '\"'), Message.end());
-
-			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3(%s)\1: %s"), STRING(Player->edict()->v.netname), Message.c_str());
+			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3(%s)\1: %s"), STRING(Player->edict()->v.netname), Args.c_str());
 		}
 		else
 		{
@@ -512,13 +510,11 @@ void CMatchAdminMenu::Rcon(int EntityIndex, std::string Args)
 
 		if (!Args.empty())
 		{
-			std::string Command = Args;
+			Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
 
-			Command.erase(std::remove(Command.begin(), Command.end(), '\"'), Command.end());
+			gMatchUtil.ServerCommand(Args.c_str());
 
-			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("\3Executed\1: %s"), Command.c_str());
-
-			gMatchUtil.ServerCommand(Command.c_str());
+			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("\3Executed\1: %s"), Args.c_str());
 		}
 		else
 		{

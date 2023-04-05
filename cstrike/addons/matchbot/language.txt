@@ -36,15 +36,15 @@ bp:"Unassigned"
 
 "Terrorists"
 en:"Terrorists"
-bp:"Terrorists"
+bp:"Terroristas"
 
 "Counter-Terrorists"
 en:"Counter-Terrorists"
-bp:"Counter-Terrorists"
+bp:"Countra-Terroristas"
 
 "Spectators"
 en:"Spectators"
-bp:"Spectators"
+bp:"Espectadores"
 
 "NONE"
 en:"NONE"
@@ -160,7 +160,7 @@ bp:"\3(%s)\1: %s"
 
 "Usage: !msg \3<Text Message>\1"
 en:"Usage: !msg \3<Text Message>\1"
-bp:"Uso: !msg \3<Text Message>\1"
+bp:"Uso: !msg \3<Mensagem>\1"
 
 "These commands are protected here, only \3Server\1 can use."
 en:"These commands are protected here, only \3Server\1 can use."
