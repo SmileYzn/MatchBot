@@ -19,7 +19,7 @@ public:
 	const char* Get(const char* Key);
 
 private:
-	std::unordered_map<std::string, std::string> m_Data;
+	std::map<std::string, std::string> m_Data;
 };
 
 extern CMatchLanguage gMatchLanguage;
