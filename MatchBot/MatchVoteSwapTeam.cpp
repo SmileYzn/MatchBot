@@ -20,7 +20,7 @@ void CMatchVoteSwapTeam::Init(TeamName Winner)
     this->m_VoteCount = 0;
 
     // Get Players
-    auto Players = gMatchUtil.GetPlayers(Winner, true);
+    auto Players = gMatchUtil.GetPlayers(Winner, false);
 
     // Loop Players
     for (auto const& Player : Players)
