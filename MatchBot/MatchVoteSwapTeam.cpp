@@ -56,9 +56,6 @@ void CMatchVoteSwapTeam::Init(TeamName Winner)
         }
     }
 
-    // Display hud vote list
-    this->VoteList();
-
     // Update vote list
     gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
 
@@ -73,7 +70,7 @@ void CMatchVoteSwapTeam::Init(TeamName Winner)
 void CMatchVoteSwapTeam::Stop(int WinnerTeam)
 {
     // Get Players
-    auto Players = gMatchUtil.GetPlayers((TeamName)WinnerTeam, false);
+    auto Players = gMatchUtil.GetPlayers(true, false);
 
     // Loop
     for (auto const& Player : Players)
@@ -85,9 +82,6 @@ void CMatchVoteSwapTeam::Stop(int WinnerTeam)
         gMatchMenu[EntityIndex].Hide(EntityIndex);
     }
 
-    // Update vote list for result
-    gMatchVoteSwapTeam.VoteList();
-
     // Delete vote list task
     gMatchTask.Delete(TASK_VOTE_LIST);
 
@@ -98,7 +92,7 @@ void CMatchVoteSwapTeam::Stop(int WinnerTeam)
     auto Winner = gMatchVoteSwapTeam.GetWinner();
 
     // If has votes
-    if (Winner.Votes > 0)
+    if (Winner.Votes)
     {
         // Fix winner index to TERRORIST or CT constant from TeamName Struct
         // If winner team is the same team of winner option
@@ -126,7 +120,7 @@ void CMatchVoteSwapTeam::Stop(int WinnerTeam)
     }
 
     // Continue match
-    gMatchBot.SetState(STATE_FIRST_HALF);
+    gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)gMatchBot.NextState, STATE_FIRST_HALF);
 }
 
 // Add Vote
@@ -135,8 +129,6 @@ void CMatchVoteSwapTeam::AddVote(int ItemIndex, int Vote)
     this->m_Data[ItemIndex].Votes += Vote;
 
     this->m_VoteCount++;
-
-    this->VoteList();
 
     if (this->m_VoteCount >= this->m_PlayerNum)
     {
