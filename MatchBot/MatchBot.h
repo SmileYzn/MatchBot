@@ -125,7 +125,7 @@ public:
 	// Start vote team
 	void StartVoteTeam(CBasePlayer* Player);
 
-	// Start match (Without play knife round)
+	// Start match
 	void StartMatch(CBasePlayer* Player);
 
 	// Stop current running match
@@ -140,6 +140,9 @@ private:
 
 	// Play Knife Round
 	bool m_PlayKnifeRound = false;
+
+	// Admin changed match manually
+	bool m_AdminCommand = false;
 
 	// Scores
 	int m_Score[SPECTATOR + 1][STATE_END];

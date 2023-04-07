@@ -393,34 +393,43 @@ void CMatchBot::SetState(int State)
 			// Send scores
 			this->Scores(nullptr, false);
 
-			// Enable Vote Map
-			this->m_VoteMap->value = 1.0f;
-
 			// Next State, Warmup by default
 			auto NextState = STATE_WARMUP;
 
-			// If has auto vote map on end
-			if (this->m_VoteMapAuto)
+			// If admin changed match (Admin stopped match)
+			if (!this->m_AdminCommand)
 			{
-				// If is enabled with 1
-				if (this->m_VoteMapAuto->value == 1.0f)
-				{
-					// In next state, start Vote Map
-					NextState = STATE_START;
-				}
-				// If is 2.0f, execute only if has mininum of players
-				else if (this->m_VoteMapAuto->value == 2.0f)
-				{
-					// Get player count
-					auto Players = gMatchUtil.GetPlayers(true, true);
+				// Enable Vote Map
+				this->m_VoteMap->value = 1.0f;
 
-					// If reached minimum of players
-					if ((int)Players.size() > (this->m_PlayersMin->value / 2))
+				// If has auto vote map on end
+				if (this->m_VoteMapAuto)
+				{
+					// If is enabled with 1
+					if (this->m_VoteMapAuto->value == 1.0f)
 					{
 						// In next state, start Vote Map
 						NextState = STATE_START;
 					}
+					// If is 2.0f, execute only if has mininum of players
+					else if (this->m_VoteMapAuto->value == 2.0f)
+					{
+						// Get player count
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						// If reached minimum of players
+						if ((int)Players.size() > (this->m_PlayersMin->value / 2))
+						{
+							// In next state, start Vote Map
+							NextState = STATE_START;
+						}
+					}
 				}
+			}
+			else
+			{
+				// Disable last admin match action
+				this->m_AdminCommand = false;
 			}
 
 			// Set next state, match needed to run again
@@ -689,21 +698,28 @@ void CMatchBot::PlayerDisconnect(edict_t* pEdict)
 	}
 }
 
+// Check restrictions of items for players
 bool CMatchBot::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type)
 {
+	// If is knife Round
 	if (this->m_PlayKnifeRound)
 	{
+		// If is any of not allowed items
 		if (item != ITEM_KEVLAR && item != ITEM_ASSAULT && item != ITEM_KNIFE)
 		{
+			// If is buy
 			if (type == ITEM_TYPE_BUYING)
 			{
+				// Send message
 				gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
 			}
 			
+			// Prevent to get item
 			return true;
 		}
 	}
 
+	// Ignore this
 	return false;
 }
 
@@ -967,6 +983,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 	}
 }
 
+// Start vote map
 void CMatchBot::StartVoteMap(CBasePlayer* Player)
 {
 	// Check Accesss
@@ -995,10 +1012,12 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 	}
 	else
 	{
+		// Error message
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 	}
 }
 
+// Start vote team
 void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 {
 	// Check Accesss
@@ -1030,10 +1049,12 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 	}
 	else
 	{
+		// Error message
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 	}
 }
 
+// Start match
 void CMatchBot::StartMatch(CBasePlayer* Player)
 {
 	// Check Accesss
@@ -1088,15 +1109,18 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 		}
 		else
 		{
+			// Error message
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start match in \3%s\1 state."), this->GetState(this->m_State));
 		}
 	}
 	else
 	{
+		// Error message
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 	}
 }
 
+// Stop current running match
 void CMatchBot::StopMatch(CBasePlayer* Player)
 {
 	// Check Accesss
@@ -1127,20 +1151,26 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 				this->m_PlayKnifeRound = false;
 			}
 
+			// Admin changed match manually
+			this->m_AdminCommand = true;
+
 			// Set end state
 			gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, STATE_END);
 		}
 		else
 		{
+			// Error message
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot stop match in \3%s\1 state."), this->GetState(this->m_State));
 		}
 	}
 	else
 	{
+		// Error message
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 	}
 }
 
+// Restart current match
 void CMatchBot::RestartMatch(CBasePlayer* Player)
 {
 	// Check Access
@@ -1168,13 +1198,14 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 			// If admin issued command
 			if (Player)
 			{
-				// Send error message
+				// Error message
 				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot restart match in \3%s\1 state."), this->GetState(this->m_State));
 			}
 		}
 	}
 	else
 	{
+		// Error message
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 	}
 }
