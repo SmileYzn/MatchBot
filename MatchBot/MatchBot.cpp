@@ -50,6 +50,9 @@ void CMatchBot::ServerActivate()
 	// Play Knife round to pick starting sides
 	this->m_KnifeRound = gMatchUtil.CvarRegister("mb_knife_round", "0");
 
+	// Scores display method (0 Default sentences type, 1 Show all teams and scores)
+	this->m_ScoreType = gMatchUtil.CvarRegister("mb_score_type", "0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 
@@ -658,9 +661,13 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 	// If BOT is not dead
 	if (this->m_State != STATE_DEAD)
 	{
-		// Send messages
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (\3%s\1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say \4.help\1 to view command list."));
+		// If is not BOT
+		if (!Player->IsBot())
+		{
+			// Send messages
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (\3%s\1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say \4.help\1 to view command list."));
+		}
 	}
 }
 
@@ -717,6 +724,9 @@ void CMatchBot::Status(CBasePlayer* Player)
 // Player scores command
 void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 {
+	// Target player or all users
+	edict_t* Target = Player ? Player->edict() : nullptr;
+
 	// If match is running
 	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_END)
 	{
@@ -736,11 +746,23 @@ void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 			Sender = (ScoreTR > ScoreCT) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE;
 		}
 
+		// Score method
+		auto ShowMethod = (Method || (this->m_ScoreType && this->m_ScoreType->value));
+
 		// Score Method 1: Show both scores
-		if (Method)
+		if (ShowMethod)
 		{
-			// Send to player or to all players if empty
-			gMatchUtil.SayText(Player ? Player->edict() : nullptr, Sender, _T("\3%s\1 (\4%d\1) - (\4%d\1) \3%s\1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
+			// If match is ended
+			if (this->m_State != STATE_END)
+			{
+				// Send to player or to all players if empty
+				gMatchUtil.SayText(Target, Sender, _T("\3%s\1 (\4%d\1) - (\4%d\1) \3%s\1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
+			}
+			else
+			{
+				// Send to player or to all players if empty
+				gMatchUtil.SayText(Target, Sender, _T("Game Over: \3%s\1 (\4%d\1) - (\4%d\1) \3%s\1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
+			}
 		}
 		else // Score Method 2: Show winner name and scores
 		{
@@ -753,30 +775,35 @@ void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 				// Get other team
 				auto Losers = (ScoreTR > ScoreCT) ? CT : TERRORIST;
 
-				// Send message
-				gMatchUtil.SayText
-				(
-					Player ? Player->edict() : nullptr,
-					Sender,
-					(this->m_State == STATE_END) ? _T("Game Over! The \3%s\1 have won the game: %d-%d") : _T("The \3%s\1 are winning: %d-%d"),
-					this->GetTeam(Winner, false),
-					this->GetScore(Winner),
-					this->GetScore(Losers)
-				);
+				if (this->m_State != STATE_END)
+				{
+					// Send message
+					gMatchUtil.SayText(Target, Sender, _T("The \3%s\1 are winning: %d-%d"), this->GetTeam(Winner, false), this->GetScore(Winner), this->GetScore(Losers));
+				}
+				else
+				{
+					// Send message
+					gMatchUtil.SayText(Target, Sender,(this->m_State == STATE_END) ? _T("Game Over! The \3%s\1 have won the game: %d-%d") : _T("The \3%s\1 are winning: %d-%d"),this->GetTeam(Winner, false),this->GetScore(Winner),this->GetScore(Losers));
+				}
 			}
 			else
 			{
-				// Send message of tied match
-				gMatchUtil.SayText
-				(
-					Player ? Player->edict() : nullptr,
-					PRINT_TEAM_DEFAULT,
-					(this->m_State == STATE_END) ? _T("Game Over! Score is tied: %d-%d") : _T("Score is tied: %d-%d"),
-					ScoreTR,
-					ScoreCT
-				);
+				if (this->m_State != STATE_END)
+				{
+					// Send message of tied match
+					gMatchUtil.SayText(Target, PRINT_TEAM_DEFAULT, _T("Score is tied: %d-%d"), ScoreTR, ScoreCT);
+				}
+				else
+				{
+					// Send message of tied match
+					gMatchUtil.SayText(Target, PRINT_TEAM_DEFAULT, _T("Game Over! Score is tied: %d-%d"), ScoreTR, ScoreCT);
+				}
 			}
 		}
+	}
+	else
+	{
+		gMatchUtil.SayText(Target, PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
 	}
 }
 
