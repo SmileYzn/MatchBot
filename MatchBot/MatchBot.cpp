@@ -1111,6 +1111,22 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 			// Send message to all players
 			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 stopped match."), STRING(Player->edict()->v.netname));
 
+			// If is in Knife Round
+			if(this->m_PlayKnifeRound)
+			{
+				// Add map objectives
+				gMatchWarmup.RemoveMapObjective(false);
+
+				// Disable BOT deathmatch
+				CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+
+				// Execute command to run with all weapons
+				gMatchUtil.ServerCommand("bot_all_weapons");
+
+				// Disable Knife Round
+				this->m_PlayKnifeRound = false;
+			}
+
 			// Set end state
 			gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, STATE_END);
 		}
