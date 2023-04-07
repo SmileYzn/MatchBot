@@ -10,24 +10,39 @@ struct P_MAP_ITEM
 class CMatchVoteMap
 {
 public:
-	void Init();
-	std::vector<P_MAP_ITEM> Load();
-	static void Stop();
+	//
+	void Init(int VoteMapType, int VoteMapFail);
 
+	//
+	std::vector<P_MAP_ITEM> Load();
+
+	//
+	static void Stop(int VoteFailType);
+
+	//
 	void AddVote(int Item, int Vote);
 
+	//
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
 
+	//
 	static void UpdateVoteList(int PlayerCount);
+
+	//
 	void VoteList();
 
+	//
 	P_MAP_ITEM GetWinner();
+
+	// Change to a random map
+	void ChangeRandomMap();
 
 private:
 	std::vector<P_MAP_ITEM> m_Data;
 
-	short m_PlayerNum = 0;
-	short m_VoteCount = 0;
+	int m_PlayerNum = 0;
+	int m_VoteCount = 0;
+	int m_VoteFailType = 0;
 };
 
 extern CMatchVoteMap gMatchVoteMap;

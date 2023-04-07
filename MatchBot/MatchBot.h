@@ -164,6 +164,7 @@ private:
 	cvar_t* m_VoteMap = nullptr;
 	cvar_t* m_VoteMapType = nullptr;
 	cvar_t* m_VoteMapAuto = nullptr;
+	cvar_t* m_VoteMapFail = nullptr;
 	cvar_t* m_KnifeRound = nullptr;
 	cvar_t* m_ScoreType = nullptr;
 	cvar_t* m_HelpFile = nullptr;

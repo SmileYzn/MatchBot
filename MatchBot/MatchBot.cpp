@@ -47,10 +47,13 @@ void CMatchBot::ServerActivate()
 	// Start Vote Map at match end (0 Disabled, 1 Enabled, 2 Only when minimum players reached)
 	this->m_VoteMapAuto = gMatchUtil.CvarRegister("mb_vote_map_auto", "2");
 
+	// What to do if Vote Map fail (0 None, 1 Restart Vote Map, 2 Choose random map)
+	this->m_VoteMapFail = gMatchUtil.CvarRegister("mb_vote_map_fail", "1");
+
 	// Play Knife round to pick starting sides
 	this->m_KnifeRound = gMatchUtil.CvarRegister("mb_knife_round", "0");
 
-	// Scores display method (0 Default sentences type, 1 Show all teams and scores)
+	// Scores display method (0 Continue match, 1 Show all teams and scores)
 	this->m_ScoreType = gMatchUtil.CvarRegister("mb_score_type", "0");
 
 	// Users Help File or Website url (Without HTTPS)
@@ -215,28 +218,8 @@ void CMatchBot::SetState(int State)
 			// If has votemap
 			if (this->m_VoteMap->value)
 			{
-				if (this->m_VoteMapType->value == 1.0f)
-				{
-					// Init Vote Map
-					gMatchVoteMap.Init();
-				}
-				else
-				{
-					// Load map list from maps.ini skipping current map
-					auto MapList = gMatchUtil.GetMapList(false);
-
-					// Get first item of list
-					auto Item = MapList.begin();
-
-					// Advance to a random map position
-					std::advance(Item, RANDOM_LONG(0, MapList.size()));
-
-					// Send message to players
-					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
-
-					// Change map
-					gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
-				}
+				// Execute Vote Map
+				gMatchVoteMap.Init(this->m_VoteMapType->value, this->m_VoteMapFail->value);
 
 				// Set Variable to zero
 				this->m_VoteMap->value = 0.0f;
@@ -986,34 +969,46 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 // Start vote map
 void CMatchBot::StartVoteMap(CBasePlayer* Player)
 {
-	// Check Accesss
-	if (gMatchAdmin.Access(Player->entindex(), ADMIN_VOTE))
+	// If player is not null, command issued by an admin
+	if (Player)
 	{
-		// Check if we can run a vote in correct state: Warmup, First Half, Halftime, Second Half or Overtime
-		if (this->m_State != STATE_DEAD && this->m_State != STATE_START && this->m_State != STATE_END)
+		// Check Accesss
+		if (gMatchAdmin.Access(Player->entindex(), ADMIN_VOTE))
 		{
-			// Stop Ready System 
-			gMatchReady.Stop(0);
+			// Check if we can run a vote in correct state: Warmup, First Half, Halftime, Second Half or Overtime
+			if (this->m_State != STATE_DEAD && this->m_State != STATE_START && this->m_State != STATE_END)
+			{
+				// Stop Ready System 
+				gMatchReady.Stop(0);
 
-			// Stop Timer System
-			gMatchTimer.Stop(0);
+				// Stop Timer System
+				gMatchTimer.Stop(0);
 
-			// Disable vote map for this map session
-			this->m_VoteMap->value = 1.0f;
+				// Enable vote map for this map session
+				this->m_VoteMap->value = 1.0f;
 
-			// Start Match
-			this->SetState(STATE_START);
+				// Start Match
+				this->SetState(STATE_START);
+			}
+			else
+			{
+				// Message here
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start an vote in \3%s\1 state."), this->GetState(this->m_State));
+			}
 		}
 		else
 		{
-			// Message here
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start an vote in \3%s\1 state."), this->GetState(this->m_State));
+			// Error message
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 		}
 	}
-	else
+	else // Command issued by server, or Match BOT
 	{
-		// Error message
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+		// Enable vote map
+		this->m_VoteMap->value = 1.0f;
+
+		// Start Match
+		gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_START);
 	}
 }
 

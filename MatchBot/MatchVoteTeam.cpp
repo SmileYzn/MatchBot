@@ -62,8 +62,6 @@ void CMatchVoteTeam::Stop()
 		gMatchMenu[EntityIndex].Hide(EntityIndex);
 	}
 
-	gMatchVoteTeam.VoteList();
-
 	gMatchTask.Delete(TASK_VOTE_LIST);
 
 	gMatchTask.Delete(TASK_VOTE_TIMER);

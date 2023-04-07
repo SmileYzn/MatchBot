@@ -2,57 +2,89 @@
 
 CMatchVoteMap gMatchVoteMap;
 
-void CMatchVoteMap::Init()
+// Start vote map
+void CMatchVoteMap::Init(int VoteMapType, int VoteMapFail)
 {
+    // Clear map data
     this->m_Data.clear();
 
+    // Load maps data
     this->m_Data = this->Load();
 
+    // Set player count to 0
     this->m_PlayerNum = 0;
+
+    // Set vote count to 0
     this->m_VoteCount = 0;
 
-    auto Players = gMatchUtil.GetPlayers(true, false);
+    // Set vote map fail type
+    this->m_VoteFailType = VoteMapFail;
 
-    for (auto const& Player : Players)
+    // If vote map is enabled
+    if (VoteMapType == 1)
     {
-        auto EntityIndex = Player->entindex();
+        // Get players
+        auto Players = gMatchUtil.GetPlayers(true, false);
 
-        gMatchMenu[EntityIndex].Create(_T("Vote Map:"), false, (void*)this->MenuHandle);
-
-        for (auto const& Item : this->m_Data)
+        // Loop players
+        for (auto const& Player : Players)
         {
-            gMatchMenu[EntityIndex].AddItem(Item.Index, Item.Name);
+            // Get entity index
+            auto EntityIndex = Player->entindex();
+
+            // Create vote menu
+            gMatchMenu[EntityIndex].Create(_T("Vote Map:"), false, (void*)this->MenuHandle);
+
+            // Loop map items
+            for (auto const& Item : this->m_Data)
+            {
+                // Add to vote map menu
+                gMatchMenu[EntityIndex].AddItem(Item.Index, Item.Name);
+            }
+
+            // Increment player count
+            this->m_PlayerNum++;
+
+            // Display vote map menu
+            gMatchMenu[EntityIndex].Show(EntityIndex);
         }
 
-        this->m_PlayerNum++;
+        // Vote map list task
+        gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
 
-        gMatchMenu[EntityIndex].Show(EntityIndex);
+        // Create stop task
+        gMatchTask.Create(TASK_VOTE_TIMER, 15.0f, false, (void*)this->Stop, this->m_VoteFailType);
+
+        // Send message
+        gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting Vote Map."));
     }
-
-    this->VoteList();
-
-    gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
-
-    gMatchTask.Create(TASK_VOTE_TIMER, 15.0f, false, (void*)this->Stop, 1);
-
-    gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting Vote Map."));
+    else
+    {
+        // Change to a random map
+        this->ChangeRandomMap();
+    }
 }
 
-void CMatchVoteMap::Stop()
+// Stop vote map
+void CMatchVoteMap::Stop(int VoteFailType)
 {
+    // Get all players
     auto Players = gMatchUtil.GetPlayers(true, false);
 
+    // Loop
     for (auto const& Player : Players)
     {
+        // Get entity index
         auto EntityIndex = Player->entindex();
 
+        // Hide menu
         gMatchMenu[EntityIndex].Hide(EntityIndex);
     }
 
-    gMatchVoteMap.VoteList();
-
+    // Delete vote list tas
     gMatchTask.Delete(TASK_VOTE_LIST);
 
+    // Delete vote timer
     gMatchTask.Delete(TASK_VOTE_TIMER);
 
     auto Winner = gMatchVoteMap.GetWinner();
@@ -65,9 +97,28 @@ void CMatchVoteMap::Stop()
     }
     else
     {
-        gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)gMatchBot.NextState, STATE_START);
-
+        // Send vote failed message
         gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The map choice has failed: \3No votes."));
+
+        // What to do if vote map fail
+        switch (VoteFailType)
+        {
+            case 1: // Restart vote map
+            {
+                gMatchBot.StartVoteMap(nullptr);
+                break;
+            }
+            case 2: // Choose a random map
+            {
+                gMatchVoteMap.ChangeRandomMap();
+                break;
+            }
+            default: // No action, continue match
+            {
+                gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)gMatchBot.NextState, STATE_START);
+                break;
+            }
+        }
     }
 }
 
@@ -101,7 +152,7 @@ void CMatchVoteMap::AddVote(int ItemIndex, int Vote)
 
     if (this->m_VoteCount >= this->m_PlayerNum)
     {
-        this->Stop();
+        this->Stop(this->m_VoteFailType);
     }
 }
 
@@ -172,4 +223,32 @@ P_MAP_ITEM CMatchVoteMap::GetWinner()
     }
 
     return Winner;
+}
+
+void CMatchVoteMap::ChangeRandomMap()
+{
+    // Load map list from maps.ini skipping current map
+    auto MapList = gMatchUtil.GetMapList(false);
+
+    // If list is empty
+    if (MapList.empty())
+    {
+        // Fill with default maps
+        MapList.insert(std::make_pair(0, "de_dust2"));
+        MapList.insert(std::make_pair(1, "de_inferno"));
+        MapList.insert(std::make_pair(2, "de_nuke"));
+        MapList.insert(std::make_pair(3, "de_train"));
+    }
+
+    // Get first item of list
+    auto Item = MapList.begin();
+
+    // Advance to a random map position
+    std::advance(Item, RANDOM_LONG(0, MapList.size()));
+
+    // Send message to players
+    gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
+
+    // Change map
+    gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
 }
