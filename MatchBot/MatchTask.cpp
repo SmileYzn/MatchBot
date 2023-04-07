@@ -30,7 +30,10 @@ void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback
 
 void CMatchTask::Delete(int Index)
 {
-	this->m_Data.erase(Index);
+	if (this->m_Data.find(Index) != this->m_Data.end())
+	{
+		this->m_Data.erase(Index);
+	}
 }
 
 void CMatchTask::Frame()
