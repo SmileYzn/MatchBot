@@ -12,9 +12,6 @@ public:
 	// Load Language file
 	void Load(const char* Language);
 
-	// Replace all in string
-	void ReplaceAll(std::string& String, const std::string& From, const std::string& To);
-
 	// Get language by key, return same key if not found
 	const char* Get(const char* Key);
 

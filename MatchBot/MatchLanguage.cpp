@@ -33,10 +33,10 @@ void CMatchLanguage::Load(const char* Language)
 					if (!Line.empty())
 					{
 						// Escape all special chracters
-						this->ReplaceAll(Line, "\\1", "\1");
-						this->ReplaceAll(Line, "\\3", "\3");
-						this->ReplaceAll(Line, "\\4", "\4");
-						this->ReplaceAll(Line, "\\n", "\n");
+						gMatchUtil.ReplaceAll(Line, "\\1", "\1");
+						gMatchUtil.ReplaceAll(Line, "\\3", "\3");
+						gMatchUtil.ReplaceAll(Line, "\\4", "\4");
+						gMatchUtil.ReplaceAll(Line, "\\n", "\n");
 
 						// If has quotes
 						if (Line[0] == '"')
@@ -69,23 +69,6 @@ void CMatchLanguage::Load(const char* Language)
 	}
 }
 
-// Replace all in string
-void CMatchLanguage::ReplaceAll(std::string& String, const std::string& From, const std::string& To)
-{
-	// Starting position
-	size_t StartPos = 0;
-
-	// While string is found on that position
-	while ((StartPos = String.find(From, StartPos)) != std::string::npos)
-	{
-		// Replace with string
-		String.replace(StartPos, From.length(), To);
-
-		// Increment starting position
-		StartPos += To.length();
-	}
-}
-
 // Get language by key, return same key if not found
 const char* CMatchLanguage::Get(const char* Key)
 {
@@ -95,7 +78,7 @@ const char* CMatchLanguage::Get(const char* Key)
 		// Find key
 		if (this->m_Data.find(Key) != this->m_Data.end())
 		{
-			// Return string of thi skey
+			// Return result
 			return this->m_Data[Key].c_str();
 		}
 	}

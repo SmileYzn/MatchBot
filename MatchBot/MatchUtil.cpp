@@ -516,3 +516,23 @@ void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
 		}
 	}
 }
+
+// Replace all in string
+void CMatchUtil::ReplaceAll(std::string& String, const std::string& From, const std::string& To)
+{
+	if (!From.empty())
+	{
+		// Starting position
+		size_t StartPos = 0;
+
+		// While string is found on that position
+		while ((StartPos = String.find(From, StartPos)) != std::string::npos)
+		{
+			// Replace with string
+			String.replace(StartPos, From.length(), To);
+
+			// Increment starting position
+			StartPos += To.length();
+		}
+	}
+}
