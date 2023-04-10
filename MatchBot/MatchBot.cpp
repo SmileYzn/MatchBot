@@ -841,7 +841,7 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 	}
 
 	// Show motd
-	gMatchUtil.ShowMotd(Player->edict(), Path, MAX_PATH);
+	gMatchUtil.ShowMotd(Player->edict(), Path, strlen(Path));
 }
 
 // On Round Start: After freezetime end
