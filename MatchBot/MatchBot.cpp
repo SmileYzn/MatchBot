@@ -821,6 +821,9 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 			// If string is not null
 			if (this->m_HelpFileAdmin->string)
 			{
+				// Reset memory
+				Q_memset(Path, 0, sizeof(Path));
+
 				// Show motd
 				Q_strcpy_s(Path, this->m_HelpFileAdmin->string);
 			}
@@ -834,6 +837,9 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 			// If string is not null
 			if (this->m_HelpFile->string)
 			{
+				// Reset memory
+				Q_memset(Path, 0, sizeof(Path));
+
 				// Show motd
 				Q_strcpy_s(Path, this->m_HelpFile->string);
 			}
