@@ -132,7 +132,7 @@ public:
 	// Match State
 	void SetState(int State);
 
-	// Get Score
+	// Get Score (0 Frags, 1 Deaths)
 	int* GetScore(int EntityIndex);
 	
 	// Connect

@@ -1008,8 +1008,8 @@ void CMatchBot::RoundRestart(bool PreRestart)
 				// If is set to store player scores on scorebard after half time
 				if (this->m_PlayerScore && this->m_PlayerScore->value)
 				{
-					// If is PRE sv_restart event
-					if (PreRestart)
+					// If is POST sv_restart event
+					if (!PreRestart)
 					{
 						// Get players
 						auto Players = gMatchUtil.GetPlayers(true, true);
@@ -1017,26 +1017,14 @@ void CMatchBot::RoundRestart(bool PreRestart)
 						// Loop
 						for (auto& Player : Players)
 						{
-							// Store Frags
-							Player->edict()->v.fuser4 = Player->edict()->v.frags;
+							// Get Player score
+							auto Score = gMatchStats.GetScore(Player->entindex());
 
-							// Store Deaths
-							Player->edict()->v.iuser4 = Player->m_iDeaths;
-						}
-					}
-					else // If is POST sv_restart event
-					{
-						// Get players
-						auto Players = gMatchUtil.GetPlayers(true, true);
-
-						// Loop
-						for (auto& Player : Players)
-						{
 							// Restore Frags
-							Player->edict()->v.frags = Player->edict()->v.fuser4;
+							Player->edict()->v.frags = (float)Score[0];
 
 							// Restore Deaths
-							Player->m_iDeaths = Player->edict()->v.iuser4;
+							Player->m_iDeaths = Score[1];
 
 							// Update scoreboard
 							Player->AddPoints(0, TRUE);
