@@ -479,9 +479,9 @@ void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
 				}
 
 				FREE_FILE(FileContent);
-			}
 
-			return;
+				return;
+			}
 		}
 
 		char* Buffer = Motd;
