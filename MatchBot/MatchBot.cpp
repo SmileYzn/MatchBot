@@ -55,6 +55,15 @@ void CMatchBot::ServerActivate()
 
 	// Scores display method (0 Continue match, 1 Show all teams and scores)
 	this->m_ScoreType = gMatchUtil.CvarRegister("mb_score_type", "0");
+	
+	// Store team scores in scoreboard
+	this->m_TeamScore = gMatchUtil.CvarRegister("mb_scoreboard_team", "1");
+
+	// Store player scores in scoreboard
+	this->m_PlayerScore = gMatchUtil.CvarRegister("mb_scoreboard_player", "1");
+
+	// Display states and scores at game description
+	this->m_GameName = gMatchUtil.CvarRegister("mb_gamename", "1");
 
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
@@ -426,7 +435,7 @@ void CMatchBot::SetState(int State)
 	gMatchStats.SetState(this->m_State);
 
 	// Match Scores Game Name
-	gMatchScore.UpdateGameName();
+	this->UpdateGameName();
 
 	// If is not null
 	if(this->m_Config[this->m_State])
@@ -968,9 +977,126 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 		}
 
 		// Match Scores Game Name
-		gMatchScore.UpdateGameName();
+		this->UpdateGameName();
 	}
 }
+
+void CMatchBot::RoundRestart(bool PreRestart)
+{
+	// If has CSGameRules loaded
+	if (g_pGameRules)
+	{
+		// If is live
+		if (this->m_State >= STATE_HALFTIME)
+		{
+			// If store team scores in scoreboard is set
+			if (this->m_TeamScore && this->m_TeamScore->value)
+			{
+				// If sv_restart is not set
+				if (!CSGameRules()->m_bCompleteReset)
+				{
+					// Get number of CTs wins
+					CSGameRules()->m_iNumCTWins = this->GetScore(CT);
+
+					// Get number of TRs wins
+					CSGameRules()->m_iNumTerroristWins = this->GetScore(TERRORIST);
+
+					// Updade scoreboards
+					CSGameRules()->UpdateTeamScores();
+				}
+
+				// If is set to store player scores on scorebard after half time
+				if (this->m_PlayerScore && this->m_PlayerScore->value)
+				{
+					// If is PRE sv_restart event
+					if (PreRestart)
+					{
+						// Get players
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						// Loop
+						for (auto& Player : Players)
+						{
+							// Store Frags
+							Player->edict()->v.fuser4 = Player->edict()->v.frags;
+
+							// Store Deaths
+							Player->edict()->v.iuser4 = Player->m_iDeaths;
+						}
+					}
+					else // If is POST sv_restart event
+					{
+						// Get players
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						// Loop
+						for (auto& Player : Players)
+						{
+							// Restore Frags
+							Player->edict()->v.frags = Player->edict()->v.fuser4;
+
+							// Restore Deaths
+							Player->m_iDeaths = Player->edict()->v.iuser4;
+
+							// Update scoreboard
+							Player->AddPoints(0, TRUE);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void CMatchBot::UpdateGameName()
+{
+	// If has CSGameRules loaded
+	if (g_pGameRules)
+	{
+		// Store original game description
+		if (!this->m_GameDesc[0])
+		{
+			// Get default game name
+			Q_strncpy(this->m_GameDesc, CSGameRules()->GetGameDescription(), sizeof(this->m_GameDesc));
+		}
+
+		// If is enabled
+		if (this->m_GameName && this->m_GameName->value)
+		{
+			// Get match state
+			auto State = gMatchBot.GetState();
+
+			// If is not running, set default name
+			if (State == STATE_DEAD)
+			{
+				// Restore default game name
+				Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc);
+			}
+			else if (State == STATE_WARMUP || State == STATE_START)
+			{
+				// Set game name from state name
+				Q_strcpy(CSGameRules()->m_GameDesc, gMatchBot.GetState(State));
+			}
+			else if (State >= STATE_FIRST_HALF && State <= STATE_END)
+			{
+				// Game Name
+				char GameName[32] = { 0 };
+
+				// Format game name with teams and scores
+				Q_snprintf(GameName, sizeof(GameName), "%s « %d : %d » %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+
+				// Get to game description
+				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);
+			}
+		}
+		else
+		{
+			// Restore default game name
+			Q_strcpy_s(CSGameRules()->m_GameDesc, this->m_GameDesc);
+		}
+	}
+}
+
 
 // Start vote map
 void CMatchBot::StartVoteMap(CBasePlayer* Player)
@@ -1189,10 +1315,6 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 
 			// Restart current state
 			this->SetState(this->m_State);
-		}
-		else if (this->m_State == STATE_SECOND_HALF)
-		{
-
 		}
 		else
 		{

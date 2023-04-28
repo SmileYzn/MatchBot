@@ -107,9 +107,7 @@
     <ClInclude Include="MatchLanguage.h" />
     <ClInclude Include="MatchLO3.h" />
     <ClInclude Include="MatchMenu.h" />
-    <ClInclude Include="MatchMessage.h" />
     <ClInclude Include="MatchPause.h" />
-    <ClInclude Include="MatchScore.h" />
     <ClInclude Include="MatchStats.h" />
     <ClInclude Include="MatchTask.h" />
     <ClInclude Include="MatchTimer.h" />
@@ -138,9 +136,7 @@
     <ClCompile Include="MatchMenu.cpp" />
     <ClCompile Include="MatchCommand.cpp" />
     <ClCompile Include="MatchLO3.cpp" />
-    <ClCompile Include="MatchMessage.cpp" />
     <ClCompile Include="MatchPause.cpp" />
-    <ClCompile Include="MatchScore.cpp" />
     <ClCompile Include="MatchStats.cpp" />
     <ClCompile Include="MatchTimer.cpp" />
     <ClCompile Include="MatchVoteMap.cpp" />

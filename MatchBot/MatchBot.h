@@ -119,6 +119,12 @@ public:
 	// Round end event
 	void RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDelay);
 
+	// Round restart event
+	void RoundRestart(bool PreRestart);
+
+	// Update game description
+	void UpdateGameName();
+
 	// Start vote map
 	void StartVoteMap(CBasePlayer* Player);
 
@@ -150,6 +156,9 @@ private:
 	// Overtime Scores
 	int m_ScoreOT[SPECTATOR + 1];
 
+	// Defaut game description
+	char m_GameDesc[32] = { 0 };
+
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;
 	cvar_t* m_Language = nullptr;
@@ -167,6 +176,9 @@ private:
 	cvar_t* m_VoteMapFail = nullptr;
 	cvar_t* m_KnifeRound = nullptr;
 	cvar_t* m_ScoreType = nullptr;
+	cvar_t* m_TeamScore = nullptr;
+	cvar_t* m_PlayerScore = nullptr;
+	cvar_t* m_GameName = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 
