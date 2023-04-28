@@ -255,13 +255,17 @@ void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreez
 
 void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
 {
+	gMatchBot.RoundRestart(true);
+
 	gMatchStats.RoundRestart(true);
 
 	chain->callNext();
 
-	gMatchPause.RoundRestart();
+	gMatchBot.RoundRestart(false);
 
 	gMatchStats.RoundRestart(false);
+
+	gMatchPause.RoundRestart();
 }
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
