@@ -46,7 +46,7 @@ jobs:
     - name: Download Metamod-r
       run: |
         # Set Token
-        $urlToken = "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"
+        $urlToken = "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"
 
         # Set Repository path
         $repoUrl = "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest"
@@ -78,7 +78,7 @@ jobs:
     - name: Download Hitbox Fixer
       run: |
         # Set Token
-        $urlToken = "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"
+        $urlToken = "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"
 
         # Set Repository path
         $repoUrl = "https://api.github.com/repos/Garey27/hitbox_fixer/releases/latest"
