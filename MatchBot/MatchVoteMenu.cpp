@@ -268,7 +268,7 @@ bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 				gMatchMenu[Player->entindex()].Create(_T("Vote Map:"), true, (void*)this->VoteMapHandle);
 
 				// Needed votes
-				auto VotesNeed = (Players.size() * VOTE_MENU_PERCENTAGE);
+				auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
 
 				// Loop Map List
 				for (auto const& row : this->m_MapList)
@@ -331,7 +331,7 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 			auto Players = gMatchUtil.GetPlayers(true, true);
 
 			// Needed votes
-			auto VotesNeed = (Players.size() * VOTE_MENU_PERCENTAGE);
+			auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
 
 			// Get Vote Count
 			auto VoteCount = 0;
@@ -402,7 +402,7 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 							this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam] = true;
 
 							// Needed votes
-							auto VotesNeed = (Players.size() * VOTE_MENU_PERCENTAGE);
+							auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
 
 							// Get Vote Count
 							auto VoteCount = 0;
@@ -484,7 +484,7 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 					this->m_Votes[Player->entindex()].VoteRestart[MatchState] = true;
 
 					// Needed votes
-					auto VotesNeed = (Players.size() * VOTE_MENU_PERCENTAGE);
+					auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
 
 					// Get Vote Count
 					auto VoteCount = 0;

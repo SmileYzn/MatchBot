@@ -174,6 +174,7 @@ public:
 	cvar_t* m_ReadyType = nullptr;
 	cvar_t* m_ReadyTime = nullptr;
 	cvar_t* m_TeamPickupType = nullptr;
+	cvar_t* m_VotePercent = nullptr;
 	cvar_t* m_VoteMap = nullptr;
 	cvar_t* m_VoteMapType = nullptr;
 	cvar_t* m_VoteMapAuto = nullptr;

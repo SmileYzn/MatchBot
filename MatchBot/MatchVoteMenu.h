@@ -1,11 +1,5 @@
 #pragma once
 
-// Needed players in team to Vote Kick
-#define VOTE_MENU_KICK_PLAYERS_MIN 5
-
-// Vote Percentage
-#define VOTE_MENU_PERCENTAGE 0.70f
-
 typedef struct S_PLAYER_VOTES
 {
 	// Vote Kick Array

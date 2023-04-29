@@ -38,6 +38,9 @@ void CMatchBot::ServerActivate()
 	// Team Pickup Type (-1 Enable vote, 0 Leaders, 1 Random, 2 None, 3 Skill Balanced, 4 Swap Teams)
 	this->m_TeamPickupType = gMatchUtil.CvarRegister("mb_team_pick_type", "-1");
 
+	// Vote percentage in Votes
+	this->m_VotePercent = gMatchUtil.CvarRegister("mb_vote_percent", "0.70");
+
 	// Vote Map (Not used at settings file)
 	this->m_VoteMap = gMatchUtil.CvarRegister("mb_vote_map", "0");
 
