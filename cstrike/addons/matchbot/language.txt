@@ -688,6 +688,11 @@ en:"You already voted to retart match."
 bp:"Você já votou para reiniciar a partida."
 es:"Ya has votado para reiniciar la partida."
 
+"%d players is needed to enable that command."
+en:"%d players is needed to enable that command."
+bp:"São necessários %d jogadores para habilitar esse comando."
+es:"Se necesitan %d jugadores para habilitar ese comando."
+
 "Play Overtime"
 en:"Play Overtime"
 bp:"Jogar Overtime"

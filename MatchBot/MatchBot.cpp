@@ -65,17 +65,17 @@ void CMatchBot::ServerActivate()
 	// Display states and scores at game description
 	this->m_GameName = gMatchUtil.CvarRegister("mb_gamename", "1");
 
-	// Enable Vote Kick command for players
-	this->m_PlayerVoteKick = gMatchUtil.CvarRegister("mb_player_vote_kick", "1");
+	// Mininum of players to enable Vote Kick command for players (0 to disble command)
+	this->m_PlayerVoteKick = gMatchUtil.CvarRegister("mb_player_vote_kick", "5");
 
-	// Enable Vote Map command for players
-	this->m_PlayerVoteMap = gMatchUtil.CvarRegister("mb_player_vote_map", "1");
+	// Mininum of players to enable Vote Map command for players (0 to disble command)
+	this->m_PlayerVoteMap = gMatchUtil.CvarRegister("mb_player_vote_map", "5");
 
-	// Enable Vote Pause command for players
-	this->m_PlayerVotePause = gMatchUtil.CvarRegister("mb_player_vote_pause", "1");
+	// Mininum of players to enable Vote Pause command for players (0 to disble command)
+	this->m_PlayerVotePause = gMatchUtil.CvarRegister("mb_player_vote_pause", "5");
 
-	// Enable Vote Restart command for players
-	this->m_PlayerVoteRestart = gMatchUtil.CvarRegister("mb_player_vote_restart", "1");
+	// Mininum of players to enable Vote Restart command for players (0 to disble command)
+	this->m_PlayerVoteRestart = gMatchUtil.CvarRegister("mb_player_vote_restart", "5");
 
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
