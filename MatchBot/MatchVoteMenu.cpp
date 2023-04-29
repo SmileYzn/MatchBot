@@ -46,30 +46,46 @@ void CMatchVoteMenu::PlayerDisconnect(edict_t* pEdict)
 // Main Vote Menu
 bool CMatchVoteMenu::Menu(CBasePlayer* Player)
 {
-	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+	// If any vote type is enabled
+	if (gMatchBot.m_PlayerVoteKick->value || gMatchBot.m_PlayerVoteMap->value || !gMatchBot.m_PlayerVotePause || gMatchBot.m_PlayerVoteRestart)
 	{
-		if (gMatchBot.GetState() != STATE_START)
+		// If is in a valid team
+		if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 		{
-			auto EntityIndex = Player->entindex();
+			// If vote is not started
+			if (gMatchBot.GetState() != STATE_START)
+			{
+				// Get player entity index
+				auto EntityIndex = Player->entindex();
 
-			gMatchMenu[EntityIndex].Create(_T("Player Vote Menu:"), true, (void*)this->MenuHandle);
+				// Menu title
+				gMatchMenu[EntityIndex].Create(_T("Player Vote Menu:"), true, (void*)this->MenuHandle);
 
-			gMatchMenu[EntityIndex].AddItem(0, _T("Vote for Kick"));
+				// Vote Kick
+				gMatchMenu[EntityIndex].AddItem(0, _T("Vote for Kick"), !gMatchBot.m_PlayerVoteKick->value);
 
-			gMatchMenu[EntityIndex].AddItem(1, _T("Vote for Map"));
+				// Vote Map
+				gMatchMenu[EntityIndex].AddItem(1, _T("Vote for Map"), !gMatchBot.m_PlayerVoteMap->value);
 
-			gMatchMenu[EntityIndex].AddItem(2, _T("Vote for Tactical Timeout"));
+				// Vote Timeout
+				gMatchMenu[EntityIndex].AddItem(2, _T("Vote for Tactical Timeout"), !gMatchBot.m_PlayerVotePause);
 
-			gMatchMenu[EntityIndex].AddItem(3, _T("Vote for Restart Match"));
+				// Vote Restart
+				gMatchMenu[EntityIndex].AddItem(3, _T("Vote for Restart Match"), !gMatchBot.m_PlayerVoteRestart);
 
-			gMatchMenu[EntityIndex].Show(EntityIndex);
+				// Show menu
+				gMatchMenu[EntityIndex].Show(EntityIndex);
 
-			return true;
+				// Return result
+				return true;
+			}
 		}
 	}
 
+	// Show error message
 	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
 
+	// Return result
 	return false;
 }
 
@@ -109,6 +125,13 @@ void CMatchVoteMenu::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
 // Vote Kick Menu
 bool CMatchVoteMenu::VoteKick(CBasePlayer* Player)
 {
+	// If is not enabled show error
+	if (!gMatchBot.m_PlayerVoteKick->value)
+	{
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		return false;
+	}
+
 	// If player is in game
 	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 	{
@@ -237,6 +260,13 @@ void CMatchVoteMenu::VoteKickHandle(int EntityIndex, P_MENU_ITEM Item)
 // Vote Map Menu
 bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 {
+	// If is not enabled show error
+	if (!gMatchBot.m_PlayerVoteMap->value)
+	{
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		return false;
+	}
+
 	// If player is in game
 	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 	{
@@ -348,6 +378,13 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 // Vote Pause
 bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 {
+	// If is not enabled show error
+	if (!gMatchBot.m_PlayerVotePause->value)
+	{
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		return false;
+	}
+
 	// If player is in game
 	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 	{
@@ -420,6 +457,13 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 // Vote Restart
 bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 {
+	// If is not enabled show error
+	if (!gMatchBot.m_PlayerVoteRestart->value)
+	{
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		return false;
+	}
+
 	// If player is in game
 	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 	{

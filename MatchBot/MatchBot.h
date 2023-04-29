@@ -159,6 +159,10 @@ private:
 	// Defaut game description
 	char m_GameDesc[32] = { 0 };
 
+	// Match Bot Config Variables
+	cvar_t* m_Config[STATE_END + 1];
+
+public:
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;
 	cvar_t* m_Language = nullptr;
@@ -179,11 +183,12 @@ private:
 	cvar_t* m_TeamScore = nullptr;
 	cvar_t* m_PlayerScore = nullptr;
 	cvar_t* m_GameName = nullptr;
+	cvar_t* m_PlayerVoteKick = nullptr;
+	cvar_t* m_PlayerVoteMap = nullptr;
+	cvar_t* m_PlayerVotePause = nullptr;
+	cvar_t* m_PlayerVoteRestart = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
-
-	// Match Bot Config Variables
-	cvar_t* m_Config[STATE_END + 1];
 };
 
 extern CMatchBot gMatchBot;
