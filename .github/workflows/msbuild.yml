@@ -46,19 +46,19 @@ jobs:
     - name: Download Metamod-r
       run: |
         # Set Token
-        $urlToken = "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"
+        $token = "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"
 
         # Set Repository path
         $repoUrl = "https://api.github.com/repos/theAsmodai/metamod-r/releases/latest"
 
         # Set assets data
-        $assets = ((Invoke-WebRequest $repoUrl -Token $urlToken | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip")
+        $assets = ((Invoke-WebRequest $repoUrl -Headers @{"authorization" = "Bearer $token"} | ConvertFrom-Json).assets | Where-Object name -like "metamod-bin-*.zip")
 
         # Get ZIP file name
         $zipName  = $assets.name
 
         # Download ZIP file
-        Invoke-WebRequest -Uri $assets.browser_download_url -Token $urlToken -Out $zipName
+        Invoke-WebRequest -Uri $assets.browser_download_url -Out $zipName
 
         # Extract ZIP File
         Expand-Archive $zipName
@@ -84,13 +84,13 @@ jobs:
         $repoUrl = "https://api.github.com/repos/Garey27/hitbox_fixer/releases/latest"
 
         # Set assets data
-        $assets = ((Invoke-WebRequest $repoUrl -Token $urlToken | ConvertFrom-Json).assets | Where-Object name -like "hitbox_fix-bin-*.zip")
+        $assets = ((Invoke-WebRequest $repoUrl -Headers @{"authorization" = "Bearer $token"} | ConvertFrom-Json).assets | Where-Object name -like "hitbox_fix-bin-*.zip")
 
         # Get ZIP file name
         $zipName  = $assets.name
 
         # Download ZIP file
-        Invoke-WebRequest -Uri $assets.browser_download_url -Token $urlToken -Out $zipName
+        Invoke-WebRequest -Uri $assets.browser_download_url -Out $zipName
 
         # Extract ZIP File
         Expand-Archive $zipName
