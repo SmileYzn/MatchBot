@@ -223,11 +223,13 @@ void CMatchBot::SetState(int State)
 			// Start Warmup things
 			gMatchWarmup.Init();
 
+			// If ready type is 1
 			if (this->m_ReadyType->value == 1)
 			{
 				// Use Ready System
 				gMatchReady.Init(this->m_PlayersMin->value);
 			}
+			// If ready type is 2
 			else if (this->m_ReadyType->value > 1)
 			{
 				// Use Timer System
@@ -323,39 +325,51 @@ void CMatchBot::SetState(int State)
 			// Swap teams and scores in really
 			this->SwapTeams();
 
-			// If has less players than minimum required
-			if ((int)gMatchUtil.GetPlayers(true, true).size() < this->m_PlayersMin->value)
+			// If ready mode is enabled or timer system is enabled
+			if (this->m_ReadyType->value)
 			{
-				// Send message
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
-
-				// Init Warmup things
-				gMatchWarmup.Init();
-
-				if (this->m_ReadyType->value == 1)
+				// If has less players than minimum required
+				if ((int)gMatchUtil.GetPlayers(true, true).size() < this->m_PlayersMin->value)
 				{
-					// Init Ready System
-					gMatchReady.Init(this->m_PlayersMin->value);
+					// Send message
+					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
+
+					// Init Warmup things
+					gMatchWarmup.Init();
+
+					// If ready type is 1
+					if (this->m_ReadyType->value == 1)
+					{
+						// Init Ready System
+						gMatchReady.Init(this->m_PlayersMin->value);
+					}
+					// If ready type is 2
+					else if (this->m_ReadyType->value > 1)
+					{
+						// Init Timer System
+						gMatchTimer.Init(this->m_PlayersMin->value, this->m_ReadyTime->value);
+					}
 				}
-				else if (this->m_ReadyType->value > 1)
+				else
 				{
-					// Init Timer System
-					gMatchTimer.Init(this->m_PlayersMin->value, this->m_ReadyTime->value);
+					// If match is not played in total of rounds
+					if (this->GetRound() < this->m_PlayRounds->value)
+					{
+						// Play second Half
+						gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_SECOND_HALF);
+					}
+					else
+					{
+						// Play Overtime rounds
+						gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_OVERTIME);
+					}
 				}
 			}
 			else
 			{
-				// If match is not played in total of rounds
-				if (this->GetRound() < this->m_PlayRounds->value)
-				{
-					// Play second Half
-					gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_SECOND_HALF);
-				}
-				else
-				{
-					// Play Overtime rounds
-					gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_OVERTIME);
-				}
+				// Send message
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Wait for an server \4Administrator\1 restart the match!"), this->GetState(this->m_State));
 			}
 
 			break;

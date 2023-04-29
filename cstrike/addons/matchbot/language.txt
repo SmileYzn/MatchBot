@@ -253,6 +253,11 @@ en:"\3%s\1 started, Get Ready!"
 bp:"\3%s\1 iniciado, Fique Atento!"
 es:"\3%s\1 comenzando, Prepárate!"
 
+"Wait for an server \4Administrator\1 restart the match!"
+en:"Wait for an server \4Administrator\1 restart the match!"
+bp:"Aguarde um \4Administrator\1 reiniciar a partida!"
+es:"¡Espera a que un \4Administrador\1 reinicie el juego!"
+
 "Changing teams automatically."
 en:"Changing teams automatically."
 bp:"Trocando times automaticamente."
