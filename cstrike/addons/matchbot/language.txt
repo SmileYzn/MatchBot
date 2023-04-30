@@ -817,3 +817,8 @@ es:"%s ha ganado la Ronda de Cuchillos, elección de equipos iniciada."
 en:"Swap Teams Vote:"
 bp:"Escolha dos times:"
 es:"Eleccion de Equipos:"
+
+"%s « %d : %d » %s"
+en:"%s « %d : %d » %s"
+bp:"%s « %d : %d » %s"
+es:"%s « %d : %d » %s"

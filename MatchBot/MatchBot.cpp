@@ -1100,7 +1100,7 @@ void CMatchBot::UpdateGameName()
 				char GameName[32] = { 0 };
 
 				// Format game name with teams and scores
-				Q_snprintf(GameName, sizeof(GameName), "%s « %d : %d » %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+				Q_snprintf(GameName, sizeof(GameName), _T("%s « %d : %d » %s"), gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 
 				// Get to game description
 				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);
