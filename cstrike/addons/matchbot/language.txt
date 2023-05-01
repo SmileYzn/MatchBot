@@ -498,6 +498,11 @@ en:"Hit \3%s\1 %d time(s) (Damage %d)"
 bp:"Acertou \3%s\1 %d vez(es) (Dano %d)"
 es:"Aciertos \3%s\1 %d vec(es) (Daño %d)"
 
+"* Hit %s %d time(s) (Damage %d)"
+en:"* Hit %s %d time(s) (Damage %d)"
+bp:"* Acertou %s %d vez(es) (Dano %d)"
+es:"* Aciertos %s %d vec(es) (Daño %d)"
+
 "You haven't hit anyone this round."
 en:"You haven't hit anyone this round."
 bp:"Você não acertou ninguém nesse round."
@@ -517,6 +522,11 @@ es:"No te han alcanzado esta ronda."
 en:"(%d dmg / %d hits) to (%d dmg / %d hits) from \3%s\1 (%d HP)"
 bp:"(%d dano / %d acertos) para (%d dano / %d acertos) de \3%s\1 (%d HP)"
 es:"(%d daño / %d aciertos) a (%d daño / %d aciertos) de \3%s\1 (%d HP)"
+
+"* (%d dmg / %d hits) to (%d dmg / %d hits) from %s (%d HP)"
+en:"* (%d dmg / %d hits) to (%d dmg / %d hits) from %s (%d HP)"
+bp:"* (%d dano / %d acertos) para (%d dano / %d acertos) de %s (%d HP)"
+es:"* (%d daño / %d aciertos) a (%d daño / %d aciertos) de %s (%d HP)"
 
 "No stats in this round."
 en:"No stats in this round."

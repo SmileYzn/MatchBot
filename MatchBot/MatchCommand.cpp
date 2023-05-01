@@ -96,7 +96,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,".dmg"))
 		{
-			gMatchStats.ShowDamage(Player);
+			gMatchStats.ShowDamage(Player, false);
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,".rdmg"))
@@ -106,7 +106,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,".sum"))
 		{
-			gMatchStats.ShowSummary(Player);
+			gMatchStats.ShowSummary(Player, false);
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,".help"))

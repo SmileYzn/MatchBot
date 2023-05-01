@@ -170,6 +170,9 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 					}
 				}
 			}
+
+			// Round End Stats
+			this->RoundEndStats();
 		}
 	}
 }
@@ -473,6 +476,34 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 	}
 }
 
+void CMatchStats::RoundEndStats()
+{
+	// Get round end stats type
+	auto Type = (int)(gMatchBot.m_RoundEndStats->value);
+
+	// If is enabled
+	if (Type > 0)
+	{
+		// Get Players
+		auto Players = gMatchUtil.GetPlayers(true, false);
+
+		// Loop each player
+		for (auto Player : Players)
+		{
+			// Show Damage command
+			if (Type == 1 || Type == 3)
+			{
+				this->ShowDamage(Player, (Type == 3));
+			}
+			// Show Summary command
+			else if (Type == 2 || Type == 4)
+			{
+				this->ShowSummary(Player, (Type == 4));
+			}
+		}
+	}
+}
+
 // Show Enemy HP
 bool CMatchStats::ShowHP(CBasePlayer* Player)
 {
@@ -526,7 +557,7 @@ bool CMatchStats::ShowHP(CBasePlayer* Player)
 }
 
 // Show Damage
-bool CMatchStats::ShowDamage(CBasePlayer* Player)
+bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
 {
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
@@ -546,21 +577,43 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player)
 						{
 							StatsCount++;
 
-							gMatchUtil.SayText
-							(
-								Player->edict(),
-								Target->entindex(),
-								_T("Hit \3%s\1 %d time(s) (Damage %d)"),
-								STRING(Target->edict()->v.netname),
-								this->m_RoundHit[Player->entindex()][Target->entindex()],
-								this->m_RoundDmg[Player->entindex()][Target->entindex()]
-							);
+							if (!InConsole)
+							{
+								gMatchUtil.SayText
+								(
+									Player->edict(),
+									Target->entindex(),
+									_T("Hit \3%s\1 %d time(s) (Damage %d)"),
+									STRING(Target->edict()->v.netname),
+									this->m_RoundHit[Player->entindex()][Target->entindex()],
+									this->m_RoundDmg[Player->entindex()][Target->entindex()]
+								);
+							}
+							else
+							{
+								gMatchUtil.ClientPrint
+								(
+									Player->edict(),
+									PRINT_CONSOLE,
+									_T("* Hit %s %d time(s) (Damage %d)"),
+									STRING(Target->edict()->v.netname),
+									this->m_RoundHit[Player->entindex()][Target->entindex()],
+									this->m_RoundDmg[Player->entindex()][Target->entindex()]
+								);
+							}
 						}
 					}
 
 					if (!StatsCount)
 					{
-						gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You haven't hit anyone this round."));
+						if (!InConsole)
+						{
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You haven't hit anyone this round."));
+						}
+						else
+						{
+							gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("You haven't hit anyone this round."));
+						}
 					}
 
 					return true;
@@ -569,8 +622,11 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player)
 		}
 	}
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
-
+	if (!InConsole)
+	{
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+	}
+	
 	return false;
 }
 
@@ -624,7 +680,7 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 }
 
 // Show Round Summary
-bool CMatchStats::ShowSummary(CBasePlayer* Player)
+bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
 {
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
@@ -644,24 +700,49 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player)
 						{
 							StatsCount++;
 
-							gMatchUtil.SayText
-							(
-								Player->edict(),
-								Target->entindex(),
-								_T("(%d dmg / %d hits) to (%d dmg / %d hits) from \3%s\1 (%d HP)"),
-								this->m_RoundDmg[Player->entindex()][Target->entindex()],
-								this->m_RoundHit[Player->entindex()][Target->entindex()],
-								this->m_RoundDmg[Target->entindex()][Player->entindex()],
-								this->m_RoundHit[Target->entindex()][Player->entindex()],
-								STRING(Target->edict()->v.netname),
-								Target->IsAlive() ? (int)Target->edict()->v.health : 0
-							);
+							if (!InConsole)
+							{
+								gMatchUtil.SayText
+								(
+									Player->edict(),
+									Target->entindex(),
+									_T("(%d dmg / %d hits) to (%d dmg / %d hits) from \3%s\1 (%d HP)"),
+									this->m_RoundDmg[Player->entindex()][Target->entindex()],
+									this->m_RoundHit[Player->entindex()][Target->entindex()],
+									this->m_RoundDmg[Target->entindex()][Player->entindex()],
+									this->m_RoundHit[Target->entindex()][Player->entindex()],
+									STRING(Target->edict()->v.netname),
+									Target->IsAlive() ? (int)Target->edict()->v.health : 0
+								);
+							}
+							else
+							{
+								gMatchUtil.ClientPrint
+								(
+									Player->edict(),
+									PRINT_CONSOLE,
+									_T("* (%d dmg / %d hits) to (%d dmg / %d hits) from %s (%d HP)"),
+									this->m_RoundDmg[Player->entindex()][Target->entindex()],
+									this->m_RoundHit[Player->entindex()][Target->entindex()],
+									this->m_RoundDmg[Target->entindex()][Player->entindex()],
+									this->m_RoundHit[Target->entindex()][Player->entindex()],
+									STRING(Target->edict()->v.netname),
+									Target->IsAlive() ? (int)Target->edict()->v.health : 0
+								);
+							}
 						}
 					}
 
 					if (!StatsCount)
 					{
-						gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No stats in this round."));
+						if (!InConsole)
+						{
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No stats in this round."));
+						}
+						else
+						{
+							gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("No stats in this round."));
+						}
 					}
 
 					return true;
@@ -670,7 +751,10 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player)
 		}
 	}
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+	if (!InConsole)
+	{
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+	}
 
 	return false;
 }

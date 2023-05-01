@@ -188,6 +188,7 @@ public:
 	cvar_t* m_PlayerVoteMap = nullptr;
 	cvar_t* m_PlayerVotePause = nullptr;
 	cvar_t* m_PlayerVoteRestart = nullptr;
+	cvar_t* m_RoundEndStats = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };

@@ -186,17 +186,20 @@ public:
 	// Explode Bomb
 	void ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageType);
 
+	// Round end Stats
+	void RoundEndStats();
+
 	// Show Enemy HP
 	bool ShowHP(CBasePlayer* Player);
 
 	// Show Damage
-	bool ShowDamage(CBasePlayer* Player);
+	bool ShowDamage(CBasePlayer* Player, bool InConsole);
 
 	// Show Received Damage
 	bool ShowReceivedDamage(CBasePlayer* Player);
 
 	// Show Round Summary
-	bool ShowSummary(CBasePlayer* Player);
+	bool ShowSummary(CBasePlayer* Player, bool InConsole);
 
 private:
 	// Match Data

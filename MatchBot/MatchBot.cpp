@@ -80,6 +80,9 @@ void CMatchBot::ServerActivate()
 	// Mininum of players to enable Vote Restart command for players (0 to disble command)
 	this->m_PlayerVoteRestart = gMatchUtil.CvarRegister("mb_player_vote_restart", "5");
 
+	// Show round stats on end (1 Show round damage in chat, 2 Show round summary in chat, 3 Show round damage in console, 4 Show round summary in console)
+	this->m_RoundEndStats = gMatchUtil.CvarRegister("mb_round_end_stats", "0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 
