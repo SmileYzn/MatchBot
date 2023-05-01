@@ -954,13 +954,19 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 					// Get total of rounds divided by 2
 					auto Half = (this->m_PlayRounds->value / 2);
 
+					// Terrorist Score
+					auto ScoreTR = this->GetScore(TERRORIST);
+
+					// CTs Score
+					auto ScoreCT = this->GetScore(CT);
+
 					// If any team reached Half rounds + 1, end match
-					if (this->GetScore(TERRORIST) > Half || this->GetScore(CT) > Half)
+					if (ScoreTR > Half || ScoreCT > Half)
 					{
 						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_END);
 					}
 					// If both teams reached half of total rounds, check for overtime
-					else if ((this->GetScore(TERRORIST) == Half) && (this->GetScore(CT) == Half))
+					else if ((ScoreTR == Half) && (ScoreCT == Half))
 					{
 						// Play Overtime directly (mb_play_ot_mode = 1)
 						if (this->m_PlayMode->value == 1)
@@ -1100,7 +1106,7 @@ void CMatchBot::UpdateGameName()
 				char GameName[32] = { 0 };
 
 				// Format game name with teams and scores
-				Q_snprintf(GameName, sizeof(GameName), _T("%s « %d : %d » %s"), gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+				Q_snprintf(GameName, sizeof(GameName), _T("%s %d : %d %s"), gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 
 				// Get to game description
 				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);

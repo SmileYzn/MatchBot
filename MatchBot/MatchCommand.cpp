@@ -2,46 +2,64 @@
 
 CMatchCommand gMatchCommand;
 
+// On Client command
 bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1)
 {
+	// IF is not null
 	if (!pcmd)
 	{
 		return false;
 	}
 
+	// If string is not empty
 	if (pcmd[0u] == '\0')
 	{
 		return false;
 	}
 
+	// If is menuselect command
 	if (!Q_strcmp(pcmd,"menuselect"))
 	{
+		// If has arguments
 		if (parg1)
 		{
+			// If native CS menu is not being displayed
 			if (Player->m_iMenu == Menu_OFF)
 			{
+				// Handle menu
 				if (gMatchMenu[Player->entindex()].Handle(Player->entindex(), atoi(parg1)))
 				{
+					// Return result
 					return true;
 				}
 			}
 		}
 	}
+	// If player used say or say_team command
 	else if (!Q_strcmp(pcmd,"say") || !Q_strcmp(pcmd,"say_team"))
 	{
+		// If has any argument
 		if (parg1)
 		{
+			// Compare if is an admin or player prefix
 			if (parg1[0u] == '!' || parg1[0u] == '.')
 			{
+				// Get arguments
 				auto pCmdArgs = CMD_ARGS();
 
+				// If is not null
 				if (pCmdArgs)
 				{
+					// If string is not empty
 					if (pCmdArgs[0u] != '\0')
 					{
+						// Set command format
 						char pCmdFormat[] = "%s\n";
 
+						// Execute interal client command with arguments
 						CLIENT_COMMAND(Player->edict(), pCmdFormat, pCmdArgs);
+
+						// Return results
 						return true;
 					}
 				}
@@ -165,7 +183,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 			{
 				if (pCmdArgs[0u] != '\0')
 				{
-					gMatchAdminMenu.Message(Player->entindex(), CMD_ARGS());
+					gMatchAdminMenu.Message(Player->entindex(), pCmdArgs);
 
 					return true;
 				}
@@ -235,6 +253,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 	}
 
+	// Return result
 	return false;
 }
 
