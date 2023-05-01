@@ -44,7 +44,7 @@ void CMatchTimer::Task(int PlayersMin)
 {
 	auto NeededCount = (PlayersMin - gMatchUtil.GetPlayers(true, true).size());
 
-	if (NeededCount)
+	if (NeededCount > 0)
 	{
 		gMatchTimer.SetTime();
 
