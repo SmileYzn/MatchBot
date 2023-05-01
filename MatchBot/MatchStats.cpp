@@ -172,7 +172,7 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 			}
 
 			// Round End Stats
-			this->RoundEndStats();
+			gMatchTask.Create(TASK_ROUND_END_STATS, 1.0f, false, (void*)this->RoundEndStats, this->m_State);
 		}
 	}
 }
@@ -476,34 +476,6 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 	}
 }
 
-void CMatchStats::RoundEndStats()
-{
-	// Get round end stats type
-	auto Type = (int)(gMatchBot.m_RoundEndStats->value);
-
-	// If is enabled
-	if (Type > 0)
-	{
-		// Get Players
-		auto Players = gMatchUtil.GetPlayers(true, false);
-
-		// Loop each player
-		for (auto Player : Players)
-		{
-			// Show Damage command
-			if (Type == 1 || Type == 3)
-			{
-				this->ShowDamage(Player, (Type == 3));
-			}
-			// Show Summary command
-			else if (Type == 2 || Type == 4)
-			{
-				this->ShowSummary(Player, (Type == 4));
-			}
-		}
-	}
-}
-
 // Show Enemy HP
 bool CMatchStats::ShowHP(CBasePlayer* Player)
 {
@@ -757,4 +729,32 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
 	}
 
 	return false;
+}
+
+void CMatchStats::RoundEndStats(int State)
+{
+	// Get round end stats type
+	auto Type = (int)(gMatchBot.m_RoundEndStats->value);
+
+	// If is enabled
+	if (Type > 0)
+	{
+		// Get Players
+		auto Players = gMatchUtil.GetPlayers(true, false);
+
+		// Loop each player
+		for (auto Player : Players)
+		{
+			// Show Damage command
+			if (Type == 1 || Type == 3)
+			{
+				gMatchStats.ShowDamage(Player, (Type == 3));
+			}
+			// Show Summary command
+			else if (Type == 2 || Type == 4)
+			{
+				gMatchStats.ShowSummary(Player, (Type == 4));
+			}
+		}
+	}
 }

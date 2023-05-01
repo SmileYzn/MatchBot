@@ -186,9 +186,6 @@ public:
 	// Explode Bomb
 	void ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageType);
 
-	// Round end Stats
-	void RoundEndStats();
-
 	// Show Enemy HP
 	bool ShowHP(CBasePlayer* Player);
 
@@ -200,6 +197,9 @@ public:
 
 	// Show Round Summary
 	bool ShowSummary(CBasePlayer* Player, bool InConsole);
+
+	// Round end Stats
+	static void RoundEndStats(int State);
 
 private:
 	// Match Data

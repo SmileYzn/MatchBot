@@ -8,6 +8,7 @@ constexpr auto TASK_VOTE_LIST = 1441;
 constexpr auto TASK_TIMER_LO3 = 1442;
 constexpr auto TASK_CHANGE_MAP = 1443;
 constexpr auto TASK_PAUSE_MATCH = 1444;
+constexpr auto TASK_ROUND_END_STATS = 1445;
 
 typedef struct S_TASK_INFO
 {
