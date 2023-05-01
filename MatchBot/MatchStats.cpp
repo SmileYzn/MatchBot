@@ -116,11 +116,13 @@ void CMatchStats::PlayerGetIntoGame(CBasePlayer* Player)
 // When player disconnect from game
 void CMatchStats::PlayerDisconnect(edict_t* pEdict)
 {
+	// Get user auth index
 	auto Auth = GET_USER_AUTH(pEdict);
 
+	// If is not null
 	if (Auth)
 	{
-		// Get disconnection time
+		// Save disconnection time
 		this->m_Player[Auth].DisconnectedTime = time(nullptr);
 	}
 }
@@ -128,8 +130,10 @@ void CMatchStats::PlayerDisconnect(edict_t* pEdict)
 // Round Restart
 void CMatchStats::RoundRestart(bool PreRestart)
 {
+	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
+		// If has ReGameDLL_CS Api
 		if (g_pGameRules)
 		{
 			// If is complete reset
@@ -149,6 +153,7 @@ void CMatchStats::RoundRestart(bool PreRestart)
 // Round Start
 void CMatchStats::RoundStart()
 {
+	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
 		// Clear Round Damage
@@ -156,34 +161,78 @@ void CMatchStats::RoundStart()
 
 		// Clear Round Hits
 		memset(this->m_RoundHit, 0, sizeof(this->m_RoundHit));
+
+		// Clear total round damage
+		memset(this->m_RoundDamage, 0, sizeof(this->m_RoundDamage));
+
+		// Clear total round damage by team
+		memset(this->m_RoundDamageTeam, 0, sizeof(this->m_RoundDamageTeam));
 	}
 }
 
 // Round End
 void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, float tmDelay)
 {
+	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
+		// If has round winner
 		if (winStatus == WINSTATUS_TERRORISTS || winStatus == WINSTATUS_CTS)
 		{
+			// Set winner as TERRORIST or CT
 			auto Winner = winStatus == WINSTATUS_TERRORISTS ? TERRORIST : CT;
 
+			// Get players
 			auto Players = gMatchUtil.GetPlayers(true, true);
 
+			// Loop players
 			for (auto Player : Players)
 			{
+				// Get player auth
 				auto Auth = GET_USER_AUTH(Player->edict());
 
+				// If is not null
 				if (Auth)
 				{
+					// Increment rounds played
 					this->m_Player[Auth].Stats[this->m_State].RoundsPlay++;
 
+					// If the player team is winner team
 					if (Player->m_iTeam == Winner)
 					{
+						// Entity Index
+						auto EntityIndex = Player->entindex();
+
+						// Rounds Win
 						this->m_Player[Auth].Stats[this->m_State].RoundsWin++;
+
+						// If player has done some damage on round
+						if (this->m_RoundDamage[EntityIndex] > 0)
+						{
+							// Set as initial round win share
+							float RoundWinShare = this->m_RoundDamage[EntityIndex];
+
+							// If is more than zero
+							if (this->m_RoundDamage[EntityIndex] > 0)
+							{
+								// Calculate based on round team damage
+								RoundWinShare = (RoundWinShare / this->m_RoundDamageTeam[Winner]);
+							}
+							
+							// If round has won by any of bomb objective (Explode or defuse)
+							if (CSGameRules()->m_bBombDefused || CSGameRules()->m_bTargetBombed)
+							{
+								// Increment round win share based on map objective target
+								RoundWinShare = (MANAGER_RWS_MAP_TARGET * RoundWinShare);
+							}
+
+							// Increment round win share on player stats
+							this->m_Player[Auth].Stats[this->m_State].RoundWinShare += RoundWinShare;
+						}
 					}
 					else
 					{
+						// Increment rounds lose
 						this->m_Player[Auth].Stats[this->m_State].RoundsLose++;
 					}
 				}
@@ -197,18 +246,25 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 
 void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
 {
+	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
+		// If victim is not killed by bomb
 		if (!Victim->m_bKilledByBomb)
 		{
+			// Get attacker
 			auto Attacker = UTIL_PlayerByIndexSafe(ENTINDEX(pevAttacker));
 
+			// If is not null
 			if (Attacker)
 			{
+				// If attacker is not victim
 				if (Victim->entindex() != Attacker->entindex())
 				{
+					// If both are players
 					if (Victim->IsPlayer() && Attacker->IsPlayer())
 					{
+						// If victim can receive damage form attacker
 						if (CSGameRules()->FPlayerCanTakeDamage(Victim, Attacker))
 						{
 							// Victim Auth
@@ -247,11 +303,23 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 							// Victim HitBox Damage
 							this->m_Player[VictimAuth].Stats[this->m_State].HitBoxAttack[Victim->m_LastHitGroup][1] += DamageTaken;
 
+							// Attacker entity index
+							auto AttackerIndex = Attacker->entindex();
+
+							// Victim entity index
+							auto VictimIndex = Victim->entindex();
+
 							// Attacker Round Damage
-							this->m_RoundDmg[Attacker->entindex()][Victim->entindex()] += DamageTaken;
+							this->m_RoundDmg[AttackerIndex][VictimIndex] += DamageTaken;
 
 							// Attacker Round Hits
-							this->m_RoundHit[Attacker->entindex()][Victim->entindex()]++;
+							this->m_RoundHit[AttackerIndex][VictimIndex]++;
+
+							// Total Round Damage
+							this->m_RoundDamage[AttackerIndex] += DamageTaken;
+
+							// Total Round Damage by team
+							this->m_RoundDamageTeam[Attacker->m_iTeam] += DamageTaken;
 						}
 					}
 				}
@@ -262,16 +330,22 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 
 void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvars_t* pevInflictor)
 {
+	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
+		// If victim is not killed by bomb
 		if (!Victim->m_bKilledByBomb)
 		{
+			// Get attacker
 			auto Attacker = UTIL_PlayerByIndexSafe(ENTINDEX(pevKiller));
 
+			// If attacker is found
 			if (Attacker)
 			{
+				// If attacker is not victim
 				if (Victim->entindex() != Attacker->entindex())
 				{
+					// If both are players
 					if (Victim->IsPlayer() && Attacker->IsPlayer())
 					{
 						// Victim Auth
@@ -305,6 +379,19 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 						{
 							this->m_Player[AttackerAuth].Stats[this->m_State].Headshots++;
 						}
+
+						// Attacker entity index
+						auto AttackerIndex = Attacker->entindex();
+
+						// Victim entity index
+						auto VictimIndex = Victim->entindex();
+
+						// Attacker Assists check
+						if (this->m_RoundDmg[AttackerIndex][VictimIndex] >= (int)MANAGER_ASSISTANCE_DMG)
+						{
+							// Increment assists
+							this->m_Player[AttackerAuth].Stats[this->m_State].Assists++;
+						}
 					}
 				}
 			}
@@ -315,26 +402,34 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 // Set Animation
 void CMatchStats::PlayerSetAnimation(CBasePlayer* Player, PLAYER_ANIM playerAnim)
 {
+	// If match is live
 	if(this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
+		// If is attack1 or attack2 commands
 		if ((playerAnim == PLAYER_ATTACK1) || (playerAnim == PLAYER_ATTACK2))
 		{
+			// IF player has an active item on hand
 			if (Player->m_pActiveItem)
 			{
+				// If that item has a index
 				if (Player->m_pActiveItem->m_iId)
 				{
+					// If item is weapon
 					if (Player->m_pActiveItem->IsWeapon())
 					{
+						// If player can drop that item (To avoid grenades false positives)
 						if (Player->m_pActiveItem->CanDrop())
 						{
+							// Get playter auth index
 							auto Auth = GET_USER_AUTH(Player->edict());
 
+							// if is not null
 							if (Auth)
 							{
-								// Shots
+								// Increment total shots
 								this->m_Player[Auth].Stats[this->m_State].Shots++;
 
-								// Weapon Shots
+								// Increment weapon shots
 							}
 						}
 					}
@@ -347,14 +442,19 @@ void CMatchStats::PlayerSetAnimation(CBasePlayer* Player, PLAYER_ANIM playerAnim
 // Player Add Account Event
 void CMatchStats::PlayerAddAccount(CBasePlayer* Player, int amount, RewardType type, bool bTrackChange)
 {
+	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
+		// If is money comes from anything
 		if (type != RT_NONE)
 		{
+			// Get player auth index
 			auto Auth = GET_USER_AUTH(Player->edict());
 
+			// If is not null
 			if (Auth)
 			{
+				// Increment amounbt owned by player
 				this->m_Player[Auth].Stats[this->m_State].Money += amount;
 			}
 		}
@@ -464,6 +564,9 @@ void CMatchStats::DefuseBombEnd(CBasePlayer* Player, bool Defused)
 				{
 					this->m_Player[Auth].Stats[this->m_State].BombDefusedKit++;
 				}
+
+				// Incremet round win share by bomb defusion
+				this->m_Player[Auth].Stats[this->m_State].RoundWinShare += MANAGER_RWS_C4_DEFUSED;
 			}
 		}
 	}
@@ -487,6 +590,9 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 					if (Auth)
 					{
 						this->m_Player[Auth].Stats[this->m_State].BombExploded++;
+
+						// Incremet round win share by bomb explosion
+						this->m_Player[Auth].Stats[this->m_State].RoundWinShare += MANAGER_RWS_C4_EXPLODE;
 					}
 				}
 			}

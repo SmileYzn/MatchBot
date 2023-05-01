@@ -3,6 +3,12 @@
 // Get player auth index (SteamID)
 #define GET_USER_AUTH(Edict) !(Edict->v.flags & FL_FAKECLIENT) ? GETPLAYERAUTHID(Edict) : STRING(Edict->v.netname)
 
+// Round Win Share
+constexpr auto MANAGER_ASSISTANCE_DMG = 50.0f;	// Mininum damage to take assistance for player
+constexpr auto MANAGER_RWS_MAP_TARGET = 0.70f;	// Round Win Share: Amount added to each player of winner team if map objective is complete by winner team
+constexpr auto MANAGER_RWS_C4_EXPLODE = 0.30f;	// Round Win Share: Extra amount added to player from winner team that planted the bomb and bomb explode
+constexpr auto MANAGER_RWS_C4_DEFUSED = 0.30f;	// Round Win Share: Extra amount added to player from winner team that defused the bomb;
+
 // Flags for stats commands
 constexpr auto CMD_ALL	= 0;		/* All Options */
 constexpr auto CMD_HP	= BIT(0);	/* flag "a" */
@@ -50,7 +56,7 @@ typedef struct S_PLAYER_STATS
 	// Stats
 	int Frags;					// TEST: Player Frags
 	int Deaths;					// TEST: Player Deaths
-	int Assists;				// TODO: Player Kill Assists
+	int Assists;				// TEST: Player Kill Assists
 	int Headshots;				// TEST: Headshots by player
 	int Shots;					// TEST: Shots by player
 	int Hits;					// TEST: Hits done by player
@@ -59,6 +65,7 @@ typedef struct S_PLAYER_STATS
 	int DamageReceived;			// TEST: Damage received by player
 	long Money;					// TEST: Money Balance from player
 	int BlindFrags;				// TEST: Player frags when blinded by flashbang
+	float RoundWinShare;		// TODO: Round Win Share stats
 
 	// HitBox
 	int HitBoxAttack[9][2];		// TEST: Hitbox: 0 Hits, 1 Damage
@@ -93,6 +100,7 @@ typedef struct S_PLAYER_STATS
 		this->DamageReceived = 0;
 		this->Money = 0;
 		this->BlindFrags = 0;
+		this->RoundWinShare = 0.0f;
 
 		// Hitbox Attacker
 		memset(this->HitBoxAttack, 0, sizeof(this->HitBoxAttack));
@@ -219,6 +227,12 @@ private:
 	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
 	int m_RoundHit[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
 
+	// Round total damage by player
+	int m_RoundDamage[MAX_CLIENTS + 1];
+
+	// Round total damage by team
+	int m_RoundDamageTeam[SPECTATOR + 1];
+
 	// Player Scores
 	int m_Score[MAX_CLIENTS + 1][2];
 
@@ -229,7 +243,7 @@ private:
 	P_MATCH_DATA m_Data;
 
 	// Match stats commands
-	int m_StatsCommandFlags;
+	int m_StatsCommandFlags = CMD_ALL;
 };
 
 extern CMatchStats gMatchStats;
