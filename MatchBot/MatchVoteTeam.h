@@ -1,5 +1,6 @@
 #pragma once
 
+// Flags for team vote menu
 constexpr auto TEAM_ALL				= 0;		/* All Options */
 constexpr auto TEAM_LEADERS			= BIT(0);   /* flag "a" */
 constexpr auto TEAM_RANDOM			= BIT(1);	/* flag "b" */

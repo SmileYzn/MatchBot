@@ -86,6 +86,9 @@ void CMatchBot::ServerActivate()
 	// Show round stats on end (1 Show round damage in chat, 2 Show round summary in chat, 3 Show round damage in console, 4 Show round summary in console)
 	this->m_RoundEndStats = gMatchUtil.CvarRegister("mb_round_end_stats", "0");
 
+	// Enabled round stats commands in chat (a .hp, b .dmg, c .rdmg, d .sum)
+	this->m_StatsCommands = gMatchUtil.CvarRegister("mb_stats_commands", "abcd");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 
@@ -1059,9 +1062,6 @@ void CMatchBot::RoundRestart(bool PreRestart)
 					// Loop
 					for (auto& Player : Players)
 					{
-						// Get Player score
-						auto Score = gMatchStats.GetScore(Player->entindex());
-
 						// Restore Frags
 						Player->edict()->v.fuser4 = Player->edict()->v.frags;
 

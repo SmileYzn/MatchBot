@@ -8,6 +8,24 @@ void CMatchStats::SetState(int State)
 	// New Match State
 	this->m_State = State;
 
+	// All commands are enabled by default
+	this->m_StatsCommandFlags = CMD_ALL;
+
+	// If variable is not null
+	if (gMatchBot.m_StatsCommands)
+	{
+		// If string is not null
+		if (gMatchBot.m_StatsCommands->string)
+		{
+			// If string is not empty
+			if (gMatchBot.m_StatsCommands->string[0] != '\0')
+			{
+				// Read menu flags from team pickup variable
+				this->m_StatsCommandFlags |= gMatchAdmin.ReadFlags(gMatchBot.m_StatsCommands->string);
+			}
+		}
+	}
+
 	// Store star time if is First Half
 	if(State == STATE_FIRST_HALF)
 	{
@@ -479,51 +497,54 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 // Show Enemy HP
 bool CMatchStats::ShowHP(CBasePlayer* Player)
 {
-	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_HP))
 	{
-		if (g_pGameRules)
+		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
-			if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
+			if (g_pGameRules)
 			{
-				if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
 				{
-					auto StatsCount = 0;
-
-					auto Players = gMatchUtil.GetPlayers(true, true);
-
-					for (auto Target : Players)
+					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 					{
-						if (Target->m_iTeam != Player->m_iTeam)
-						{
-							if (Target->IsAlive())
-							{
-								StatsCount++;
+						auto StatsCount = 0;
 
-								gMatchUtil.SayText
-								(
-									Player->edict(),
-									Target->entindex(),
-									_T("\3%s\1 with %d HP (%d AP)"),
-									STRING(Target->edict()->v.netname),
-									(int)Target->edict()->v.health,
-									(int)Target->edict()->v.armorvalue
-								);
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						for (auto Target : Players)
+						{
+							if (Target->m_iTeam != Player->m_iTeam)
+							{
+								if (Target->IsAlive())
+								{
+									StatsCount++;
+
+									gMatchUtil.SayText
+									(
+										Player->edict(),
+										Target->entindex(),
+										_T("\3%s\1 with %d HP (%d AP)"),
+										STRING(Target->edict()->v.netname),
+										(int)Target->edict()->v.health,
+										(int)Target->edict()->v.armorvalue
+									);
+								}
 							}
 						}
-					}
 
-					if (!StatsCount)
-					{
-						gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No one is alive."));
-					}
+						if (!StatsCount)
+						{
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No one is alive."));
+						}
 
-					return true;
+						return true;
+					}
 				}
 			}
 		}
-	}
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+	}
 
 	return false;
 }
@@ -531,122 +552,128 @@ bool CMatchStats::ShowHP(CBasePlayer* Player)
 // Show Damage
 bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
 {
-	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_DMG))
 	{
-		if (g_pGameRules)
+		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
-			if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
+			if (g_pGameRules)
 			{
-				if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
 				{
-					auto StatsCount = 0;
-
-					auto Players = gMatchUtil.GetPlayers(true, true);
-
-					for (auto Target : Players)
+					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 					{
-						if (this->m_RoundHit[Player->entindex()][Target->entindex()])
-						{
-							StatsCount++;
+						auto StatsCount = 0;
 
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						for (auto Target : Players)
+						{
+							if (this->m_RoundHit[Player->entindex()][Target->entindex()])
+							{
+								StatsCount++;
+
+								if (!InConsole)
+								{
+									gMatchUtil.SayText
+									(
+										Player->edict(),
+										Target->entindex(),
+										_T("Hit \3%s\1 %d time(s) (Damage %d)"),
+										STRING(Target->edict()->v.netname),
+										this->m_RoundHit[Player->entindex()][Target->entindex()],
+										this->m_RoundDmg[Player->entindex()][Target->entindex()]
+									);
+								}
+								else
+								{
+									gMatchUtil.ClientPrint
+									(
+										Player->edict(),
+										PRINT_CONSOLE,
+										_T("* Hit %s %d time(s) (Damage %d)"),
+										STRING(Target->edict()->v.netname),
+										this->m_RoundHit[Player->entindex()][Target->entindex()],
+										this->m_RoundDmg[Player->entindex()][Target->entindex()]
+									);
+								}
+							}
+						}
+
+						if (!StatsCount)
+						{
 							if (!InConsole)
 							{
-								gMatchUtil.SayText
-								(
-									Player->edict(),
-									Target->entindex(),
-									_T("Hit \3%s\1 %d time(s) (Damage %d)"),
-									STRING(Target->edict()->v.netname),
-									this->m_RoundHit[Player->entindex()][Target->entindex()],
-									this->m_RoundDmg[Player->entindex()][Target->entindex()]
-								);
+								gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You haven't hit anyone this round."));
 							}
 							else
 							{
-								gMatchUtil.ClientPrint
-								(
-									Player->edict(),
-									PRINT_CONSOLE,
-									_T("* Hit %s %d time(s) (Damage %d)"),
-									STRING(Target->edict()->v.netname),
-									this->m_RoundHit[Player->entindex()][Target->entindex()],
-									this->m_RoundDmg[Player->entindex()][Target->entindex()]
-								);
+								gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("You haven't hit anyone this round."));
 							}
 						}
-					}
 
-					if (!StatsCount)
-					{
-						if (!InConsole)
-						{
-							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You haven't hit anyone this round."));
-						}
-						else
-						{
-							gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("You haven't hit anyone this round."));
-						}
+						return true;
 					}
-
-					return true;
 				}
 			}
 		}
+
+		if (!InConsole)
+		{
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		}
 	}
 
-	if (!InConsole)
-	{
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
-	}
-	
 	return false;
 }
 
 // Show Received Damage
 bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 {
-	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_RDMG))
 	{
-		if (g_pGameRules)
+		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
-			if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
+			if (g_pGameRules)
 			{
-				if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
 				{
-					auto StatsCount = 0;
-
-					auto Players = gMatchUtil.GetPlayers(true, true);
-
-					for (auto Target : Players)
+					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 					{
-						if (this->m_RoundHit[Target->entindex()][Player->entindex()])
+						auto StatsCount = 0;
+
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						for (auto Target : Players)
 						{
-							StatsCount++;
+							if (this->m_RoundHit[Target->entindex()][Player->entindex()])
+							{
+								StatsCount++;
 
-							gMatchUtil.SayText
-							(
-								Player->edict(),
-								Target->entindex(),
-								_T("Hit by \3%s\1 %d time(s) (Damage %d)"),
-								STRING(Target->edict()->v.netname),
-								this->m_RoundHit[Target->entindex()][Player->entindex()],
-								this->m_RoundDmg[Target->entindex()][Player->entindex()]
-							);
+								gMatchUtil.SayText
+								(
+									Player->edict(),
+									Target->entindex(),
+									_T("Hit by \3%s\1 %d time(s) (Damage %d)"),
+									STRING(Target->edict()->v.netname),
+									this->m_RoundHit[Target->entindex()][Player->entindex()],
+									this->m_RoundDmg[Target->entindex()][Player->entindex()]
+								);
+							}
 						}
-					}
 
-					if (!StatsCount)
-					{
-						gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You weren't hit this round."));
-					}
+						if (!StatsCount)
+						{
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You weren't hit this round."));
+						}
 
-					return true;
+						return true;
+					}
 				}
 			}
 		}
-	}
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+	}
 
 	return false;
 }
@@ -654,78 +681,81 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 // Show Round Summary
 bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
 {
-	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_SUM))
 	{
-		if (g_pGameRules)
+		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
-			if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
+			if (g_pGameRules)
 			{
-				if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
 				{
-					auto StatsCount = 0;
-
-					auto Players = gMatchUtil.GetPlayers(true, true);
-
-					for (auto Target : Players)
+					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 					{
-						if (this->m_RoundHit[Player->entindex()][Target->entindex()] || this->m_RoundHit[Target->entindex()][Player->entindex()])
-						{
-							StatsCount++;
+						auto StatsCount = 0;
 
+						auto Players = gMatchUtil.GetPlayers(true, true);
+
+						for (auto Target : Players)
+						{
+							if (this->m_RoundHit[Player->entindex()][Target->entindex()] || this->m_RoundHit[Target->entindex()][Player->entindex()])
+							{
+								StatsCount++;
+
+								if (!InConsole)
+								{
+									gMatchUtil.SayText
+									(
+										Player->edict(),
+										Target->entindex(),
+										_T("(%d dmg / %d hits) to (%d dmg / %d hits) from \3%s\1 (%d HP)"),
+										this->m_RoundDmg[Player->entindex()][Target->entindex()],
+										this->m_RoundHit[Player->entindex()][Target->entindex()],
+										this->m_RoundDmg[Target->entindex()][Player->entindex()],
+										this->m_RoundHit[Target->entindex()][Player->entindex()],
+										STRING(Target->edict()->v.netname),
+										Target->IsAlive() ? (int)Target->edict()->v.health : 0
+									);
+								}
+								else
+								{
+									gMatchUtil.ClientPrint
+									(
+										Player->edict(),
+										PRINT_CONSOLE,
+										_T("* (%d dmg / %d hits) to (%d dmg / %d hits) from %s (%d HP)"),
+										this->m_RoundDmg[Player->entindex()][Target->entindex()],
+										this->m_RoundHit[Player->entindex()][Target->entindex()],
+										this->m_RoundDmg[Target->entindex()][Player->entindex()],
+										this->m_RoundHit[Target->entindex()][Player->entindex()],
+										STRING(Target->edict()->v.netname),
+										Target->IsAlive() ? (int)Target->edict()->v.health : 0
+									);
+								}
+							}
+						}
+
+						if (!StatsCount)
+						{
 							if (!InConsole)
 							{
-								gMatchUtil.SayText
-								(
-									Player->edict(),
-									Target->entindex(),
-									_T("(%d dmg / %d hits) to (%d dmg / %d hits) from \3%s\1 (%d HP)"),
-									this->m_RoundDmg[Player->entindex()][Target->entindex()],
-									this->m_RoundHit[Player->entindex()][Target->entindex()],
-									this->m_RoundDmg[Target->entindex()][Player->entindex()],
-									this->m_RoundHit[Target->entindex()][Player->entindex()],
-									STRING(Target->edict()->v.netname),
-									Target->IsAlive() ? (int)Target->edict()->v.health : 0
-								);
+								gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No stats in this round."));
 							}
 							else
 							{
-								gMatchUtil.ClientPrint
-								(
-									Player->edict(),
-									PRINT_CONSOLE,
-									_T("* (%d dmg / %d hits) to (%d dmg / %d hits) from %s (%d HP)"),
-									this->m_RoundDmg[Player->entindex()][Target->entindex()],
-									this->m_RoundHit[Player->entindex()][Target->entindex()],
-									this->m_RoundDmg[Target->entindex()][Player->entindex()],
-									this->m_RoundHit[Target->entindex()][Player->entindex()],
-									STRING(Target->edict()->v.netname),
-									Target->IsAlive() ? (int)Target->edict()->v.health : 0
-								);
+								gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("No stats in this round."));
 							}
 						}
-					}
 
-					if (!StatsCount)
-					{
-						if (!InConsole)
-						{
-							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No stats in this round."));
-						}
-						else
-						{
-							gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("No stats in this round."));
-						}
+						return true;
 					}
-
-					return true;
 				}
 			}
 		}
-	}
 
-	if (!InConsole)
-	{
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		if (!InConsole)
+		{
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+		}
 	}
 
 	return false;

@@ -3,6 +3,13 @@
 // Get player auth index (SteamID)
 #define GET_USER_AUTH(Edict) !(Edict->v.flags & FL_FAKECLIENT) ? GETPLAYERAUTHID(Edict) : STRING(Edict->v.netname)
 
+// Flags for stats commands
+constexpr auto CMD_ALL	= 0;		/* All Options */
+constexpr auto CMD_HP	= BIT(0);	/* flag "a" */
+constexpr auto CMD_DMG	= BIT(1);	/* flag "b" */
+constexpr auto CMD_RDMG = BIT(2);	/* flag "c" */
+constexpr auto CMD_SUM	= BIT(3);	/* flag "d" */
+
 // Match Data
 typedef struct S_MATCH_DATA
 {
@@ -219,7 +226,10 @@ private:
 	size_t m_State = STATE_DEAD;
 
 	// Match Data
-	P_MATCH_DATA m_Data ;
+	P_MATCH_DATA m_Data;
+
+	// Match stats commands
+	int m_StatsCommandFlags;
 };
 
 extern CMatchStats gMatchStats;
