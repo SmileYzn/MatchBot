@@ -1,5 +1,13 @@
 #pragma once
 
+constexpr auto TEAM_ALL				= 0;		/* All Options */
+constexpr auto TEAM_LEADERS			= BIT(0);   /* flag "a" */
+constexpr auto TEAM_RANDOM			= BIT(1);	/* flag "b" */
+constexpr auto TEAM_UNSORTED		= BIT(2);	/* flag "c" */
+constexpr auto TEAM_SKILL_SORTED	= BIT(3);	/* flag "d" */
+constexpr auto TEAM_SWAP_TEAMS		= BIT(4);	/* flag "e" */
+constexpr auto TEAM_KNIFE_ROUND		= BIT(5);	/* flag "f" */
+
 struct P_TEAM_ITEM
 {
 	int Index;

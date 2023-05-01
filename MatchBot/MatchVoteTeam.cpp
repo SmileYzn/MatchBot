@@ -4,10 +4,30 @@ CMatchVoteTeam gMatchVoteTeam;
 
 void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 {
+	// If team pickup method is vote
 	if (TeamPickupType == -1)
 	{
+		// Clear menu data
 		this->m_Data.clear();
 
+		// Flags For default
+		auto MenuFlags = TEAM_ALL;
+
+		// If variable is not null
+		if (gMatchBot.m_TeamPickMenu)
+		{
+			// If string is not null
+			if (gMatchBot.m_TeamPickMenu->string)
+			{
+				// If string is not empty
+				if (gMatchBot.m_TeamPickMenu->string[0] != '\0')
+				{
+					// Read menu flags from team pickup variable
+					MenuFlags |= gMatchAdmin.ReadFlags(gMatchBot.m_TeamPickMenu->string);
+				}
+			}
+		}
+		
 		this->m_Data.push_back({ 0, 0, _T("Leaders Sorted") });
 		this->m_Data.push_back({ 1, 0, _T("Random") });
 		this->m_Data.push_back({ 2, 0, _T("Not Sorted") });
@@ -29,7 +49,11 @@ void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 
 			for (auto const& Item : this->m_Data)
 			{
-				gMatchMenu[EntityIndex].AddItem(Item.Index, Item.Name);
+				// If is set to put on menu
+				if (MenuFlags == TEAM_ALL || (MenuFlags & BIT(Item.Index)))
+				{
+					gMatchMenu[EntityIndex].AddItem(Item.Index, Item.Name);
+				}
 			}
 
 			this->m_PlayerNum++;

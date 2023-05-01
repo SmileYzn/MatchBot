@@ -35,8 +35,11 @@ void CMatchBot::ServerActivate()
 	// Ready System timer delay in seconds
 	this->m_ReadyTime = gMatchUtil.CvarRegister("mb_ready_time", "60.0");
 
-	// Team Pickup Type (-1 Enable vote, 0 Leaders, 1 Random, 2 None, 3 Skill Balanced, 4 Swap Teams)
+	// Team Pickup Type (-1 Enable vote, 0 Leaders, 1 Random, 2 None, 3 Skill Balanced, 4 Swap Teams, 5 Knife Round)
 	this->m_TeamPickupType = gMatchUtil.CvarRegister("mb_team_pick_type", "-1");
+
+	// Team Pickup Menu Options (a Leaders, b Random, c None, d Skill Balanced, e Swap Teams, f Knife Round)
+	this->m_TeamPickMenu = gMatchUtil.CvarRegister("mb_team_pick_menu", "abcdef");
 
 	// Vote percentage in Votes
 	this->m_VotePercent = gMatchUtil.CvarRegister("mb_vote_percent", "0.70");
