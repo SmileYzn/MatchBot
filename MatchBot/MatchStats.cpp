@@ -836,7 +836,7 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 // Show Enemy HP
 bool CMatchStats::ShowHP(CBasePlayer* Player)
 {
-	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_HP))
+	if (this->m_StatsCommandFlags & CMD_HP)
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -891,7 +891,7 @@ bool CMatchStats::ShowHP(CBasePlayer* Player)
 // Show Damage
 bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
 {
-	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_DMG))
+	if (this->m_StatsCommandFlags & CMD_DMG)
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -968,7 +968,7 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
 // Show Received Damage
 bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 {
-	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_RDMG))
+	if (this->m_StatsCommandFlags & CMD_RDMG)
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -1020,7 +1020,7 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 // Show Round Summary
 bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
 {
-	if (this->m_StatsCommandFlags == CMD_ALL || (this->m_StatsCommandFlags & CMD_SUM))
+	if (this->m_StatsCommandFlags & CMD_SUM)
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
