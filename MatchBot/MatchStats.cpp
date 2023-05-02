@@ -140,7 +140,7 @@ void CMatchStats::SaveJson()
 						auto Stats = Player.second.Stats[State];
 
 						// Store on json
-						Data["stats"][Auth][std::to_string(State)] =
+						Data["stats"][Auth]["state"][std::to_string(State)] =
 						{
 							// Stats
 							{"Frags", Stats.Frags},
@@ -456,10 +456,10 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 							this->m_Player[VictimAuth].Stats[this->m_State].HitsReceived++;
 
 							// Victim HitBox Hits
-							this->m_Player[VictimAuth].Stats[this->m_State].HitBoxAttack[Victim->m_LastHitGroup][0]++;
+							this->m_Player[VictimAuth].Stats[this->m_State].HitBoxVictim[Victim->m_LastHitGroup][0]++;
 
 							// Victim HitBox Damage
-							this->m_Player[VictimAuth].Stats[this->m_State].HitBoxAttack[Victim->m_LastHitGroup][1] += DamageTaken;
+							this->m_Player[VictimAuth].Stats[this->m_State].HitBoxVictim[Victim->m_LastHitGroup][1] += DamageTaken;
 
 							// Attacker entity index
 							auto AttackerIndex = Attacker->entindex();
