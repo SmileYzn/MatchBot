@@ -97,7 +97,6 @@
     <None Include="MatchBot.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Hash.h" />
     <ClInclude Include="MatchAdmin.h" />
     <ClInclude Include="MatchAdminMenu.h" />
     <ClInclude Include="MatchBot.h" />

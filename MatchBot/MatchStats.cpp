@@ -2,8 +2,14 @@
 
 CMatchStats gMatchStats;
 
+void CMatchStats::ServerActivate()
+{
+	// Make Directory to make sure that exists
+	gMatchUtil.MakeDirectory(STATS_SAVE_PATH);
+}
+
 // Change States
-void CMatchStats::SetState(int State)
+void CMatchStats::SetState(int State, bool KnifeRound)
 {
 	// New Match State
 	this->m_State = State;
@@ -29,39 +35,177 @@ void CMatchStats::SetState(int State)
 	// Store star time if is First Half
 	if(State == STATE_FIRST_HALF)
 	{
+		// Start Time
 		this->m_Data.StartTime = time(0);
-	}
-	// Store scores in each halftime
-	else if(State == STATE_HALFTIME)
-	{
-		// Get Players
-		auto Players = gMatchUtil.GetPlayers(true, true);
 
-		// Loop Players
-		for(auto & Player : Players)
-		{
-			// Get player entity index
-			auto EntityIndex = Player->entindex();
+		// Max Rounds
+		this->m_Data.MaxRounds = (int)gMatchBot.m_PlayRounds->value;
 
-			// Store Frags
-			this->m_Score[EntityIndex][0] = (int)Player->edict()->v.frags;
+		// Max OT Rounds
+		this->m_Data.MaxRoundsOT = (int)gMatchBot.m_PlayRoundsOT->value;
 
-			// Store deaths
-			this->m_Score[EntityIndex][1] = (int)Player->m_iDeaths;
-		}
+		// Hostname
+		this->m_Data.HostName = CVAR_GET_STRING("hostname");
+
+		// Map
+		this->m_Data.Map = STRING(gpGlobals->mapname);
+
+		// Server address
+		this->m_Data.Address = CVAR_GET_STRING("net_address");
+
+		// Game Mode
+		this->m_Data.GameMode = gMatchVoteTeam.GetMode();
+
+		// Has Knife Round
+		this->m_Data.KnifeRound = KnifeRound;
 	}
 	// Store end time if is end
 	else if(State == STATE_END)
 	{
+		// End Time
 		this->m_Data.EndTime = time(0);
+
+		// Rounds Played
+		this->m_Data.RoundsPlay = gMatchBot.GetRound();
+
+		// Terrorists Score
+		this->m_Data.ScoreTRs = gMatchBot.GetScore(TERRORIST);
+
+		// CTs Score
+		this->m_Data.ScoreCTs = gMatchBot.GetScore(CT);
+
+		// Save Data
+		gMatchTask.Create(TASK_SAVE_STATS, 2.0f, false, (void*)this->SaveData, STATE_END);
 	}
 }
 
-// Get Player Score
-int* CMatchStats::GetScore(int EntityIndex)
+// Save Match Data Task
+void CMatchStats::SaveData(int State)
 {
-	// Return Scores
-	return this->m_Score[EntityIndex];
+	// Save JSON data
+	gMatchStats.SaveJson();
+}
+
+// Save Match Data
+void CMatchStats::SaveJson()
+{
+	// Save data
+	nlohmann::ordered_json Data;
+
+	// Server Data
+	Data["server"] =
+	{
+		{"StartTime", this->m_Data.StartTime},
+		{"EndTime", this->m_Data.EndTime},
+		{"MaxRounds", this->m_Data.MaxRounds},
+		{"MaxRoundsOT", this->m_Data.MaxRoundsOT},
+		{"HostName", this->m_Data.HostName},
+		{"Map", this->m_Data.Map},
+		{"Address", this->m_Data.Address},
+		{"GameMode", this->m_Data.GameMode},
+		{"KnifeRound", this->m_Data.KnifeRound},
+		{"RoundsPlay", this->m_Data.RoundsPlay},
+		{"ScoreTRs", this->m_Data.ScoreTRs},
+		{"ScoreCTs", this->m_Data.ScoreCTs},
+	};
+
+	// Player Data
+	for (auto const& Player : this->m_Player)
+	{
+		// Auth Index
+		const char* Auth = Player.first.c_str();
+
+		// If has Auth Index
+		if (Auth)
+		{
+			// If Auth Index is not null
+			if (Auth[0] != '\0')
+			{
+				// Player Stats
+				Data["stats"][Auth] =
+				{
+					{"ConnectTime", Player.second.ConnectTime},
+					{"GetIntoGameTime", Player.second.GetIntoGameTime},
+					{"DisconnectedTime", Player.second.DisconnectedTime},
+					{"Team", Player.second.Team},
+				};
+				//
+				// Loop match states
+				for (int State = STATE_FIRST_HALF; State <= STATE_OVERTIME; State++)
+				{
+					// If is in live state
+					if (State == STATE_FIRST_HALF || State == STATE_SECOND_HALF || State == STATE_OVERTIME)
+					{
+						// Get stats of this state
+						auto Stats = Player.second.Stats[State];
+
+						// Store on json
+						Data["stats"][Auth][std::to_string(State)] =
+						{
+							// Stats
+							{"Frags", Stats.Frags},
+							{"Deaths", Stats.Deaths},
+							{"Assists", Stats.Assists},
+							{"Headshots", Stats.Headshots},
+							{"Shots", Stats.Shots},
+							{"Hits", Stats.Hits},
+							{"HitsReceived", Stats.HitsReceived},
+							{"Damage", Stats.Damage},
+							{"DamageReceived", Stats.DamageReceived},
+							{"Money", Stats.Money},
+							{"BlindFrags", Stats.BlindFrags},
+							{"RoundWinShare", Stats.RoundWinShare},
+							//
+							// Round Stats
+							{"RoundsPlay", Stats.RoundsPlay},
+							{"RoundsWin", Stats.RoundsWin},
+							{"RoundsLose", Stats.RoundsLose},
+							//
+							// Bomb Stats
+							{"BombSpawn", Stats.BombSpawn},
+							{"BombDrop", Stats.BombDrop},
+							{"BombPlanting", Stats.BombPlanting},
+							{"BombPlanted", Stats.BombPlanted},
+							{"BombExploded", Stats.BombExploded},
+							{"BombDefusing", Stats.BombDefusing},
+							{"BombDefusingKit", Stats.BombDefusingKit},
+							{"BombDefused", Stats.BombDefused},
+							{"BombDefusedKit", Stats.BombDefusedKit},
+							//
+							// Hitbox stats
+							{"HitBoxAttack", Stats.HitBoxAttack},
+							{"HitBoxVictim", Stats.HitBoxVictim},
+							//
+							// Kill Streaks
+							{"KillStreak", Stats.KillStreak},
+							//
+							// Round Versus
+							{"Versus", Stats.Versus}
+						};
+					}
+				}
+			}
+		}
+	}
+
+	// Store Data
+	if (Data.size())
+	{
+		// File path buffer
+		char Buffer[MAX_PATH] = { 0 };
+		
+		// Format Path with match end time
+		Q_snprintf(Buffer, sizeof(Buffer), "%s/%lld.json", STATS_SAVE_PATH, this->m_Data.EndTime);
+
+		// Create file with path buffer
+		std::ofstream DataFile(Buffer);
+
+		// Put Stats data to file buffer
+		DataFile << Data;
+
+		// Close file
+		DataFile.close();
+	}
 }
 
 // On Player Connect
@@ -73,12 +217,6 @@ bool CMatchStats::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
 	{
 		// Set Connection time
 		this->m_Player[Auth].ConnectTime = time(0);
-
-		// Reset Frags
-		this->m_Score[ENTINDEX(pEntity)][0] = 0;
-
-		// Reset Deaths
-		this->m_Score[ENTINDEX(pEntity)][1] = 0;
 	}
 
 	return true;
@@ -167,6 +305,12 @@ void CMatchStats::RoundStart()
 
 		// Clear total round damage by team
 		memset(this->m_RoundDamageTeam, 0, sizeof(this->m_RoundDamageTeam));
+
+		// Clear round frags
+		memset(this->m_RoundFrags, 0, sizeof(this->m_RoundFrags));
+
+		// Clear round versus
+		memset(this->m_RoundVersus, 0, sizeof(this->m_RoundVersus));
 	}
 }
 
@@ -197,12 +341,12 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 					// Increment rounds played
 					this->m_Player[Auth].Stats[this->m_State].RoundsPlay++;
 
+					// Entity Index
+					auto EntityIndex = Player->entindex();
+
 					// If the player team is winner team
 					if (Player->m_iTeam == Winner)
 					{
-						// Entity Index
-						auto EntityIndex = Player->entindex();
-
 						// Rounds Win
 						this->m_Player[Auth].Stats[this->m_State].RoundsWin++;
 
@@ -228,6 +372,20 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 
 							// Increment round win share on player stats
 							this->m_Player[Auth].Stats[this->m_State].RoundWinShare += RoundWinShare;
+						}
+
+						// If has frags on that round
+						if (this->m_RoundFrags[EntityIndex] > 0)
+						{
+							// Increment kill streaks
+							this->m_Player[Auth].Stats[this->m_State].KillStreak[this->m_RoundFrags[EntityIndex]]++;
+						}
+
+						// Check for player versus stats
+						if (this->m_RoundVersus[EntityIndex] > 0)
+						{
+							// Increment versus stats
+							this->m_Player[Auth].Stats[this->m_State].Versus[this->m_RoundVersus[EntityIndex]]++;
 						}
 					}
 					else
@@ -342,8 +500,14 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 			// If attacker is found
 			if (Attacker)
 			{
+				// Attacker entity index
+				auto AttackerIndex = Attacker->entindex();
+
+				// Victim entity index
+				auto VictimIndex = Victim->entindex();
+
 				// If attacker is not victim
-				if (Victim->entindex() != Attacker->entindex())
+				if (VictimIndex != AttackerIndex)
 				{
 					// If both are players
 					if (Victim->IsPlayer() && Attacker->IsPlayer())
@@ -380,17 +544,86 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 							this->m_Player[AttackerAuth].Stats[this->m_State].Headshots++;
 						}
 
-						// Attacker entity index
-						auto AttackerIndex = Attacker->entindex();
+						// Round Frags
+						this->m_RoundFrags[AttackerIndex]++;
 
-						// Victim entity index
-						auto VictimIndex = Victim->entindex();
-
-						// Attacker Assists check
-						if (this->m_RoundDmg[AttackerIndex][VictimIndex] >= (int)MANAGER_ASSISTANCE_DMG)
+						// If has ReGameDLL_CS Api
+						if (g_pGameRules)
 						{
-							// Increment assists
-							this->m_Player[AttackerAuth].Stats[this->m_State].Assists++;
+							// Player Count
+							int NumAliveTR = 0, NumAliveCT = 0, NumDeadTR = 0, NumDeadCT = 0;
+
+							// Count Players in teams dead and alive
+							CSGameRules()->InitializePlayerCounts(NumAliveTR, NumAliveCT, NumDeadTR, NumDeadCT);
+
+							// Loop Max Clients
+							for (int i = 1; i <= gpGlobals->maxClients; ++i)
+							{
+								// Get Temporary Player Data
+								auto Temp = UTIL_PlayerByIndexSafe(i);
+
+								// If is not null
+								if (Temp)
+								{
+									// If Player is in any team
+									if (Temp->m_iTeam == TERRORIST || Temp->m_iTeam == CT)
+									{
+										// Get entity index
+										auto TempIndex = Temp->entindex();
+
+										// If Temporary player is not attacker
+										if (TempIndex != AttackerIndex)
+										{
+											// Get auth index
+											auto TempAuth = GET_USER_AUTH(Temp->edict());
+
+											// If is not null
+											if (TempAuth)
+											{
+												// Temporary Entity Index
+												auto TempEntityIndex = Temp->entindex();
+
+												// If is not empty
+												if (TempAuth[0] != '\0')
+												{
+													// Check kill assistence
+													if (this->m_RoundDmg[TempEntityIndex][VictimIndex] >= (int)MANAGER_ASSISTANCE_DMG)
+													{
+														// Increment assistence count
+														this->m_Player[TempAuth].Stats[this->m_State].Assists++;
+													}
+
+													// If has not round versus set in this round
+													if (this->m_RoundVersus[TempEntityIndex] <= 0)
+													{
+														// If temporary player is Terrorist
+														if (Temp->m_iTeam == TERRORIST)
+														{
+															// If has one Terrorist alive (Temporary player is last player alive)
+															if (NumAliveTR == 1)
+															{
+																// Set amount of players verus temporary players is alive
+																this->m_RoundVersus[TempEntityIndex] = NumAliveCT;
+															}
+														}
+														// If temporary player is CT
+														else if (Temp->m_iTeam == CT)
+														{
+															// If has one CT alive (Temporary player is last player alive)
+															if (NumAliveCT == 1)
+															{
+																// Set amount of players verus temporary players is alive
+																this->m_RoundVersus[TempEntityIndex] = NumAliveTR;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+
 						}
 					}
 				}

@@ -470,7 +470,7 @@ void CMatchBot::SetState(int State)
 	}
 
 	// Match Stats
-	gMatchStats.SetState(this->m_State);
+	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
 
 	// Match Scores Game Name
 	this->UpdateGameName();

@@ -25,6 +25,15 @@
 #include <map>
 #include <vector>
 
+// System Includes
+#ifndef _WIN32
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#else
+#include <direct.h>
+#endif
+
 // CSSDK
 #include <extdll.h>
 #include <eiface.h>
@@ -51,6 +60,9 @@
 
 // Time Format Class
 #include "TimeFormat.h"
+
+// JSON
+#include "include/json.hpp"
 
 // Match Bot
 #include "MatchMenu.h"

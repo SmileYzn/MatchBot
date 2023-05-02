@@ -2,6 +2,22 @@
 
 CMatchUtil gMatchUtil;
 
+int CMatchUtil::MakeDirectory(const char* Path)
+{
+	struct stat st = { 0 };
+
+	if (stat(Path, &st) == -1)
+	{
+#if defined(_WIN32)
+		return _mkdir(Path);
+#else
+		return mkdir(Path, 0755);
+#endif
+	}
+
+	return 0;
+}
+
 cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 {
 	// Get cvar pointer

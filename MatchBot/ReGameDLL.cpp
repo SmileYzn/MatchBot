@@ -206,6 +206,8 @@ void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain,
 		amount = 0;
 	}
 
+	gMatchStats.PlayerAddAccount(pthis, amount, type, bTrackChange);
+
 	chain->callNext(pthis, amount, type, bTrackChange);
 }
 

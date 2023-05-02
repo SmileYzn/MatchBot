@@ -38,6 +38,7 @@ void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 		this->m_PlayerMin = PlayersMin;
 		this->m_PlayerNum = 0;
 		this->m_VoteCount = 0;
+		this->m_GameMode = 0;
 
 		auto Players = gMatchUtil.GetPlayers(true, false);
 
@@ -227,6 +228,12 @@ void CMatchVoteTeam::SetMode(int GameMode)
 	}
 
 	gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)gMatchBot.NextState, STATE_FIRST_HALF);
+}
+
+int CMatchVoteTeam::GetMode()
+{
+	// Return match game mode
+	return m_GameMode;
 }
 
 void CMatchVoteTeam::TeamsRandomize()

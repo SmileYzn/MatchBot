@@ -19,6 +19,9 @@ constexpr auto MAP_LIST_FILE = "cstrike/addons/matchbot/maplist.ini";
 class CMatchUtil
 {
 public:
+	// Make Directory
+	int MakeDirectory(const char* Path);
+
 	// Register console variable
 	cvar_t* CvarRegister(const char* Name, const char* Value);
 

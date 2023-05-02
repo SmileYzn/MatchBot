@@ -159,9 +159,6 @@
     <ClInclude Include="MatchPause.h">
       <Filter>MatchBot\MatchPause</Filter>
     </ClInclude>
-    <ClInclude Include="Hash.h">
-      <Filter>MatchBot</Filter>
-    </ClInclude>
     <ClInclude Include="MatchVoteMenu.h">
       <Filter>MatchBot\MatchVoteMenu</Filter>
     </ClInclude>

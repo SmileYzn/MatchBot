@@ -9,6 +9,7 @@ constexpr auto TASK_TIMER_LO3 = 1442;
 constexpr auto TASK_CHANGE_MAP = 1443;
 constexpr auto TASK_PAUSE_MATCH = 1444;
 constexpr auto TASK_ROUND_END_STATS = 1445;
+constexpr auto TASK_SAVE_STATS = 1446;
 
 typedef struct S_TASK_INFO
 {

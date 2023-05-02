@@ -16,6 +16,9 @@ constexpr auto CMD_DMG	= BIT(1);	/* flag "b" */
 constexpr auto CMD_RDMG = BIT(2);	/* flag "c" */
 constexpr auto CMD_SUM	= BIT(3);	/* flag "d" */
 
+// Stats file path
+constexpr auto STATS_SAVE_PATH = "cstrike/addons/matchbot/stats";
+
 // Match Data
 typedef struct S_MATCH_DATA
 {
@@ -31,11 +34,17 @@ typedef struct S_MATCH_DATA
 	// Match OT ROunds
 	int MaxRoundsOT;
 
+	// Hostname
+	std::string HostName;
+
 	// Map
 	std::string Map;
 
-	// Team Type (0 Leaders Sorted, 1 Random, 2 Not Sorted, 3 Skill Sorted, 4 Swap Teams)
-	int TeamType;
+	// Address
+	std::string Address;
+
+	// Game Mode (0 Leaders Sorted, 1 Random, 2 Not Sorted, 3 Skill Sorted, 4 Swap Teams, 5 Knife Round)
+	int GameMode;
 
 	// Has Knife Round
 	bool KnifeRound;
@@ -54,38 +63,44 @@ typedef struct S_MATCH_DATA
 typedef struct S_PLAYER_STATS
 {
 	// Stats
-	int Frags;					// TEST: Player Frags
-	int Deaths;					// TEST: Player Deaths
-	int Assists;				// TEST: Player Kill Assists
-	int Headshots;				// TEST: Headshots by player
-	int Shots;					// TEST: Shots by player
-	int Hits;					// TEST: Hits done by player
-	int HitsReceived;			// TEST: Hits received by player
-	int Damage;					// TEST: Damage done by player
-	int DamageReceived;			// TEST: Damage received by player
-	long Money;					// TEST: Money Balance from player
-	int BlindFrags;				// TEST: Player frags when blinded by flashbang
-	float RoundWinShare;		// TODO: Round Win Share stats
+	int Frags;					// BETA: Player Frags
+	int Deaths;					// BETA: Player Deaths
+	int Assists;				// BETA: Player Kill Assists
+	int Headshots;				// BETA: Headshots by player
+	int Shots;					// BETA: Shots by player
+	int Hits;					// BETA: Hits done by player
+	int HitsReceived;			// BETA: Hits received by player
+	int Damage;					// BETA: Damage done by player
+	int DamageReceived;			// BETA: Damage received by player
+	long Money;					// BETA: Money Balance from player
+	int BlindFrags;				// BETA: Player frags when blinded by flashbang
+	float RoundWinShare;		// BETA: Round Win Share stats
+
+	// Kill streak
+	int KillStreak[MAX_CLIENTS + 1];
+
+	// Versus
+	int Versus[MAX_CLIENTS + 1];
 
 	// HitBox
-	int HitBoxAttack[9][2];		// TEST: Hitbox: 0 Hits, 1 Damage
-	int HitBoxVictim[9][2];		// TEST: Hitbox: 0 Hits, 1 Damage
+	int HitBoxAttack[9][2];		// BETA: Hitbox: 0 Hits, 1 Damage
+	int HitBoxVictim[9][2];		// BETA: Hitbox: 0 Hits, 1 Damage
 
 	// Rounds
-	int RoundsPlay;				// TEST: Rounds Play
-	int RoundsWin;				// TEST: Rounds Won
-	int RoundsLose;				// TEST: Rounds Lose
+	int RoundsPlay;				// BETA: Rounds Play
+	int RoundsWin;				// BETA: Rounds Won
+	int RoundsLose;				// BETA: Rounds Lose
 
 	// Bomb
-	int BombSpawn;				// TEST: Bomb Spawns
-	int BombDrop;				// TEST: Bomb Drops
-	int BombPlanting;			// TEST: Bomb Plant Attempts
-	int BombPlanted;			// TEST: Bomb Plants
-	int BombExploded;			// TEST: Bomb Explosions
-	int BombDefusing;			// TEST: Bomb Defusing Attempts
-	int BombDefusingKit;		// TEST: Bomb Defusing with Kit Attempts
-	int BombDefused;			// TEST: Bomb Defuses
-	int BombDefusedKit;			// TEST: Bomb Defuses with Kit
+	int BombSpawn;				// BETA: Bomb Spawns
+	int BombDrop;				// BETA: Bomb Drops
+	int BombPlanting;			// BETA: Bomb Plant Attempts
+	int BombPlanted;			// BETA: Bomb Plants
+	int BombExploded;			// BETA: Bomb Explosions
+	int BombDefusing;			// BETA: Bomb Defusing Attempts
+	int BombDefusingKit;		// BETA: Bomb Defusing with Kit Attempts
+	int BombDefused;			// BETA: Bomb Defuses
+	int BombDefusedKit;			// BETA: Bomb Defuses with Kit
 
 	void Reset()
 	{
@@ -107,6 +122,12 @@ typedef struct S_PLAYER_STATS
 
 		// Hitbox Victim
 		memset(this->HitBoxVictim, 0, sizeof(this->HitBoxVictim));
+
+		// Kill Streak
+		memset(this->KillStreak, 0, sizeof(KillStreak));
+
+		// Versus
+		memset(this->Versus, 0, sizeof(Versus));
 
 		// Rounds
 		this->RoundsPlay = 0;
@@ -144,11 +165,17 @@ public:
 class CMatchStats
 {
 public:
-	// Match State
-	void SetState(int State);
+	// On Server activate
+	void ServerActivate();
 
-	// Get Score (0 Frags, 1 Deaths)
-	int* GetScore(int EntityIndex);
+	// Match State
+	void SetState(int State, bool KnifeRound);
+
+	// Save Match Data Task callback
+	static void SaveData(int State);
+
+	// Save Data
+	void SaveJson();
 	
 	// Connect
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
@@ -233,8 +260,11 @@ private:
 	// Round total damage by team
 	int m_RoundDamageTeam[SPECTATOR + 1];
 
-	// Player Scores
-	int m_Score[MAX_CLIENTS + 1][2];
+	// Round Frags by player
+	int m_RoundFrags[MAX_CLIENTS + 1];
+
+	// Round Versus by player
+	int m_RoundVersus[MAX_CLIENTS + 1];
 
 	// Match State
 	size_t m_State = STATE_DEAD;

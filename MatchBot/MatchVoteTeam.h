@@ -31,6 +31,7 @@ public:
 	P_TEAM_ITEM GetWinner();
 
 	void SetMode(int GameMode);
+	int  GetMode();
 
 	void TeamsRandomize();
 	void TeamsOptimize();
@@ -41,6 +42,7 @@ private:
 	int m_PlayerMin = 0;
 	int m_PlayerNum = 0;
 	int m_VoteCount = 0;
+	int m_GameMode = 0;
 };
 
 extern CMatchVoteTeam gMatchVoteTeam;
