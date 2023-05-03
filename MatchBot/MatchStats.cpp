@@ -121,69 +121,56 @@ void CMatchStats::SaveJson()
 			// If Auth Index is not null
 			if (Auth[0] != '\0')
 			{
-				// Player Stats
+				// Get final stats
+				auto Stats = this->m_Player[Auth].GetStats();
+				//
+				// Insert Final Stats on JSON
 				Data["stats"][Auth] =
 				{
 					{"ConnectTime", Player.second.ConnectTime},
 					{"GetIntoGameTime", Player.second.GetIntoGameTime},
 					{"DisconnectedTime", Player.second.DisconnectedTime},
 					{"Team", Player.second.Team},
+					//
+					{"Frags", Stats.Frags},
+					{"Deaths", Stats.Deaths},
+					{"Assists", Stats.Assists},
+					{"Headshots", Stats.Headshots},
+					{"Shots", Stats.Shots},
+					{"Hits", Stats.Hits},
+					{"HitsReceived", Stats.HitsReceived},
+					{"Damage", Stats.Damage},
+					{"DamageReceived", Stats.DamageReceived},
+					{"Money", Stats.Money},
+					{"BlindFrags", Stats.BlindFrags},
+					{"RoundWinShare", Stats.RoundWinShare},
+					//
+					// Round Stats
+					{"RoundsPlay", Stats.RoundsPlay},
+					{"RoundsWin", Stats.RoundsWin},
+					{"RoundsLose", Stats.RoundsLose},
+					//
+					// Bomb Stats
+					{"BombSpawn", Stats.BombSpawn},
+					{"BombDrop", Stats.BombDrop},
+					{"BombPlanting", Stats.BombPlanting},
+					{"BombPlanted", Stats.BombPlanted},
+					{"BombExploded", Stats.BombExploded},
+					{"BombDefusing", Stats.BombDefusing},
+					{"BombDefusingKit", Stats.BombDefusingKit},
+					{"BombDefused", Stats.BombDefused},
+					{"BombDefusedKit", Stats.BombDefusedKit},
+					//
+					// Hitbox stats
+					{"HitBoxAttack", Stats.HitBoxAttack},
+					{"HitBoxVictim", Stats.HitBoxVictim},
+					//
+					// Kill Streaks
+					{"KillStreak", Stats.KillStreak},
+					//
+					// Round Versus
+					{"Versus", Stats.Versus}
 				};
-				//
-				// Loop match states
-				for (int State = STATE_FIRST_HALF; State <= STATE_OVERTIME; State++)
-				{
-					// If is in live state
-					if (State == STATE_FIRST_HALF || State == STATE_SECOND_HALF || State == STATE_OVERTIME)
-					{
-						// Get stats of this state
-						auto Stats = Player.second.Stats[State];
-
-						// Store on json
-						Data["stats"][Auth]["state"][std::to_string(State)] =
-						{
-							// Stats
-							{"Frags", Stats.Frags},
-							{"Deaths", Stats.Deaths},
-							{"Assists", Stats.Assists},
-							{"Headshots", Stats.Headshots},
-							{"Shots", Stats.Shots},
-							{"Hits", Stats.Hits},
-							{"HitsReceived", Stats.HitsReceived},
-							{"Damage", Stats.Damage},
-							{"DamageReceived", Stats.DamageReceived},
-							{"Money", Stats.Money},
-							{"BlindFrags", Stats.BlindFrags},
-							{"RoundWinShare", Stats.RoundWinShare},
-							//
-							// Round Stats
-							{"RoundsPlay", Stats.RoundsPlay},
-							{"RoundsWin", Stats.RoundsWin},
-							{"RoundsLose", Stats.RoundsLose},
-							//
-							// Bomb Stats
-							{"BombSpawn", Stats.BombSpawn},
-							{"BombDrop", Stats.BombDrop},
-							{"BombPlanting", Stats.BombPlanting},
-							{"BombPlanted", Stats.BombPlanted},
-							{"BombExploded", Stats.BombExploded},
-							{"BombDefusing", Stats.BombDefusing},
-							{"BombDefusingKit", Stats.BombDefusingKit},
-							{"BombDefused", Stats.BombDefused},
-							{"BombDefusedKit", Stats.BombDefusedKit},
-							//
-							// Hitbox stats
-							{"HitBoxAttack", Stats.HitBoxAttack},
-							{"HitBoxVictim", Stats.HitBoxVictim},
-							//
-							// Kill Streaks
-							{"KillStreak", Stats.KillStreak},
-							//
-							// Round Versus
-							{"Versus", Stats.Versus}
-						};
-					}
-				}
 			}
 		}
 	}

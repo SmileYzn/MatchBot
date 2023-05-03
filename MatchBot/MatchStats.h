@@ -160,6 +160,72 @@ public:
 
 	// Stats by match states
 	std::array<P_PLAYER_STATS, STATE_END + 1> Stats;
+
+	// Totalize Stats
+	P_PLAYER_STATS GetStats()
+	{
+		// Stats Result
+		P_PLAYER_STATS Result = { 0 };
+
+		// Loop Array of stats
+		for (const auto& row : this->Stats)
+		{
+			// Stats
+			Result.Frags += row.Frags;
+			Result.Deaths += row.Deaths;
+			Result.Assists += row.Assists;
+			Result.Headshots += row.Headshots;
+			Result.Shots += row.Shots;
+			Result.Hits += row.Hits;
+			Result.HitsReceived += row.HitsReceived;
+			Result.Damage += row.Damage;
+			Result.DamageReceived += row.DamageReceived;
+			Result.Money += row.Money;
+			Result.BlindFrags += row.BlindFrags;
+			Result.RoundWinShare += row.RoundWinShare;
+
+			// Kill Streak, Versus
+			for (int i = 0; i < MAX_CLIENTS; i++)
+			{
+				// Kill Streak
+				Result.KillStreak[i] += row.KillStreak[i];
+
+				// Versus
+				Result.Versus[i] += row.Versus[i];
+			}
+
+			// Hitbox
+			for (int i = 0; i < 9; i++)
+			{
+				// Hitbox as attacker
+				Result.HitBoxAttack[i][0] += row.HitBoxAttack[i][0]; // Hits
+				Result.HitBoxAttack[i][1] += row.HitBoxAttack[i][1]; // Damage
+
+				// Hitbox as victim
+				Result.HitBoxVictim[i][0] += row.HitBoxVictim[i][0]; // Hits
+				Result.HitBoxVictim[i][1] += row.HitBoxVictim[i][1]; // Damage
+			}
+
+			// Rounds
+			Result.RoundsPlay += row.RoundsPlay;
+			Result.RoundsWin += row.RoundsWin;
+			Result.RoundsLose += row.RoundsLose;
+
+			// Bomb
+			Result.BombSpawn += row.BombSpawn;
+			Result.BombDrop += row.BombDrop;
+			Result.BombPlanting += row.BombPlanting;
+			Result.BombPlanted += row.BombPlanted;
+			Result.BombExploded += row.BombExploded;
+			Result.BombDefusing += row.BombDefusing;
+			Result.BombDefusingKit += row.BombDefusingKit;
+			Result.BombDefused += row.BombDefused;
+			Result.BombDefusedKit += row.BombDefusedKit;
+		}
+
+		// Stats
+		return Result;
+	}
 };
 
 class CMatchStats
