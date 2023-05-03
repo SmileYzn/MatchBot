@@ -70,6 +70,9 @@ bool CMatchVoteMenu::Menu(CBasePlayer* Player)
 			// Vote Restart
 			gMatchMenu[EntityIndex].AddItem(3, _T("Vote for Restart Match"));
 
+			// Vote Stop
+			gMatchMenu[EntityIndex].AddItem(4, _T("Vote for Surrender"));
+
 			// Show menu
 			gMatchMenu[EntityIndex].Show(EntityIndex);
 
@@ -115,6 +118,11 @@ void CMatchVoteMenu::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			case 3: // Vote Restart
 			{
 				gMatchVoteMenu.VoteRestart(Player);
+				break;
+			}
+			case 4: // Vote Surrender
+			{
+				gMatchVoteMenu.VoteSurrender(Player);
 				break;
 			}
 		}
@@ -531,6 +539,82 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 		{
 			// Send message
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), (int)(gMatchBot.m_PlayerVoteRestart->value));
+		}
+	}
+
+	// Failed command
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+
+	// Return result
+	return false;
+}
+
+bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
+{
+	// If player is in game
+	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+	{
+		// If vote state is not running
+		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
+		{
+			// Get Players
+			auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);
+
+			// If player count match
+			if (gMatchBot.m_PlayerVoteSurrender->value && (Players.size() >= (size_t)round(gMatchBot.m_PlayerVoteSurrender->value)))
+			{
+				// If player not voted yet
+				if (!this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam])
+				{
+					// Add Vote
+					this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam] = true;
+
+					// Needed votes
+					auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+
+					// Get Vote Count
+					auto VoteCount = 0;
+
+					// Loop Players in team
+					for (const auto& Temp : Players)
+					{
+						// Count Vote if is true
+						if (this->m_Votes[Temp->entindex()].VoteSurrender[Temp->m_iTeam])
+						{
+							VoteCount++;
+						}
+					}
+
+					// Vote Map Progress to change map
+					auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+
+					// If need more votes to change map
+					if (VoteProgress < 100.0f)
+					{
+						// Send messages
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 from \3%s\1 voted for surrender: %2.0f%% of votes to surrender match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say \3.vote\1 to vote for a surender."));
+					}
+					else
+					{
+						// Stop Match with a loser and winner
+						gMatchBot.EndMatch(Player->m_iTeam, (Player->m_iTeam == TERRORIST) ? CT : TERRORIST);
+					}
+				}
+				else
+				{
+					// Send error message
+					gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("You already voted to surrender the game."));
+				}
+
+				// Return result
+				return true;
+			}
+			else
+			{
+				// Send message
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), (int)(gMatchBot.m_PlayerVoteSurrender->value));
+			}
 		}
 	}
 

@@ -83,6 +83,9 @@ void CMatchBot::ServerActivate()
 	// Mininum of players to enable Vote Restart command for players (0 to disble command)
 	this->m_PlayerVoteRestart = gMatchUtil.CvarRegister("mb_player_vote_restart", "5");
 
+	// Mininum of players to enable Vote Surrender command for players (0 to disble command)
+	this->m_PlayerVoteSurrender = gMatchUtil.CvarRegister("mb_player_vote_surrender", "5");
+
 	// Show round stats on end (1 Show round damage in chat, 2 Show round summary in chat, 3 Show round damage in console, 4 Show round summary in console)
 	this->m_RoundEndStats = gMatchUtil.CvarRegister("mb_round_end_stats", "0");
 
@@ -1372,5 +1375,51 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 	{
 		// Error message
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+	}
+}
+
+// End Match with a winner
+void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
+{
+	// If match is running
+	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
+	{
+		// Max Rounds to Play
+		auto HalfRounds = (int)(this->m_PlayRounds->value / 2.0f);
+
+		// Clear Scores
+		memset(this->m_Score, 0, sizeof(this->m_Score));
+
+		// Set Score winner
+		this->m_Score[Winner][STATE_FIRST_HALF]  = HalfRounds;
+		this->m_Score[Winner][STATE_SECOND_HALF] = HalfRounds;
+
+		// Send message
+		gMatchUtil.SayText(nullptr, (Winner == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("Game Over! The \3%s\1 team surrendered!!"), this->GetTeam(Loser, false));
+
+		// Remove LO3 script if is running
+		gMatchTask.Delete(TASK_TIMER_LO3);
+
+		// If is in Knife Round
+		if (this->m_PlayKnifeRound)
+		{
+			// Add map objectives
+			gMatchWarmup.RemoveMapObjective(false);
+
+			// Disable BOT deathmatch
+			CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+
+			// Execute command to run with all weapons
+			gMatchUtil.ServerCommand("bot_all_weapons");
+
+			// Disable Knife Round
+			this->m_PlayKnifeRound = false;
+		}
+
+		// Admin changed match manually
+		this->m_AdminCommand = true;
+
+		// Set end state
+		gMatchTask.Create(TASK_CHANGE_STATE, 0.5f, false, (void*)this->NextState, STATE_END);
 	}
 }

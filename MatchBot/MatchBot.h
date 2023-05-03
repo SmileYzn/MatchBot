@@ -140,6 +140,9 @@ public:
 	// Restart current match
 	void RestartMatch(CBasePlayer* Player);
 
+	// End Match with a winner
+	void EndMatch(TeamName Loser, TeamName Winner);
+
 private:
 	// Match Bot States
 	int m_State = STATE_DEAD;
@@ -189,6 +192,7 @@ public:
 	cvar_t* m_PlayerVoteMap = nullptr;
 	cvar_t* m_PlayerVotePause = nullptr;
 	cvar_t* m_PlayerVoteRestart = nullptr;
+	cvar_t* m_PlayerVoteSurrender = nullptr;
 	cvar_t* m_RoundEndStats = nullptr;
 	cvar_t* m_StatsCommands = nullptr;
 	cvar_t* m_HelpFile = nullptr;

@@ -14,6 +14,9 @@ typedef struct S_PLAYER_VOTES
 	// Vote Restart Array
 	std::array<bool, STATE_END + 1> VoteRestart;
 
+	// Vote Pause Array
+	std::array<bool, SPECTATOR + 1> VoteSurrender;
+
 	void Reset()
 	{
 		// Reset Vote Kick
@@ -27,6 +30,9 @@ typedef struct S_PLAYER_VOTES
 
 		// Reset Vote Restart
 		std::fill(this->VoteRestart.begin(), this->VoteRestart.end(), false);
+
+		// Reset Vote Surrende
+		std::fill(this->VoteSurrender.begin(), this->VoteSurrender.end(), false);
 	}
 } P_PLAYER_VOTES, * LP_PLAYER_VOTES;
 
@@ -56,6 +62,9 @@ public:
 
 	// Vote Restart
 	bool VoteRestart(CBasePlayer* Player);
+
+	// Vote Surrender
+	bool VoteSurrender(CBasePlayer* Player);
 
 	// Player Votes
  	std::array<P_PLAYER_VOTES, MAX_CLIENTS + 1> m_Votes ;
