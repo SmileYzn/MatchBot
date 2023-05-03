@@ -91,22 +91,22 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,".hp"))
 		{
-			gMatchStats.ShowHP(Player);
+			gMatchStats.ShowHP(Player, true, false);
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,".dmg"))
 		{
-			gMatchStats.ShowDamage(Player, false);
+			gMatchStats.ShowDamage(Player, true, false);
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,".rdmg"))
 		{
-			gMatchStats.ShowReceivedDamage(Player);
+			gMatchStats.ShowReceivedDamage(Player, true, false);
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,".sum"))
 		{
-			gMatchStats.ShowSummary(Player, false);
+			gMatchStats.ShowSummary(Player, true, false);
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,".help"))

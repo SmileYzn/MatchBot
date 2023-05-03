@@ -229,16 +229,16 @@ public:
 	void ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageType);
 
 	// Show Enemy HP
-	bool ShowHP(CBasePlayer* Player);
+	bool ShowHP(CBasePlayer* Player, bool Command, bool InConsole);
 
 	// Show Damage
-	bool ShowDamage(CBasePlayer* Player, bool InConsole);
+	bool ShowDamage(CBasePlayer* Player, bool Command, bool InConsole);
 
 	// Show Received Damage
-	bool ShowReceivedDamage(CBasePlayer* Player);
+	bool ShowReceivedDamage(CBasePlayer* Player, bool Command, bool InConsole);
 
 	// Show Round Summary
-	bool ShowSummary(CBasePlayer* Player, bool InConsole);
+	bool ShowSummary(CBasePlayer* Player, bool Command, bool InConsole);
 
 	// Round end Stats
 	static void RoundEndStats(int State);

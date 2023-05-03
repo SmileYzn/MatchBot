@@ -834,9 +834,9 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 }
 
 // Show Enemy HP
-bool CMatchStats::ShowHP(CBasePlayer* Player)
+bool CMatchStats::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
 {
-	if (this->m_StatsCommandFlags & CMD_HP)
+	if (!Command || (this->m_StatsCommandFlags & CMD_HP))
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -871,7 +871,7 @@ bool CMatchStats::ShowHP(CBasePlayer* Player)
 							}
 						}
 
-						if (!StatsCount)
+						if (!StatsCount && !InConsole)
 						{
 							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No one is alive."));
 						}
@@ -889,9 +889,9 @@ bool CMatchStats::ShowHP(CBasePlayer* Player)
 }
 
 // Show Damage
-bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
+bool CMatchStats::ShowDamage(CBasePlayer* Player, bool Command, bool InConsole)
 {
-	if (this->m_StatsCommandFlags & CMD_DMG)
+	if (!Command || (this->m_StatsCommandFlags & CMD_DMG))
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -938,16 +938,9 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
 							}
 						}
 
-						if (!StatsCount)
+						if (!StatsCount && !InConsole)
 						{
-							if (!InConsole)
-							{
-								gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You haven't hit anyone this round."));
-							}
-							else
-							{
-								gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("You haven't hit anyone this round."));
-							}
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You haven't hit anyone this round."));
 						}
 
 						return true;
@@ -966,9 +959,9 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player, bool InConsole)
 }
 
 // Show Received Damage
-bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
+bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player, bool Command, bool InConsole)
 {
-	if (this->m_StatsCommandFlags & CMD_RDMG)
+	if (!Command || (this->m_StatsCommandFlags & CMD_RDMG))
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -1000,7 +993,7 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 							}
 						}
 
-						if (!StatsCount)
+						if (!StatsCount && !InConsole)
 						{
 							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You weren't hit this round."));
 						}
@@ -1018,9 +1011,9 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player)
 }
 
 // Show Round Summary
-bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
+bool CMatchStats::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
 {
-	if (this->m_StatsCommandFlags & CMD_SUM)
+	if (!Command || (this->m_StatsCommandFlags & CMD_SUM))
 	{
 		if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 		{
@@ -1073,16 +1066,9 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
 							}
 						}
 
-						if (!StatsCount)
+						if (!StatsCount && !InConsole)
 						{
-							if (!InConsole)
-							{
-								gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No stats in this round."));
-							}
-							else
-							{
-								gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, _T("No stats in this round."));
-							}
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("No stats in this round."));
 						}
 
 						return true;
@@ -1100,6 +1086,7 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool InConsole)
 	return false;
 }
 
+// Round End Stats
 void CMatchStats::RoundEndStats(int State)
 {
 	// Get round end stats type
@@ -1117,12 +1104,12 @@ void CMatchStats::RoundEndStats(int State)
 			// Show Damage command
 			if (Type == 1 || Type == 3)
 			{
-				gMatchStats.ShowDamage(Player, (Type == 3));
+				gMatchStats.ShowDamage(Player, false, (Type == 3));
 			}
 			// Show Summary command
 			else if (Type == 2 || Type == 4)
 			{
-				gMatchStats.ShowSummary(Player, (Type == 4));
+				gMatchStats.ShowSummary(Player, false, (Type == 4));
 			}
 		}
 	}
