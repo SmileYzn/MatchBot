@@ -205,7 +205,10 @@ void CMatchStats::SaveJson()
 					{"KillStreak", Stats.KillStreak},
 					//
 					// Round Versus
-					{"Versus", Stats.Versus}
+					{"Versus", Stats.Versus},
+					//
+					// Weapon Stats
+					{"Weapon", Stats.Weapon}
 				};
 			}
 		}
@@ -458,7 +461,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 							auto DamageTaken = (int)(Victim->m_iLastClientHealth - clamp(Victim->edict()->v.health, 0.0f, Victim->edict()->v.health));
 
 							// Item Index
-							//auto ItemIndex = (bitsDamageType & DMG_EXPLOSION) ? WEAPON_HEGRENADE : ((Attacker->m_pActiveItem) ? Attacker->m_pActiveItem->m_iId : WEAPON_NONE);
+							auto ItemIndex = (bitsDamageType & DMG_EXPLOSION) ? WEAPON_HEGRENADE : ((Attacker->m_pActiveItem) ? Attacker->m_pActiveItem->m_iId : WEAPON_NONE);
 
 							// Attacker Damage
 							this->m_Player[AttackerAuth].Stats[this->m_State].Damage += DamageTaken;
@@ -472,6 +475,12 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 							// Attacker HitBox Damage
 							this->m_Player[AttackerAuth].Stats[this->m_State].HitBoxAttack[Victim->m_LastHitGroup][1] += DamageTaken;
 
+							// Attacker Hits
+							this->m_Player[AttackerAuth].Stats[this->m_State].Weapon[ItemIndex][4]++;
+
+							// Attacker Damage
+							this->m_Player[AttackerAuth].Stats[this->m_State].Weapon[ItemIndex][7] += DamageTaken;
+
 							// Victim Damage Received
 							this->m_Player[VictimAuth].Stats[this->m_State].DamageReceived += DamageTaken;
 
@@ -483,6 +492,12 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 
 							// Victim HitBox Damage
 							this->m_Player[VictimAuth].Stats[this->m_State].HitBoxVictim[Victim->m_LastHitGroup][1] += DamageTaken;
+
+							// Victim Hits Received
+							this->m_Player[VictimAuth].Stats[this->m_State].Weapon[ItemIndex][5]++;
+
+							// Victim Damage
+							this->m_Player[VictimAuth].Stats[this->m_State].Weapon[ItemIndex][6] += DamageTaken;
 
 							// Attacker entity index
 							auto AttackerIndex = Attacker->entindex();
@@ -542,10 +557,13 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 						auto AttackerAuth = GET_USER_AUTH(Attacker->edict());
 
 						// Item Index
-						//auto ItemIndex = (Victim->m_bKilledByGrenade) ? WEAPON_HEGRENADE : ((Attacker->m_pActiveItem) ? Attacker->m_pActiveItem->m_iId : WEAPON_NONE);
+						auto ItemIndex = (Victim->m_bKilledByGrenade) ? WEAPON_HEGRENADE : ((Attacker->m_pActiveItem) ? Attacker->m_pActiveItem->m_iId : WEAPON_NONE);
 
 						// Frags
 						this->m_Player[AttackerAuth].Stats[this->m_State].Frags++;
+
+						// Weapon Frags
+						this->m_Player[AttackerAuth].Stats[this->m_State].Weapon[ItemIndex][0]++;
 
 						// If attacker is blind
 						if (Attacker->IsBlind())
@@ -561,10 +579,17 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 						// Deaths
 						this->m_Player[VictimAuth].Stats[this->m_State].Deaths++;
 
-						// Headshots
+						// Weapon Deaths
+						this->m_Player[AttackerAuth].Stats[this->m_State].Weapon[ItemIndex][1]++;
+
+						// If last hit is in head
 						if (Victim->m_LastHitGroup == 1)
 						{
+							// Headshots
 							this->m_Player[AttackerAuth].Stats[this->m_State].Headshots++;
+
+							// Weapon Headshots
+							this->m_Player[AttackerAuth].Stats[this->m_State].Weapon[ItemIndex][2]++;
 						}
 
 						// Round Frags
@@ -685,7 +710,8 @@ void CMatchStats::PlayerSetAnimation(CBasePlayer* Player, PLAYER_ANIM playerAnim
 								// Increment total shots
 								this->m_Player[Auth].Stats[this->m_State].Shots++;
 
-								// Increment weapon shots
+								// Increment Shots
+								this->m_Player[Auth].Stats[this->m_State].Weapon[Player->m_pActiveItem->m_iId][3]++;
 							}
 						}
 					}

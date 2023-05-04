@@ -89,6 +89,9 @@ typedef struct S_PLAYER_STATS
 	int HitBoxAttack[9][2];		// BETA: Hitbox: 0 Hits, 1 Damage
 	int HitBoxVictim[9][2];		// BETA: Hitbox: 0 Hits, 1 Damage
 
+	// Weapon
+	int Weapon[MAX_WEAPONS + 1][8]; // BETA: Weapon Stats: 0 Frags, 1 Deaths, 2 Headshots, 3 Shots, 4 Hits, 5 Hits Received, 6 Damage, 7 Damage Received
+
 	// Rounds
 	int RoundsPlay;				// BETA: Rounds Play
 	int RoundsWin;				// BETA: Rounds Won
@@ -127,10 +130,13 @@ typedef struct S_PLAYER_STATS
 		memset(this->HitBoxVictim, 0, sizeof(this->HitBoxVictim));
 
 		// Kill Streak
-		memset(this->KillStreak, 0, sizeof(KillStreak));
+		memset(this->KillStreak, 0, sizeof(this->KillStreak));
 
 		// Versus
-		memset(this->Versus, 0, sizeof(Versus));
+		memset(this->Versus, 0, sizeof(this->Versus));
+
+		// Weapon
+		memset(this->Weapon, 0, sizeof(this->Weapon));
 
 		// Rounds
 		this->RoundsPlay = 0;
@@ -208,6 +214,16 @@ public:
 				// Hitbox as victim
 				Result.HitBoxVictim[i][0] += row.HitBoxVictim[i][0]; // Hits
 				Result.HitBoxVictim[i][1] += row.HitBoxVictim[i][1]; // Damage
+			}
+
+			// Weapon Stats
+			for (int i = 0; i < MAX_WEAPONS; i++)
+			{
+				// Weapon Stats Loop
+				for (int j = 0; j < 8; j++)
+				{
+					Result.Weapon[i][j] += row.Weapon[i][j];
+				}
 			}
 
 			// Rounds
