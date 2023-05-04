@@ -57,6 +57,9 @@ typedef struct S_MATCH_DATA
 
 	// Score CTs
 	int ScoreCTs;
+
+	// Winner team of match
+	int Winner;
 } P_MATCH_DATA, *LP_MATCH_DATA;
 
 // Player stats
@@ -157,6 +160,7 @@ public:
 
 	// Team
 	TeamName Team;				// Player Team
+	int Winner;					// Player is winner of match
 
 	// Stats by match states
 	std::array<P_PLAYER_STATS, STATE_END + 1> Stats;

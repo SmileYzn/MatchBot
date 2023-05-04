@@ -58,6 +58,9 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 
 		// Has Knife Round
 		this->m_Data.KnifeRound = KnifeRound;
+
+		// Winner of match
+		this->m_Data.Winner = 0;
 	}
 	// Store end time if is end
 	else if(State == STATE_END)
@@ -73,6 +76,37 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 
 		// CTs Score
 		this->m_Data.ScoreCTs = gMatchBot.GetScore(CT);
+
+		// Winner of match
+		this->m_Data.Winner = (this->m_Data.ScoreTRs != this->m_Data.ScoreCTs) ? (this->m_Data.ScoreTRs > this->m_Data.ScoreCTs ? 1 : 2) : 0;
+
+		// Get players
+		auto Players = gMatchUtil.GetPlayers(true, true);
+
+		// Loop players
+		for (auto Player : Players)
+		{
+			// Get player auth
+			auto Auth = GET_USER_AUTH(Player->edict());
+
+			// If is not null
+			if (Auth)
+			{
+				// If Auth Index is not null
+				if (Auth[0] != '\0')
+				{
+					// Set Team
+					this->m_Player[Auth].Team = Player->m_iTeam;
+
+					// If Player is in winner team
+					if (Player->m_iTeam == (TeamName)this->m_Data.Winner)
+					{
+						// Set winner
+						this->m_Player[Auth].Winner = 1;
+					}
+				}
+			}
+		}
 
 		// Save Data
 		gMatchTask.Create(TASK_SAVE_STATS, 2.0f, false, (void*)this->SaveData, STATE_END);
@@ -107,6 +141,7 @@ void CMatchStats::SaveJson()
 		{"RoundsPlay", this->m_Data.RoundsPlay},
 		{"ScoreTRs", this->m_Data.ScoreTRs},
 		{"ScoreCTs", this->m_Data.ScoreCTs},
+		{"Winner", this->m_Data.Winner},
 	};
 
 	// Player Data
@@ -131,6 +166,7 @@ void CMatchStats::SaveJson()
 					{"GetIntoGameTime", Player.second.GetIntoGameTime},
 					{"DisconnectedTime", Player.second.DisconnectedTime},
 					{"Team", Player.second.Team},
+					{"Winner", Player.second.Winner},
 					//
 					{"Frags", Stats.Frags},
 					{"Deaths", Stats.Deaths},
