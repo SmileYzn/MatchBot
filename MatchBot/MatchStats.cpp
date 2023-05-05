@@ -871,6 +871,7 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 
 					if (Auth)
 					{
+						// Increment Bomb Exploded Stats
 						this->m_Player[Auth].Stats[this->m_State].BombExploded++;
 
 						// Incremet round win share by bomb explosion

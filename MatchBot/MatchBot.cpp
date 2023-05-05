@@ -716,17 +716,23 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 // When player disconnect from game
 void CMatchBot::PlayerDisconnect(edict_t* pEdict)
 {
-	// If match is running (LIVE)
-	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
-	{
-		// Get Player count
-		auto Players = gMatchUtil.GetPlayers(true, true);
+	// Get Player count
+	auto Players = gMatchUtil.GetPlayers(true, true);
 
-		// If has less players than a number of players in team
-		if (Players.size() < (this->m_PlayersMin->value / 2))
+	// If server was empty
+	if (Players.size() < (this->m_PlayersMin->value / 2))
+	{
+		// If match is running (LIVE)
+		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
 		{
 			// End match
 			this->SetState(STATE_END);
+		}
+		// If is voting state
+		if (this->m_State == STATE_START)
+		{
+			// Restart Server, we need to stop all vote session
+			gMatchUtil.ServerCommand("restart");
 		}
 	}
 }
