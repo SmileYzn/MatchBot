@@ -349,7 +349,7 @@ void ReGameDLL_CGrenade_DefuseBombEnd(IReGameHook_CGrenade_DefuseBombEnd* chain,
 
 void ReGameDLL_CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb* chain, CGrenade* pthis, TraceResult* ptr, int bitsDamageType)
 {
-	chain->callNext(pthis, ptr, bitsDamageType);
-
 	gMatchStats.ExplodeBomb(pthis, ptr, bitsDamageType);
+
+	chain->callNext(pthis, ptr, bitsDamageType);
 }
