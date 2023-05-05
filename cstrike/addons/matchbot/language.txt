@@ -50,7 +50,7 @@ es:"Terroristas"
 
 "Counter-Terrorists"
 en:"Counter-Terrorists"
-bp:"Countra-Terroristas"
+bp:"Contra-Terroristas"
 es:"Antiterroristas"
 
 "Spectators"
