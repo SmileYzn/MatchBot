@@ -227,7 +227,7 @@ P_MAP_ITEM CMatchVoteMap::GetWinner()
     return Winner;
 }
 
-void CMatchVoteMap::ChangeRandomMap()
+bool CMatchVoteMap::ChangeRandomMap()
 {
     // Load map list from maps.ini skipping current map
     auto MapList = gMatchUtil.GetMapList(false);
@@ -248,12 +248,32 @@ void CMatchVoteMap::ChangeRandomMap()
     // Advance to a random map position
     std::advance(Item, RANDOM_LONG(0, MapList.size()));
 
-    // Send message to players
-    gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
+    // Check if map name is not empty
+    if (!Item->second.empty())
+    {
+        // Dump Map Name to pointer
+        auto Map = Q_strdup(Item->second.data());
 
-    // Remove Vote Map Variable
-    g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_VoteMap, "0");
+        // Check if is a valid map
+        if (g_engfuncs.pfnIsMapValid(Map))
+        {
+            // Send message to players
+            gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Map);
 
-    // Change map
-    gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
+            // Remove Vote Map Variable
+            g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_VoteMap, "0");
+
+            // Change map
+            gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
+
+            // Return Result
+            return true;
+        }
+    }
+
+    // Try to change to a random map until this function returns true
+    this->ChangeRandomMap();
+
+    // Return Result
+    return false;
 }

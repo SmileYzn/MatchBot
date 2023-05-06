@@ -35,7 +35,7 @@ public:
 	P_MAP_ITEM GetWinner();
 
 	// Change to a random map
-	void ChangeRandomMap();
+	bool ChangeRandomMap();
 
 private:
 	std::vector<P_MAP_ITEM> m_Data;
