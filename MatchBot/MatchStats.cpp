@@ -693,26 +693,22 @@ void CMatchStats::PlayerSetAnimation(CBasePlayer* Player, PLAYER_ANIM playerAnim
 			if (Player->m_pActiveItem)
 			{
 				// If that item has a index
-				if (Player->m_pActiveItem->m_iId)
+				if (Player->m_pActiveItem->m_iId != WEAPON_NONE)
 				{
-					// If item is weapon
-					if (Player->m_pActiveItem->IsWeapon())
+					// If is not HE Grenade, C4, Smoke Grenade, Flashbang or Shield
+					if (Player->m_pActiveItem->m_iId != WEAPON_HEGRENADE && Player->m_pActiveItem->m_iId != WEAPON_C4 && Player->m_pActiveItem->m_iId != WEAPON_SMOKEGRENADE && Player->m_pActiveItem->m_iId != WEAPON_FLASHBANG && Player->m_pActiveItem->m_iId != WEAPON_SHIELDGUN)
 					{
-						// If player can drop that item (To avoid grenades false positives)
-						if (Player->m_pActiveItem->CanDrop())
+						// Get playter auth index
+						auto Auth = GET_USER_AUTH(Player->edict());
+
+						// if is not null
+						if (Auth)
 						{
-							// Get playter auth index
-							auto Auth = GET_USER_AUTH(Player->edict());
+							// Increment total shots
+							this->m_Player[Auth].Stats[this->m_State].Shots++;
 
-							// if is not null
-							if (Auth)
-							{
-								// Increment total shots
-								this->m_Player[Auth].Stats[this->m_State].Shots++;
-
-								// Increment Shots
-								this->m_Player[Auth].Stats[this->m_State].Weapon[Player->m_pActiveItem->m_iId][3]++;
-							}
+							// Increment Shots
+							this->m_Player[Auth].Stats[this->m_State].Weapon[Player->m_pActiveItem->m_iId][3]++;
 						}
 					}
 				}
