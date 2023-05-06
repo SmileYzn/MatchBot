@@ -256,11 +256,11 @@ void CMatchBot::SetState(int State)
 			// If has votemap
 			if (this->m_VoteMap->value)
 			{
-				// Remove Vote Map Variable
-				gMatchBot.m_VoteMap->value = 0.0f;
-
 				// Execute Vote Map
 				gMatchVoteMap.Init(this->m_VoteMapType->value, this->m_VoteMapFail->value);
+
+				// Remove Vote Map Variable
+				g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "0");
 			}
 			else
 			{
@@ -268,7 +268,7 @@ void CMatchBot::SetState(int State)
 				gMatchVoteTeam.Init(this->m_TeamPickupType->value, this->m_PlayersMin->value);
 
 				// Enable votemap to next map
-				this->m_VoteMap->value = 1.0f;
+				g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "1");
 			}
 
 			// If has Knife Round variable
@@ -429,40 +429,28 @@ void CMatchBot::SetState(int State)
 			// Next State, Warmup by default
 			auto NextState = STATE_WARMUP;
 
-			// If admin changed match (Admin stopped match)
-			if (!this->m_AdminCommand)
+			// If has auto vote map on end
+			if (this->m_VoteMapAuto)
 			{
-				// Enable Vote Map
-				this->m_VoteMap->value = 1.0f;
-
-				// If has auto vote map on end
-				if (this->m_VoteMapAuto)
+				// If is enabled with 1
+				if (this->m_VoteMapAuto->value == 1.0f)
 				{
-					// If is enabled with 1
-					if (this->m_VoteMapAuto->value == 1.0f)
+					// In next state, start Vote Map
+					NextState = STATE_START;
+				}
+				// If is 2.0f, execute only if has mininum of players
+				else if (this->m_VoteMapAuto->value == 2.0f)
+				{
+					// Get player count
+					auto Players = gMatchUtil.GetPlayers(true, true);
+
+					// If reached minimum of players
+					if ((int)Players.size() > (this->m_PlayersMin->value / 2))
 					{
 						// In next state, start Vote Map
 						NextState = STATE_START;
 					}
-					// If is 2.0f, execute only if has mininum of players
-					else if (this->m_VoteMapAuto->value == 2.0f)
-					{
-						// Get player count
-						auto Players = gMatchUtil.GetPlayers(true, true);
-
-						// If reached minimum of players
-						if ((int)Players.size() > (this->m_PlayersMin->value / 2))
-						{
-							// In next state, start Vote Map
-							NextState = STATE_START;
-						}
-					}
 				}
-			}
-			else
-			{
-				// Disable last admin match action
-				this->m_AdminCommand = false;
 			}
 
 			// Set next state, match needed to run again
@@ -1142,7 +1130,6 @@ void CMatchBot::UpdateGameName()
 	}
 }
 
-
 // Start vote map
 void CMatchBot::StartVoteMap(CBasePlayer* Player)
 {
@@ -1162,7 +1149,7 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 				gMatchTimer.Stop(0);
 
 				// Enable vote map for this map session
-				this->m_VoteMap->value = 1.0f;
+				g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "1");
 
 				// Start Match
 				this->SetState(STATE_START);
@@ -1182,7 +1169,7 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 	else // Command issued by server, or Match BOT
 	{
 		// Enable vote map
-		this->m_VoteMap->value = 1.0f;
+		g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "1");
 
 		// Start Match
 		gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_START);
@@ -1205,10 +1192,10 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 			gMatchTimer.Stop(0);
 
 			// Disable vote map for this map session
-			this->m_VoteMap->value = 0.0f;
+			g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "0");
 
 			// Enable team pickup vote for this map session
-			this->m_TeamPickupType->value = -1.0f;
+			g_engfuncs.pfnCvar_DirectSet(this->m_TeamPickupType, "-1");
 
 			// Start Match
 			this->SetState(STATE_START);
@@ -1323,9 +1310,6 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 				this->m_PlayKnifeRound = false;
 			}
 
-			// Admin changed match manually
-			this->m_AdminCommand = true;
-
 			// Set end state
 			gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, STATE_END);
 		}
@@ -1415,9 +1399,6 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 			// Disable Knife Round
 			this->m_PlayKnifeRound = false;
 		}
-
-		// Admin changed match manually
-		this->m_AdminCommand = true;
 
 		// Set end state
 		gMatchTask.Create(TASK_CHANGE_STATE, 0.5f, false, (void*)this->NextState, STATE_END);

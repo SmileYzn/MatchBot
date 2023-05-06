@@ -365,8 +365,7 @@ void CMatchAdminMenu::MapMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 
 	if (Player)
 	{
-		// Remove Vote Map Variable
-		gMatchBot.m_VoteMap->value = 0.0f;
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_VoteMap, "0");
 
 		gMatchChangeMap.ChangeMap(Item.Text, 5.0f, true);
 

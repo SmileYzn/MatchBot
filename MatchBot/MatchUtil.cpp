@@ -26,22 +26,20 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 	// If not exists
 	if (!Pointer)
 	{
-		static cvar_t CvarHelper;
+		// Variable for Cvar Helper
+		this->m_CvarData[Name].name = Name;
 
 		// Set name
-		CvarHelper.name = Name;
-
-		// Set string
-		CvarHelper.string = (char*)Value;
-
+		this->m_CvarData[Name].string = (char*)(Value);
+		
 		// Set flags
-		CvarHelper.flags = (FCVAR_SERVER | FCVAR_EXTDLL | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
+		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY);
 
 		// Register the variable
-		CVAR_REGISTER(&CvarHelper);
+		CVAR_REGISTER(&this->m_CvarData[Name]);
 
 		// Get created pointer
-		Pointer = CVAR_GET_POINTER(CvarHelper.name);
+		Pointer = CVAR_GET_POINTER(this->m_CvarData[Name].name);
 
 		// If is not null
 		if(Pointer)

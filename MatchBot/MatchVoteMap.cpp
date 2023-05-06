@@ -91,7 +91,7 @@ void CMatchVoteMap::Stop(int VoteFailType)
 
     if (Winner.Votes > 0)
     {
-        gMatchBot.m_VoteMap->value = 0.0f;
+        g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_VoteMap, "0");
 
         gMatchChangeMap.ChangeMap(Winner.Name, 5.0f, true);
 
@@ -252,7 +252,7 @@ void CMatchVoteMap::ChangeRandomMap()
     gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
 
     // Remove Vote Map Variable
-    gMatchBot.m_VoteMap->value = 0.0f;
+    g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_VoteMap, "0");
 
     // Change map
     gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);

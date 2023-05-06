@@ -72,6 +72,10 @@ public:
 
 	// Replace all in string
 	void ReplaceAll(std::string& String, const std::string& From, const std::string& To);
+
+private:
+	// Variables Pointer
+	std::map<std::string, cvar_t> m_CvarData;
 };
 
 extern CMatchUtil gMatchUtil;

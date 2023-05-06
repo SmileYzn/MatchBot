@@ -150,9 +150,6 @@ private:
 	// Play Knife Round
 	bool m_PlayKnifeRound = false;
 
-	// Admin changed match manually
-	bool m_AdminCommand = false;
-
 	// Scores
 	int m_Score[SPECTATOR + 1][STATE_END];
 
