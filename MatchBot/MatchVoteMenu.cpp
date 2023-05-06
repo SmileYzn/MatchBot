@@ -367,6 +367,9 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 			}
 			else
 			{
+				// Remove Vote Map Variable
+				gMatchBot.m_VoteMap->value = 0.0f;
+
 				// Change map to new level
 				gMatchChangeMap.ChangeMap(MapName, 5.0f, true);
 				

@@ -91,6 +91,8 @@ void CMatchVoteMap::Stop(int VoteFailType)
 
     if (Winner.Votes > 0)
     {
+        gMatchBot.m_VoteMap->value = 0.0f;
+
         gMatchChangeMap.ChangeMap(Winner.Name, 5.0f, true);
 
         gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Winner.Name.c_str());
@@ -248,6 +250,9 @@ void CMatchVoteMap::ChangeRandomMap()
 
     // Send message to players
     gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Item->second.c_str());
+
+    // Remove Vote Map Variable
+    gMatchBot.m_VoteMap->value = 0.0f;
 
     // Change map
     gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);

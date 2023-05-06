@@ -256,11 +256,11 @@ void CMatchBot::SetState(int State)
 			// If has votemap
 			if (this->m_VoteMap->value)
 			{
+				// Remove Vote Map Variable
+				gMatchBot.m_VoteMap->value = 0.0f;
+
 				// Execute Vote Map
 				gMatchVoteMap.Init(this->m_VoteMapType->value, this->m_VoteMapFail->value);
-
-				// Set Variable to zero
-				this->m_VoteMap->value = 0.0f;
 			}
 			else
 			{
