@@ -102,8 +102,6 @@ void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, 
 
 	if (!FNullEnt(pEdict))
 	{
-		gMatchBot.PlayerDisconnect(pEdict);
-
 		gMatchCaptain.PlayerDisconnect(pEdict);
 
 		gMatchStats.PlayerDisconnect(pEdict);
@@ -112,4 +110,6 @@ void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, 
 	}
 
 	chain->callNext(client, crash, Reason);
+
+	gMatchBot.PlayerDisconnect();
 }

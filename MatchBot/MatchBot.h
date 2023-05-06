@@ -99,7 +99,7 @@ public:
 	void PlayerGetIntoGame(CBasePlayer* Player);
 
 	// On player disconnect
-	void PlayerDisconnect(edict_t* pEdict);
+	void PlayerDisconnect();
 
 	// Check restrictions of items for players
 	bool PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type);

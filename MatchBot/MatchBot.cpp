@@ -714,7 +714,7 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 }
 
 // When player disconnect from game
-void CMatchBot::PlayerDisconnect(edict_t* pEdict)
+void CMatchBot::PlayerDisconnect()
 {
 	// Get Player count
 	auto Players = gMatchUtil.GetPlayers(true, true);
@@ -727,12 +727,6 @@ void CMatchBot::PlayerDisconnect(edict_t* pEdict)
 		{
 			// End match
 			this->SetState(STATE_END);
-		}
-		// If is voting state
-		if (this->m_State == STATE_START)
-		{
-			// Restart Server, we need to stop all vote session
-			gMatchUtil.ServerCommand("restart");
 		}
 	}
 }
