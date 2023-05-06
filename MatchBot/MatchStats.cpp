@@ -580,7 +580,7 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 						this->m_Player[VictimAuth].Stats[this->m_State].Deaths++;
 
 						// Weapon Deaths
-						this->m_Player[AttackerAuth].Stats[this->m_State].Weapon[ItemIndex][1]++;
+						this->m_Player[VictimAuth].Stats[this->m_State].Weapon[ItemIndex][1]++;
 
 						// If last hit is in head
 						if (Victim->m_LastHitGroup == 1)
