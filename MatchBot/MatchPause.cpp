@@ -162,10 +162,10 @@ void CMatchPause::SetRoundTime(int Time, bool FreezePeriod)
 	static int iMsgRoundTime;
 
 	// If has message index or set message index if is null
-	if (iMsgRoundTime || (iMsgRoundTime = GET_USER_MSG_ID(PLID, "RoundTime", NULL)))
+	if (iMsgRoundTime || (iMsgRoundTime = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "RoundTime", NULL)))
 	{
-		MESSAGE_BEGIN(MSG_ALL, iMsgRoundTime);
-		WRITE_SHORT(Time);
-		MESSAGE_END();
+		g_engfuncs.pfnMessageBegin(MSG_ALL, iMsgRoundTime, NULL, NULL);
+		g_engfuncs.pfnWriteShort(Time);
+		g_engfuncs.pfnMessageEnd();
 	}
 }

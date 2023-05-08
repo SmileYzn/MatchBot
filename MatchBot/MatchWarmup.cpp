@@ -8,7 +8,7 @@ void CMatchWarmup::Init()
 
 	this->RemoveMapObjective(true);
 
-	CVAR_SET_FLOAT("bot_deathmatch", 1.0f);
+	g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 1.0f);
 
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawing is enabled until match begin!"));
 }
@@ -21,7 +21,7 @@ void CMatchWarmup::Stop()
 
 		this->RemoveMapObjective(false);
 
-		CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+		g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
 
 		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawing disabled."));
 	}
@@ -48,7 +48,7 @@ void CMatchWarmup::RemoveMapObjective(bool Remove)
 		{
 			while ((Entity = g_ReGameFuncs->UTIL_FindEntityByString(Entity, "classname", Remove ? Name[0].c_str() : Name[1].c_str())) != nullptr)
 			{
-				Entity->edict()->v.classname = ALLOC_STRING(Remove ? Name[1].c_str() : Name[0].c_str());
+				Entity->edict()->v.classname = g_engfuncs.pfnAllocString(Remove ? Name[1].c_str() : Name[0].c_str());
 			}
 		}
 	}

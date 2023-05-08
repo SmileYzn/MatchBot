@@ -21,9 +21,9 @@ void CMatchChangeMap::ChangeMap(std::string Map, float Delay, bool IntermissionM
 					Player->edict()->v.flags |= FL_FROZEN;
 				}
 			}
-
-			MESSAGE_BEGIN(MSG_ALL, SVC_INTERMISSION);
-			MESSAGE_END();
+			
+			g_engfuncs.pfnMessageBegin(MSG_ALL, SVC_INTERMISSION, NULL, NULL);
+			g_engfuncs.pfnMessageEnd();
 		}
 	}
 }

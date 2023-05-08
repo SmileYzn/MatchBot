@@ -1,7 +1,7 @@
 #pragma once
 
 // Get player auth index (SteamID)
-#define GET_USER_AUTH(Edict) !(Edict->v.flags & FL_FAKECLIENT) ? GETPLAYERAUTHID(Edict) : STRING(Edict->v.netname)
+#define GET_USER_AUTH(Edict) !(Edict->v.flags & FL_FAKECLIENT) ? g_engfuncs.pfnGetPlayerAuthId(Edict) : STRING(Edict->v.netname)
 
 // Round Win Share
 constexpr auto MANAGER_ASSISTANCE_DMG = 50.0f;	// Mininum damage to take assistance for player

@@ -11,10 +11,10 @@ void CMatchCaptain::Init(int PlayersMin)
 		this->m_Running = true;
 		this->m_PlayersMin = PlayersMin;
 
-		CVAR_SET_STRING("mp_auto_join_team", "1");
-		CVAR_SET_STRING("humans_join_team", "SPEC");
-		CVAR_SET_STRING("bot_join_team", "SPEC");
-		CVAR_SET_STRING("allow_spectators", "1");
+		g_engfuncs.pfnCVarSetString("mp_auto_join_team", "1");
+		g_engfuncs.pfnCVarSetString("humans_join_team", "SPEC");
+		g_engfuncs.pfnCVarSetString("bot_join_team", "SPEC");
+		g_engfuncs.pfnCVarSetString("allow_spectators", "1");
 
 		for (auto & Player : Players)
 		{
@@ -51,9 +51,9 @@ void CMatchCaptain::Stop(int NextState)
 {
 	this->m_Running = false;
 
-	CVAR_SET_STRING("mp_auto_join_team", "0");
-	CVAR_SET_STRING("humans_join_team", "any");
-	CVAR_SET_STRING("bot_join_team", "any");
+	g_engfuncs.pfnCVarSetString("mp_auto_join_team", "0");
+	g_engfuncs.pfnCVarSetString("humans_join_team", "any");
+	g_engfuncs.pfnCVarSetString("bot_join_team", "any");
 
 	if (g_pGameRules)
 	{

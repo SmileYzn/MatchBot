@@ -145,7 +145,7 @@ void CMatchBot::ServerDeactivate()
 		this->m_PlayKnifeRound = false;
 
 		// Disable BOT deathmatch
-		CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+		g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
 
 		// Execute command to run with all weapons
 		gMatchUtil.ServerCommand("bot_all_weapons");
@@ -303,7 +303,7 @@ void CMatchBot::SetState(int State)
 				gMatchWarmup.RemoveMapObjective(true);
 
 				// Set BOT to deathmatch
-				CVAR_SET_FLOAT("bot_deathmatch", 1.0f);
+				g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 1.0f);
 
 				// Execute command to run only with knives
 				gMatchUtil.ServerCommand("bot_knives_only");
@@ -317,7 +317,7 @@ void CMatchBot::SetState(int State)
 				gMatchWarmup.RemoveMapObjective(false);
 
 				// Disable BOT deathmatch
-				CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+				g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
 
 				// Execute command to run with all weapons
 				gMatchUtil.ServerCommand("bot_all_weapons");
@@ -1301,7 +1301,7 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 				gMatchWarmup.RemoveMapObjective(false);
 
 				// Disable BOT deathmatch
-				CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+				g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
 
 				// Execute command to run with all weapons
 				gMatchUtil.ServerCommand("bot_all_weapons");
@@ -1391,7 +1391,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 			gMatchWarmup.RemoveMapObjective(false);
 
 			// Disable BOT deathmatch
-			CVAR_SET_FLOAT("bot_deathmatch", 0.0f);
+			g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
 
 			// Execute command to run with all weapons
 			gMatchUtil.ServerCommand("bot_all_weapons");

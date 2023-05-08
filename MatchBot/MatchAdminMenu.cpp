@@ -99,14 +99,14 @@ void CMatchAdminMenu::MainMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			{
 			    char pCmdFormat[] = "messagemode !msg\n";
 			
-				CLIENT_COMMAND(Player->edict(), pCmdFormat);
+				g_engfuncs.pfnClientCommand(Player->edict(), pCmdFormat);
 				break;
 			}
 			case 7: // Send rcon command
 			{
 			    char pCmdFormat[] = "messagemode !cmd\n";
 			
-				CLIENT_COMMAND(Player->edict(), pCmdFormat);
+				g_engfuncs.pfnClientCommand(Player->edict(), pCmdFormat);
 				break;
 			}
 			case 8: // Swap Teams

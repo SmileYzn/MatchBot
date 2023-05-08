@@ -15,7 +15,7 @@ void CMatchLO3::Restart(int Time)
 	{
 		gMatchTask.Create(TASK_TIMER_LO3, (float)(Time > 1 ? Time : 2), false, (void*)gMatchLO3.Restart, (Time - 1));
 
-		CVAR_SET_FLOAT("sv_restart", (float)Time);
+		g_engfuncs.pfnCVarSetFloat("sv_restart", (float)Time);
 	}
 	else
 	{

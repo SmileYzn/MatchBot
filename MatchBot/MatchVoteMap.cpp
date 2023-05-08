@@ -216,7 +216,7 @@ P_MAP_ITEM CMatchVoteMap::GetWinner()
             }
             else if (Item.Votes == Winner.Votes)
             {
-                if (RANDOM_LONG(0, 1))
+                if (g_engfuncs.pfnRandomLong(0, 1))
                 {
                     Winner = Item;
                 }
@@ -246,7 +246,7 @@ bool CMatchVoteMap::ChangeRandomMap()
     auto Item = MapList.begin();
 
     // Advance to a random map position
-    std::advance(Item, RANDOM_LONG(0, MapList.size()));
+    std::advance(Item, g_engfuncs.pfnRandomLong(0, MapList.size()));
 
     // Check if map name is not empty
     if (!Item->second.empty())

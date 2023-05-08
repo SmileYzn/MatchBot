@@ -45,7 +45,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 			if (parg1[0u] == '!' || parg1[0u] == '.')
 			{
 				// Get arguments
-				auto pCmdArgs = CMD_ARGS();
+				auto pCmdArgs = g_engfuncs.pfnCmd_Args();
 
 				// If is not null
 				if (pCmdArgs)
@@ -57,7 +57,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 						char pCmdFormat[] = "%s\n";
 
 						// Execute interal client command with arguments
-						CLIENT_COMMAND(Player->edict(), pCmdFormat, pCmdArgs);
+						g_engfuncs.pfnClientCommand(Player->edict(), pCmdFormat, pCmdArgs);
 
 						// Return results
 						return true;
@@ -177,7 +177,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,"!msg") || !Q_stricmp(pcmd,"mb_message"))
 		{
-			auto pCmdArgs = CMD_ARGS();
+		auto pCmdArgs = g_engfuncs.pfnCmd_Args();
 
 			if (pCmdArgs)
 			{
@@ -195,7 +195,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,"!cmd") || !Q_stricmp(pcmd,"mb_command"))
 		{
-			auto pCmdArgs = CMD_ARGS();
+			auto pCmdArgs = g_engfuncs.pfnCmd_Args();
 
 			if (pCmdArgs)
 			{

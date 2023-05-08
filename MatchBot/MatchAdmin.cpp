@@ -103,7 +103,7 @@ bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
     this->m_Flag[ENTINDEX(pEntity)] = ADMIN_ALL;
 
     // Get Player Auth Index
-    auto Auth = GETPLAYERAUTHID(pEntity);
+    auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEntity);
 
     // If is not empty
     if (Auth)

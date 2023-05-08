@@ -21,7 +21,7 @@ int CMatchUtil::MakeDirectory(const char* Path)
 cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 {
 	// Get cvar pointer
-	cvar_t* Pointer = CVAR_GET_POINTER(Name);
+	cvar_t* Pointer = g_engfuncs.pfnCVarGetPointer(Name);
 
 	// If not exists
 	if (!Pointer)
@@ -36,10 +36,10 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY);
 
 		// Register the variable
-		CVAR_REGISTER(&this->m_CvarData[Name]);
+		g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);
 
 		// Get created pointer
-		Pointer = CVAR_GET_POINTER(this->m_CvarData[Name].name);
+		Pointer = g_engfuncs.pfnCVarGetPointer(this->m_CvarData[Name].name);
 
 		// If is not null
 		if(Pointer)
@@ -56,12 +56,12 @@ void CMatchUtil::TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeam
 {
 	static int iMsgTeamInfo;
 
-	if (iMsgTeamInfo || (iMsgTeamInfo = GET_USER_MSG_ID(PLID, "TeamInfo", NULL)))
+	if (iMsgTeamInfo || (iMsgTeamInfo = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "TeamInfo", NULL)))
 	{
-		MESSAGE_BEGIN(MSG_ONE, iMsgTeamInfo, nullptr, pEntity);
-		WRITE_BYTE(playerIndex);
-		WRITE_STRING(pszTeamName);
-		MESSAGE_END();
+		g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgTeamInfo, nullptr, pEntity);
+		g_engfuncs.pfnWriteByte(playerIndex);
+		g_engfuncs.pfnWriteString(pszTeamName);
+		g_engfuncs.pfnMessageEnd();
 	}
 }
 
@@ -69,7 +69,7 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 {
 	static int iMsgSayText;
 
-	if (iMsgSayText || (iMsgSayText = GET_USER_MSG_ID(PLID, "SayText", NULL)))
+	if (iMsgSayText || (iMsgSayText = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "SayText", NULL)))
 	{
 		va_list argList;
 
@@ -98,11 +98,11 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 		{
 			if (!(pEntity->v.flags & FL_FAKECLIENT))
 			{
-				MESSAGE_BEGIN(MSG_ONE, iMsgSayText, nullptr, pEntity);
-				WRITE_BYTE(Sender ? Sender : ENTINDEX(pEntity));
-				WRITE_STRING("%s");
-				WRITE_STRING(SayText);
-				MESSAGE_END();
+				g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgSayText, nullptr, pEntity);
+				g_engfuncs.pfnWriteByte(Sender ? Sender : ENTINDEX(pEntity));
+				g_engfuncs.pfnWriteString("%s");
+				g_engfuncs.pfnWriteString(SayText);
+				g_engfuncs.pfnMessageEnd();
 			}
 		}
 		else
@@ -115,11 +115,11 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 				{
 					if (!(pTempEntity->v.flags & FL_FAKECLIENT))
 					{
-						MESSAGE_BEGIN(MSG_ONE, iMsgSayText, nullptr, pTempEntity);
-						WRITE_BYTE(Sender ? Sender : i);
-						WRITE_STRING("%s");
-						WRITE_STRING(SayText);
-						MESSAGE_END();
+						g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgSayText, nullptr, pTempEntity);
+						g_engfuncs.pfnWriteByte(Sender ? Sender : i);
+						g_engfuncs.pfnWriteString("%s");
+						g_engfuncs.pfnWriteString(SayText);
+						g_engfuncs.pfnMessageEnd();
 					}
 				}
 			}
@@ -157,17 +157,17 @@ void CMatchUtil::ClientPrint(edict_t* pEntity, int msg_dest, const char* Format,
 	{
 		if (pEntity)
 		{
-			MESSAGE_BEGIN(MSG_ONE, iMsgTextMsg, NULL, pEntity);
+			g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgTextMsg, NULL, pEntity);
 		}
 		else
 		{
-			MESSAGE_BEGIN(MSG_BROADCAST, iMsgTextMsg);
+			g_engfuncs.pfnMessageBegin(MSG_BROADCAST, iMsgTextMsg, NULL, NULL);
 		}
 
-		WRITE_BYTE(msg_dest);
-		WRITE_STRING("%s");
-		WRITE_STRING(Buffer);
-		MESSAGE_END();
+		g_engfuncs.pfnWriteByte(msg_dest);
+		g_engfuncs.pfnWriteString("%s");
+		g_engfuncs.pfnWriteString(Buffer);
+		g_engfuncs.pfnMessageEnd();
 	}
 }
 
@@ -303,7 +303,7 @@ void CMatchUtil::ServerCommand(const char* Format, ...)
 
 	Q_strncat(cmd, "\n", 1);
 
-	SERVER_COMMAND(cmd);
+	g_engfuncs.pfnServerCommand(cmd);
 }
 
 unsigned short CMatchUtil::FixedUnsigned16(float value, float scale)
@@ -378,42 +378,42 @@ void CMatchUtil::HudMessage(edict_t* pEntity, hudtextparms_t textparms, const ch
 
 	if (pEntity)
 	{
-		MESSAGE_BEGIN(MSG_ONE_UNRELIABLE, SVC_TEMPENTITY, NULL, pEntity);
+		g_engfuncs.pfnMessageBegin(MSG_ONE_UNRELIABLE, SVC_TEMPENTITY, NULL, pEntity);
 	}
 	else
 	{
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		g_engfuncs.pfnMessageBegin(MSG_BROADCAST, SVC_TEMPENTITY, NULL, NULL);
 	}
 
-	WRITE_BYTE(TE_TEXTMESSAGE);
-	WRITE_BYTE(textparms.channel & 0xFF);
+	g_engfuncs.pfnWriteByte(TE_TEXTMESSAGE);
+	g_engfuncs.pfnWriteByte(textparms.channel & 0xFF);
 	
-	WRITE_SHORT(this->FixedSigned16(textparms.x, BIT(13)));
-	WRITE_SHORT(this->FixedSigned16(textparms.y, BIT(13)));
+	g_engfuncs.pfnWriteShort(this->FixedSigned16(textparms.x, BIT(13)));
+	g_engfuncs.pfnWriteShort(this->FixedSigned16(textparms.y, BIT(13)));
 
-	WRITE_BYTE(textparms.effect);
+	g_engfuncs.pfnWriteByte(textparms.effect);
 
-	WRITE_BYTE(textparms.r1);
-	WRITE_BYTE(textparms.g1);
-	WRITE_BYTE(textparms.b1);
-	WRITE_BYTE(textparms.a1);
+	g_engfuncs.pfnWriteByte(textparms.r1);
+	g_engfuncs.pfnWriteByte(textparms.g1);
+	g_engfuncs.pfnWriteByte(textparms.b1);
+	g_engfuncs.pfnWriteByte(textparms.a1);
 
-	WRITE_BYTE(textparms.r2);
-	WRITE_BYTE(textparms.g2);
-	WRITE_BYTE(textparms.b2);
-	WRITE_BYTE(textparms.a2);
+	g_engfuncs.pfnWriteByte(textparms.r2);
+	g_engfuncs.pfnWriteByte(textparms.g2);
+	g_engfuncs.pfnWriteByte(textparms.b2);
+	g_engfuncs.pfnWriteByte(textparms.a2);
 
-	WRITE_SHORT(this->FixedUnsigned16(textparms.fadeinTime, BIT(8)));
-	WRITE_SHORT(this->FixedUnsigned16(textparms.fadeoutTime, BIT(8)));
-	WRITE_SHORT(this->FixedUnsigned16(textparms.holdTime, BIT(8)));
+	g_engfuncs.pfnWriteShort(this->FixedUnsigned16(textparms.fadeinTime, BIT(8)));
+	g_engfuncs.pfnWriteShort(this->FixedUnsigned16(textparms.fadeoutTime, BIT(8)));
+	g_engfuncs.pfnWriteShort(this->FixedUnsigned16(textparms.holdTime, BIT(8)));
 
 	if (textparms.effect == 2)
 	{
-		WRITE_SHORT(this->FixedUnsigned16(textparms.fxTime, BIT(8)));
+		g_engfuncs.pfnWriteShort(this->FixedUnsigned16(textparms.fxTime, BIT(8)));
 	}
 
-	WRITE_STRING(Buffer);
-	MESSAGE_END();
+	g_engfuncs.pfnWriteString(Buffer);
+	g_engfuncs.pfnMessageEnd();
 }
 
 const char* CMatchUtil::FormatString(const char* Format, ...)
@@ -449,7 +449,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 		{
 			auto MapName = Q_strdup(Map.data());
 
-			if (IS_MAP_VALID(MapName))
+			if (g_engfuncs.pfnIsMapValid(MapName))
 			{
 				if (!CurrentMap)
 				{
@@ -475,7 +475,7 @@ void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
 {
 	static int iMsgMOTD;
 
-	if (iMsgMOTD || (iMsgMOTD = GET_USER_MSG_ID(PLID, "MOTD", NULL)))
+	if (iMsgMOTD || (iMsgMOTD = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "MOTD", NULL)))
 	{
 		if (MotdLength < 128)
 		{
@@ -485,14 +485,14 @@ void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
 			{
 				int FileLength = 0;
 
-				char* FileContent = reinterpret_cast<char*>(LOAD_FILE_FOR_ME(Motd, &FileLength));
+				char* FileContent = reinterpret_cast<char*>(g_engfuncs.pfnLoadFileForMe(Motd, &FileLength));
 
 				if (FileLength)
 				{
 					this->ShowMotd(pEntity, FileContent, FileLength);
 				}
 
-				FREE_FILE(FileContent);
+				g_engfuncs.pfnFreeFile(FileContent);
 
 				return;
 			}
@@ -519,10 +519,10 @@ void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
 
 			*Buffer = 0;
 
-			MESSAGE_BEGIN(MSG_ONE, iMsgMOTD, NULL, pEntity);
-			WRITE_BYTE(Character ? FALSE : TRUE);
-			WRITE_STRING(Motd);
-			MESSAGE_END();
+			g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgMOTD, NULL, pEntity);
+			g_engfuncs.pfnWriteByte(Character ? FALSE : TRUE);
+			g_engfuncs.pfnWriteString(Motd);
+			g_engfuncs.pfnMessageEnd();
 
 			*Buffer = Character;
 
