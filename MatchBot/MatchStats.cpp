@@ -6,6 +6,18 @@ void CMatchStats::ServerActivate()
 {
 	// Make Directory to make sure that exists
 	gMatchUtil.MakeDirectory(STATS_SAVE_PATH);
+
+	// Reset Player Data
+	this->m_Player.clear();
+
+	// Reset Match Data
+	this->m_Data.Reset();
+
+	// Match State
+	this->m_State = STATE_DEAD;
+
+	// Match stats commands
+	this->m_StatsCommandFlags = CMD_ALL;
 }
 
 // Change States
@@ -32,8 +44,21 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 		}
 	}
 
-	// Store star time if is First Half
-	if(State == STATE_FIRST_HALF)
+	// Reset all stats data for this match
+	if (State == STATE_START)
+	{
+		// Reset Match Data
+		this->m_Data.Reset();
+
+		// Resert Player Match Data
+		for (auto & Player : this->m_Player)
+		{
+			// Reset Player Stats
+			Player.second.ResetStats();
+		}
+	}
+	// Store match data on First Half
+	else if(State == STATE_FIRST_HALF)
 	{
 		// Start Time
 		this->m_Data.StartTime = time(0);

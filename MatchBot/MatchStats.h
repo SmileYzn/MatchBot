@@ -60,6 +60,25 @@ typedef struct S_MATCH_DATA
 
 	// Winner team of match
 	int Winner;
+
+	// Reset Data
+	void Reset()
+	{
+		this->StartTime = 0;
+		this->EndTime = 0;
+		this->MaxRounds = 0;
+		this->MaxRoundsOT = 0;
+		this->HostName = "";
+		this->Map = "";
+		this->Address = "";
+		this->GameMode = 0;
+		this->KnifeRound = 0;
+		this->RoundsPlay = 0;
+		this->ScoreTRs = 0;
+		this->ScoreCTs = 0;
+		this->Winner = 0; 
+	}
+
 } P_MATCH_DATA, *LP_MATCH_DATA;
 
 // Player stats
@@ -170,6 +189,20 @@ public:
 
 	// Stats by match states
 	std::array<P_PLAYER_STATS, STATE_END + 1> Stats;
+
+	// Reset Player Stats
+	void ResetStats()
+	{
+		// Reset winner of match
+		this->Winner = 0;
+
+		// Reset Stats for each match state
+		for (auto& PlayerStats : this->Stats)
+		{
+			// Reset Data
+			PlayerStats.Reset();
+		}
+	}
 
 	// Totalize Stats
 	P_PLAYER_STATS GetStats()
