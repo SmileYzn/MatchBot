@@ -13,6 +13,9 @@ void CMatchStats::ServerActivate()
 	// Reset Match Data
 	this->m_Data.Reset();
 
+	// Clear events data
+	this->m_RoundEvent.clear();
+
 	// Match State
 	this->m_State = STATE_DEAD;
 
@@ -50,6 +53,9 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 		// Reset Match Data
 		this->m_Data.Reset();
 
+		// Clear events data
+		this->m_RoundEvent.clear();
+
 		// Resert Player Match Data
 		for (auto & Player : this->m_Player)
 		{
@@ -70,13 +76,13 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 		this->m_Data.MaxRoundsOT = (int)gMatchBot.m_PlayRoundsOT->value;
 
 		// Hostname
-		this->m_Data.HostName = CVAR_GET_STRING("hostname");
+		this->m_Data.HostName = g_engfuncs.pfnCVarGetString("hostname");
 
 		// Map
 		this->m_Data.Map = STRING(gpGlobals->mapname);
 
 		// Server address
-		this->m_Data.Address = CVAR_GET_STRING("net_address");
+		this->m_Data.Address = g_engfuncs.pfnCVarGetString("net_address");
 
 		// Game Mode
 		this->m_Data.GameMode = gMatchVoteTeam.GetMode();
@@ -237,6 +243,26 @@ void CMatchStats::SaveJson()
 				};
 			}
 		}
+	}
+
+	// Round Events
+	for (auto& Event : this->m_RoundEvent)
+	{
+		Data["events"][std::to_string(Event.Round)].push_back
+		({
+			{"Round",Event.Round},
+			{"Time",Event.Time},
+			{"Type",Event.Type},
+			{"ScenarioEvent", Event.ScenarioEvent},
+			{"Winner",Event.Winner},
+			{"Loser",Event.Loser},
+			{"Killer",Event.Killer.c_str()},
+			{"KillerOrigin",{Event.KillerOrigin[0],Event.KillerOrigin[1],Event.KillerOrigin[2]}},
+			{"Victim",Event.Victim.c_str()},
+			{"VictimOrigin",{Event.VictimOrigin[0],Event.VictimOrigin[1],Event.VictimOrigin[2]}},
+			{"IsHeadShot",Event.IsHeadShot},
+			{"ItemIndex",Event.ItemIndex},
+		});
 	}
 
 	// Store Data
@@ -446,6 +472,9 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 					}
 				}
 			}
+
+			// Round End Event
+			this->OnEvent((winStatus == WINSTATUS_TERRORISTS) ? EVENT_TERRORISTS_WIN : EVENT_CTS_WIN, (int)(eventScenario), nullptr, nullptr);
 
 			// Round End Stats
 			gMatchTask.Create(TASK_ROUND_END_STATS, 1.0f, false, (void*)this->RoundEndStats, this->m_State);
@@ -698,6 +727,9 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 							}
 
 						}
+						//
+						// Player died event
+						this->OnEvent(EVENT_PLAYER_DIED, ROUND_NONE, Victim, Attacker);
 					}
 				}
 			}
@@ -820,6 +852,9 @@ void CMatchStats::PlantBomb(entvars_t* pevOwner, bool Planted)
 				if (Planted)
 				{
 					this->m_Player[Auth].Stats[this->m_State].BombPlanted++;
+
+					// Bomb Planted Event
+					this->OnEvent(EVENT_BOMB_PLANTED, ROUND_NONE, Player, nullptr);
 				}
 				else
 				{
@@ -870,6 +905,9 @@ void CMatchStats::DefuseBombEnd(CBasePlayer* Player, bool Defused)
 
 				// Incremet round win share by bomb defusion
 				this->m_Player[Auth].Stats[this->m_State].RoundWinShare += MANAGER_RWS_C4_DEFUSED;
+
+				// Bomb Defused Event
+				this->OnEvent(EVENT_BOMB_DEFUSED, ROUND_NONE, Player, nullptr);
 			}
 		}
 	}
@@ -897,11 +935,159 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 
 						// Incremet round win share by bomb explosion
 						this->m_Player[Auth].Stats[this->m_State].RoundWinShare += MANAGER_RWS_C4_EXPLODE;
+
+						// Bomb Exploded event
+						this->OnEvent(EVENT_BOMB_EXPLODED, ROUND_NONE, Player, nullptr);
 					}
 				}
 			}
 		}
 	}
+}
+
+void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* pEntity, class CBaseEntity* pEntityOther)
+{
+	//
+	P_ROUND_EVENT Event = { 0 };
+	//
+	//
+	Event.Round = gMatchBot.GetRound();
+	//
+	//
+	if (g_pGameRules)
+	{
+		Event.Time = CSGameRules()->GetRoundRemainingTimeReal();
+	}
+	//
+	//
+	Event.Type = event;
+	//
+	//
+	Event.ScenarioEvent = ScenarioEvent;
+	//
+	//
+	switch (event)
+	{
+		case EVENT_PLAYER_DIED: // Tell bots the player is killed (argumens: 1 = victim, 2 = killer)
+		{
+			auto Victim = UTIL_PlayerByIndexSafe(pEntity->entindex());
+
+			auto Killer = UTIL_PlayerByIndexSafe(pEntityOther->entindex());
+
+			if (Victim && Killer)
+			{
+				Event.Killer = GET_USER_AUTH(Killer->edict());
+				Event.KillerOrigin = Killer->edict()->v.origin;
+
+				Event.Victim = GET_USER_AUTH(Victim->edict());
+				Event.VictimOrigin = Victim->edict()->v.origin;
+
+				Event.Winner = Killer->m_iTeam;
+
+				Event.Loser = Victim->m_iTeam;
+
+				Event.IsHeadShot = Victim->m_bHeadshotKilled ? 1 : 0;
+
+				Event.ItemIndex = WEAPON_NONE;
+
+				if (Killer->m_pActiveItem)
+				{
+					Event.ItemIndex = (Victim->m_bKilledByGrenade ? WEAPON_HEGRENADE : Killer->m_pActiveItem->m_iId);
+				}
+			}
+
+			break;
+		}
+		case EVENT_BOMB_PLANTED: // tell bots the bomb has been planted (argumens: 1 = planter, 2 = NULL)
+		{
+			auto Planter = UTIL_PlayerByIndexSafe(pEntity->entindex());
+
+			if (Planter)
+			{
+				Event.Killer = GET_USER_AUTH(Planter->edict());
+
+				Event.KillerOrigin = Planter->edict()->v.origin;
+			}
+
+			Event.Winner = TERRORIST;
+
+			Event.Loser = CT;
+
+			Event.IsHeadShot = 0;
+
+			Event.ItemIndex = WEAPON_C4;
+
+			break;
+		}
+		case EVENT_BOMB_DEFUSED: // tell the bots the bomb is defused (argumens: 1 = defuser, 2 = NULL)
+		{
+			auto Defuser = UTIL_PlayerByIndexSafe(pEntity->entindex());
+
+			if (Defuser)
+			{
+				Event.Killer = GET_USER_AUTH(Defuser->edict());
+
+				Event.KillerOrigin = Defuser->edict()->v.origin;
+
+				Event.IsHeadShot = Defuser->m_bHasDefuser ? 1 : 0;
+			}
+
+			Event.Winner = CT;
+
+			Event.Loser = TERRORIST;
+
+			Event.ItemIndex = WEAPON_NONE;
+
+			break;
+		}
+		case EVENT_BOMB_EXPLODED: // let the bots hear the bomb exploding (argumens: 1 = NULL, 2 = NULL)
+		{
+			auto Planter = UTIL_PlayerByIndexSafe(pEntity->entindex());
+
+			if (Planter)
+			{
+				Event.Killer = GET_USER_AUTH(Planter->edict());
+
+				Event.KillerOrigin = Planter->edict()->v.origin;
+			}
+
+			Event.Winner = TERRORIST;
+
+			Event.Loser = CT;
+
+			Event.IsHeadShot = 0;
+
+			Event.ItemIndex = WEAPON_C4;
+
+			break;
+		}
+		case EVENT_TERRORISTS_WIN: // tell bots the terrorists won the round (argumens: 1 = NULL, 2 = NULL)
+		{
+			Event.Winner = TERRORIST;
+
+			Event.Loser = CT;
+
+			Event.IsHeadShot = false;
+
+			Event.ItemIndex = WEAPON_NONE;
+
+			break;
+		}
+		case EVENT_CTS_WIN: // tell bots the CTs won the round (argumens: 1 = NULL, 2 = NULL)
+		{
+			Event.Winner = CT;
+
+			Event.Loser = TERRORIST;
+
+			Event.IsHeadShot = false;
+
+			Event.ItemIndex = WEAPON_NONE;
+
+			break;
+		}
+	}
+
+	this->m_RoundEvent.push_back(Event);
 }
 
 // Show Enemy HP

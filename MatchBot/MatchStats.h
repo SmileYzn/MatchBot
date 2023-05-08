@@ -281,6 +281,24 @@ public:
 	}
 };
 
+// Round Events
+typedef struct
+{
+	int			Round;			// Round Count
+	float		Time;			// Round Time Seconds;
+	int			Type;			// ROUND_NONE for player events, ScenarioEventEndRound for round events
+	int			ScenarioEvent;	// Scenario Event End Round
+	int			Winner;			// Winner team of event
+	int			Loser;			// Loser team of event
+	std::string Killer;			// Killer
+	std::string Victim;			// Victim
+	Vector		KillerOrigin;	// Killer Position
+	Vector		VictimOrigin;	// Victim Position
+	int			IsHeadShot;		// HeadShot
+	int			ItemIndex;		// Item Index of event
+	
+} P_ROUND_EVENT, * LP_ROUND_EVENT;
+
 class CMatchStats
 {
 public:
@@ -347,6 +365,9 @@ public:
 	// Explode Bomb
 	void ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageType);
 
+	// Round Event
+	void OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* pEntity, class CBaseEntity* pEntityOther);
+
 	// Show Enemy HP
 	bool ShowHP(CBasePlayer* Player, bool Command, bool InConsole);
 
@@ -368,6 +389,9 @@ private:
 
 	// Player Data
 	std::map<std::string, CMatchPlayerData> m_Player;
+
+	// Round Event Data
+	std::vector<P_ROUND_EVENT> m_RoundEvent;
 
 	// Round Stats (Damage and Hits)
 	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
