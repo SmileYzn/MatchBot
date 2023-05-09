@@ -272,11 +272,11 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
 {
+	gMatchStats.RoundEnd(winStatus, event, tmDelay);
+
 	auto ret = chain->callNext(winStatus, event, tmDelay);
 
 	gMatchBot.RoundEnd(winStatus, event, tmDelay);
-
-	gMatchStats.RoundEnd(winStatus, event, tmDelay);
 
 	return ret;
 }
@@ -342,9 +342,9 @@ void ReGameDLL_CGrenade_DefuseBombStart(IReGameHook_CGrenade_DefuseBombStart* ch
 
 void ReGameDLL_CGrenade_DefuseBombEnd(IReGameHook_CGrenade_DefuseBombEnd* chain, CGrenade* pthis, CBasePlayer* pPlayer, bool bDefused)
 {
-	chain->callNext(pthis, pPlayer, bDefused);
-
 	gMatchStats.DefuseBombEnd(pPlayer, bDefused);
+
+	chain->callNext(pthis, pPlayer, bDefused);
 }
 
 void ReGameDLL_CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb* chain, CGrenade* pthis, TraceResult* ptr, int bitsDamageType)

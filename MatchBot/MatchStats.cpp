@@ -84,7 +84,7 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 		// Server address
 		this->m_Data.Address = g_engfuncs.pfnCVarGetString("net_address");
 
-		// Game Mode
+		// Get Game Mode
 		this->m_Data.GameMode = gMatchVoteTeam.GetMode();
 
 		// Has Knife Round
@@ -945,81 +945,110 @@ void CMatchStats::ExplodeBomb(CGrenade* pThis, TraceResult* ptr, int bitsDamageT
 	}
 }
 
+// On Round Event Data
 void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* pEntity, class CBaseEntity* pEntityOther)
 {
-	//
+	// Round Event data
 	P_ROUND_EVENT Event = { 0 };
 	//
-	//
+	// Round Count
 	Event.Round = gMatchBot.GetRound();
 	//
-	//
+	// If has ReGameDLL API Game Rules
 	if (g_pGameRules)
 	{
 		Event.Time = CSGameRules()->GetRoundRemainingTimeReal();
 	}
 	//
-	//
+	// Store type of event
 	Event.Type = event;
 	//
-	//
+	// Store event scenario
 	Event.ScenarioEvent = ScenarioEvent;
 	//
-	//
+	// Switch of event
 	switch (event)
 	{
-		case EVENT_PLAYER_DIED: // Tell bots the player is killed (argumens: 1 = victim, 2 = killer)
+		// Tell bots the player is killed (argumens: 1 = victim, 2 = killer)
+		case EVENT_PLAYER_DIED: 
 		{
+			// Get Victim
 			auto Victim = UTIL_PlayerByIndexSafe(pEntity->entindex());
 
+			// Get Killer
 			auto Killer = UTIL_PlayerByIndexSafe(pEntityOther->entindex());
 
+			// If event has victim abnd killer
 			if (Victim && Killer)
 			{
+				// Get Killer auth index
 				Event.Killer = GET_USER_AUTH(Killer->edict());
+
+				// Get Killer Origin
 				Event.KillerOrigin = Killer->edict()->v.origin;
 
+				// Get Victim auth index
 				Event.Victim = GET_USER_AUTH(Victim->edict());
+
+				// Get Victim Origin
 				Event.VictimOrigin = Victim->edict()->v.origin;
 
+				// Get Winner of event (Team of Killer)
 				Event.Winner = Killer->m_iTeam;
 
+				// Get Loser of event (Team of Victim)
 				Event.Loser = Victim->m_iTeam;
 
+				// Check if victim was killed by a headshot
 				Event.IsHeadShot = Victim->m_bHeadshotKilled ? 1 : 0;
 
+				// Default weapon is empty
 				Event.ItemIndex = WEAPON_NONE;
 
+				// If killer has active item on hand
 				if (Killer->m_pActiveItem)
 				{
+					// Store item index, and check if is HE Grenade
 					Event.ItemIndex = (Victim->m_bKilledByGrenade ? WEAPON_HEGRENADE : Killer->m_pActiveItem->m_iId);
 				}
 			}
-
+			
+			//
 			break;
 		}
-		case EVENT_BOMB_PLANTED: // tell bots the bomb has been planted (argumens: 1 = planter, 2 = NULL)
+		// Tell bots the bomb has been planted (argumens: 1 = planter, 2 = NULL)
+		case EVENT_BOMB_PLANTED: 
 		{
+			// Get Bomb Planter
 			auto Planter = UTIL_PlayerByIndexSafe(pEntity->entindex());
 
+			// If found
 			if (Planter)
 			{
+				// Store as killer auth index
 				Event.Killer = GET_USER_AUTH(Planter->edict());
 
+				// Store killer origin
 				Event.KillerOrigin = Planter->edict()->v.origin;
 			}
-
+			
+			// Winner of that event is Terrorists
 			Event.Winner = TERRORIST;
 
+			// Loser of that event is CTs
 			Event.Loser = CT;
 
+			// Is not headshot, rofl
 			Event.IsHeadShot = 0;
 
+			// Weapon is C4
 			Event.ItemIndex = WEAPON_C4;
 
+			//
 			break;
 		}
-		case EVENT_BOMB_DEFUSED: // tell the bots the bomb is defused (argumens: 1 = defuser, 2 = NULL)
+		// Tell the bots the bomb is defused (argumens: 1 = defuser, 2 = NULL)
+		case EVENT_BOMB_DEFUSED: 
 		{
 			auto Defuser = UTIL_PlayerByIndexSafe(pEntity->entindex());
 
@@ -1040,7 +1069,8 @@ void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* p
 
 			break;
 		}
-		case EVENT_BOMB_EXPLODED: // let the bots hear the bomb exploding (argumens: 1 = NULL, 2 = NULL)
+		// Let the bots hear the bomb exploding (argumens: 1 = NULL, 2 = NULL)
+		case EVENT_BOMB_EXPLODED: 
 		{
 			auto Planter = UTIL_PlayerByIndexSafe(pEntity->entindex());
 
@@ -1061,7 +1091,8 @@ void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* p
 
 			break;
 		}
-		case EVENT_TERRORISTS_WIN: // tell bots the terrorists won the round (argumens: 1 = NULL, 2 = NULL)
+		// Tell bots the terrorists won the round (argumens: 1 = NULL, 2 = NULL)
+		case EVENT_TERRORISTS_WIN: 
 		{
 			Event.Winner = TERRORIST;
 
@@ -1073,7 +1104,8 @@ void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* p
 
 			break;
 		}
-		case EVENT_CTS_WIN: // tell bots the CTs won the round (argumens: 1 = NULL, 2 = NULL)
+		// Tell bots the CTs won the round (argumens: 1 = NULL, 2 = NULL)
+		case EVENT_CTS_WIN: 
 		{
 			Event.Winner = CT;
 
@@ -1087,6 +1119,7 @@ void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* p
 		}
 	}
 
+	// Insert Event Data
 	this->m_RoundEvent.push_back(Event);
 }
 

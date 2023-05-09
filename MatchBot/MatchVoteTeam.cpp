@@ -182,6 +182,8 @@ P_TEAM_ITEM CMatchVoteTeam::GetWinner()
 
 void CMatchVoteTeam::SetMode(int GameMode)
 {
+	this->m_GameMode = GameMode;
+
 	switch (GameMode)
 	{
 		case 0:

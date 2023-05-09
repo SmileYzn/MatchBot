@@ -385,7 +385,7 @@ public:
 
 private:
 	// Match Data
-	// Match Server Data Goes Here!
+	P_MATCH_DATA m_Data;
 
 	// Player Data
 	std::map<std::string, CMatchPlayerData> m_Player;
@@ -411,9 +411,6 @@ private:
 
 	// Match State
 	size_t m_State = STATE_DEAD;
-
-	// Match Data
-	P_MATCH_DATA m_Data;
 
 	// Match stats commands
 	int m_StatsCommandFlags = CMD_ALL;
