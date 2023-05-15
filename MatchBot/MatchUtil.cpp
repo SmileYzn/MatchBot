@@ -33,7 +33,7 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 		this->m_CvarData[Name].string = (char*)(Value);
 		
 		// Set flags
-		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY);
+		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_SPONLY);
 
 		// Register the variable
 		g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);
