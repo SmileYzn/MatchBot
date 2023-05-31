@@ -127,6 +127,16 @@ typedef struct S_PLAYER_STATS
 	int BombDefused;			// BETA: Bomb Defuses
 	int BombDefusedKit;			// BETA: Bomb Defuses with Kit
 
+	// Sick Frags
+	int OneShot;				// TODO: One Shot Frags (Except for AWP)
+	int NoScope;				// TODO: No Scope Frags
+	int FlyFrags;				// TODO: Flying Frags
+	int WallFrags;				// TODO: Wallbganf Frags
+
+	// Entries
+	int FirstRoundFrags;		// BETA: First Frag of round
+	int FirstRoundDeaths;		// BETA: First Death of round
+
 	void Reset()
 	{
 		// Stats
@@ -172,6 +182,16 @@ typedef struct S_PLAYER_STATS
 		this->BombDefused = 0;
 		this->BombDefusingKit = 0;
 		this->BombDefusedKit = 0;
+
+		// Sick Frags
+		this->OneShot = 0;
+		this->NoScope = 0;
+		this->FlyFrags = 0;
+		this->WallFrags = 0;
+
+		// Entries
+		this->FirstRoundFrags = 0;
+		this->FirstRoundDeaths = 0;
 	};
 } P_PLAYER_STATS, *LP_PLAYER_STATS;
 
@@ -408,6 +428,9 @@ private:
 
 	// Round Versus by player
 	int m_RoundVersus[MAX_CLIENTS + 1];
+
+	// Total of Frags in round
+	int m_RoundFragCount;
 
 	// Match State
 	size_t m_State = STATE_DEAD;

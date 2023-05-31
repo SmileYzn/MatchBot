@@ -193,12 +193,14 @@ void CMatchStats::SaveJson()
 				// Insert Final Stats on JSON
 				Data["stats"][Auth] =
 				{
+					// Player Information
 					{"ConnectTime", Player.second.ConnectTime},
 					{"GetIntoGameTime", Player.second.GetIntoGameTime},
 					{"DisconnectedTime", Player.second.DisconnectedTime},
 					{"Team", Player.second.Team},
 					{"Winner", Player.second.Winner},
 					//
+					// Player Stats
 					{"Frags", Stats.Frags},
 					{"Deaths", Stats.Deaths},
 					{"Assists", Stats.Assists},
@@ -239,7 +241,17 @@ void CMatchStats::SaveJson()
 					{"Versus", Stats.Versus},
 					//
 					// Weapon Stats
-					{"Weapon", Stats.Weapon}
+					{"Weapon", Stats.Weapon},
+					//
+					// Sick Frags
+					{"OneShot", Stats.OneShot},
+					{"NoScope", Stats.NoScope},
+					{"FlyFrags", Stats.FlyFrags},
+					{"WallFrags", Stats.WallFrags},
+					//
+					// Entries
+					{"FirstRoundFrags", Stats.FirstRoundFrags},
+					{"FirstRoundDeaths", Stats.FirstRoundDeaths},
 				};
 			}
 		}
@@ -248,6 +260,7 @@ void CMatchStats::SaveJson()
 	// Round Events
 	for (auto& Event : this->m_RoundEvent)
 	{
+		// Insert event
 		Data["events"][std::to_string(Event.Round)].push_back
 		({
 			{"Round",Event.Round},
@@ -388,6 +401,9 @@ void CMatchStats::RoundStart()
 
 		// Clear round versus
 		memset(this->m_RoundVersus, 0, sizeof(this->m_RoundVersus));
+
+		// Clear round frag count
+		this->m_RoundFragCount = 0;
 	}
 }
 
@@ -482,6 +498,7 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 	}
 }
 
+// Player Damage Event
 void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
 {
 	// If match is live
@@ -578,6 +595,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 	}
 }
 
+// Player Killed Event
 void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvars_t* pevInflictor)
 {
 	// If match is live
@@ -648,6 +666,19 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 
 						// Round Frags
 						this->m_RoundFrags[AttackerIndex]++;
+
+						// If Round Frag Count is empty
+						if (!this->m_RoundFragCount)
+						{
+							// Increment First Round Frags
+							this->m_Player[AttackerAuth].Stats[this->m_State].FirstRoundFrags++;
+
+							// Increment First Round Deaths
+							this->m_Player[VictimAuth].Stats[this->m_State].FirstRoundDeaths++;
+						}
+
+						// Increment Round Frag Count
+						this->m_RoundFragCount++;
 
 						// If has ReGameDLL_CS Api
 						if (g_pGameRules)
