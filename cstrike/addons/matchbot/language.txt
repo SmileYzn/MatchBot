@@ -823,13 +823,13 @@ en:"Swaping teams now."
 bp:"Trocando os times agora."
 es:"Cambiando de equipos ahora."
 
-"Deathmatch respawing is enabled until match begin!"
-en:"Deathmatch respawing is enabled until match begin!"
+"Deathmatch respawning is enabled until match begin!"
+en:"Deathmatch respawning is enabled until match begin!"
 bp:"Deathmatch habilitado até o início da partida!"
 es:"Deathmatch habilitado hasta el comienzo de la partida!"
 
-"Deathmatch respawing disabled."
-en:"Deathmatch respawing disabled."
+"Deathmatch respawning disabled."
+en:"Deathmatch respawning disabled."
 bp:"Deathmatch desabilitado."
 es:"Deathmatch deshabilitado."
 

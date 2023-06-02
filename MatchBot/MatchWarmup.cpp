@@ -10,7 +10,7 @@ void CMatchWarmup::Init()
 
 	g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 1.0f);
 
-	gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawing is enabled until match begin!"));
+	gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawning is enabled until match begin!"));
 }
 
 void CMatchWarmup::Stop()
@@ -23,7 +23,7 @@ void CMatchWarmup::Stop()
 
 		g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
 
-		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawing disabled."));
+		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawning disabled."));
 	}
 }
 
