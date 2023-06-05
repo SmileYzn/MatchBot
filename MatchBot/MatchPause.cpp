@@ -128,7 +128,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 		else
 		{
 			// Remove Pause Task
-			gMatchTask.Delete(TASK_PAUSE_MATCH);
+			gMatchTask.Remove(TASK_PAUSE_MATCH);
 
 			// Restore Freezetime
 			gMatchPause.SetRoundTime((int)CVAR_GET_FLOAT("mp_freezetime"), true);

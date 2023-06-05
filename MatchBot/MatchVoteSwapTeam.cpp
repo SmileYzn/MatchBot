@@ -83,10 +83,10 @@ void CMatchVoteSwapTeam::Stop(int WinnerTeam)
     }
 
     // Delete vote list task
-    gMatchTask.Delete(TASK_VOTE_LIST);
+    gMatchTask.Remove(TASK_VOTE_LIST);
 
     // Delete vote task
-    gMatchTask.Delete(TASK_VOTE_TIMER);
+    gMatchTask.Remove(TASK_VOTE_TIMER);
 
     // Get winner option
     auto Winner = gMatchVoteSwapTeam.GetWinner();

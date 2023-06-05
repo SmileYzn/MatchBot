@@ -1289,7 +1289,7 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
 		{
 			// Remove LO3 script if is running
-			gMatchTask.Delete(TASK_TIMER_LO3);
+			gMatchTask.Remove(TASK_TIMER_LO3);
 
 			// Send message to all players
 			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 stopped match."), STRING(Player->edict()->v.netname));
@@ -1382,7 +1382,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 		gMatchUtil.SayText(nullptr, (Winner == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("Game Over! The \3%s\1 team surrendered!!"), this->GetTeam(Loser, false));
 
 		// Remove LO3 script if is running
-		gMatchTask.Delete(TASK_TIMER_LO3);
+		gMatchTask.Remove(TASK_TIMER_LO3);
 
 		// If is in Knife Round
 		if (this->m_PlayKnifeRound)

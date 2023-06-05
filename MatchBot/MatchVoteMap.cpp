@@ -82,10 +82,10 @@ void CMatchVoteMap::Stop(int VoteFailType)
     }
 
     // Delete vote list tas
-    gMatchTask.Delete(TASK_VOTE_LIST);
+    gMatchTask.Remove(TASK_VOTE_LIST);
 
     // Delete vote timer
-    gMatchTask.Delete(TASK_VOTE_TIMER);
+    gMatchTask.Remove(TASK_VOTE_TIMER);
 
     auto Winner = gMatchVoteMap.GetWinner();
 

@@ -60,7 +60,7 @@ void CMatchCaptain::Stop(int NextState)
 		CSGameRules()->BalanceTeams();
 	}
 
-	gMatchTask.Delete(TASK_VOTE_LIST);
+	gMatchTask.Remove(TASK_VOTE_LIST);
 
 	gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)gMatchBot.NextState, NextState);
 }
@@ -77,7 +77,7 @@ void CMatchCaptain::PlayerDisconnect(edict_t* pEdict)
 
 			if (Captain)
 			{
-				gMatchTask.Delete(Captain->entindex());
+				gMatchTask.Remove(Captain->entindex());
 
 				if (Captain->HasConditions(BIT_CONDITION_LEADER))
 				{
@@ -125,7 +125,7 @@ void CMatchCaptain::SetCaptain(CBasePlayer* Player, TeamName Team)
 
 void CMatchCaptain::GetPlayer(CBasePlayer* Captain, CBasePlayer* Target)
 {
-	gMatchTask.Delete(Captain->entindex());
+	gMatchTask.Remove(Captain->entindex());
 
 	if (Captain)
 	{

@@ -21,7 +21,7 @@ void CMatchReady::Stop(int ChangeState)
 
 		std::fill(this->m_Ready.begin(), this->m_Ready.end(), false);
 
-		gMatchTask.Delete(TASK_READY_SYSTEM);
+		gMatchTask.Remove(TASK_READY_SYSTEM);
 
 		if (ChangeState)
 		{

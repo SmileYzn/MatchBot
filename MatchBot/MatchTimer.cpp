@@ -15,7 +15,7 @@ void CMatchTimer::Init(int PlayersMin,int Delay)
 
 void CMatchTimer::Stop(int ChangeState)
 {
-	gMatchTask.Delete(TASK_READY_SYSTEM);
+	gMatchTask.Remove(TASK_READY_SYSTEM);
 
 	if (ChangeState)
 	{
