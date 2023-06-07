@@ -1,4 +1,4 @@
-﻿"Dead"
+"Dead"
 en:"Dead"
 bp:"Nenhum"
 es:"Ninguno"
