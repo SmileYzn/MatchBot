@@ -192,6 +192,8 @@ public:
 	cvar_t* m_PlayerVoteSurrender = nullptr;
 	cvar_t* m_RoundEndStats = nullptr;
 	cvar_t* m_StatsCommands = nullptr;
+	cvar_t* m_PlayersMinCheck = nullptr;
+	cvar_t* m_PlayersMinCheckAfk = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };

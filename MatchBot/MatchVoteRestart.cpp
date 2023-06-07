@@ -2,92 +2,92 @@
 
 CMatchVoteRestart gMatchVoteRestart;
 
-bool CMatchVoteRestart::CheckTeams()
+void CMatchVoteRestart::Init(int MatchState)
 {
     // Do not init vote restart 
     bool StartVoteRestart = false;
 
-	// Get Player Count in teams
-	auto PlayerCount = gMatchUtil.GetCount();
+    // Check if an team is lacking the count of players
+    if (gMatchBot.m_PlayersMinCheck->value > 0.0f)
+    {
+        // Get Player Count in teams
+        auto PlayerCount = gMatchUtil.GetCount();
 
-	// Get minimum of players in server variable divided by two teams (TRs and CTs) 
-	auto PlayersMin = static_cast<int>(gMatchBot.m_PlayersMin->value / 2.0f);
+        // Get minimum of players in server variable divided by two teams (TRs and CTs) 
+        auto MinPlayers = static_cast<int>((gMatchBot.m_PlayersMin->value / 2.0f) - gMatchBot.m_PlayersMinCheck->value);
 
-	// If is lacking Terrorist or CTs players
-	if (PlayerCount[TERRORIST] < PlayersMin || PlayerCount[CT] < PlayersMin)
-	{
-        // Start Vote
-        StartVoteRestart = true;
-	}
-
-	// Get Players
-	auto Players = gMatchUtil.GetPlayers(true, true);
-
-	// Loop Players
-	for (auto& Player : Players)
-	{
-		// If last movement is greater than 30 seconds
-		if ((gpGlobals->time - Player->m_fLastMovement) > 30.0f)
-		{
+        // If is lacking Terrorist or CTs players
+        if (PlayerCount[TERRORIST] <= MinPlayers || PlayerCount[CT] <= MinPlayers)
+        {
             // Start Vote
             StartVoteRestart = true;
-		}
-	}
+        }
+    }
+
+    // Check if an player is AFK from keyboard
+    if (gMatchBot.m_PlayersMinCheckAfk->value > 0.0f)
+    {
+        // Get Players
+        auto PlayersCheck = gMatchUtil.GetPlayers(true, true);
+
+        // Loop Players
+        for (auto& Player : PlayersCheck)
+        {
+            // If last movement is greater than 30 seconds
+            if ((gpGlobals->time - Player->m_fLastMovement) > gMatchBot.m_PlayersMinCheckAfk->value)
+            {
+                // Start Vote
+                StartVoteRestart = true;
+            }
+        }
+    }
 
     // If is needed to start vote
     if (StartVoteRestart)
     {
-        this->Init();
-    }
+        this->m_Data.clear();
 
-	// Check has success
-	return StartVoteRestart;
-}
+        this->m_Data.push_back({ 0, 0, _T("Keep Playing") });
+        this->m_Data.push_back({ 1, 0, gMatchUtil.FormatString(_T("Restart %s"), gMatchBot.GetState(MatchState)) });
+        this->m_Data.push_back({ 2, 0, _T("Cancel Match") });
 
-void CMatchVoteRestart::Init()
-{
-    this->m_Data.clear();
+        this->m_PlayerNum = 0;
+        this->m_VoteCount = 0;
 
-    this->m_Data.push_back({ 0, 0, _T("Keep Playing") });
-    this->m_Data.push_back({ 1, 0, _T("Restart Round") });
-    this->m_Data.push_back({ 2, 0, _T("Cancel Match") });
+        auto Players = gMatchUtil.GetPlayers(true, false);
 
-    this->m_PlayerNum = 0;
-    this->m_VoteCount = 0;
-
-    auto Players = gMatchUtil.GetPlayers(true, false);
-
-    for (auto const& Player : Players)
-    {
-        auto EntityIndex = Player->entindex();
-
-        gMatchMenu[EntityIndex].Create(_T("The Server detected missing players in the first round,\nwhat do you want to do?"), false, (void*)this->MenuHandle);
-
-        for (auto const& Item : this->m_Data)
+        for (auto const& Player : Players)
         {
-            gMatchMenu[EntityIndex].AddItem(Item.Index, Item.Name);
+            auto EntityIndex = Player->entindex();
+
+            gMatchMenu[EntityIndex].Create(_T("The Server detected missing players in the first round,\nwhat do you want to do?"), false, (void*)this->MenuHandle);
+
+            for (auto const& Item : this->m_Data)
+            {
+                gMatchMenu[EntityIndex].AddItem(Item.Index, Item.Name);
+            }
+
+            this->m_PlayerNum++;
+
+            gMatchMenu[EntityIndex].Show(EntityIndex);
         }
 
-        this->m_PlayerNum++;
-
-        gMatchMenu[EntityIndex].Show(EntityIndex);
-    }
-
-    if (g_pGameRules)
-    {
-        if (CSGameRules()->m_bRoundTerminating)
+        if (g_pGameRules)
         {
-            CSGameRules()->m_flRestartRoundTime = (gpGlobals->time + 15.0f);
+            if (CSGameRules()->m_bRoundTerminating)
+            {
+                CSGameRules()->m_flRestartRoundTime = (gpGlobals->time + 15.0f);
+            }
         }
+
+        this->VoteList();
+
+        gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
+
+        gMatchTask.Create(TASK_VOTE_TIMER, 10.0f, false, (void*)this->Stop, 1);
+
+        gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The Server detected missing players in the first round, what do you want to do?"));
     }
-
-    this->VoteList();
-
-    gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->UpdateVoteList, TASK_VOTE_LIST);
-
-    gMatchTask.Create(TASK_VOTE_TIMER, 10.0f, false, (void*)this->Stop, 1);
-
-    gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The Server detected missing players in the first round, what do you want to do?"));
 }
 
 void CMatchVoteRestart::Stop()

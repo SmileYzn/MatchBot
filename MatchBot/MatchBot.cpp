@@ -92,6 +92,12 @@ void CMatchBot::ServerActivate()
 	// Enabled round stats commands in chat (a .hp, b .dmg, c .rdmg, d .sum)
 	this->m_StatsCommands = gMatchUtil.CvarRegister("mb_stats_commands", "abcd");
 
+	// Check player count in teams when end first round of each period, if lacking this count open vote to restart (The number of lacking players in each team, 0 to disable check)
+	this->m_PlayersMinCheck = gMatchUtil.CvarRegister("mb_players_min_check", "2");
+
+	// Check if player is AFK in TRs or CTs team when end first round of each period, (The time in seconds to check AFK player, 0 to disable check)
+	this->m_PlayersMinCheckAfk = gMatchUtil.CvarRegister("mb_players_min_check_afk", "30.0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 
@@ -944,7 +950,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 						if (this->GetRound() == 1)
 						{
 							// Check for vote to restart period
-							gMatchVoteRestart.CheckTeams();
+							gMatchVoteRestart.Init(this->GetState());
 						}
 					}
 
@@ -1001,7 +1007,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 						{
 
 							// Check for vote to restart period
-							gMatchVoteRestart.CheckTeams();
+							gMatchVoteRestart.Init(this->GetState());
 						}
 					}
 

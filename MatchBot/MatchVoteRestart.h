@@ -10,9 +10,7 @@ struct P_RR_ITEM
 class CMatchVoteRestart
 {
 public:
-	bool CheckTeams();
-
-	void Init();
+	void Init(int MatchState);
 	static void Stop();
 
 	void AddVote(int Item, int Vote);
