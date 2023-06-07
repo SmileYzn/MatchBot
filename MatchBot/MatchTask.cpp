@@ -19,12 +19,9 @@ void CMatchTask::Clear()
 
 void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter)
 {
-	if (FunctionCallback != nullptr)
+	if (FunctionCallback)
 	{
-		if (this->m_Data.find(Index) == this->m_Data.end())
-		{
-			this->m_Data[Index] = { Index, Time, (gpGlobals->time + Time), Loop, false, FunctionCallback, FunctionParameter};
-		}
+		this->m_Data[Index] = { Index, Time, (gpGlobals->time + Time), Loop, false, FunctionCallback, FunctionParameter };
 	}
 }
 
@@ -38,38 +35,32 @@ void CMatchTask::Remove(int Index)
 
 void CMatchTask::Frame()
 {
-	for (std::map<int, P_TASK_INFO>::iterator it = this->m_Data.begin(); it != this->m_Data.end();)
+	for (std::map<int, P_TASK_INFO>::iterator it = this->m_Data.begin(); it != this->m_Data.end(); )
 	{
+		if (gpGlobals->time >= it->second.EndTime)
+		{
+			if (it->second.Loop)
+			{
+				it->second.EndTime += it->second.Time;
+			}
+			else
+			{
+				it->second.Remove = true;
+			}
+
+			if (it->second.FunctionCallback)
+			{
+				((void(*)(int))it->second.FunctionCallback)(it->second.FunctionParameter);
+			}
+		}
+
 		if (it->second.Remove)
 		{
 			this->m_Data.erase(it++);
 		}
 		else
 		{
-			if (gpGlobals->time >= it->second.EndTime)
-			{
-				P_TASK_INFO Task = it->second;
-
-				if (it->second.Loop)
-				{
-					it->second.EndTime += it->second.Time;
-
-					it++;
-				}
-				else
-				{
-					this->m_Data.erase(it++);
-				}
-
-				if (Task.FunctionCallback != nullptr)
-				{
-					((void(*)(int))Task.FunctionCallback)(Task.FunctionParameter);
-				}
-			}
-			else
-			{
-				it++;
-			}
+			it++;
 		}
 	}
 }
