@@ -938,6 +938,15 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 						// Disable Knife Round for first half state
 						this->m_PlayKnifeRound = false;
 					}
+					else
+					{
+						// On first round if first half period
+						if (this->GetRound() == 1)
+						{
+							// Check for vote to restart period
+							gMatchVoteRestart.CheckTeams();
+						}
+					}
 
 					// If sum of scores reached half of total rounds to play
 					if (this->GetRound() >= (this->m_PlayRounds->value / 2))
@@ -952,7 +961,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				case STATE_SECOND_HALF:
 				{
 					// Get total of rounds divided by 2
-					auto Half = (this->m_PlayRounds->value / 2);
+					auto Half = static_cast<int>(this->m_PlayRounds->value / 2.0f);
 
 					// Terrorist Score
 					auto ScoreTR = this->GetScore(TERRORIST);
@@ -981,7 +990,18 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 						// Start Overtime vote (mb_play_ot_mode = 3)
 						else if (this->m_PlayMode->value == 3)
 						{
+							// Init Vote for Overtime
 							gMatchVoteOvertime.Init();
+						}
+					}
+					else
+					{
+						// If is first round of second half
+						if (this->GetRound() == (Half + 1))
+						{
+
+							// Check for vote to restart period
+							gMatchVoteRestart.CheckTeams();
 						}
 					}
 
@@ -1283,7 +1303,7 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 void CMatchBot::StopMatch(CBasePlayer* Player)
 {
 	// Check Accesss
-	if (gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_B))
+	if (Player == nullptr || gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_B))
 	{
 		// If match is running
 		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
@@ -1292,7 +1312,14 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 			gMatchTask.Remove(TASK_TIMER_LO3);
 
 			// Send message to all players
-			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 stopped match."), STRING(Player->edict()->v.netname));
+			if (Player)
+			{
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 stopped match."), STRING(Player->edict()->v.netname));
+			}
+			else
+			{
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 stopped match."), Plugin_info.name);
+			}
 
 			// If is in Knife Round
 			if(this->m_PlayKnifeRound)
@@ -1340,6 +1367,12 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 			{
 				// Send message
 				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 restarted %s, get ready!"), STRING(Player->edict()->v.netname), this->GetState(this->m_State));
+			}
+			else
+			{
+				// Send message
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 restarted %s, get ready!"), Plugin_info.name, this->GetState(this->m_State));
+
 			}
 
 			// Restart current state

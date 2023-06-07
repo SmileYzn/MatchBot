@@ -85,6 +85,9 @@
     <Filter Include="MatchBot\MatchVoteSwapTeam">
       <UniqueIdentifier>{82ccb417-6c0a-479a-9259-bc9ccc326010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MatchBot\MatchVoteRestart">
+      <UniqueIdentifier>{a96f3461-2b38-49bf-9b92-cfcd53c9a99d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatchBot.h">
@@ -170,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="MatchVoteSwapTeam.h">
       <Filter>MatchBot\MatchVoteSwapTeam</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchVoteRestart.h">
+      <Filter>MatchBot\MatchVoteRestart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +264,9 @@
     </ClCompile>
     <ClCompile Include="MatchVoteSwapTeam.cpp">
       <Filter>MatchBot\MatchVoteSwapTeam</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchVoteRestart.cpp">
+      <Filter>MatchBot\MatchVoteRestart</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

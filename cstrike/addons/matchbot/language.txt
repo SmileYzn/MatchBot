@@ -857,3 +857,44 @@ es:"%s %d : %d %s"
 en:"Game Over! The \3%s\1 team surrendered!!"
 bp:"Fim de jogo! O time \3%s\1 se rendeu!!"
 es:"Juego terminado! El equipo \3%s\1 se rendeu!!"
+
+"Keep Playing"
+en:"Keep Playing"
+bp:"Continuar Jogando"
+es:"Seguir jugando"
+
+"Restart Round"
+en:"Restart Round"
+bp:"Reiniciar Round"
+es:"Reiniciar ronda"
+
+"Cancel Match"
+en:"Cancel Match"
+bp:"Cancelar Partida"
+es:"Cancelar partido"
+
+"The Server detected missing players in the first round,\nwhat do you want to do?"
+en:"The Server detected missing players in the first round,\nwhat do you want to do?"
+bp:"El servidor detectó jugadores faltantes en la primera ronda,\no que você quer fazer?"
+es:"El servidor detectó jugadores faltantes en la primera ronda,\n¿Qué quieres hacer?"
+
+"The Server detected missing players in the first round, what do you want to do?"
+en:"The Server detected missing players in the first round, what do you want to do?"
+bp:"El servidor detectó jugadores faltantes en la primera ronda, o que você quer fazer?"
+es:"El servidor detectó jugadores faltantes en la primera ronda, ¿Qué quieres hacer?"
+
+"Match will continue without restart..."
+en:"Match will continue without restart..."
+bp:"A partida vai continuar sem reiniciar..."
+es:"El partido continuará sin reiniciar..."
+
+"The vote for restart choice failed: \3No votes."
+en:"The vote for restart choice failed: \3No votes."
+bp:"A escolha para reiniciar falhou: \3Nenhum voto."
+es:"La elección de reanudar ha fallado: \3Sin votos."
+
+"Vote For Restart:"
+en:"Vote For Restart:"
+bp:"Reiniciar Partida:"
+es:"Reiniciar Partida:"
+

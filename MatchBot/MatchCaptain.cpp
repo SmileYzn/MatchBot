@@ -9,6 +9,7 @@ void CMatchCaptain::Init(int PlayersMin)
 	if ((int)Players.size() > (PlayersMin / 2))
 	{
 		this->m_Running = true;
+
 		this->m_PlayersMin = PlayersMin;
 
 		g_engfuncs.pfnCVarSetString("mp_auto_join_team", "1");
@@ -25,14 +26,17 @@ void CMatchCaptain::Init(int PlayersMin)
 				Player->CSPlayer()->JoinTeam(SPECTATOR);
 
 				Player->ClearConditions(BIT_CONDITION_LEADER);
+
 				Player->ClearConditions(BIT_CONDITION_INMENU);
 			}
 		}
 
 		auto TeamA = (TeamName)RANDOM_LONG(1, 2);
+
 		auto TeamB = (TeamA == CT) ? TERRORIST : CT;
 
 		this->SetCaptain(Players[0], TeamA);
+
 		this->SetCaptain(Players[1], TeamB);
 
 		this->Menu(Players[RANDOM_LONG(0, 1)]);

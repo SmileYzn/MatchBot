@@ -85,6 +85,7 @@
 #include "MatchVoteMap.h"
 #include "MatchVoteMenu.h"
 #include "MatchVoteOvertime.h"
+#include "MatchVoteRestart.h"
 #include "MatchVoteTeam.h"
 #include "MatchVoteSwapTeam.h"
 #include "MatchUtil.h"

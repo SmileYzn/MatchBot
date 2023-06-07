@@ -479,7 +479,7 @@ void CMatchAdminMenu::Message(int EntityIndex, std::string Args)
 			return;
 		}
 
-		if (!Args.empty())
+		if (!Args.empty() && Args.length() > 2)
 		{
 			Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
 
@@ -510,7 +510,7 @@ void CMatchAdminMenu::Rcon(int EntityIndex, std::string Args)
 			return;
 		}
 
-		if (!Args.empty())
+		if (!Args.empty() && Args.length() > 2)
 		{
 			Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
 

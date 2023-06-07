@@ -194,11 +194,31 @@ int CMatchUtil::GetCount(TeamName Team)
 	return Result;
 }
 
+std::array<int, SPECTATOR + 1> CMatchUtil::GetCount()
+{
+	std::array<int, SPECTATOR + 1> TeamCount = { 0 };
+
+	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	{
+		auto Player = UTIL_PlayerByIndexSafe(i);
+
+		if (Player)
+		{
+			if (!Player->IsDormant())
+			{
+				TeamCount[Player->m_iTeam]++;
+			}
+		}
+	}
+
+	return TeamCount;
+}
+
 int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly)
 {
 	int Num = 0;
 
-	memset(Players, 0, MAX_CLIENTS);
+	Q_memset(Players, 0, MAX_CLIENTS);
 
 	for (int i = 1; i <= gpGlobals->maxClients; ++i)
 	{
