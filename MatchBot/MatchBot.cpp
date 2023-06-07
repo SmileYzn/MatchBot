@@ -714,7 +714,7 @@ void CMatchBot::PlayerDisconnect()
 		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
 		{
 			// End match
-			this->SetState(STATE_END);
+			gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_END);
 		}
 	}
 }
