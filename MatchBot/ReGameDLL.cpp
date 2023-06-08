@@ -215,12 +215,7 @@ bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictIt
 {
 	auto ret = chain->callNext(pthis, item, type);
 
-	if (gMatchWarmup.PlayerHasRestrictItem(pthis, item, type))
-	{
-		ret = true;
-	}
-
-	if (gMatchBot.PlayerHasRestrictItem(pthis, item, type))
+	if (gMatchRestrictItem.PlayerHasRestrictItem(pthis, item, type))
 	{
 		ret = true;
 	}

@@ -14,31 +14,13 @@ void CMatchVoteRestart::Init(int MatchState)
         auto PlayerCount = gMatchUtil.GetCount();
 
         // Get minimum of players in server variable divided by two teams (TRs and CTs) 
-        auto MinPlayers = static_cast<int>((gMatchBot.m_PlayersMin->value / 2.0f) - gMatchBot.m_PlayersMinCheck->value);
+        auto MinPlayers = (int)((gMatchBot.m_PlayersMin->value / 2.0f) - gMatchBot.m_PlayersMinCheck->value);
 
         // If is lacking Terrorist or CTs players
         if (PlayerCount[TERRORIST] <= MinPlayers || PlayerCount[CT] <= MinPlayers)
         {
-            // Start Vote
+            // Start Vote 
             StartVoteRestart = true;
-        }
-    }
-
-    // Check if an player is AFK from keyboard
-    if (gMatchBot.m_PlayersMinCheckAfk->value > 0.0f)
-    {
-        // Get Players
-        auto PlayersCheck = gMatchUtil.GetPlayers(true, true);
-
-        // Loop Players
-        for (auto& Player : PlayersCheck)
-        {
-            // If last movement is greater than 30 seconds
-            if ((gpGlobals->time - Player->m_fLastMovement) > gMatchBot.m_PlayersMinCheckAfk->value)
-            {
-                // Start Vote
-                StartVoteRestart = true;
-            }
         }
     }
 

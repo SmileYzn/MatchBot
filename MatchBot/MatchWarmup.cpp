@@ -66,21 +66,3 @@ bool CMatchWarmup::PlayerAddAccount(CBasePlayer* Player, int amount, RewardType 
 
 	return false;
 }
-
-bool CMatchWarmup::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type)
-{
-	if (this->m_Running)
-	{
-		if (item == ITEM_SHIELDGUN || item == ITEM_HEGRENADE || item == ITEM_C4 || item == ITEM_SMOKEGRENADE || item == ITEM_FLASHBANG || item == ITEM_DEFUSEKIT)
-		{
-			if (type == ITEM_TYPE_BUYING)
-			{
-				gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
-			}
-			
-			return true;
-		}
-	}
-
-	return false;
-}

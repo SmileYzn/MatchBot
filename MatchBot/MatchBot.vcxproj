@@ -55,7 +55,6 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -72,11 +71,9 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -107,6 +104,7 @@
     <ClInclude Include="MatchLO3.h" />
     <ClInclude Include="MatchMenu.h" />
     <ClInclude Include="MatchPause.h" />
+    <ClInclude Include="MatchRestrictItem.h" />
     <ClInclude Include="MatchStats.h" />
     <ClInclude Include="MatchTask.h" />
     <ClInclude Include="MatchTimer.h" />
@@ -137,6 +135,7 @@
     <ClCompile Include="MatchCommand.cpp" />
     <ClCompile Include="MatchLO3.cpp" />
     <ClCompile Include="MatchPause.cpp" />
+    <ClCompile Include="MatchRestrictItem.cpp" />
     <ClCompile Include="MatchStats.cpp" />
     <ClCompile Include="MatchTimer.cpp" />
     <ClCompile Include="MatchVoteMap.cpp" />

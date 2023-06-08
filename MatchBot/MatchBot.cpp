@@ -92,11 +92,11 @@ void CMatchBot::ServerActivate()
 	// Enabled round stats commands in chat (a .hp, b .dmg, c .rdmg, d .sum)
 	this->m_StatsCommands = gMatchUtil.CvarRegister("mb_stats_commands", "abcd");
 
-	// Check player count in teams when end first round of each period, if lacking this count open vote to restart (The number of lacking players in each team, 0 to disable check)
-	this->m_PlayersMinCheck = gMatchUtil.CvarRegister("mb_players_min_check", "2");
+	// Check player count in teams in each round start, if lacking this count open vote to restart (The number of lacking players in each team, 0 to disable check)
+	this->m_PlayersMinCheck = gMatchUtil.CvarRegister("mb_players_min_diff", "2");
 
-	// Check if player is AFK in TRs or CTs team when end first round of each period, (The time in seconds to check AFK player, 0 to disable check)
-	this->m_PlayersMinCheckAfk = gMatchUtil.CvarRegister("mb_players_min_check_afk", "30.0");
+	// Restricted Weapons by item index slot position (1 to block item, 0 to allow)
+	this->m_RestrictWeapons = gMatchUtil.CvarRegister("mb_restrict_weapons", "000000000000000000000000000000000000000");
 
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
@@ -139,10 +139,10 @@ void CMatchBot::ServerActivate()
 void CMatchBot::ServerDeactivate()
 {
 	// Stop Ready System
-	gMatchReady.Stop(0);
+	gMatchReady.Stop(false);
 
 	// Stop Timer System
-	gMatchTimer.Stop(0);
+	gMatchTimer.Stop(false);
 
 	// If knife round is running
 	if (this->m_PlayKnifeRound)
@@ -183,10 +183,10 @@ void CMatchBot::Disable()
 	if (this->m_State == STATE_WARMUP)
 	{
 		// Stop Ready System
-		gMatchReady.Stop(0);
+		gMatchReady.Stop(false);
 		
 		// Stop Timer System
-		gMatchTimer.Stop(0);
+		gMatchTimer.Stop(false);
 
 		// Stop Warmup
 		gMatchWarmup.Stop();
@@ -356,13 +356,13 @@ void CMatchBot::SetState(int State)
 					gMatchWarmup.Init();
 
 					// If ready type is 1
-					if (this->m_ReadyType->value == 1)
+					if (this->m_ReadyType->value == 1.0f)
 					{
 						// Init Ready System
 						gMatchReady.Init(this->m_PlayersMin->value);
 					}
 					// If ready type is 2
-					else if (this->m_ReadyType->value > 1)
+					else if (this->m_ReadyType->value >= 2.0f)
 					{
 						// Init Timer System
 						gMatchTimer.Init(this->m_PlayersMin->value, this->m_ReadyTime->value);
@@ -387,6 +387,7 @@ void CMatchBot::SetState(int State)
 			{
 				// Send message
 				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
+
 				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Wait for an server \4Administrator\1 restart the match!"), this->GetState(this->m_State));
 			}
 
@@ -395,6 +396,9 @@ void CMatchBot::SetState(int State)
 		// Second Half: Match is running
 		case STATE_SECOND_HALF:
 		{
+			// Stop warmup things
+			gMatchWarmup.Stop();
+
 			// Clear Terrorists Scores
 			this->m_Score[TERRORIST][STATE_SECOND_HALF] = 0;
 
@@ -451,7 +455,7 @@ void CMatchBot::SetState(int State)
 					auto Players = gMatchUtil.GetPlayers(true, true);
 
 					// If reached minimum of players
-					if ((int)Players.size() > (this->m_PlayersMin->value / 2))
+					if (Players.size() > (size_t)(this->m_PlayersMin->value / 2.0f))
 					{
 						// In next state, start Vote Map
 						NextState = STATE_START;
@@ -577,6 +581,12 @@ void CMatchBot::SwapTeams()
 	}
 }
 
+// Get Knife Round Mode
+bool CMatchBot::GetKnifeRound()
+{
+	return this->m_PlayKnifeRound;
+}
+
 // Set Knife Round Mode
 void CMatchBot::SetKnifeRound(bool PlayKnifeRound)
 {
@@ -677,7 +687,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	if (Slot == TERRORIST || Slot == CT)
 	{
 		// Count player count in desired team, and check if is not full
-		if (gMatchUtil.GetCount((TeamName)Slot) >= (this->m_PlayersMax->value / 2))
+		if (gMatchUtil.GetCount((TeamName)Slot) >= (int)(this->m_PlayersMax->value / 2.0f))
 		{
 			// Send message
 			gMatchUtil.SayText(Player->edict(), (Slot == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("The \3%s\1 team is complete."), this->GetTeam((TeamName)Slot, false));
@@ -714,7 +724,7 @@ void CMatchBot::PlayerDisconnect()
 	auto Players = gMatchUtil.GetPlayers(true, true);
 
 	// If server was empty
-	if (Players.size() < (this->m_PlayersMin->value / 2))
+	if (Players.size() < (size_t)(this->m_PlayersMin->value / 2.0f))
 	{
 		// If match is running (LIVE)
 		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
@@ -723,31 +733,6 @@ void CMatchBot::PlayerDisconnect()
 			gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_END);
 		}
 	}
-}
-
-// Check restrictions of items for players
-bool CMatchBot::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type)
-{
-	// If is knife Round
-	if (this->m_PlayKnifeRound)
-	{
-		// If is any of not allowed items
-		if (item != ITEM_KEVLAR && item != ITEM_ASSAULT && item != ITEM_KNIFE)
-		{
-			// If is buy
-			if (type == ITEM_TYPE_BUYING)
-			{
-				// Send message
-				gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
-			}
-			
-			// Prevent to get item
-			return true;
-		}
-	}
-
-	// Ignore this
-	return false;
 }
 
 // Status command for players
@@ -902,6 +887,9 @@ void CMatchBot::RoundStart()
 	{
 		// Send scores on start
 		this->Scores(nullptr, false);
+
+		// Check for vote to restart period
+		gMatchVoteRestart.Init(this->GetState());
 	}
 }
 
@@ -944,18 +932,9 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 						// Disable Knife Round for first half state
 						this->m_PlayKnifeRound = false;
 					}
-					else
-					{
-						// On first round if first half period
-						if (this->GetRound() == 1)
-						{
-							// Check for vote to restart period
-							gMatchVoteRestart.Init(this->GetState());
-						}
-					}
 
 					// If sum of scores reached half of total rounds to play
-					if (this->GetRound() >= (this->m_PlayRounds->value / 2))
+					if (this->GetRound() >= (int)(this->m_PlayRounds->value / 2.0f))
 					{
 						// Change State
 						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_HALFTIME);
@@ -967,7 +946,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				case STATE_SECOND_HALF:
 				{
 					// Get total of rounds divided by 2
-					auto Half = static_cast<int>(this->m_PlayRounds->value / 2.0f);
+					auto Half = (int)(this->m_PlayRounds->value / 2.0f);
 
 					// Terrorist Score
 					auto ScoreTR = this->GetScore(TERRORIST);
@@ -1000,16 +979,6 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 							gMatchVoteOvertime.Init();
 						}
 					}
-					else
-					{
-						// If is first round of second half
-						if (this->GetRound() == (Half + 1))
-						{
-
-							// Check for vote to restart period
-							gMatchVoteRestart.Init(this->GetState());
-						}
-					}
 
 					break;
 				}
@@ -1017,7 +986,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				case STATE_OVERTIME:
 				{
 					// Get total of overtime rounds divided by 2
-					auto Half = (this->m_PlayRoundsOT->value / 2);
+					auto Half = (int)(this->m_PlayRoundsOT->value / 2.0f);
 
 					// If any team reached required number of rounds to win
 					if (this->GetScoreOT(TERRORIST) > Half || this->GetScoreOT(CT) > Half)
@@ -1169,10 +1138,10 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 			if (this->m_State != STATE_DEAD && this->m_State != STATE_START && this->m_State != STATE_END)
 			{
 				// Stop Ready System 
-				gMatchReady.Stop(0);
+				gMatchReady.Stop(false);
 
 				// Stop Timer System
-				gMatchTimer.Stop(0);
+				gMatchTimer.Stop(false);
 
 				// Enable vote map for this map session
 				g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "1");
@@ -1212,10 +1181,10 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 		if (this->m_State == STATE_WARMUP)
 		{
 			// Stop Ready System 
-			gMatchReady.Stop(0);
+			gMatchReady.Stop(false);
 
 			// Stop Timer System
-			gMatchTimer.Stop(0);
+			gMatchTimer.Stop(false);
 
 			// Disable vote map for this map session
 			g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "0");
@@ -1249,10 +1218,10 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 		if (this->m_State == STATE_WARMUP || this->m_State == STATE_HALFTIME)
 		{
 			// Stop Ready System if any
-			gMatchReady.Stop(0);
+			gMatchReady.Stop(false);
 
 			// Stop Timer System if any
-			gMatchTimer.Stop(0);
+			gMatchTimer.Stop(false);
 
 			// Send message to all players
 			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 started match."), STRING(Player->edict()->v.netname));

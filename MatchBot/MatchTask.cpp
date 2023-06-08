@@ -21,28 +21,7 @@ void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback
 {
 	if (FunctionCallback)
 	{
-		if (this->m_Data.find(Index) != this->m_Data.end())
-		{
-			this->m_Data[Index].Time = Time;
-
-			this->m_Data[Index].EndTime = (gpGlobals->time + Time);
-
-			this->m_Data[Index].Loop = Loop;
-
-			this->m_Data[Index].FunctionParameter = FunctionParameter;
-		}
-		else
-		{
-			this->m_Data[Index] = { Index, Time, (gpGlobals->time + Time), Loop, FunctionCallback, FunctionParameter };
-		}
-	}
-}
-
-void CMatchTask::EndTime(int Index, float EndTime)
-{
-	if (this->m_Data.find(Index) != this->m_Data.end())
-	{
-		this->m_Data[Index].EndTime = EndTime;
+		this->m_Data[Index] = { Index, Time, (gpGlobals->time + Time), Loop, false, FunctionCallback, FunctionParameter };
 	}
 }
 
@@ -50,20 +29,7 @@ void CMatchTask::Remove(int Index)
 {
 	if (this->m_Data.find(Index) != this->m_Data.end())
 	{
-		this->m_Data.erase(Index);
-	}
-}
-
-void CMatchTask::Execute(int Index)
-{
-	if (this->m_Data.find(Index) != this->m_Data.end())
-	{
-		P_TASK_INFO Task = this->m_Data[Index];
-
-		if (Task.FunctionCallback)
-		{
-			((void(*)(int))Task.FunctionCallback)(Task.FunctionParameter);
-		}
+		this->m_Data[Index].Free = true;
 	}
 }
 
@@ -73,17 +39,25 @@ void CMatchTask::Frame()
 	{
 		if (gpGlobals->time >= it->second.EndTime)
 		{
-			if (it->second.Loop)
+			if (!it->second.Free)
 			{
-				this->EndTime(it->first, (gpGlobals->time + it->second.Time));
+				if (it->second.Loop)
+				{
+					this->m_Data[it->first].EndTime = (gpGlobals->time + it->second.Time);
+				}
+				else
+				{
+					this->m_Data[it->first].Free = true;
+				}
 
-				this->Execute(it->first);
+				if (this->m_Data[it->first].FunctionCallback)
+				{
+					((void(*)(int))this->m_Data[it->first].FunctionCallback)(this->m_Data[it->first].FunctionParameter);
+				}
 			}
 			else
 			{
-				this->Execute(it->first);
-
-				this->Remove(it->first);
+				this->m_Data.erase(it->first);
 			}
 		}
 	}

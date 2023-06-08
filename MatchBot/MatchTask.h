@@ -17,6 +17,7 @@ typedef struct S_TASK_INFO
 	float			Time;
 	float			EndTime;
 	bool			Loop;
+	bool			Free;
 	void*			FunctionCallback;
 	int				FunctionParameter;
 } P_TASK_INFO, *LP_TASK_INFO;
@@ -29,9 +30,7 @@ public:
 
 	void Clear();
 	void Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter);
-	void EndTime(int Index, float EndTime);
 	void Remove(int Index);
-	void Execute(int Index);
 	void Frame();
 
 private:

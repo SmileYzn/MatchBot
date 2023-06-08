@@ -86,6 +86,9 @@ public:
 	// Swap teams event
 	void SwapTeams();
 
+	// Get Knife Round Mode
+	bool GetKnifeRound();
+
 	// Set Knife Round
 	void SetKnifeRound(bool PlayKnifeRound);
 
@@ -100,9 +103,6 @@ public:
 
 	// On player disconnect
 	void PlayerDisconnect();
-
-	// Check restrictions of items for players
-	bool PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type);
 
 	// Show match bot status
 	void Status(CBasePlayer* Player);
@@ -193,7 +193,7 @@ public:
 	cvar_t* m_RoundEndStats = nullptr;
 	cvar_t* m_StatsCommands = nullptr;
 	cvar_t* m_PlayersMinCheck = nullptr;
-	cvar_t* m_PlayersMinCheckAfk = nullptr;
+	cvar_t* m_RestrictWeapons = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };
