@@ -30,7 +30,7 @@ void CMatchVoteRestart::Init(int MatchState)
         this->m_Data.clear();
 
         this->m_Data.push_back({ 0, 0, _T("Keep Playing") });
-        this->m_Data.push_back({ 1, 0, gMatchUtil.FormatString("%s %s", _T("Restart"), gMatchBot.GetState(MatchState))});
+        this->m_Data.push_back({ 1, 0, _T("Restart Round") });
         this->m_Data.push_back({ 2, 0, _T("Cancel Match") });
 
         this->m_PlayerNum = 0;
