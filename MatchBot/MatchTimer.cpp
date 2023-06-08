@@ -13,7 +13,7 @@ void CMatchTimer::Init(int PlayersMin,int Delay)
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Match will start when all players join in game."));
 }
 
-void CMatchTimer::Stop(int ChangeState)
+void CMatchTimer::Stop(bool ChangeState)
 {
 	gMatchTask.Remove(TASK_READY_SYSTEM);
 
@@ -21,7 +21,19 @@ void CMatchTimer::Stop(int ChangeState)
 	{
 		gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("All players are in teams and are ready!"));
 
-		gMatchTask.Create(TASK_CHANGE_STATE, 1.0f, false, (void*)gMatchBot.NextState, STATE_START);
+		auto State = STATE_START;
+
+		if (gMatchBot.GetState() == STATE_HALFTIME)
+		{
+			State = STATE_SECOND_HALF;
+
+			if (gMatchBot.GetRound() >= (int)(gMatchBot.m_PlayRounds->value))
+			{
+				State = STATE_OVERTIME;
+			}
+		}
+
+		gMatchTask.Create(TASK_CHANGE_STATE, 1.0f, false, (void*)gMatchBot.NextState, State);
 	}
 }
 
@@ -76,7 +88,7 @@ void CMatchTimer::Task(int PlayersMin)
 		}
 		else
 		{
-			gMatchTimer.Stop(1);
+			gMatchTimer.Stop(true);
 		}
 	}
 }

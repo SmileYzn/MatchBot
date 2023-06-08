@@ -13,7 +13,7 @@ void CMatchReady::Init(int PlayersMin)
 	gMatchTask.Create(TASK_READY_SYSTEM, 0.5f, true, (void*)this->Task, PlayersMin);
 }
 
-void CMatchReady::Stop(int ChangeState)
+void CMatchReady::Stop(bool ChangeState)
 {
 	if (this->m_Running)
 	{
@@ -25,7 +25,19 @@ void CMatchReady::Stop(int ChangeState)
 
 		if (ChangeState)
 		{
-			gMatchTask.Create(TASK_CHANGE_STATE, 1.0f, false, (void*)gMatchBot.NextState, STATE_START);
+			auto State = STATE_START;
+
+			if (gMatchBot.GetState() == STATE_HALFTIME)
+			{
+				State = STATE_SECOND_HALF;
+
+				if (gMatchBot.GetRound() >= (int)(gMatchBot.m_PlayRounds->value))
+				{
+					State = STATE_OVERTIME;
+				}
+			}
+
+			gMatchTask.Create(TASK_CHANGE_STATE, 1.0f, false, (void*)gMatchBot.NextState, State);
 		}
 	}
 }
@@ -62,7 +74,7 @@ void CMatchReady::Task(int PlayersMin)
 	{
 		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("All players are ready!"));
 
-		gMatchReady.Stop(1);
+		gMatchReady.Stop(true);
 	}
 	else
 	{

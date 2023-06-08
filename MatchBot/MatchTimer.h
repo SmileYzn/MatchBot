@@ -4,7 +4,7 @@ class CMatchTimer
 {
 public:
 	void Init(int PlayersMin, int Delay);
-	void Stop(int ChangeState);
+	void Stop(bool ChangeState);
 
 	void SetTime();
 	time_t GetTime();

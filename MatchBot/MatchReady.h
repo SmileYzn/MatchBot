@@ -4,7 +4,7 @@ class CMatchReady
 {
 public:
 	void Init(int PlayersMin);
-	void Stop(int ChangeState);
+	void Stop(bool ChangeState);
 
 	static void Task(int PlayersMin);
 
