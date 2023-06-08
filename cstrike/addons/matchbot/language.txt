@@ -863,10 +863,10 @@ en:"Keep Playing"
 bp:"Continuar Jogando"
 es:"Seguir jugando"
 
-"Restart %s"
-en:"Restart %s"
-bp:"Reiniciar %s"
-es:"Reiniciar %s"
+Restart Round
+en:Restart Round
+bp:Restart Round
+es:Restart Round
 
 "Cancel Match"
 en:"Cancel Match"
