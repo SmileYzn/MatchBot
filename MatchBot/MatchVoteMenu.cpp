@@ -404,7 +404,7 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 				if (g_pGameRules)
 				{
 					// If is not in freeze time period
-					if (!CSGameRules()->m_bFreezePeriod)
+					if (!CSGameRules()->IsFreezePeriod())
 					{
 						// If player not voted yet
 						if (!this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam])

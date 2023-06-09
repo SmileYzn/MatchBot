@@ -101,6 +101,9 @@ void CMatchBot::ServerActivate()
 	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
 	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
 
+	// Kill player that is not in buyzone when round start
+	this->m_KillRespawnBug = gMatchUtil.CvarRegister("mb_kill_spwan_bug", "1");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 
@@ -896,6 +899,36 @@ void CMatchBot::RoundStart()
 		{
 			// Check for vote to restart period
 			gMatchVoteRestart.Init(this->GetState());
+		}
+
+		// If has kill respwan bug variable
+		if (this->m_KillRespawnBug->value > 0.0f)
+		{
+			// Check if an player is outside buy zone when round start
+			if (g_pGameRules)
+			{
+				// If map has buyzone
+				if (CSGameRules()->m_bMapHasBuyZone)
+				{
+					// Get in-game player list
+					auto Players = gMatchUtil.GetPlayers(true, false);
+
+					// Loop players
+					for (auto& Player : Players)
+					{
+						// If player is alive
+						if (Player->IsAlive())
+						{
+							// If player is not in buyzone
+							if (!(Player->m_signals.GetState() & SIGNAL_BUY))
+							{
+								// Kill Player by respawn bug
+								MDLL_ClientKill(Player->edict());
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

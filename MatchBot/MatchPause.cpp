@@ -12,7 +12,7 @@ void CMatchPause::Init(CBasePlayer* Player)
 		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
 		{
 			// If is not in freeze time period
-			if (!CSGameRules()->m_bFreezePeriod)
+			if (!CSGameRules()->IsFreezePeriod())
 			{
 				// Pause Match
 				this->m_Pause = true;
