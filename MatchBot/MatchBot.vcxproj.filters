@@ -91,7 +91,7 @@
     <Filter Include="MatchBot\MatchRestrictItem">
       <UniqueIdentifier>{d63e984e-4241-4f22-8dd5-61e821375411}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MatchBot\MatchSmokeGrenade">
+    <Filter Include="MatchBot\MatchBugFix">
       <UniqueIdentifier>{922ceb52-15d7-4ca6-b8ab-f43ec53647c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -186,8 +186,8 @@
     <ClInclude Include="MatchRestrictItem.h">
       <Filter>MatchBot\MatchRestrictItem</Filter>
     </ClInclude>
-    <ClInclude Include="MatchSmokeGrenade.h">
-      <Filter>MatchBot\MatchSmokeGrenade</Filter>
+    <ClInclude Include="MatchBugFix.h">
+      <Filter>MatchBot\MatchBugFix</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,8 +283,8 @@
     <ClCompile Include="MatchRestrictItem.cpp">
       <Filter>MatchBot\MatchRestrictItem</Filter>
     </ClCompile>
-    <ClCompile Include="MatchSmokeGrenade.cpp">
-      <Filter>MatchBot\MatchSmokeGrenade</Filter>
+    <ClCompile Include="MatchBugFix.cpp">
+      <Filter>MatchBot\MatchBugFix</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
