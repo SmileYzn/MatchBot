@@ -98,6 +98,9 @@ void CMatchBot::ServerActivate()
 	// Restricted Weapons by item index slot position (1 to block item, 0 to allow)
 	this->m_RestrictWeapons = gMatchUtil.CvarRegister("mb_restrict_weapons", "000000000000000000000000000000000000000");
 
+	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
+	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 

@@ -80,6 +80,7 @@
 #include "MatchPause.h"
 #include "MatchReady.h"
 #include "MatchRestrictItem.h"
+#include "MatchSmokeGrenade.h"
 #include "MatchStats.h"
 #include "MatchTimer.h"
 #include "MatchTask.h"

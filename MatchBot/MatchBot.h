@@ -194,6 +194,7 @@ public:
 	cvar_t* m_StatsCommands = nullptr;
 	cvar_t* m_PlayersMinCheck = nullptr;
 	cvar_t* m_RestrictWeapons = nullptr;
+	cvar_t* m_ExtraSmokeCount = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };

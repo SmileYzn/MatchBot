@@ -113,6 +113,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CGrenade_ExplodeBomb()->registerHook(ReGameDLL_CGrenade_ExplodeBomb);
 
+	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->registerHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
+
 	return true;
 }
 
@@ -151,6 +153,8 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CGrenade_DefuseBombEnd()->unregisterHook(ReGameDLL_CGrenade_DefuseBombEnd);
 
 	g_ReGameHookchains->CGrenade_ExplodeBomb()->unregisterHook(ReGameDLL_CGrenade_ExplodeBomb);
+
+	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
 	return true;
 }
@@ -347,4 +351,11 @@ void ReGameDLL_CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb* chain, CGr
 	gMatchStats.ExplodeBomb(pthis, ptr, bitsDamageType);
 
 	chain->callNext(pthis, ptr, bitsDamageType);
+}
+
+void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade* chain, CGrenade* pthis)
+{
+	chain->callNext(pthis);
+
+	gMatchSmokeGrenade.ExplodeSmokeGrenade(pthis);
 }
