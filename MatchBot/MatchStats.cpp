@@ -283,9 +283,13 @@ void CMatchStats::SaveJson()
 	{
 		// File path buffer
 		char Buffer[MAX_PATH] = { 0 };
+
+		char DateTime[21] = { 0 };
+
+		strftime(DateTime, sizeof(DateTime), "%Y%m%d_%H%M%S", localtime(&this->m_Data.EndTime));
 		
 		// Format Path with match end time
-		Q_snprintf(Buffer, sizeof(Buffer), "%s/%lld.json", STATS_SAVE_PATH, this->m_Data.EndTime);
+		Q_snprintf(Buffer, sizeof(Buffer), "%s/%s.json", STATS_SAVE_PATH, DateTime);
 
 		// Create file with path buffer
 		std::ofstream DataFile(Buffer);
