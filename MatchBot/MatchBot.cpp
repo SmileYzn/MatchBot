@@ -727,16 +727,23 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 void CMatchBot::PlayerDisconnect()
 {
 	// Get Player count
-	auto Players = gMatchUtil.GetPlayers(true, true);
+	auto PlayerCount = gMatchUtil.GetCount();
 
-	// If server was empty
-	if (Players.size() < (size_t)(this->m_PlayersMin->value / 2.0f))
+	// Minimum player count in each team
+	auto MinimumCount = (int)((this->m_PlayersMin->value / 2.0f) - 1.0f);
+
+	// If server was lacking minimum of players
+	if (PlayerCount[TERRORIST] < MinimumCount || PlayerCount[CT] < MinimumCount)
 	{
 		// If match is running (LIVE)
 		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
 		{
-			// End match
-			gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_END);
+			// If server do not have an Spectator
+			if (!PlayerCount[SPECTATOR])
+			{
+				// End match
+				gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_END);
+			}
 		}
 	}
 }
