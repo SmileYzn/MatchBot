@@ -113,7 +113,6 @@
     <ClInclude Include="MatchVoteMap.h" />
     <ClInclude Include="MatchVoteMenu.h" />
     <ClInclude Include="MatchVoteOvertime.h" />
-    <ClInclude Include="MatchVoteRestart.h" />
     <ClInclude Include="MatchVoteSwapTeam.h" />
     <ClInclude Include="MatchVoteTeam.h" />
     <ClInclude Include="MatchWarmup.h" />
@@ -143,7 +142,6 @@
     <ClCompile Include="MatchVoteMap.cpp" />
     <ClCompile Include="MatchVoteMenu.cpp" />
     <ClCompile Include="MatchVoteOvertime.cpp" />
-    <ClCompile Include="MatchVoteRestart.cpp" />
     <ClCompile Include="MatchVoteSwapTeam.cpp" />
     <ClCompile Include="MatchVoteTeam.cpp" />
     <ClCompile Include="MatchWarmup.cpp" />

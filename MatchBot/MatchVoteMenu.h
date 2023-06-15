@@ -14,8 +14,11 @@ typedef struct S_PLAYER_VOTES
 	// Vote Restart Array
 	std::array<bool, STATE_END + 1> VoteRestart;
 
-	// Vote Pause Array
+	// Vote Surrender Array
 	std::array<bool, SPECTATOR + 1> VoteSurrender;
+
+	// Vote Stop Array
+	std::array<bool, MAX_CLIENTS + 1> VoteStop;
 
 	void Reset()
 	{
@@ -31,8 +34,11 @@ typedef struct S_PLAYER_VOTES
 		// Reset Vote Restart
 		std::fill(this->VoteRestart.begin(), this->VoteRestart.end(), false);
 
-		// Reset Vote Surrende
+		// Reset Vote Surrender
 		std::fill(this->VoteSurrender.begin(), this->VoteSurrender.end(), false);
+
+		// Reset Vote Stop
+		std::fill(this->VoteStop.begin(), this->VoteStop.end(), false);
 	}
 } P_PLAYER_VOTES, * LP_PLAYER_VOTES;
 
@@ -66,8 +72,11 @@ public:
 	// Vote Surrender
 	bool VoteSurrender(CBasePlayer* Player);
 
+	// Vote Stop
+	bool VoteStop(CBasePlayer* Player);
+
 	// Player Votes
- 	std::array<P_PLAYER_VOTES, MAX_CLIENTS + 1> m_Votes ;
+ 	std::array<P_PLAYER_VOTES, MAX_CLIENTS + 1> m_Votes;
 
 	// Map List
 	std::map<size_t, std::string> m_MapList;

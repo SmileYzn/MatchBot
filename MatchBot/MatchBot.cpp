@@ -893,13 +893,6 @@ void CMatchBot::RoundStart()
 	{
 		// Send scores on start
 		this->Scores(nullptr, false);
-
-		// If is in first round of First Half or first round of Second Half
-		if ((this->GetRound() == 1) || (this->GetRound() == ((int)(this->m_PlayRounds->value / 2.0f) + 1)))
-		{
-			// Check for vote to restart period
-			gMatchVoteRestart.Init(this->GetState());
-		}
 	}
 }
 

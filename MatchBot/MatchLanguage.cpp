@@ -33,6 +33,7 @@ void CMatchLanguage::Load(const char* Language)
 					if (!Line.empty())
 					{
 						// Escape all special chracters
+						gMatchUtil.ReplaceAll(Line, "﻿", "");
 						gMatchUtil.ReplaceAll(Line, "\\1", "\1");
 						gMatchUtil.ReplaceAll(Line, "\\3", "\3");
 						gMatchUtil.ReplaceAll(Line, "\\4", "\4");

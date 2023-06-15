@@ -134,9 +134,14 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 			gMatchVoteMenu.VotePause(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".voterestart"))
+		else if (!Q_stricmp(pcmd, ".voterestart"))
 		{
 			gMatchVoteMenu.VoteRestart(Player);
+			return true;
+		}
+		else if (!Q_stricmp(pcmd, ".votestop"))
+		{
+			gMatchVoteMenu.VoteStop(Player);
 			return true;
 		}
 		// Admin Commands

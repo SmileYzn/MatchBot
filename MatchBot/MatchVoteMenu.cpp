@@ -59,19 +59,22 @@ bool CMatchVoteMenu::Menu(CBasePlayer* Player)
 			gMatchMenu[EntityIndex].Create(_T("Player Vote Menu:"), true, (void*)this->MenuHandle);
 
 			// Vote Kick
-			gMatchMenu[EntityIndex].AddItem(0, _T("Vote for Kick"));
+			gMatchMenu[EntityIndex].AddItem(0, _T("Vote Kick"));
 
 			// Vote Map
-			gMatchMenu[EntityIndex].AddItem(1, _T("Vote for Map"));
+			gMatchMenu[EntityIndex].AddItem(1, _T("Vote Map"));
 
 			// Vote Timeout
-			gMatchMenu[EntityIndex].AddItem(2, _T("Vote for Tactical Timeout"));
+			gMatchMenu[EntityIndex].AddItem(2, _T("Vote Tactical Timeout"));
 
 			// Vote Restart
-			gMatchMenu[EntityIndex].AddItem(3, _T("Vote for Restart Match"));
+			gMatchMenu[EntityIndex].AddItem(3, _T("Vote Restart Match"));
+
+			// Vote Surrender
+			gMatchMenu[EntityIndex].AddItem(4, _T("Vote Surrender"));
 
 			// Vote Stop
-			gMatchMenu[EntityIndex].AddItem(4, _T("Vote for Surrender"));
+			gMatchMenu[EntityIndex].AddItem(5, _T("Vote to Cancel The Match"));
 
 			// Show menu
 			gMatchMenu[EntityIndex].Show(EntityIndex);
@@ -123,6 +126,11 @@ void CMatchVoteMenu::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			case 4: // Vote Surrender
 			{
 				gMatchVoteMenu.VoteSurrender(Player);
+				break;
+			}
+			case 5: // Vote Stop
+			{
+				gMatchVoteMenu.VoteStop(Player);
 				break;
 			}
 		}
@@ -518,12 +526,12 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 					{
 						// Send messages
 						gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 voted to restart \3%s\1: %2.0f%% of votes to restart match."), STRING(Player->edict()->v.netname), gMatchBot.GetState(MatchState), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say \3.vote\1 to restart match."), gMatchBot.GetState(MatchState));
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say \3.vote\1 to restart match."));
 					}
 					else
 					{
 						// Send Mesasge
-						gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Restarting match.."), gMatchBot.GetState(MatchState));
+						gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Restarting match.."));
 
 						// Restart Match
 						gMatchBot.RestartMatch(nullptr);
@@ -552,6 +560,7 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 	return false;
 }
 
+// Vote Surrander
 bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
 {
 	// If player is in game
@@ -617,6 +626,83 @@ bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
 			{
 				// Send message
 				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), (int)(gMatchBot.m_PlayerVoteSurrender->value));
+			}
+		}
+	}
+
+	// Failed command
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Unable to use this command now."));
+
+	// Return result
+	return false;
+}
+
+// Vote Stop
+bool CMatchVoteMenu::VoteStop(CBasePlayer* Player)
+{
+	// If player is in game
+	if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+	{
+		// Get Players
+		auto Players = gMatchUtil.GetPlayers(true, true);
+
+		// If player count match
+		if (Players.size() > 0)
+		{
+			// Get Match BOT State
+			auto MatchState = gMatchBot.GetState();
+
+			// If state is valid
+			if(MatchState >= STATE_FIRST_HALF && MatchState <= STATE_OVERTIME)
+			{
+				// If not voted to stop this state
+				if (!this->m_Votes[Player->entindex()].VoteStop[MatchState])
+				{
+					// Set player vote on this state to true
+					this->m_Votes[Player->entindex()].VoteStop[MatchState] = true;
+
+					// Needed votes
+					auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+
+					// Get Vote Count
+					auto VoteCount = 0;
+
+					// Loop in game Players
+					for (const auto& Temp : Players)
+					{
+						// If has voted to restart this state
+						if (this->m_Votes[Temp->entindex()].VoteStop[MatchState])
+						{
+							VoteCount++;
+						}
+					}
+
+					// Vote Restart Progress to restart current period
+					auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+
+					// If need more votes to restart period
+					if (VoteProgress < 100.0f)
+					{
+						// Send messages
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 voted to cancel the match: %2.0f%% of votes to cancel the match."), STRING(Player->edict()->v.netname), VoteProgress);
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say \3.vote\1 to cancel the match."));
+					}
+					else
+					{
+						// Send Mesasge
+						gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Canceling match..."));
+
+						// Restart Match
+						gMatchBot.StopMatch(nullptr);
+					}
+				}
+				else
+				{
+					// Send error message
+					gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("You already voted to cancel the match."), gMatchBot.GetState(MatchState));
+				}
+
+				return true;
 			}
 		}
 	}
