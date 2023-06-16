@@ -77,8 +77,6 @@ bool ReGameDLL_Init()
 		return false;
 	}
 
-	LOG_CONSOLE(PLID, "[%s] Re-GameDLL API successfully initialized.", Plugin_info.logtag);
-
 	g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
 
 	g_ReGameHookchains->HandleMenu_ChooseTeam()->registerHook(ReGameDLL_HandleMenu_ChooseTeam);

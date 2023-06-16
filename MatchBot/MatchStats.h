@@ -413,6 +413,9 @@ private:
 	// Round Event Data
 	std::vector<P_ROUND_EVENT> m_RoundEvent;
 
+	// Chat Data
+	std::vector<std::string> m_ChatLog;
+
 	// Round Stats (Damage and Hits)
 	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
 	int m_RoundHit[MAX_CLIENTS + 1][MAX_CLIENTS + 1];

@@ -91,6 +91,9 @@
     <Filter Include="MatchBot\MatchBugFix">
       <UniqueIdentifier>{922ceb52-15d7-4ca6-b8ab-f43ec53647c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MatchBot\MatchData">
+      <UniqueIdentifier>{7648a7b5-3487-443b-8c54-31ae524a178d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatchBot.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="MatchBugFix.h">
       <Filter>MatchBot\MatchBugFix</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchData.h">
+      <Filter>MatchBot\MatchData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +282,9 @@
     </ClCompile>
     <ClCompile Include="MatchBugFix.cpp">
       <Filter>MatchBot\MatchBugFix</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchData.cpp">
+      <Filter>MatchBot\MatchData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
