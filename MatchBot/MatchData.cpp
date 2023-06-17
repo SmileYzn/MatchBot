@@ -6,6 +6,7 @@ void CMatchData::ServerActivate()
 {
 	g_engfuncs.pfnAddServerCommand("mb_get_status", this->GetStatus);
 	g_engfuncs.pfnAddServerCommand("mb_get_players", this->GetPlayers);
+	g_engfuncs.pfnAddServerCommand("mb_get_players", this->GetPlayers);
 }
 
 void CMatchData::GetStatus()
@@ -19,6 +20,7 @@ void CMatchData::GetStatus()
 		g_engfuncs.pfnCVarGetString("hostname"),
 		g_engfuncs.pfnCVarGetString("net_address"),
 		STRING(gpGlobals->mapname),
+		gMatchBot.GetState(),
 		gMatchBot.GetState(gMatchBot.GetState()),
 		gMatchBot.GetKnifeRound(),
 		gMatchBot.GetScore(TERRORIST),
