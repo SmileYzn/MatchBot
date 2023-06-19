@@ -184,10 +184,7 @@ BOOL ReGameDLL_HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, C
 		Slot = 0;
 	}
 
-	if (gMatchStats.PlayerJoinTeam(Player, Slot))
-	{
-		Slot = 0;
-	}
+	gMatchStats.PlayerJoinTeam(Player, Slot);
 
 	return chain->callNext(Player, Slot);
 }

@@ -330,7 +330,7 @@ bool CMatchStats::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
 }
 
 // When player try to join in a team, we do things
-bool CMatchStats::PlayerJoinTeam(CBasePlayer* Player, int Slot)
+void CMatchStats::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 {
 	auto Auth = GET_USER_AUTH(Player->edict());
 
@@ -339,8 +339,6 @@ bool CMatchStats::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 		// Update team when player change
 		this->m_Player[Auth].Team = Player->m_iTeam;
 	}
-
-	return false;
 }
 
 // While player get into game (Enter in any TERRORIST or CT Team)

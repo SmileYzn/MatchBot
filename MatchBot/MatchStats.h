@@ -338,7 +338,7 @@ public:
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 
 	// JoinTeam
-	bool PlayerJoinTeam(CBasePlayer* Player, int NewTeam);
+	void PlayerJoinTeam(CBasePlayer* Player, int NewTeam);
 
 	// Get Into Game
 	void PlayerGetIntoGame(CBasePlayer* Player);

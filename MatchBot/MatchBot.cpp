@@ -633,12 +633,16 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 // When player try to join in a team, we do things
 bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 {
-	// If is not bot
-	if (!Player->IsBot())
+	// If player not joined
+	if (Player->m_iTeam == UNASSIGNED)
 	{
-		// Send team info, to enable colors in chat messages
-		gMatchUtil.TeamInfo(Player->edict(), MAX_CLIENTS + TERRORIST + 1, "TERRORIST");
-		gMatchUtil.TeamInfo(Player->edict(), MAX_CLIENTS + CT + 1, "CT");
+		// If is not bot
+		if (!Player->IsBot())
+		{
+			// Send team info, to enable colors in chat messages
+			gMatchUtil.TeamInfo(Player->edict(), MAX_CLIENTS + TERRORIST + 1, "TERRORIST");
+			gMatchUtil.TeamInfo(Player->edict(), MAX_CLIENTS + CT + 1, "CT");
+		}
 	}
 
 	// Do not allow auto selection, this broken team systems
@@ -668,11 +672,14 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	// If player is trying to choose same team, block to avoid suicide
 	if (Player->m_iTeam == Slot)
 	{
-		// Send message
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You are already on the \3%s\1 team."), this->GetTeam(Player->m_iTeam, false));
+		if (Player->IsAlive())
+		{
+			// Send message
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You are already on the \3%s\1 team."), this->GetTeam(Player->m_iTeam, false));
 
-		// Block it
-		return true;
+			// Block it
+			return true;
+		}
 	}
 
 	// If player is in Terrorists or CTs teams
