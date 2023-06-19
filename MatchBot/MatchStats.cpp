@@ -697,6 +697,58 @@ void CMatchStats::PlayerKilled(CBasePlayer* Victim, entvars_t* pevKiller, entvar
 						// Increment Round Frag Count
 						this->m_RoundFragCount++;
 
+						// If item is not AWP
+						if (ItemIndex != WEAPON_AWP)
+						{
+							// If last victim health is 100
+							if (Victim->m_iLastClientHealth >= 100)
+							{
+								// If last damage amount is 100
+								if (Attacker->m_lastDamageAmount >= 100)
+								{
+									// Increment one shot
+									this->m_Player[AttackerAuth].Stats[this->m_State].OneShot++;
+								}
+							}
+						}
+
+						// If is AWP, Scout, G3SG1 or SG550
+						if (ItemIndex == WEAPON_AWP || ItemIndex == WEAPON_SCOUT || ItemIndex == WEAPON_G3SG1 || ItemIndex == WEAPON_SG550)
+						{
+							// If player is in default fov
+							if (Attacker->m_iClientFOV == DEFAULT_FOV)
+							{
+								// Increment no-scope frags
+								this->m_Player[AttackerAuth].Stats[this->m_State].NoScope++;
+							}
+						}
+
+						// If is not HE Grenade
+						if (ItemIndex != WEAPON_HEGRENADE)
+						{
+							// If attacker is not seeing victim
+							if (!Attacker->m_izSBarState[SBAR_ID_TARGETTYPE])
+							{
+								// If is not in observer mode
+								if (!Attacker->IsObserver())
+								{
+									// Increment wallbang frags
+									this->m_Player[AttackerAuth].Stats[this->m_State].WallFrags++;
+								}
+							}
+						}
+
+						// If victim is not on ground
+						if (!(Victim->edict()->v.flags & FL_ONGROUND))
+						{
+							// If player is falling
+							if (Victim->m_flFallVelocity > 0.0f)
+							{
+								// Increment flying frags
+								this->m_Player[AttackerAuth].Stats[this->m_State].FlyFrags++;
+							}
+						}
+
 						// If has ReGameDLL_CS Api
 						if (g_pGameRules)
 						{

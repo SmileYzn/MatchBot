@@ -128,10 +128,10 @@ typedef struct S_PLAYER_STATS
 	int BombDefusedKit;			// BETA: Bomb Defuses with Kit
 
 	// Sick Frags
-	int OneShot;				// TODO: One Shot Frags (Except for AWP)
-	int NoScope;				// TODO: No Scope Frags
-	int FlyFrags;				// TODO: Flying Frags
-	int WallFrags;				// TODO: Wallbganf Frags
+	int OneShot;				// BETA: One Shot Frags (Except for AWP)
+	int NoScope;				// BETA: No Scope Frags
+	int FlyFrags;				// BETA: Flying Frags
+	int WallFrags;				// BETA: Wallbgang Frags
 
 	// Entries
 	int FirstRoundFrags;		// BETA: First Frag of round
