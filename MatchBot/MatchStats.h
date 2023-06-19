@@ -388,6 +388,9 @@ public:
 	// Round Event
 	void OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* pEntity, class CBaseEntity* pEntityOther);
 
+	// Chat
+	void ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1);
+
 	// Show Enemy HP
 	bool ShowHP(CBasePlayer* Player, bool Command, bool InConsole);
 

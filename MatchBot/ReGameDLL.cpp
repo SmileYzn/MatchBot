@@ -237,14 +237,14 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 	{
 		if (!Player->IsDormant())
 		{
+			gMatchStats.ClientCommand(Player, pcmd, parg1);
+
 			if (gMatchCommand.ClientCommand(Player, pcmd, parg1))
 			{
 				return;
 			}
 		}
 	}
-
-	chain->callNext(pEntity, pcmd, parg1);
 }
 
 void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd* chain)
