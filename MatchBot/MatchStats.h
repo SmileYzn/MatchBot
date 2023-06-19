@@ -294,6 +294,16 @@ public:
 			Result.BombDefusingKit += row.BombDefusingKit;
 			Result.BombDefused += row.BombDefused;
 			Result.BombDefusedKit += row.BombDefusedKit;
+
+			// Sick Frags
+			Result.OneShot += row.OneShot;
+			Result.NoScope += row.NoScope;
+			Result.FlyFrags += row.FlyFrags;
+			Result.WallFrags += row.WallFrags;
+
+			// Entries
+			Result.FirstRoundFrags += row.FirstRoundFrags;
+			Result.FirstRoundDeaths += row.FirstRoundDeaths;
 		}
 
 		// Stats
