@@ -242,6 +242,8 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 			}
 		}
 	}
+
+	chain->callNext(pEntity, pcmd, parg1);
 }
 
 void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd* chain)

@@ -82,8 +82,6 @@ bool ReAPI_Init()
 
 	g_RehldsSvs = g_RehldsApi->GetServerStatic();
 
-	LOG_CONSOLE(PLID, "[%s] Re-HLDS API successfully initialized.", Plugin_info.logtag);
-
 	g_RehldsHookchains->SV_DropClient()->registerHook(ReAPI_SV_DropClient);
 
 	return true;
