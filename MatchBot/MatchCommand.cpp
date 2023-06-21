@@ -146,7 +146,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd, ".report"))
 		{
-			gMatchReport.Report(Player);
+			gMatchReport.Menu(Player);
 			return true;
 		}
 		// Admin Commands
@@ -188,13 +188,11 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		else if (!Q_stricmp(pcmd,"!msg") || !Q_stricmp(pcmd,"mb_message"))
 		{
 			gMatchAdminMenu.Message(Player);
-
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,"!cmd") || !Q_stricmp(pcmd,"mb_command"))
 		{
 			gMatchAdminMenu.Rcon(Player);
-			
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,"!swap") || !Q_stricmp(pcmd,"mb_swap_teams"))

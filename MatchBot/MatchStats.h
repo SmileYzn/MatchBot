@@ -200,12 +200,19 @@ class CMatchPlayerData
 public:
 	// Timers
 	time_t ConnectTime;			// Connection Time
+	time_t JoinTeamTime;		// Joined in a team Time
 	time_t GetIntoGameTime;		// Get Into Game Time
 	time_t DisconnectedTime;	// Disconnection Time
 
 	// Team
 	TeamName Team;				// Player Team
 	int Winner;					// Player is winner of match
+
+	// Player User Index
+	int UserIndex;
+
+	// Player Name
+	std::string Name;
 
 	// Stats by match states
 	std::array<P_PLAYER_STATS, STATE_END + 1> Stats;
@@ -334,6 +341,9 @@ class CMatchStats
 public:
 	// On Server activate
 	void ServerActivate();
+
+	// Get Players
+	std::map<std::string, CMatchPlayerData> GetPlayers();
 
 	// Match State
 	void SetState(int State, bool KnifeRound);

@@ -26,6 +26,12 @@ void CMatchStats::ServerActivate()
 	this->m_StatsCommandFlags = CMD_ALL;
 }
 
+// Get Players
+std::map<std::string, CMatchPlayerData> CMatchStats::GetPlayers()
+{
+	return this->m_Player;
+}
+
 // Change States
 void CMatchStats::SetState(int State, bool KnifeRound)
 {
@@ -201,10 +207,13 @@ void CMatchStats::SaveJson()
 				{
 					// Player Information
 					{"ConnectTime", Player.second.ConnectTime},
+					{"JoinTeamTime", Player.second.JoinTeamTime},
 					{"GetIntoGameTime", Player.second.GetIntoGameTime},
 					{"DisconnectedTime", Player.second.DisconnectedTime},
 					{"Team", Player.second.Team},
 					{"Winner", Player.second.Winner},
+					{"UserIndex", Player.second.UserIndex},
+					{"Name", Player.second.Name},
 					//
 					// Player Stats
 					{"Frags", Stats.Frags},
@@ -324,6 +333,16 @@ bool CMatchStats::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
 	{
 		// Set Connection time
 		this->m_Player[Auth].ConnectTime = time(0);
+
+		// User Index
+		this->m_Player[Auth].UserIndex = g_engfuncs.pfnGetPlayerUserId(pEntity);
+
+		// If name is not null
+		if (pszName)
+		{
+			// Set Name
+			this->m_Player[Auth].Name = pszName;
+		}
 	}
 
 	return true;
@@ -338,6 +357,19 @@ void CMatchStats::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	{
 		// Update team when player change
 		this->m_Player[Auth].Team = Player->m_iTeam;
+
+		// Joined Team Time
+		this->m_Player[Auth].JoinTeamTime = time(0);
+
+		// User Index
+		this->m_Player[Auth].UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+
+		// If name is not null
+		if (STRING(Player->edict()->v.netname))
+		{
+			// Update Name
+			this->m_Player[Auth].Name = STRING(Player->edict()->v.netname);
+		}
 	}
 }
 
@@ -349,10 +381,20 @@ void CMatchStats::PlayerGetIntoGame(CBasePlayer* Player)
 	if (Auth)
 	{
 		// Get into game time
-		this->m_Player[Auth].GetIntoGameTime = time(nullptr);
+		this->m_Player[Auth].GetIntoGameTime = time(0);
 
 		// Update new team
 		this->m_Player[Auth].Team = Player->m_iTeam;
+
+		// User Index
+		this->m_Player[Auth].UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+
+		// If name is not null
+		if (STRING(Player->edict()->v.netname))
+		{
+			// Update Name
+			this->m_Player[Auth].Name = STRING(Player->edict()->v.netname);
+		}
 	}
 }
 
@@ -366,7 +408,7 @@ void CMatchStats::PlayerDisconnect(edict_t* pEdict)
 	if (Auth)
 	{
 		// Save disconnection time
-		this->m_Player[Auth].DisconnectedTime = time(nullptr);
+		this->m_Player[Auth].DisconnectedTime = time(0);
 	}
 }
 
