@@ -161,7 +161,7 @@ bool ReGameDLL_Stop()
 	return true;
 }
 
-CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules *chain)
+CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules* chain)
 {
 	auto gamerules = chain->callNext();
 

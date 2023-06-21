@@ -101,9 +101,6 @@ void CMatchBot::ServerActivate()
 	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
 	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
 
-	// Fix de_dust2 respwan origin bug (0 Disable, or the value of maximum allowed origin move)
-	this->m_FixRespawnBug = gMatchUtil.CvarRegister("mb_fix_respwan_bug", "10.0");
-
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 

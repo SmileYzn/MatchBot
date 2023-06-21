@@ -22,26 +22,15 @@ void CMatchBugFix::ExplodeSmokeGrenade(CGrenade* Entity)
 
 void CMatchBugFix::PlayerDuck(CBasePlayer* Player)
 {
-	if (gMatchBot.m_FixRespawnBug->value > 0.0f)
+	if (g_pGameRules)
 	{
-		if (g_pGameRules)
+		if (CSGameRules()->IsFreezePeriod())
 		{
-			if (CSGameRules()->IsFreezePeriod())
+			if (Player->IsAlive())
 			{
-				auto State = gMatchBot.GetState();
-
-				if (State == STATE_FIRST_HALF || State == STATE_SECOND_HALF || State == STATE_OVERTIME)
+				if ((Player->edict()->v.origin - Player->m_vLastOrigin).IsLengthGreaterThan(20.0f))
 				{
-					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
-					{
-						if (Player->IsAlive())
-						{
-							if ((Player->edict()->v.origin - Player->m_vLastOrigin).Length2D() > gMatchBot.m_FixRespawnBug->value)
-							{
-								g_engfuncs.pfnSetOrigin(Player->edict(), Player->m_vLastOrigin);
-							}
-						}
-					}
+					Player->RoundRespawn();
 				}
 			}
 		}
