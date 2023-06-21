@@ -144,6 +144,11 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 			gMatchVoteMenu.VoteStop(Player);
 			return true;
 		}
+		else if (!Q_stricmp(pcmd, ".report"))
+		{
+			gMatchReport.Report(Player);
+			return true;
+		}
 		// Admin Commands
 		else if (!Q_stricmp(pcmd,"!menu") || !Q_stricmp(pcmd,"mb_menu"))
 		{
@@ -182,35 +187,13 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 		else if (!Q_stricmp(pcmd,"!msg") || !Q_stricmp(pcmd,"mb_message"))
 		{
-		auto pCmdArgs = g_engfuncs.pfnCmd_Args();
-
-			if (pCmdArgs)
-			{
-				if (pCmdArgs[0u] != '\0')
-				{
-					gMatchAdminMenu.Message(Player->entindex(), pCmdArgs);
-
-					return true;
-				}
-			}
-
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !msg \3<Text Message>\1"));
+			gMatchAdminMenu.Message(Player);
 
 			return true;
 		}
 		else if (!Q_stricmp(pcmd,"!cmd") || !Q_stricmp(pcmd,"mb_command"))
 		{
-			auto pCmdArgs = g_engfuncs.pfnCmd_Args();
-
-			if (pCmdArgs)
-			{
-				if (pCmdArgs[0u] != '\0')
-				{
-					gMatchAdminMenu.Rcon(Player->entindex(), pCmdArgs);
-
-					return true;
-				}
-			}
+			gMatchAdminMenu.Rcon(Player);
 
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !cmd \3<Server Command>\1"));
 			

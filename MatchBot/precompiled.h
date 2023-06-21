@@ -80,6 +80,7 @@
 #include "MatchLO3.h"
 #include "MatchPause.h"
 #include "MatchReady.h"
+#include "MatchReport.h"
 #include "MatchRestrictItem.h"
 #include "MatchStats.h"
 #include "MatchTimer.h"

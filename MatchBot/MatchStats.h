@@ -312,7 +312,7 @@ public:
 };
 
 // Round Events
-typedef struct
+typedef struct S_ROUND_EVENT
 {
 	int			Round;			// Round Count
 	float		Time;			// Round Time Seconds;

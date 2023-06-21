@@ -467,62 +467,76 @@ void CMatchAdminMenu::ControlMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 	}
 }
 
-void CMatchAdminMenu::Message(int EntityIndex, std::string Args)
+bool CMatchAdminMenu::Message(CBasePlayer* Player)
 {
-	auto Player = UTIL_PlayerByIndex(EntityIndex);
+	auto pCmdArgs = g_engfuncs.pfnCmd_Args();
 
-	if (Player)
+	if (pCmdArgs)
 	{
-		if (!gMatchAdmin.Access(EntityIndex, ADMIN_CHAT))
+		if (pCmdArgs[0u] != '\0')
 		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
-			return;
-		}
+			if (!gMatchAdmin.Access(Player->entindex(), ADMIN_CHAT))
+			{
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+				return false;
+			}
 
-		if (!Args.empty() && Args.length() > 2)
-		{
-			Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
+			std::string Args = pCmdArgs;
 
-			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3(%s)\1: %s"), STRING(Player->edict()->v.netname), Args.c_str());
-		}
-		else
-		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !msg \3<Text Message>\1"));
+			if (!Args.empty() && Args.length() > 2)
+			{
+				Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
+
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3(%s)\1: %s"), STRING(Player->edict()->v.netname), Args.c_str());
+
+				return true;
+			}
 		}
 	}
+
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !msg \3<Text Message>\1"));
+
+	return false;
 }
 
-void CMatchAdminMenu::Rcon(int EntityIndex, std::string Args)
+bool CMatchAdminMenu::Rcon(CBasePlayer* Player)
 {
-	auto Player = UTIL_PlayerByIndex(EntityIndex);
+	auto pCmdArgs = g_engfuncs.pfnCmd_Args();
 
-	if (Player)
+	if (pCmdArgs)
 	{
-		if (!gMatchAdmin.Access(EntityIndex, ADMIN_RCON))
+		if (pCmdArgs[0u] != '\0')
 		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
-			return;
-		}
+			if (!gMatchAdmin.Access(Player->entindex(), ADMIN_RCON))
+			{
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+				return false;
+			}
 
-		if (Args.find("rcon_password") != std::string::npos || Args.find("sv_password") != std::string::npos)
-		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("These commands are protected here, only \3Server\1 can use."));
-			return;
-		}
+			std::string Args = pCmdArgs;
 
-		if (!Args.empty() && Args.length() > 2)
-		{
-			Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
+			if (Args.find("rcon_password") != std::string::npos || Args.find("sv_password") != std::string::npos)
+			{
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("These commands are protected here, only \3Server\1 can use."));
+				return false;
+			}
 
-			gMatchUtil.ServerCommand(Args.c_str());
+			if (!Args.empty() && Args.length() > 2)
+			{
+				Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
 
-			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("\3Executed\1: %s"), Args.c_str());
-		}
-		else
-		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !cmd \3<Server Command>\1"));
+				gMatchUtil.ServerCommand(Args.c_str());
+
+				gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("\3Executed\1: %s"), Args.c_str());
+
+				return true;
+			}
 		}
 	}
+
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !cmd \3<Server Command>\1"));
+
+	return false;
 }
 
 void CMatchAdminMenu::SwapTeams(int EntityIndex)

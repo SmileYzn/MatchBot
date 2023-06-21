@@ -1235,17 +1235,25 @@ void CMatchStats::ClientCommand(CBasePlayer* Player, const char* pcmd, const cha
 				// If is say or say_team command
 				if (!Q_strcmp(pcmd, "say") || !Q_strcmp(pcmd, "say_team"))
 				{
-					// If player is in a team
-					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == SPECTATOR)
+					// If has arguments of command
+					if (parg1)
 					{
-						// Get argument list
-						std::string pCmdArgs = g_engfuncs.pfnCmd_Args();
-
-						// If is not empty
-						if (!pCmdArgs.empty())
+						// If is not the pug commands
+						if (parg1[0u] != '!' && parg1[0u] != '.')
 						{
-							// Push to chat log
-							this->m_ChatLog.push_back(pCmdArgs);
+							// If player is in a team
+							if (Player->m_iTeam == TERRORIST || Player->m_iTeam == SPECTATOR)
+							{
+								// Get argument list
+								std::string pCmdArgs = g_engfuncs.pfnCmd_Args();
+
+								// If is not empty
+								if (!pCmdArgs.empty())
+								{
+									// Push to chat log
+									this->m_ChatLog.push_back(pCmdArgs);
+								}
+							}
 						}
 					}
 				}
