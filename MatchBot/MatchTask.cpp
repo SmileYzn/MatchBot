@@ -14,7 +14,10 @@ void CMatchTask::ServerDeactivate()
 
 void CMatchTask::Clear()
 {
-	this->m_Data.clear();
+	for (auto it = this->m_Data.cbegin(); it != this->m_Data.cend(); ++it)
+	{
+		this->Remove(it->first);
+	}
 }
 
 void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter)

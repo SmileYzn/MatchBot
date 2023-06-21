@@ -164,7 +164,7 @@ void CMatchBot::ServerDeactivate()
 	}
 
 	// Stop match if server is restarted
-	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_HALFTIME || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
 	{
 		// End Match
 		this->SetState(STATE_END);
