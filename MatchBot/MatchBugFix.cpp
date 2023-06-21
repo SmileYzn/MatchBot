@@ -22,15 +22,23 @@ void CMatchBugFix::ExplodeSmokeGrenade(CGrenade* Entity)
 
 void CMatchBugFix::PlayerDuck(CBasePlayer* Player)
 {
-	if (g_pGameRules)
+	if (gMatchBot.m_FixSpawnDistance->value > 0.0f)
 	{
-		if (CSGameRules()->IsFreezePeriod())
+		auto State = gMatchBot.GetState();
+
+		if (State == STATE_FIRST_HALF || State == STATE_SECOND_HALF || State == STATE_OVERTIME)
 		{
-			if (Player->IsAlive())
+			if (g_pGameRules)
 			{
-				if ((Player->edict()->v.origin - Player->m_vLastOrigin).IsLengthGreaterThan(20.0f))
+				if (CSGameRules()->IsFreezePeriod())
 				{
-					Player->RoundRespawn();
+					if (Player->IsAlive())
+					{
+						if ((Player->edict()->v.origin - Player->m_vLastOrigin).IsLengthGreaterThan(gMatchBot.m_FixSpawnDistance->value))
+						{
+							Player->RoundRespawn();
+						}
+					}
 				}
 			}
 		}

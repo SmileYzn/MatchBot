@@ -101,6 +101,9 @@ void CMatchBot::ServerActivate()
 	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
 	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
 
+	// Distance to respawn player if try to bug respawn on de_dust2 ramp and other maps (Distance in units to enable fix, 0 to disable)
+	this->m_FixSpawnDistance = gMatchUtil.CvarRegister("mb_fix_spawn_distance", "25.0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 
