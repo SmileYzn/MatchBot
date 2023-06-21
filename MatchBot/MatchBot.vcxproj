@@ -100,7 +100,6 @@
     <ClInclude Include="MatchCaptain.h" />
     <ClInclude Include="MatchChangeMap.h" />
     <ClInclude Include="MatchCommand.h" />
-    <ClInclude Include="MatchData.h" />
     <ClInclude Include="MatchLanguage.h" />
     <ClInclude Include="MatchLO3.h" />
     <ClInclude Include="MatchMenu.h" />
@@ -131,7 +130,6 @@
     <ClCompile Include="MatchAdminMenu.cpp" />
     <ClCompile Include="MatchCaptain.cpp" />
     <ClCompile Include="MatchChangeMap.cpp" />
-    <ClCompile Include="MatchData.cpp" />
     <ClCompile Include="MatchLanguage.cpp" />
     <ClCompile Include="MatchMenu.cpp" />
     <ClCompile Include="MatchCommand.cpp" />
