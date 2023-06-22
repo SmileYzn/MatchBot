@@ -133,6 +133,12 @@ bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
     return true;
 }
 
+// Return admin flags
+int CMatchAdmin::GetFlags(int EntityIndex)
+{
+    return this->m_Flag[EntityIndex];
+}
+
 // Check if user has access level
 int CMatchAdmin::Access(int EntityIndex, int Level)
 {

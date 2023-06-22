@@ -5,8 +5,11 @@ CMatchAdminMenu gMatchAdminMenu;
 // Main Adminnistrator menu
 void CMatchAdminMenu::MainMenu(int EntityIndex)
 {
-	// If do not have an access to menu
-	if (!gMatchAdmin.Access(EntityIndex, ADMIN_MENU))
+	// Get Admin Flags
+	auto Flags = gMatchAdmin.GetFlags(EntityIndex);
+
+	// If do not have an access to main menu
+	if (!(Flags & ADMIN_MENU))
 	{
 		gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 		return;
@@ -16,31 +19,31 @@ void CMatchAdminMenu::MainMenu(int EntityIndex)
 	gMatchMenu[EntityIndex].Create(_T("Match BOT Menu"), true, (void*)this->MainMenuHandle);
 
 	// Kick Option
-	gMatchMenu[EntityIndex].AddItem(0, _T("Kick Player"), !gMatchAdmin.Access(EntityIndex, ADMIN_KICK), ADMIN_KICK);
+	gMatchMenu[EntityIndex].AddItem(0, _T("Kick Player"), !(Flags & ADMIN_KICK));
 
 	// Ban Player
-	gMatchMenu[EntityIndex].AddItem(1, _T("Ban Player"), !gMatchAdmin.Access(EntityIndex, ADMIN_BAN), ADMIN_BAN);
+	gMatchMenu[EntityIndex].AddItem(1, _T("Ban Player"), !(Flags & ADMIN_BAN));
 
 	// Kill Player
-	gMatchMenu[EntityIndex].AddItem(2, _T("Slay Player"), !gMatchAdmin.Access(EntityIndex, ADMIN_SLAY), ADMIN_SLAY);
+	gMatchMenu[EntityIndex].AddItem(2, _T("Slay Player"), !(Flags & ADMIN_SLAY));
 
 	// Change Player Team
-	gMatchMenu[EntityIndex].AddItem(3, _T("Team Player"), !gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_A), ADMIN_LEVEL_A);
+	gMatchMenu[EntityIndex].AddItem(3, _T("Team Player"), !(Flags & ADMIN_LEVEL_A));
 
 	// Change map
-	gMatchMenu[EntityIndex].AddItem(4, _T("Change Map"), !gMatchAdmin.Access(EntityIndex, ADMIN_MAP), ADMIN_MAP);
+	gMatchMenu[EntityIndex].AddItem(4, _T("Change Map"), !(Flags & ADMIN_MAP));
 
 	// Control Match BOT
-	gMatchMenu[EntityIndex].AddItem(5, _T("Match Control"), !gMatchAdmin.Access(EntityIndex, ADMIN_MENU), ADMIN_MENU);
+	gMatchMenu[EntityIndex].AddItem(5, _T("Match Control"), !(Flags & ADMIN_MENU));
 
 	// Send global chat message
-	gMatchMenu[EntityIndex].AddItem(6, _T("Send Message"), !gMatchAdmin.Access(EntityIndex, ADMIN_CHAT), ADMIN_CHAT);
+	gMatchMenu[EntityIndex].AddItem(6, _T("Send Message"), !(Flags & ADMIN_CHAT));
 
 	// Send server rcon command
-	gMatchMenu[EntityIndex].AddItem(7, _T("Send Command"), !gMatchAdmin.Access(EntityIndex, ADMIN_RCON), ADMIN_RCON);
+	gMatchMenu[EntityIndex].AddItem(7, _T("Send Command"), !(Flags & ADMIN_RCON));
 
 	// Swap teams instantly
-	gMatchMenu[EntityIndex].AddItem(8, _T("Swap Teams"), !gMatchAdmin.Access(EntityIndex, ADMIN_CVAR), ADMIN_CVAR);
+	gMatchMenu[EntityIndex].AddItem(8, _T("Swap Teams"), !(Flags & ADMIN_CVAR));
 
 	// Show menu 
 	gMatchMenu[EntityIndex].Show(EntityIndex);
@@ -56,9 +59,9 @@ void CMatchAdminMenu::MainMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 	if (Player)
 	{
 		// If has access to that option
-		if (!gMatchAdmin.Access(Player->entindex(), Item.Extra))
+		if (Item.Disabled)
 		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command.")); 
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 			return;
 		}
 		
@@ -375,7 +378,9 @@ void CMatchAdminMenu::MapMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 
 void CMatchAdminMenu::ControlMenu(int EntityIndex)
 {
-	if (!gMatchAdmin.Access(EntityIndex, ADMIN_MENU))
+	auto Flags = gMatchAdmin.GetFlags(EntityIndex);
+
+	if (!(Flags & ADMIN_MENU))
 	{
 		gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 		return;
@@ -383,25 +388,21 @@ void CMatchAdminMenu::ControlMenu(int EntityIndex)
 
 	auto State = gMatchBot.GetState();
 
-	auto AccessVote = gMatchAdmin.Access(EntityIndex, ADMIN_VOTE);
-
-	auto AccessControl = gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B);
-
 	gMatchMenu[EntityIndex].Create(_T("Match Control"), true, (void*)this->ControlMenuHandle);
 
-	gMatchMenu[EntityIndex].AddItem(0, _T("Run Vote Map"), (State == STATE_DEAD || State == STATE_START || State == STATE_END || !AccessVote));
+	gMatchMenu[EntityIndex].AddItem(0, _T("Run Vote Map"), (State == STATE_DEAD || State == STATE_START || State == STATE_END || !(Flags & ADMIN_VOTE)));
 
-	gMatchMenu[EntityIndex].AddItem(1, _T("Run Vote Teams"), ((State != STATE_WARMUP) || !AccessVote));
+	gMatchMenu[EntityIndex].AddItem(1, _T("Run Vote Teams"), ((State != STATE_WARMUP) || !(Flags & ADMIN_VOTE)));
 
-	gMatchMenu[EntityIndex].AddItem(2, (State == STATE_HALFTIME) ? _T("Continue Match") : _T("Start Match"), ((State != STATE_WARMUP && State != STATE_HALFTIME) || !AccessControl));
+	gMatchMenu[EntityIndex].AddItem(2, (State == STATE_HALFTIME) ? _T("Continue Match") : _T("Start Match"), ((State != STATE_WARMUP && State != STATE_HALFTIME) || !(Flags & ADMIN_LEVEL_B)));
 
-	gMatchMenu[EntityIndex].AddItem(3, _T("Stop Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_END) || !AccessControl));
+	gMatchMenu[EntityIndex].AddItem(3, _T("Stop Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_END) || !(Flags & ADMIN_LEVEL_B)));
 
-	gMatchMenu[EntityIndex].AddItem(4, _T("Restart Match"), ((State != STATE_FIRST_HALF && State != STATE_SECOND_HALF && State != STATE_OVERTIME) || !AccessControl));
+	gMatchMenu[EntityIndex].AddItem(4, _T("Restart Match"), ((State != STATE_FIRST_HALF && State != STATE_SECOND_HALF && State != STATE_OVERTIME) || !(Flags & ADMIN_LEVEL_B)));
 
-	gMatchMenu[EntityIndex].AddItem(5, _T("Pause Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_HALFTIME || State == STATE_END) || !AccessControl));
+	gMatchMenu[EntityIndex].AddItem(5, _T("Pause Match"), ((State == STATE_DEAD || State == STATE_WARMUP || State == STATE_START || State == STATE_HALFTIME || State == STATE_END) || !(Flags & ADMIN_LEVEL_B)));
 
-	gMatchMenu[EntityIndex].AddItem(6, _T("Toggle Match BOT"), ((State != STATE_DEAD && State != STATE_WARMUP) || !AccessControl));
+	gMatchMenu[EntityIndex].AddItem(6, _T("Toggle Match BOT"), ((State != STATE_DEAD && State != STATE_WARMUP) || !(Flags & ADMIN_LEVEL_B)));
 
 	gMatchMenu[EntityIndex].Show(EntityIndex);
 }
@@ -414,7 +415,7 @@ void CMatchAdminMenu::ControlMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 	{
 		if (Item.Disabled)
 		{
-			gMatchAdminMenu.ControlMenu(EntityIndex);
+			gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 			return;
 		}
 

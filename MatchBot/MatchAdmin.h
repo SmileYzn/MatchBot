@@ -50,6 +50,9 @@ public:
 	// Set Flags on Entity Index on connect
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 
+	// Return admin flags
+	int GetFlags(int EntityIndex);
+
 	// Check if user has access level
 	int Access(int EntityIndex, int Level);
 
