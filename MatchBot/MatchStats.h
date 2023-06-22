@@ -423,6 +423,9 @@ public:
 	// Round end Stats
 	static void RoundEndStats(int State);
 
+	// SayText Message
+	static bool SayText(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
+
 private:
 	// Match Data
 	P_MATCH_DATA m_Data;

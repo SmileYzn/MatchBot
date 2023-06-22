@@ -78,6 +78,7 @@
 #include "MatchCommand.h"
 #include "MatchLanguage.h"
 #include "MatchLO3.h"
+#include "MatchMessage.h"
 #include "MatchPause.h"
 #include "MatchReady.h"
 #include "MatchReport.h"

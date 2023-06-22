@@ -21,6 +21,9 @@ void CMatchStats::ServerActivate()
 
 	// Match stats commands
 	this->m_StatsCommandFlags = CMD_ALL;
+
+	// Register SayText message
+	gMatchMessage.RegisterHook("SayText", this->SayText);
 }
 
 // Get Players
@@ -1552,4 +1555,22 @@ void CMatchStats::RoundEndStats(int State)
 			}
 		}
 	}
+}
+
+
+// SayText message
+bool CMatchStats::SayText(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+{
+	auto SenderID = gMatchMessage.GetLong(0);
+
+	auto TextMessage1 = gMatchMessage.GetString(1);
+	auto TextMessage3 = gMatchMessage.GetString(3);
+
+	if (TextMessage3)
+	{
+		LOG_CONSOLE(PLID, "[%s][%d] %s %s", __func__, SenderID, TextMessage1, TextMessage3);
+	}
+
+	// Do not block original message call
+	return false;
 }
