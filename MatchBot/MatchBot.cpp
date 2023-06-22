@@ -445,6 +445,9 @@ void CMatchBot::SetState(int State)
 			// Next State, Warmup by default
 			auto NextState = STATE_WARMUP;
 
+			// Enable votemap
+			g_engfuncs.pfnCvar_DirectSet(this->m_VoteMap, "1");
+
 			// If has auto vote map on end
 			if (this->m_VoteMapAuto)
 			{
