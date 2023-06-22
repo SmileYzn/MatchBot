@@ -83,7 +83,7 @@ void CMatchPause::RoundRestart()
 			if (tm_info)
 			{
 				// Time String
-				char Time[32];
+				char Time[16];
 
 				// If formated string with time 
 				if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)
@@ -115,7 +115,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 			if (tm_info)
 			{
 				// Char array
-				char Time[32];
+				char Time[16];
 
 				// Format time to char array
 				if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)

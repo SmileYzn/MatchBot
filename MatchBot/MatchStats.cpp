@@ -16,9 +16,6 @@ void CMatchStats::ServerActivate()
 	// Clear events data
 	this->m_RoundEvent.clear();
 
-	// Clear chat log
-	this->m_ChatLog.clear();
-
 	// Match State
 	this->m_State = STATE_DEAD;
 
@@ -64,9 +61,6 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 
 		// Clear events data
 		this->m_RoundEvent.clear();
-
-		// Clear chat log
-		this->m_ChatLog.clear();
 
 		// Resert Player Match Data
 		for (auto & Player : this->m_Player)
@@ -293,11 +287,26 @@ void CMatchStats::SaveJson()
 		});
 	}
 
-	// Chat Log
-	if (!this->m_ChatLog.empty())
+	// Report System
+	auto ReportData = gMatchReport.GetData();
+
+	if (!ReportData.empty())
 	{
-		// Isert chat data
-		Data["chat"].push_back(this->m_ChatLog);
+		for (auto& Report : ReportData)
+		{
+			// Insert report data
+			Data["report"].push_back
+			({
+				{"Player",Report.Player},
+				{"PlayerTeam",Report.PlayerTeam},
+				{"Target",Report.Target},
+				{"TargetTeam",Report.TargetTeam},
+				{"Reason",Report.Reason},
+				{"MatchState",Report.MatchState},
+				{"Time",Report.Time},
+				{"MatchState",Report.MatchState}
+			});
+		}
 	}
 
 	// Store Data
@@ -306,7 +315,7 @@ void CMatchStats::SaveJson()
 		// File path buffer
 		char Buffer[MAX_PATH] = { 0 };
 
-		char DateTime[21] = { 0 };
+		char DateTime[24] = { 0 };
 
 		strftime(DateTime, sizeof(DateTime), "%Y%m%d_%H%M%S", localtime(&this->m_Data.EndTime));
 		
@@ -1261,47 +1270,6 @@ void CMatchStats::OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* p
 
 	// Insert Event Data
 	this->m_RoundEvent.push_back(Event);
-}
-
-void CMatchStats::ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1)
-{
-	// IF is not null
-	if (pcmd)
-	{
-		// If string is not empty
-		if (pcmd[0u] != '\0')
-		{
-			// Check if match is live
-			if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
-			{
-				// If is say or say_team command
-				if (!Q_strcmp(pcmd, "say") || !Q_strcmp(pcmd, "say_team"))
-				{
-					// If has arguments of command
-					if (parg1)
-					{
-						// If is not the pug commands
-						if (parg1[0u] != '!' && parg1[0u] != '.')
-						{
-							// If player is in a team
-							if (Player->m_iTeam == TERRORIST || Player->m_iTeam == SPECTATOR)
-							{
-								// Get argument list
-								std::string pCmdArgs = g_engfuncs.pfnCmd_Args();
-
-								// If is not empty
-								if (!pCmdArgs.empty())
-								{
-									// Push to chat log
-									this->m_ChatLog.push_back(pCmdArgs);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 }
 
 // Show Enemy HP

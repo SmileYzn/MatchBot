@@ -408,9 +408,6 @@ public:
 	// Round Event
 	void OnEvent(GameEventType event, int ScenarioEvent, CBaseEntity* pEntity, class CBaseEntity* pEntityOther);
 
-	// Chat
-	void ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1);
-
 	// Show Enemy HP
 	bool ShowHP(CBasePlayer* Player, bool Command, bool InConsole);
 
@@ -435,9 +432,6 @@ private:
 
 	// Round Event Data
 	std::vector<P_ROUND_EVENT> m_RoundEvent;
-
-	// Chat Data
-	std::vector<std::string> m_ChatLog;
 
 	// Round Stats (Damage and Hits)
 	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1];

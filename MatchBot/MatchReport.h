@@ -8,13 +8,18 @@ typedef struct S_REPORT_DATA
 	int PlayerTeam;
 	std::string Target;
 	int TargetTeam;
-	time_t Time;
 	std::string Reason;
-} P_REPORT_DATA, *LP_REPORT_DATA;
+	int MatchState;
+	time_t Time;
+} P_REPORT_DATA, * LP_REPORT_DATA;
 
 class CMatchReport
 {
 public:
+	void ServerActivate();
+
+	std::vector<P_REPORT_DATA> GetData();
+
 	bool Menu(CBasePlayer* Player);
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
 	void Insert(CBasePlayer* Player, CBasePlayer* Target);

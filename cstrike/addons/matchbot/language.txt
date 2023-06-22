@@ -882,3 +882,38 @@ es:"Cancelando el juego..."
 en:"You already voted to cancel the match."
 bp:"Você já votou para cancelar a partida."
 es:"Ya votaste para cancelar el partido."
+
+"Select player to report:"
+en:"Select player to report:"
+bp:"Selecione um jogador para reportar:"
+es:"Seleccionar jugador para reportar:"
+
+"Select player to rerport with reason: \3%s."
+en:"Select player to rerport with reason: \3%s."
+bp:"Selecione um jogador para reportar com o seguinte motivo: \3%s."
+es:"Seleccionar jugador a denunciar con motivo: \3%s."
+
+"Server can't detect players connected."
+en:"Server can't detect players connected."
+bp:"O Servidor não encontrou jogadores conectados."
+es:"El servidor no puede detectar jugadores conectados."
+
+"The reason must be at least %d characters long."
+en:"The reason must be at least %d characters long."
+bp:"O motivo precisa ter pelo menos %d caracteres."
+es:"El motivo debe tener al menos %d caracteres."
+
+"Usage: .report \3<Description of report>\1"
+en:"Usage: .report \3<Description of report>\1"
+bp:"Uso: .report \3<Descrição do relatório>\1"
+es:"Uso: .report \3<Descripción del informe>\1"
+
+"Report about \3%s\1 sent at %s."
+en:"Report about \3%s\1 sent at %s."
+bp:"Relato contra o jogador \3%s\1 enviado em %s."
+es:"Informe sobre \3%s\1 enviado a %s."
+
+"Administrators will review report and take an action if needed."
+en:"Administrators will review report and take an action if needed."
+bp:"Os administradores vão revisar o relato e tomar providências se necessário."
+es:"Los administradores revisarán el informe y tomarán medidas si es necesario."

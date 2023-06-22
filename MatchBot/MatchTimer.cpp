@@ -79,7 +79,7 @@ void CMatchTimer::Task(int PlayersMin)
 
 			if (tm_info)
 			{
-				char Time[32];
+				char Time[16];
 
 				strftime(Time, sizeof(Time), "%M:%S", tm_info);
 

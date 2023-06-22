@@ -234,8 +234,6 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 	{
 		if (!Player->IsDormant())
 		{
-			gMatchStats.ClientCommand(Player, pcmd, parg1);
-
 			if (gMatchCommand.ClientCommand(Player, pcmd, parg1))
 			{
 				return;

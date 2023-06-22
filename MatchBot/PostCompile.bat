@@ -11,7 +11,7 @@ set "copyPath=D:\Files\Desktop\hlds\hlds\cstrike\addons\matchbot\dlls"
 
 if exist %copyPath% (copy %outputFile% %copyPath%)
 
-set "hldsParam=-console -game cstrike -secure -pingboost 3 -master -bots +port 27020 +map de_dust2 +maxplayers 32 +sys_ticrate 1000"
+set "hldsParam=-console -game cstrike -secure -pingboost 3 -master -bots +port 27020 +map de_inferno +maxplayers 32 +sys_ticrate 1000"
 
 set "hldsPath=D:\Files\Desktop\hlds\hlds"
 
