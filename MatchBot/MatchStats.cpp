@@ -16,6 +16,9 @@ void CMatchStats::ServerActivate()
 	// Clear events data
 	this->m_RoundEvent.clear();
 
+	// Clear chat history
+	this->m_Chat.clear();
+
 	// Match State
 	this->m_State = STATE_DEAD;
 
@@ -64,6 +67,9 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 
 		// Clear events data
 		this->m_RoundEvent.clear();
+
+		// Clear chat history
+		this->m_Chat.clear();
 
 		// Resert Player Match Data
 		for (auto & Player : this->m_Player)
@@ -270,7 +276,7 @@ void CMatchStats::SaveJson()
 	}
 
 	// Round Events
-	for (auto& Event : this->m_RoundEvent)
+	for (auto const& Event : this->m_RoundEvent)
 	{
 		// Insert event
 		Data["events"][std::to_string(Event.Round)].push_back
@@ -290,12 +296,31 @@ void CMatchStats::SaveJson()
 		});
 	}
 
+	// Chat History
+	if (!this->m_Chat.empty())
+	{
+		// For each line
+		for (auto const& Chat : this->m_Chat)
+		{
+			// Push line
+			Data["chat"][std::to_string(Chat.Size)].push_back
+			({
+				{"Size",Chat.Size},
+				{"Auth",Chat.Auth},
+				{"Time",Chat.Time},
+				{"Team",Chat.Team},
+				{"Alive",Chat.Alive},
+				{"Message",Chat.Message}
+			});
+		}
+	}
+
 	// Report System
 	auto ReportData = gMatchReport.GetData();
 
 	if (!ReportData.empty())
 	{
-		for (auto& Report : ReportData)
+		for (auto const& Report : ReportData)
 		{
 			// Insert report data
 			Data["report"].push_back
@@ -1557,20 +1582,89 @@ void CMatchStats::RoundEndStats(int State)
 	}
 }
 
-
 // SayText message
 bool CMatchStats::SayText(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
-	auto SenderID = gMatchMessage.GetLong(0);
-
-	auto TextMessage1 = gMatchMessage.GetString(1);
-	auto TextMessage3 = gMatchMessage.GetString(3);
-
-	if (TextMessage3)
+	// If match is live
+	if (gMatchBot.GetState() >= STATE_FIRST_HALF)
 	{
-		LOG_CONSOLE(PLID, "[%s][%d] %s %s", __func__, SenderID, TextMessage1, TextMessage3);
+		// If has entity target
+		if (pEntity)
+		{
+			// Get sender index of message
+			auto SenderID = gMatchMessage.GetLong(0);
+			//
+			// If sender index and target entity index is same (To prevent hook for each entity)
+			if (SenderID = ENTINDEX(pEntity))
+			{
+				// Get CBasePlayer data
+				auto Player = UTIL_PlayerByIndexSafe(SenderID);
+
+				// If is not null
+				if (Player)
+				{
+					// Get argument 1
+					auto Format = gMatchMessage.GetString(1);
+
+					// If is not empty
+					if (Format)
+					{
+						// Get argument 3
+						auto TextMsg = gMatchMessage.GetString(3);
+
+						// If is not empty
+						if (TextMsg)
+						{
+							if (!Q_stricmp("#Cstrike_Chat_All", Format) || !Q_stricmp("#Cstrike_Chat_AllDead", Format))
+							{
+								gMatchStats.InsertChat(Player, TextMsg);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// Do not block original message call
 	return false;
+}
+
+// Insert say on chat log of player
+void CMatchStats::InsertChat(CBasePlayer* Player, const char* TextMsg)
+{
+	// If message is not empty
+	if (TextMsg)
+	{
+		// Get playter auth index
+		auto Auth = GET_USER_AUTH(Player->edict());
+
+		// if is not null
+		if (Auth)
+		{
+			// Chat log struct
+			P_PLAYER_CHAT Row;
+
+			// Size
+			Row.Size = this->m_Chat.size();
+
+			// Auth
+			Row.Auth = Auth;
+
+			// Time
+			Row.Time = time(0);
+
+			// Player is alive?
+			Row.Alive = Player->IsAlive();
+
+			// Team
+			Row.Team = Player->m_iTeam;
+
+			// Message text
+			Row.Message = TextMsg;
+
+			// Insert chat
+			this->m_Chat.push_back(Row);
+		}
+	}
 }

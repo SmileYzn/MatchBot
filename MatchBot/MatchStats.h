@@ -195,6 +195,16 @@ typedef struct S_PLAYER_STATS
 	};
 } P_PLAYER_STATS, *LP_PLAYER_STATS;
 
+typedef struct S_PLAYER_CHAT
+{
+	size_t			Size;
+	std::string		Auth;
+	time_t			Time;
+	int				Team;
+	bool			Alive;
+	std::string		Message;
+} P_PLAYER_CHAT, * LP_PLAYER_CHAT;
+
 class CMatchPlayerData
 {
 public:
@@ -426,6 +436,9 @@ public:
 	// SayText Message
 	static bool SayText(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
+	// Insert say on chat log of player
+	void InsertChat(CBasePlayer* Player, const char* TextMsg);
+
 private:
 	// Match Data
 	P_MATCH_DATA m_Data;
@@ -435,6 +448,9 @@ private:
 
 	// Round Event Data
 	std::vector<P_ROUND_EVENT> m_RoundEvent;
+
+	// Chat History
+	std::vector<P_PLAYER_CHAT> m_Chat;
 
 	// Round Stats (Damage and Hits)
 	int m_RoundDmg[MAX_CLIENTS + 1][MAX_CLIENTS + 1];
