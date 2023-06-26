@@ -9,4 +9,5 @@ extern IRehldsServerStatic* g_RehldsSvs;
 extern bool ReAPI_Init();
 extern bool ReAPI_Stop();
 
+void ReAPI_ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* client);
 void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, bool crash, const char* Reason);

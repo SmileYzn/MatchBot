@@ -28,10 +28,9 @@ public:
 	void ServerActivate();
 	void ServerDeactivate();
 
-	void Clear();
 	void Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter);
 	void Remove(int Index);
-	void Frame();
+	void ServerFrame();
 
 private:
 	std::map<int, P_TASK_INFO> m_Data;

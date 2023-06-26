@@ -4,20 +4,12 @@ CMatchTask gMatchTask;
 
 void CMatchTask::ServerActivate()
 {
-	this->Clear();
+	this->m_Data.clear();
 }
 
 void CMatchTask::ServerDeactivate()
 {
-	this->Clear();
-}
-
-void CMatchTask::Clear()
-{
-	for (auto it = this->m_Data.cbegin(); it != this->m_Data.cend(); ++it)
-	{
-		this->Remove(it->first);
-	}
+	this->m_Data.clear();
 }
 
 void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter)
@@ -30,15 +22,17 @@ void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback
 
 void CMatchTask::Remove(int Index)
 {
-	if (this->m_Data.find(Index) != this->m_Data.end())
+	auto it = this->m_Data.find(Index);
+
+	if (it != this->m_Data.end())
 	{
-		this->m_Data[Index].Free = true;
+		it->second.Free = true;
 	}
 }
 
-void CMatchTask::Frame()
+void CMatchTask::ServerFrame()
 {
-	for (auto it = this->m_Data.cbegin(); it != this->m_Data.cend(); ++it)
+	for (auto it = this->m_Data.begin(); it != this->m_Data.end();it++)
 	{
 		if (gpGlobals->time >= it->second.EndTime)
 		{
@@ -46,21 +40,17 @@ void CMatchTask::Frame()
 			{
 				if (it->second.Loop)
 				{
-					this->m_Data[it->first].EndTime = (gpGlobals->time + it->second.Time);
+					it->second.EndTime = (gpGlobals->time + it->second.Time);
 				}
 				else
 				{
-					this->m_Data[it->first].Free = true;
+					it->second.Free = true;
 				}
 
-				if (this->m_Data[it->first].FunctionCallback)
+				if (it->second.FunctionCallback)
 				{
-					((void(*)(int))this->m_Data[it->first].FunctionCallback)(this->m_Data[it->first].FunctionParameter);
+					((void(*)(int))it->second.FunctionCallback)(it->second.FunctionParameter);
 				}
-			}
-			else
-			{
-				this->m_Data.erase(it->first);
 			}
 		}
 	}

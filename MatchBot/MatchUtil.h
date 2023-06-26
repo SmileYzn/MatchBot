@@ -25,6 +25,8 @@ public:
 	// Register console variable
 	cvar_t* CvarRegister(const char* Name, const char* Value);
 
+	cvar_t* CvarRegister(const char* Name, const char* Value, int Flags);
+
 	// Send Team Info to player
 	void TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName);
 	
@@ -75,6 +77,9 @@ public:
 
 	// Replace all in string
 	void ReplaceAll(std::string& String, const std::string& From, const std::string& To);
+
+	// Drop client from server
+	void DropClient(int EntityIndex, const char* Format, ...);
 
 private:
 	// Variables Pointer

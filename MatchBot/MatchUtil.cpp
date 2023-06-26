@@ -18,7 +18,14 @@ int CMatchUtil::MakeDirectory(const char* Path)
 	return 0;
 }
 
+// Register console variable
 cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
+{
+	return this->CvarRegister(Name, Value, (FCVAR_SERVER | FCVAR_SPONLY));
+}
+
+// Register console variable
+cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value, int Flags)
 {
 	// Get cvar pointer
 	cvar_t* Pointer = g_engfuncs.pfnCVarGetPointer(Name);
@@ -33,7 +40,7 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 		this->m_CvarData[Name].string = (char*)(Value);
 		
 		// Set flags
-		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_SPONLY);
+		this->m_CvarData[Name].flags = Flags ? Flags : (FCVAR_SERVER | FCVAR_SPONLY);
 
 		// Register the variable
 		g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);
@@ -567,6 +574,51 @@ void CMatchUtil::ReplaceAll(std::string& String, const std::string& From, const 
 
 			// Increment starting position
 			StartPos += To.length();
+		}
+	}
+}
+
+void CMatchUtil::DropClient(int EntityIndex, const char* Format, ...)
+{
+	auto Gameclient = g_RehldsSvs->GetClient(EntityIndex - 1);
+
+	if (Gameclient)
+	{
+		va_list argList;
+
+		va_start(argList, Format);
+
+		char Buffer[255] = { 0 };
+
+		vsnprintf(Buffer, sizeof(Buffer), Format, argList);
+
+		va_end(argList);
+
+		if (g_RehldsFuncs)
+		{
+			g_RehldsFuncs->DropClient(Gameclient, false, "%s", Buffer);
+		}
+		else
+		{
+			auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
+
+			if (Player)
+			{
+				int UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+
+				if (!FNullEnt(Player->edict()) && UserIndex > 0)
+				{
+					if (strlen(Buffer) > 0)
+					{
+						this->ServerCommand("kick #%d %s", UserIndex, Buffer);
+					}
+					else
+					{
+						this->ServerCommand("kick #%d", UserIndex);
+					}
+				}
+
+			}
 		}
 	}
 }

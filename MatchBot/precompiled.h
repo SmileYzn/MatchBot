@@ -17,6 +17,13 @@
 #define _close						close
 #define _acces						access
 #define _vsnwprintf					vswprintf
+#else
+// cURL Library windows library
+#pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib,"wldap32.lib")
+#pragma comment(lib,"advapi32.lib")
+#pragma comment(lib,"crypt32.lib")
+#pragma comment(lib,"normaliz.lib")
 #endif
 
 // System Includes
@@ -33,6 +40,14 @@
 #else
 #include <direct.h>
 #endif
+
+// cURL sources
+#ifndef CURL_STATICLIB
+#define CURL_STATICLIB
+#endif
+
+// cURL sources
+#include <curl/curl.h>
 
 // CSSDK
 #include <extdll.h>
@@ -76,12 +91,14 @@
 #include "MatchCaptain.h"
 #include "MatchChangeMap.h"
 #include "MatchCommand.h"
+#include "MatchCurl.h"
 #include "MatchLanguage.h"
 #include "MatchLO3.h"
 #include "MatchMessage.h"
 #include "MatchPause.h"
 #include "MatchReady.h"
 #include "MatchReport.h"
+#include "MatchRequestApi.h"
 #include "MatchRestrictItem.h"
 #include "MatchStats.h"
 #include "MatchTimer.h"

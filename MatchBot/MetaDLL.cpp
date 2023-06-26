@@ -63,6 +63,8 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
 	gMatchTask.ServerActivate();
 
+	gMatchCurl.ServerActivate();
+
 	gMatchBot.ServerActivate();
 
 	gMatchAdmin.ServerActivate();
@@ -80,6 +82,8 @@ void DLL_POST_ServerDeactivate(void)
 {
 	gMatchTask.ServerDeactivate();
 
+	gMatchCurl.ServerDeactivate();
+
 	gMatchBot.ServerDeactivate();
 
 	RETURN_META(MRES_IGNORED);
@@ -87,7 +91,9 @@ void DLL_POST_ServerDeactivate(void)
 
 void DLL_POST_StartFrame(void)
 {
-	gMatchTask.Frame();
+	gMatchTask.ServerFrame();
+
+	gMatchCurl.ServerFrame();
 
 	RETURN_META(MRES_IGNORED);
 }

@@ -303,7 +303,7 @@ void CMatchStats::SaveJson()
 		for (auto const& Chat : this->m_Chat)
 		{
 			// Push line
-			Data["chat"][std::to_string(Chat.Size)].push_back
+			Data["chat"].push_back
 			({
 				{"Size",Chat.Size},
 				{"Auth",Chat.Auth},

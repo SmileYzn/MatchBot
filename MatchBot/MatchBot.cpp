@@ -110,6 +110,12 @@ void CMatchBot::ServerActivate()
 	// Admin Help File or Website url (Without HTTPS)
 	this->m_HelpFileAdmin = gMatchUtil.CvarRegister("mb_help_file_admin", "cstrike/addons/matchbot/admin_help.html");
 
+	// Match Bot HTTP Requests url (Leave empty to disable API)
+	this->m_ApiUrl = gMatchUtil.CvarRegister("mb_api_url", "", (FCVAR_SPONLY | FCVAR_PROTECTED));
+
+	// Timeout of Match Bot API Requests (Default 5 seconds)
+	this->m_ApiTimeout = gMatchUtil.CvarRegister("mb_api_timeout", "5", (FCVAR_SPONLY | FCVAR_PROTECTED));
+
 	// Match Bot main config
 	this->m_Config[STATE_DEAD] = gMatchUtil.CvarRegister("mb_cfg_match_bot", "matchbot.cfg");
 
