@@ -24,7 +24,7 @@ ifeq "$(RES_COMPILER_VERSION)" "1"
 endif
 
 # Optional flags
-OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -flto -funroll-loops -fno-stack-protector
+OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
 
 # C flags
 CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
@@ -44,7 +44,7 @@ $(BIN_DIR)/%.o: %.c
 all:
 	mkdir -p $(BIN_DIR)
 
-	$(MAKE) $(NAME)
+	$(MAKE) $(NAME) && strip -x $(BIN_DIR)/$(NAME)_mm.so
 
 $(NAME): $(OBJ_LINUX)
 
