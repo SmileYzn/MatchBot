@@ -20,6 +20,8 @@ void CMatchCurl::ServerDeactivate()
 	curl_multi_cleanup(this->m_MultiHandle);
 
 	curl_global_cleanup();
+
+	this->m_Data.clear();
 }
 
 void CMatchCurl::ServerFrame()
@@ -114,7 +116,9 @@ void CMatchCurl::PostJSON(const char* url, long Timeout, std::string PostData, v
 
 				curl_easy_setopt(ch, CURLOPT_URL, url);
 
-				curl_easy_setopt(ch, CURLOPT_TIMEOUT, Timeout);
+				curl_easy_setopt(ch, CURLOPT_TIMEOUT, (Timeout) > 0 ? Timeout : 5);
+
+				curl_easy_setopt(ch, CURLOPT_WRITEFUNCTION, this->WriteMemoryCallback);
 
 				curl_easy_setopt(ch, CURLOPT_NOPROGRESS, 1L);
 
@@ -123,8 +127,6 @@ void CMatchCurl::PostJSON(const char* url, long Timeout, std::string PostData, v
 				curl_easy_setopt(ch, CURLOPT_POSTFIELDSIZE, (long)PostData.size());
 
 				curl_easy_setopt(ch, CURLOPT_COPYPOSTFIELDS, PostData.c_str());
-
-				curl_easy_setopt(ch, CURLOPT_WRITEFUNCTION, this->WriteMemoryCallback);
 
 				curl_easy_setopt(ch, CURLOPT_WRITEDATA, (void*)&this->m_Data[this->m_RequestIndex]);
 

@@ -100,7 +100,7 @@
     <Filter Include="MatchBot\MatchCurl">
       <UniqueIdentifier>{1ae2749a-f239-488d-b18f-5cefc751ba3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MatchBot\MatchRequestApi">
+    <Filter Include="MatchBot\MatchApi">
       <UniqueIdentifier>{d3adafc7-2cd0-4033-97c3-e2e891ab9a3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -204,8 +204,8 @@
     <ClInclude Include="MatchCurl.h">
       <Filter>MatchBot\MatchCurl</Filter>
     </ClInclude>
-    <ClInclude Include="MatchRequestApi.h">
-      <Filter>MatchBot\MatchRequestApi</Filter>
+    <ClInclude Include="MatchApi.h">
+      <Filter>MatchBot\MatchApi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -310,8 +310,8 @@
     <ClCompile Include="MatchCurl.cpp">
       <Filter>MatchBot\MatchCurl</Filter>
     </ClCompile>
-    <ClCompile Include="MatchRequestApi.cpp">
-      <Filter>MatchBot\MatchRequestApi</Filter>
+    <ClCompile Include="MatchApi.cpp">
+      <Filter>MatchBot\MatchApi</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

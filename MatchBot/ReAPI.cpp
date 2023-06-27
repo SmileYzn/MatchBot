@@ -102,7 +102,7 @@ void ReAPI_ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* clie
 {
 	chain->callNext(client);
 
-	gMatchRequestApi.ClientConnected(client);
+	gMatchApi.ClientConnected(client);
 }
 
 void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, bool crash, const char* Reason)

@@ -107,7 +107,7 @@
     <ClInclude Include="MatchMessage.h" />
     <ClInclude Include="MatchPause.h" />
     <ClInclude Include="MatchReport.h" />
-    <ClInclude Include="MatchRequestApi.h" />
+    <ClInclude Include="MatchApi.h" />
     <ClInclude Include="MatchRestrictItem.h" />
     <ClInclude Include="MatchBugFix.h" />
     <ClInclude Include="MatchStats.h" />
@@ -142,7 +142,7 @@
     <ClCompile Include="MatchMessage.cpp" />
     <ClCompile Include="MatchPause.cpp" />
     <ClCompile Include="MatchReport.cpp" />
-    <ClCompile Include="MatchRequestApi.cpp" />
+    <ClCompile Include="MatchApi.cpp" />
     <ClCompile Include="MatchRestrictItem.cpp" />
     <ClCompile Include="MatchBugFix.cpp" />
     <ClCompile Include="MatchStats.cpp" />

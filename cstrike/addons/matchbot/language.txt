@@ -917,3 +917,8 @@ es:"Informe sobre \3%s\1 enviado a %s."
 en:"Administrators will review report and take an action if needed."
 bp:"Os administradores vão revisar o relato e tomar providências se necessário."
 es:"Los administradores revisarán el informe y tomarán medidas si es necesario."
+
+"Failed to authenticate, contact us: %s"
+en:"Failed to authenticate, contact us: %s"
+bp:"Falha ao autenticar, entre em contato: %s"
+es:"No se pudo autenticar, contáctenos: %s"
