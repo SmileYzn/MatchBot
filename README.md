@@ -19,6 +19,7 @@ At the end, server will start a vote map to changelevel to next map automaticall
     <li>ReHLDS</li>
     <li>ReGameDLL_CS</li>
     <li>Metamod</li>
+    <li>Libcurl</li>
 </ul> 
 
 <h3>Features</h3>
