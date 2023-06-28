@@ -44,7 +44,7 @@ $(BIN_DIR)/%.o: %.c
 all:
 	mkdir -p $(BIN_DIR)
 
-	$(MAKE) $(NAME) && strip -x $(BIN_DIR)/$(NAME)_mm.so
+	$(MAKE) $(NAME)
 
 $(NAME): $(OBJ_LINUX)
 
