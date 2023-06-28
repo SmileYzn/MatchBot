@@ -1,6 +1,7 @@
 # Include CSSDK and MetaMod SDK
 CSSDK 		= include/cssdk
 METAMOD 	= include/metamod
+LIBCURL 	= include/curl
 
 # Release file output name
 NAME 		= matchbot
@@ -13,7 +14,7 @@ COMPILER 	= g++
 OBJECTS 	= *.cpp
 
 # Static linker 
-LINK 		=
+LINK 		= -lcurl -lssl -lcrypto -ldl -lm -lz 
 
 # Compiler version check to static linking
 RES_COMPILER_VERSION := $(shell expr "`$(COMPILER) -dumpversion`" ">=" "5")
@@ -24,13 +25,13 @@ ifeq "$(RES_COMPILER_VERSION)" "1"
 endif
 
 # Optional flags
-OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -flto -funroll-loops -fno-stack-protector
+OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
 
 # C flags
 CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
 
 # Include directory
-INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
+INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD) -I$(LIBCURL)/include
 
 # Linux objects to build
 OBJ_LINUX 	:= $(OBJECTS:%.c=$(BIN_DIR)/%.o)
