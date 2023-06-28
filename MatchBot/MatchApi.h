@@ -1,8 +1,5 @@
 #pragma once
 
-constexpr auto MB_REQUEST_API_TIMEOUT = 10;
-constexpr auto MB_REQUEST_API_URL = "https://api.pugbr.net/auth/%lld";
-
 class CMatchApi
 {
 public:

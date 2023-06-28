@@ -83,6 +83,18 @@ void CMatchApi::ClientConnectCallback(CURL* ch, size_t Size, const char* Memory,
 									gMatchUtil.DropClient(EntityIndex, _T("Failed to authenticate, contact us: %s"), g_engfuncs.pfnCVarGetString("sv_contact"));
 								}
 							}
+							else
+							{
+								if (Result.contains("reason"))
+								{
+									auto Reason = Result["reason"].get<std::string>();
+
+									if (!Reason.empty())
+									{
+										gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, "%s", Reason.c_str());
+									}
+								}
+							}
 
 							return;
 						}
