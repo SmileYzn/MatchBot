@@ -13,8 +13,8 @@ BIN_DIR 	= Release
 COMPILER 	= g++
 OBJECTS 	= *.cpp
 
-# Static linker 
-LINK 		= -lcurl -lssl -lcrypto -ldl -lm -lz 
+#  Linker
+LINK 		= -lcurl -lssl -lcrypto -ldl -lm -lz
 
 # Compiler version check to static linking
 RES_COMPILER_VERSION := $(shell expr "`$(COMPILER) -dumpversion`" ">=" "5")
@@ -28,7 +28,7 @@ endif
 OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
 
 # C flags
-CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
+CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -static
 
 # Include directory
 INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD) -I$(LIBCURL)/include
