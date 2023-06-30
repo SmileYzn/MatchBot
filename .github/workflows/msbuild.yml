@@ -95,6 +95,32 @@ jobs:
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
 
+    - name: Download Accuracy Fix
+      run: |
+        # Set assets data
+        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.0.1/accuracyfix-linux.zip"
+
+        # Get ZIP file name
+        $zipName = "accuracyfix-linux.zip"
+
+        # Download ZIP file
+        Invoke-WebRequest -Uri $assets -Out $zipName
+
+        # Extract ZIP File
+        Expand-Archive $zipName
+
+        # Get base name from ZIP file
+        $baseName = (Get-Item $zipName).BaseName
+
+        # DLL from path
+        $fromPath = ".\" + $baseName + "\addons\accuracyfix\accuracyfix_mm.dll"
+
+        # DLL dest path
+        $DestPath = ".\publish\addons\accuracyfix\accuracyfix_mm.dll"
+        
+        # Copy item
+        Copy-Item -Path $fromPath -Destination $DestPath
+
     - name: Deploy artifacts
       uses: actions/upload-artifact@main
       with:
