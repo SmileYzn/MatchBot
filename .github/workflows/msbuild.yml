@@ -113,7 +113,7 @@ jobs:
         $baseName = (Get-Item $zipName).BaseName
 
         # DLL from path
-        $fromPath = ".\" + $baseName + "\addons\accuracyfix\accuracyfix_mm.dll"
+        $fromPath = ".\" + $baseName + "\addons\accuracyfix\dlls\accuracyfix_mm.dll"
 
         # DLL dest path
         $DestPath = ".\publish\addons\accuracyfix\accuracyfix_mm.dll"
