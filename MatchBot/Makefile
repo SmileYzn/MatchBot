@@ -20,7 +20,7 @@ LINK 		= -static-libstdc++ -lcurl -lssl -lcrypto -ldl -lm -lz
 OPT_FLAGS 	= -std=gnu++14 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
 
 # C flags
-CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D__USE_GNU -DCURL_STATICLIB -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -static
+CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D__USE_GNU -DCURL_STATICLIB -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
 
 # Include directory
 INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD) -I$(LIBCURL)/include
