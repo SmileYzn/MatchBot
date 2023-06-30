@@ -17,10 +17,10 @@ OBJECTS 	= *.cpp
 LINK 		= -static-libstdc++ -lcurl -lssl -lcrypto -ldl -lm -lz
 
 # Optional flags
-OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
+OPT_FLAGS 	= -std=gnu++14 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
 
 # C flags
-CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
+CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D__USE_GNU -DCURL_STATICLIB -U_FORTIFY_SOURCE -m32 -msse3 -msse4.1 -shared
 
 # Include directory
 INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD) -I$(LIBCURL)/include
@@ -44,7 +44,7 @@ $(NAME): $(OBJ_LINUX)
 	$(COMPILER) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINK) -o$(BIN_DIR)/$(NAME)_mm.so
 
 check:
-	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=gnu++11 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
+	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=gnu++14 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
 
 default: all
 
