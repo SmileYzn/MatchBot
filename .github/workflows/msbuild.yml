@@ -72,7 +72,7 @@ jobs:
     - name: Download Hitbox Fixer
       run: |
         # Set assets data
-        $assets = ""
+        $assets = "https://github.com/Garey27/hitbox_fixer/releases/download/1.1.2/hitbox_fix-bin-1.1.2.zip"
 
         # Get ZIP file name
         $zipName = "hitbox_fix-bin-1.1.2.zip"
