@@ -14,7 +14,7 @@ COMPILER 	= g++
 OBJECTS 	= *.cpp
 
 #  Linker
-LINK 		= -static-libstdc++ -lcurl -lssl -lcrypto -ldl -lm -lz
+LINK 		= -lgcc -lstdc++ -lcurl -lssl -lcrypto -ldl -lm -lz
 
 # Optional flags
 OPT_FLAGS 	= -std=gnu++14 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector
