@@ -22,19 +22,16 @@ jobs:
       run: apt-get update
 
     - name: Install build dependencies
-      run: apt-get install -qq -y wget unzip build-essential g++ gcc-multilib g++-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386
-      
-    - name: Install GCC 4.8 and g++ 4.8
-      run: apt-get install -qq -y gcc-4.8-multilib g++-4.8-multilib
+      run: apt-get install -qq -y wget unzip build-essential gcc-4.8-multilib g++-4.8-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386
 
     - name: Run build
       working-directory: ./MatchBot
       run: |
-        # Test
-        update-alternatives --config gcc
-        
-        # Test Compiler version
+        # Test gcc compiler version
         gcc --version
+        
+        # Test g++ compiler version
+        g++ --version
 
         # Make build
         make
