@@ -4,7 +4,7 @@ plugin_info_t Plugin_info =
 {
 	META_INTERFACE_VERSION,
 	"Match Bot",
-	"0.0.2",
+	"1.0.0",
 	__DATE__,
 	"SmileY",
 	"https://pugbr.net",
