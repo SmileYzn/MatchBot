@@ -1,7 +1,6 @@
 # Include CSSDK and MetaMod SDK
 CSSDK 		= include/cssdk
 METAMOD 	= include/metamod
-LIBCURL 	= include/curl
 
 # Release file output name
 NAME 		= matchbot
@@ -31,7 +30,7 @@ OPT_FLAGS 	= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-prote
 CFLAGS 		= $(OPT_FLAGS) -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -DHTTP_ONLY -m32 -msse3 -msse4.1 -shared
 
 # Include directory
-INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD) -I$(LIBCURL)/include
+INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
 
 # Linux objects to build
 OBJ_LINUX 	:= $(OBJECTS:%.c=$(BIN_DIR)/%.o)
