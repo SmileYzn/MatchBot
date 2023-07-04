@@ -30,6 +30,9 @@ jobs:
     - name: Run build
       working-directory: ./MatchBot
       run: |
+        # Test
+        update-alternatives --config gcc
+        
         # Test Compiler version
         gcc --version
 
