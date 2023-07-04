@@ -30,11 +30,8 @@ jobs:
     - name: Run build
       working-directory: ./MatchBot
       run: |
-        # Test gcc compiler version
-        gcc --version
-        
-        # Test g++ compiler version
-        g++ --version
+        # Test OpenSSL
+        openssl version -a
 
         # Make build
         make
