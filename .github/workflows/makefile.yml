@@ -29,12 +29,7 @@ jobs:
 
     - name: Run build
       working-directory: ./MatchBot
-      run: |
-        # Test OpenSSL
-        openssl version -a
-
-        # Make build
-        make
+      run: make
     
     - name: Move release file to publish
       run: |
