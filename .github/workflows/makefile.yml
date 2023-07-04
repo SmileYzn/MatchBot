@@ -19,7 +19,7 @@ jobs:
       run: yes | yum -y --assumeyes makecache
 
     - name: Install build dependencies
-      run: yes | yum -y --assumeyes install @'Development Tools' wget glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libcurl-devel.i686 openssl-devel.i686
+      run: yes | yum -y --assumeyes install @'Development Tools' wget glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libcurl-devel.i686 openssl-devel.i686 libstdc++-static.i686
 
     - name: Run build
       working-directory: ./MatchBot
