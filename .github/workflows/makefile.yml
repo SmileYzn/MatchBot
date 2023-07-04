@@ -10,22 +10,25 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    container: centos:7
+    container: ubuntu:18.04
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Add i386 architecture
+      run: sudo dpkg --add-architecture i386
       
-    - name: Update cache
-      run: yes | yum -y --assumeyes makecache
+    - name: Update repository
+      run: sudo apt-get update
 
     - name: Install build dependencies
-      run: yes | yum -y --assumeyes install @'Development Tools' wget glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libcurl-devel.i686 openssl-devel.i686 libstdc++-static.i686
+      run: sudo apt-get install -qq -y build-essential g++ gcc-multilib g++-multilib libgcc-s1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386
 
     - name: Run build
       working-directory: ./MatchBot
       run: |
-        # Export compiler include path
-        export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
+        # Test Compiler version
+        gcc --version
 
         # Make build
         make
