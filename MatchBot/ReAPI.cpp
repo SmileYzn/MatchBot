@@ -13,7 +13,7 @@ bool ReAPI_Init()
 {
 	if (!IS_DEDICATED_SERVER())
 	{
-		LOG_CONSOLE(PLID, "[%s] ReHLDS API Can only run on Half-Life Dedicated Server");
+		LOG_CONSOLE(PLID, "[%s] ReHLDS API Can only run on Half-Life Dedicated Server", Plugin_info.logtag);
 		return false;
 	}
 
