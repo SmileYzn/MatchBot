@@ -83,8 +83,11 @@ public:
 	// Get team name
 	const char* GetTeam(TeamName Team, bool ShortName);
 
+	// Swap scores event
+	void SwapScores();
+
 	// Swap teams event
-	void SwapTeams();
+	static void SwapTeams(int ShowMessage);
 
 	// Get Knife Round Mode
 	bool GetKnifeRound();

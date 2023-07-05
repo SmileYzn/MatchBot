@@ -355,8 +355,11 @@ void CMatchBot::SetState(int State)
 		// Half Time: Match is paused to swap teams
 		case STATE_HALFTIME:
 		{
-			// Swap teams and scores in really
-			this->SwapTeams();
+			// Swap team scores
+			this->SwapScores();
+
+			// Swap team sides
+			gMatchTask.Create(TASK_SWAP_TEAMS, 3.0f, false, (void*)this->SwapTeams, 1);
 
 			// If ready mode is enabled or timer system is enabled
 			if (this->m_ReadyType->value)
@@ -559,15 +562,9 @@ const char* CMatchBot::GetTeam(TeamName Team, bool ShortName)
 	return ShortName ? _T(MATCH_BOT_TEAM_SHORT[Team]) : _T(MATCH_BOT_TEAM_STR[Team]);
 }
 
-// Swap teams function
-void CMatchBot::SwapTeams()
+// Swap scores function
+void CMatchBot::SwapScores()
 {
-	// Send message to all players
-	gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing teams automatically."));
-
-	// Get in game players
-	auto Players = gMatchUtil.GetPlayers(true, true);
-
 	// If we played more than maximum of rounds in match (We in Overtime)
 	if (this->GetRound() >= this->m_PlayRounds->value)
 	{
@@ -591,6 +588,17 @@ void CMatchBot::SwapTeams()
 
 	// Swap Overtime scores
 	SWAP(this->m_ScoreOT[TERRORIST], this->m_ScoreOT[CT]);
+}
+
+// Swap teams function
+void CMatchBot::SwapTeams(int ShowMessage)
+{
+	// Send message
+	if (ShowMessage)
+	{
+		// Send message to all players
+		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing teams automatically."));
+	}
 
 	// Swap teams in game
 	if (g_pGameRules)
@@ -1129,7 +1137,7 @@ void CMatchBot::UpdateGameName()
 			if (State == STATE_DEAD)
 			{
 				// Restore default game name
-				Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc);
+				Q_strcpy_s(CSGameRules()->m_GameDesc, this->m_GameDesc);
 			}
 			else if (State == STATE_WARMUP || State == STATE_START)
 			{
@@ -1144,7 +1152,7 @@ void CMatchBot::UpdateGameName()
 				// Format game name with teams and scores
 				Q_snprintf(GameName, sizeof(GameName), _T("%s %d : %d %s"), gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 
-				// Get to game description
+				// Set to game description
 				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);
 			}
 		}
