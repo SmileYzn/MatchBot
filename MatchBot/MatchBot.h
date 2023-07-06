@@ -169,6 +169,8 @@ public:
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;
 	cvar_t* m_Language = nullptr;
+	cvar_t* m_AdminPrefix = nullptr;
+	cvar_t* m_PlayerPrefix = nullptr;
 	cvar_t* m_PlayersMin = nullptr;
 	cvar_t* m_PlayersMax = nullptr;
 	cvar_t* m_PlayRounds = nullptr;
