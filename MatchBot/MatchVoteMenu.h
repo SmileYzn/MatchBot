@@ -79,7 +79,7 @@ public:
  	std::array<P_PLAYER_VOTES, MAX_CLIENTS + 1> m_Votes;
 
 	// Map List
-	std::map<size_t, std::string> m_MapList;
+	std::map<int, std::string> m_MapList;
 };
 
 extern CMatchVoteMenu gMatchVoteMenu;

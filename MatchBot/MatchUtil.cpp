@@ -462,37 +462,47 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 {
 	std::map<int, std::string> MapList;
 
-	std::ifstream fp;
+	// File stream
+	std::ifstream fp(MB_MAP_LIST_FILE);
 
-	fp.open(MAP_LIST_FILE, std::ifstream::in);
-
-	if (fp.is_open())
+	try
 	{
-		std::string Map = "";
+		// Reset pointer
+		fp.clear();
 
-		int MapIndex = 0;
+		fp.seekg(0, std::ios::beg);
 
-		while(std::getline(fp, Map))
+		// Read adta
+		auto json = nlohmann::json::parse(fp);
+
+		// Map Index
+		auto MapIndex = 0;
+
+		// Loop each item
+		for (auto const& el : json.items())
 		{
-			auto MapName = Q_strdup(Map.data());
+			auto MapName = Q_strdup(el.value().get<std::string>().data());
 
-			if (g_engfuncs.pfnIsMapValid(MapName))
+			if (MapName)
 			{
-				if (!CurrentMap)
+				if (g_engfuncs.pfnIsMapValid(MapName))
 				{
-					if (Map.compare(STRING(gpGlobals->mapname)) == 0)
+					if (!CurrentMap)
 					{
-						continue;
+						if (!Q_stricmp(STRING(gpGlobals->mapname), MapName))
+						{
+							continue;
+						}
 					}
+
+					MapList.insert(std::make_pair(MapIndex++, el.value()));
 				}
-
-				MapList[MapIndex] = Map;
-
-				MapIndex++;
 			}
 		}
-
-		fp.close();
+	}
+	catch (nlohmann::json::parse_error& e)
+	{
+		LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
 	}
 
 	return MapList;
