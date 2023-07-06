@@ -1,7 +1,7 @@
 #pragma once
 
 // Admin settings file
-constexpr auto ADMIN_LIST_FILE = "cstrike/addons/matchbot/admin.ini";
+constexpr auto MB_ADMIN_LIST_FILE = "cstrike/addons/matchbot/users.json";
 
 // Admin struct info
 typedef struct S_ADMIN_INFO
@@ -58,7 +58,7 @@ public:
 
 private:
 	// User Admin Info Data container
-	std::map<std::string, std::vector<std::string>> m_Data;
+	std::map<std::string, std::string> m_Data;
 
 	// Entity flags 
 	std::map<int, int> m_Flag;

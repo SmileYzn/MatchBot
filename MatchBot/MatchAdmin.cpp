@@ -11,71 +11,37 @@ void CMatchAdmin::ServerActivate()
     // Clear Flags Data
     this->m_Flag.clear();
 
-    // Ifstream
-    std::ifstream fp;
+    // File stream
+    std::ifstream fp(MB_ADMIN_LIST_FILE);
 
-    // Open admin list file
-    fp.open(ADMIN_LIST_FILE, std::ifstream::in);
-
-    // If file was opened
-    if (fp.is_open())
+    try
     {
-        // Line
-        std::string Line = "";
+        // Reset pointer
+        fp.clear();
 
-        // Double quotes delimiter
-        std::string delimiter = "\"";
+        // Go to begin of file
+        fp.seekg(0, std::ios::beg);
 
-        // Starting position
-        size_t Position = 0;
+        // Read data from json file
+        auto json = nlohmann::json::parse(fp, nullptr, true, true);
 
-        // Current token
-        std::string Token = "";
-
-        // Admin info
-        std::vector<std::string> Info;
-
-        // While we can read file lines
-        while(std::getline(fp, Line))
+        // Loop each item of array
+        for (auto const& row : json.items())
         {
-            // If line is not empty
-            if (!Line.empty())
+            // Get admin data as map string
+            auto Admin = row.value().get<std::map<std::string, std::string>>();
+
+            // If Auth and Flags fields is here
+            if (!Admin["Auth"].empty() && !Admin["Flags"].empty())
             {
-                // If is not commented
-                if (Line[0] != ';')
-                {
-                    // Find double quote delimiter
-                    while ((Position = Line.find(delimiter)) != std::string::npos) 
-                    {
-                        // Get token inside quotes
-                        Token = Line.substr(0, Position);
-
-                        // If token is not empty
-                        if (!Token.empty() && !std::all_of(Token.begin(), Token.end(), isspace))
-                        {
-                            // Insert at vector
-                            Info.push_back(Token);
-                        }
-
-                        // Erease current token from line
-                        Line.erase(0, Position + delimiter.length());
-                    }
-
-                    // If has SteamID, Name and Flags in vector
-                    if (Info.size() >= 3)
-                    {
-                        // Insert info on admin data
-                        this->m_Data.insert(std::make_pair(Info[0], Info));
-                    }
-
-                    // Clear current line info
-                    Info.clear();
-                }
+                // Insert info on admin data
+                this->m_Data.insert(std::make_pair(Admin["Auth"], Admin["Flags"]));
             }
         }
-
-        // Close file at end
-        fp.close();
+    }
+    catch (nlohmann::json::parse_error& e)
+    {
+        LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
     }
 }
 
@@ -118,7 +84,7 @@ bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
             if (Admin != this->m_Data.end())
             {
                 // Set Flags to this entity
-                this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags(Admin->second[2].c_str());
+                this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags(Admin->second.c_str());
 
                 // Return true to allow player connection
                 return true;

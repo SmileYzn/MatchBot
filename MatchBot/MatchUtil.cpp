@@ -472,8 +472,8 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 
 		fp.seekg(0, std::ios::beg);
 
-		// Read adta
-		auto json = nlohmann::json::parse(fp);
+		// Read data
+		auto json = nlohmann::json::parse(fp, nullptr, true, true);
 
 		// Map Index
 		auto MapIndex = 0;
@@ -481,20 +481,22 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 		// Loop each item
 		for (auto const& el : json.items())
 		{
+			// Get map name from json data
 			auto MapName = Q_strdup(el.value().get<std::string>().data());
 
+			// If is not empty
 			if (MapName)
 			{
+				// If is map is valid on server
 				if (g_engfuncs.pfnIsMapValid(MapName))
 				{
-					if (!CurrentMap)
+					// If has to skip corrent map
+					if (!CurrentMap && !Q_stricmp(STRING(gpGlobals->mapname), MapName))
 					{
-						if (!Q_stricmp(STRING(gpGlobals->mapname), MapName))
-						{
-							continue;
-						}
+						continue;
 					}
 
+					// Insert on map list with index
 					MapList.insert(std::make_pair(MapIndex++, el.value()));
 				}
 			}
