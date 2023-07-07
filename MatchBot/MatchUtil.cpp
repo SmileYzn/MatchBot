@@ -462,11 +462,11 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 {
 	std::map<int, std::string> MapList;
 
-	// File stream
-	std::ifstream fp(MB_MAP_LIST_FILE);
-
 	try
 	{
+		// File stream
+		std::ifstream fp(MB_MAP_LIST_FILE);
+
 		// Reset pointer
 		fp.clear();
 

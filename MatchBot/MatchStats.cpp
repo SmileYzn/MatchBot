@@ -1506,7 +1506,7 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
 									(
 										Player->edict(),
 										Target->entindex(),
-										_T("(%d dmg / %d hits) to (%d dmg / %d hits) from \3%s\1 (%d HP)"),
+										_T("(%d dmg | %d hits) to (%d dmg | %d hits) from \3%s\1 (%d HP)"),
 										this->m_RoundDmg[Player->entindex()][Target->entindex()],
 										this->m_RoundHit[Player->entindex()][Target->entindex()],
 										this->m_RoundDmg[Target->entindex()][Player->entindex()],
@@ -1521,7 +1521,7 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
 									(
 										Player->edict(),
 										PRINT_CONSOLE,
-										_T("* (%d dmg / %d hits) to (%d dmg / %d hits) from %s (%d HP)"),
+										_T("* (%d dmg | %d hits) to (%d dmg | %d hits) from %s (%d HP)"),
 										this->m_RoundDmg[Player->entindex()][Target->entindex()],
 										this->m_RoundHit[Player->entindex()][Target->entindex()],
 										this->m_RoundDmg[Target->entindex()][Player->entindex()],

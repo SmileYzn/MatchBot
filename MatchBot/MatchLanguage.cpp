@@ -7,65 +7,57 @@ void CMatchLanguage::Load(const char* Language)
 {
 	// Clear Current translation system data
 	this->m_Data.clear();
- 
+
 	// If string is not null
 	if (Language)
 	{
 		// If string is not empty
 		if (Language[0] != '\0')
 		{
-			// File stream
-			std::ifstream fp;
+            try
+            {
+                // File stream
+                std::ifstream fp(MB_LANGUAGE_FILE);
 
-			// Open file ready only
-			fp.open(MB_LANGUAGE_FILE, std::ifstream::in);
+                // Reset pointer
+                fp.clear();
 
-			// If is open
-			if (fp.is_open())
-			{
-				// Create key and line
-				std::string Key, Line;
+                // Go to begin of file
+                fp.seekg(0, std::ios::beg);
 
-				// while reading lines
-				while(std::getline(fp, Line))
-				{
-					// If is not empty
-					if (!Line.empty())
+                // Read data from json file
+                auto json = nlohmann::json::parse(fp, nullptr, true, true);
+
+                // Loop each item of array
+                for (auto const& row : json.items())
+                {
+					auto Value = row.value().at(Language);
+					
+					if (!Value.empty())
 					{
-						// Escape all special chracters
-						gMatchUtil.ReplaceAll(Line, "﻿", "");
-						gMatchUtil.ReplaceAll(Line, "\\1", "\1");
-						gMatchUtil.ReplaceAll(Line, "\\3", "\3");
-						gMatchUtil.ReplaceAll(Line, "\\4", "\4");
-						gMatchUtil.ReplaceAll(Line, "\\n", "\n");
+						auto Text = Value.get<std::string>();
 
-						// If has quotes
-						if (Line[0] == '"')
+						if (!Text.empty())
 						{
-							// Remove quote from begining of string
-							Line.erase(std::remove(Line.begin(), Line.end(), '\"'), Line.end());
+							gMatchUtil.ReplaceAll(Text, "^1", "\1");
+							gMatchUtil.ReplaceAll(Text, "^3", "\3");
+							gMatchUtil.ReplaceAll(Text, "^4", "\4");
+							gMatchUtil.ReplaceAll(Text, "^n", "\n");
 
-							// This line is a key
-							Key = Line;
-						}
-						// Compare language setting with key
-						else if (Line.substr(0, 2).compare(Language) == 0)
-						{
-							// Get line after third character
-							Line = Line.substr(3);
-
-							// Remove quotes from string
-							Line.erase(std::remove(Line.begin(), Line.end(), '\"'), Line.end());
-
-							// Insert to language system
-							this->m_Data[Key] = Line;
+							gMatchUtil.ReplaceAll(Text, "^w", "\\w");
+							gMatchUtil.ReplaceAll(Text, "^y", "\\y");
+							gMatchUtil.ReplaceAll(Text, "^r", "\\r");
+							gMatchUtil.ReplaceAll(Text, "^R", "\\R");
+							
+							this->m_Data.insert(std::make_pair(row.key(), Text));
 						}
 					}
-				}
-
-				// Close file pointer
-				fp.close();
-			}
+                }
+            }
+            catch (nlohmann::json::parse_error& e)
+            {
+                LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+            }
 		}
 	}
 }

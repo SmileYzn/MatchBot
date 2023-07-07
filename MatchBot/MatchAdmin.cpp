@@ -11,11 +11,11 @@ void CMatchAdmin::ServerActivate()
     // Clear Flags Data
     this->m_Flag.clear();
 
-    // File stream
-    std::ifstream fp(MB_ADMIN_LIST_FILE);
-
     try
     {
+        // File stream
+        std::ifstream fp(MB_ADMIN_LIST_FILE);
+
         // Reset pointer
         fp.clear();
 

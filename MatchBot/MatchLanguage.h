@@ -4,7 +4,7 @@
 #define _T(TextString) gMatchLanguage.Get(TextString)
 
 // Default language file
-constexpr auto MB_LANGUAGE_FILE = "cstrike/addons/matchbot/language.txt";
+constexpr auto MB_LANGUAGE_FILE = "cstrike/addons/matchbot/language.json";
 
 class CMatchLanguage
 {
@@ -16,7 +16,7 @@ public:
 	const char* Get(const char* Key);
 
 private:
-	std::map<std::string, std::string> m_Data;
+	std::unordered_map<std::string, std::string> m_Data;
 };
 
 extern CMatchLanguage gMatchLanguage;
