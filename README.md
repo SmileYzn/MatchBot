@@ -22,6 +22,57 @@ At the end, server will start a vote map to changelevel to next map automaticall
     <li>Metamod</li>
     <li>Libcurl</li>
 </ul> 
+<h3> Match BOT command list </h3>
+<details>
+<summary>Click to open</summary>
+
+| matchbot.cfg commands list         |  Default | Min | Max         | Description                                    |
+| :--------------------------------- | :-----: | :-: | :----------: | :--------------------------------------------- |
+| mb_log_tag                         | BOT     | -   | -            | Match BOT Log Tag. <br/>Here you can put any tag you wish.|
+| mb_language                        | en      | -   | -            | Match BOT Language. <br/>`en` English US. <br/>`bp` Brazilian Portuguese.<br/>`es` Spanish Spain.<br/> You can edit/create more languages in matchbot\language.json |
+| mb_admin_prefix                    | !       | -   | -            | Match BOT administrator command game chat prefix. <br /> For example `!menu` opens administrator menu. |
+| mb_player_prefix                   | .       | -   | -            | Match BOT player command game chat prefix. <br /> For example `.dmg` show damage when player dead. |
+| mb_players_min                     | 10      | -   | -            | Minimum players needed to start match. |
+| mb_players_max                     | 10      | -   | -            | Maximum allowed players in match. |
+| mb_play_rounds                     | 30      | -   | -            | Rounds to play before execute overtime.|
+| mb_play_rounds_ot                  | 6       | -   | -            | Round to play in overtime. |
+| mb_play_ot_mode                    | 3       | 0   | 3            | Overtime type. <br /> `0` Sudden death round. <br /> `1` Play overtime. <br /> `2` End match tied. <br /> `3` Users vote. |
+| mb_ready_type                      | 1       | 0   | 2            | Ready system type.<br /> `0` Disabled. <br /> `1` Ready System. <br /> `2` Ready Timer. |
+| mb_ready_time                      | 60      | -   | -            | Ready system timer delay in seconds. <br /> Only works with `mb_ready_type 2` |
+| mb_team_pick_type                  | -1      | -1  | 5            | Team pickup type when match begin. <br /> `-1` Enable vote. <br /> `0` Leaders. <br /> `1` Random. <br /> `2` None. <br /> `3` Skill balanced. <br /> `4` Swap teams. <br /> `5` Knife round.|
+| mb_team_pick_menu                  | abcdef  | -   | -            | Only works with `mb_team_pick_type -1`. <br/>This allows you to make your team pickup menu.<br/> `0` Leaders. <br /> `b` Random. <br /> `c` None. <br /> `d` Skill balanced. <br /> `e` Swap teams. <br /> `f` Knife round|
+| mb_vote_map_type                   | 1       | 1   | 2            | Vote map type. It lets players to choose map or play random map. <br /> `1` Vote map. <br /> `2` Random map. |
+| mb_vote_map_auto                   | 2       | 0   | 2            | Start vote map at match end. <br /> `0` Disabled. <br /> `1` Enabled. <br /> `2` Only when minimum players reached. |
+| mb_vote_map_fail                   | 1       | 0   | 2            | Actions to perform when votemap fails. <br /> `0` Continue match. <br /> `1` Restart vote map. <br /> `2` Choose random map. |
+| mb_knife_round                     | 0       | 0   | 1            | Play Knife Round to choose starting sides. <br /> `0` Disabled. <br /> `1` Enabled.|
+| mb_score_type                      | 0       | 0   | 1            | Scores display method. <br /> `0` Default scores with phrases. <br /> `1` Show all teams and scores. |
+| mb_scoreboard_team                 | 1       | 0   | 1            | Store team scores in scoreboard. <br /> `0` Disabled. <br /> `1` Enabled.|
+| mb_scoreboard_player               | 1       | 0   | 1            | Store player scores in scoreboard. <br /> `0` Disabled. <br /> `1` Enabled.|
+| mb_gamename                        | 1       | 0   | 1            | Display states and scores at game description. <br /> `0` Disabled. <br /> `1` Enabled.|
+| mb_player_vote_kick                | 5       | 0   | -            | Mininum of players in a team to enable vote kick command for players. <br /> Set to `0` to disable vote kick command.|
+| mb_player_vote_map                 | 5       | 0   | -            | Mininum of players in a team to enable vote map command for players. <br /> Set to `0` to disable vote map command.|
+| mb_player_vote_pause               | 5       | 0   | -            | Mininum of players in a team to enable vote pause command for players. <br /> Set to `0` to disable vote pause command.|
+| mb_player_vote_restart             | 5       | 0   | -            | Mininum of players in a team to enable vote kick command for players. <br /> Set to `0` to disable vote restart command.|
+| mb_player_vote_surrender           | 5       | 0   | -            | Mininum of players in a team to enable vote kick command for players. <br /> Set to `0` to disable vote surrender command.|
+| mb_round_end_stats                 | 0       | 0   | 4            | Show round stats on end. <br /> `0` Disabled. <br /> `1` Show round damage in chat. <br /> `2` Show round summary in chat. <br /> `3` Show round damage in console. <br /> `4` Show round summary in console. |
+| mb_stats_commands                  | abcd    | -   | -            | Enabled round stats commands in chat. <br /> `a` Enable `.hp` command. <br /> `b` Enable `.dmg` command. <br /> `c` Enable `.rdmg` command. <br /> `d` Enable `.sum` command.|
+| mb_restrict_weapons                | 000000000000000000000000000000000000000| -   | - | Restricted Weapons by item index slot position (1 to block item, 0 to allow). <br />`0` Shieldgun. <br /> `1` P228. <br /> `2` Glock. <br /> `3` Scout. <br /> `4` Hegrenade. <br /> `5` Xm1014. <br /> `6` C4. <br /> `7` Mac10. <br /> `8` Aug. <br /> `9` Smokegrenade. <br /> `10` Elite. <br /> `11` Fiveseven. <br /> `12` Ump45. <br /> `13` Sg550. <br /> `14` Galil. <br /> `15` Famas. <br /> `16` Usp. <br /> `17` Glock18. <br /> `18` Awp. <br /> `19` Mp5n. <br /> `20` M249. <br /> `21` M3. <br /> `22` M4a1. <br /> `23` Tmp. <br /> `24` G3sg1. <br /> `25` Flashbang. <br /> `26` Deagle. <br /> `27` Sg552. <br /> `28` Ak47. <br /> `29` Knife. <br /> `30` P90. <br /> `31` Nvg. <br /> `32` Defusekit. <br /> `33` Kevlar. <br /> `34` Assault. <br /> `35` Longjump. <br /> `36` Sodacan. <br /> `37` Healthkit. <br /> `38` Antidote. <br /> `39` Battery. |
+| mb_extra_smoke_count               | 2       | 0   | -            | Extra Smokegranade explosion fix .<br /> `0` Disabled. <br /> `n` Number of extra smoke puffs. |
+| mb_fix_spawn_distance              | 60.0    | -   | -            | Distance to respawn player if try to bug respawn on de_dust2 ramp and other maps. <br /> `0` Disabled. <br /> `n.0` Distance in units to enable fix. |
+| mb_help_file                       | cstrike/addons/matchbot/users_help.html      | -  | -            | Users Help File or Website url (Without HTTPS). <br /> If is website url, works only with HTTP (Not HTTPS).|
+| mb_help_file_admin                 | cstrike/addons/matchbot/admin_help.html      | -  | -            | Admin Help File or Website url (Without HTTPS). <br /> If is website url, works only with HTTP (Not HTTPS).|
+| mb_api_url                         | -       | -   | -            | Match Bot HTTP Requests URL. <br/>Leave empty to disable whole matchbot API.|
+| mb_api_timeout                     | 5       | -   | -            | Timeout of Match Bot HTTP API Requests. |
+| mb_api_auth_type                   | 0       | 0   | 2            | Player Authentication type on connect. <br /> `0` Disable player authentication on connect. <br /> `1` Kick Player only when receive response from authentication server to kick it. <br /> `2` Kick Player if authentication failed or authentication server is offline. |
+| mb_cfg_match_bot                   | matchbot.cfg  | -   | -            | Match Bot main config. <br /> Executed when Match Bot loads at new map.|
+| mb_cfg_warmup                      | warmup.cfg    | -   | -            | Warmup config. <br /> Executed at Warmup session.|
+| mb_cfg_start                       | start.cfg     | -   | -            | Start config. <br /> Executed when vote system starts vote teams or vote map.|
+| mb_cfg_1st                         | esl.cfg       | -   | -            | First Half config. <br /> Executed when match is live at first half.|
+| mb_cfg_halftime                    | halftime.cfg  | -   | -            | Half Time config. <br /> Executed when match is in half time.|
+| mb_cfg_2nd                         | esl.cfg       | -   | -            | Second Half config. <br /> Executed when match is live at second half.|
+| mb_cfg_overtime                    | esl-ot.cfg    | -   | -            | Overtime config. <br /> Executed at overtime extras rounds.|
+| mb_cfg_end                         | end.cfg       | -   | -            | End config. <br /> Executed right after match ends.|
+</details>
 
 <h3>Features</h3>
 <ul>
