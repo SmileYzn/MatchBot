@@ -16,27 +16,35 @@ void CMatchAdmin::ServerActivate()
         // File stream
         std::ifstream fp(MB_ADMIN_LIST_FILE);
 
-        // Reset pointer
-        fp.clear();
-
-        // Go to begin of file
-        fp.seekg(0, std::ios::beg);
-
-        // Read data from json file
-        auto json = nlohmann::json::parse(fp, nullptr, true, true);
-
-        // Loop each item of array
-        for (auto const& row : json.items())
+        // If file is open
+        if (fp)
         {
-            // Get admin data as map string
-            auto Admin = row.value().get<std::map<std::string, std::string>>();
+            // Reset pointer
+            fp.clear();
 
-            // If Auth and Flags fields is here
-            if (!Admin["Auth"].empty() && !Admin["Flags"].empty())
+            // Go to begin of file
+            fp.seekg(0, std::ios::beg);
+
+            // Read data from json file
+            auto json = nlohmann::json::parse(fp, nullptr, true, true);
+
+            // Loop each item of array
+            for (auto const& row : json.items())
             {
-                // Insert info on admin data
-                this->m_Data.insert(std::make_pair(Admin["Auth"], Admin["Flags"]));
+                // Get admin data as map string
+                auto Admin = row.value().get<std::map<std::string, std::string>>();
+
+                // If Auth and Flags fields is here
+                if (!Admin["Auth"].empty() && !Admin["Flags"].empty())
+                {
+                    // Insert info on admin data
+                    this->m_Data.insert(std::make_pair(Admin["Auth"], Admin["Flags"]));
+                }
             }
+        }
+        else
+        {
+            LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_ADMIN_LIST_FILE);
         }
     }
     catch (nlohmann::json::parse_error& e)

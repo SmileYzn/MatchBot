@@ -467,39 +467,48 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 		// File stream
 		std::ifstream fp(MB_MAP_LIST_FILE);
 
-		// Reset pointer
-		fp.clear();
-
-		fp.seekg(0, std::ios::beg);
-
-		// Read data
-		auto json = nlohmann::json::parse(fp, nullptr, true, true);
-
-		// Map Index
-		auto MapIndex = 0;
-
-		// Loop each item
-		for (auto const& el : json.items())
+		// If file is open
+		if (fp)
 		{
-			// Get map name from json data
-			auto MapName = Q_strdup(el.value().get<std::string>().data());
+			// Reset pointer
+			fp.clear();
 
-			// If is not empty
-			if (MapName)
+			// Go to begin of file
+			fp.seekg(0, std::ios::beg);
+
+			// Read data
+			auto json = nlohmann::json::parse(fp, nullptr, true, true);
+
+			// Map Index
+			auto MapIndex = 0;
+
+			// Loop each item
+			for (auto const& el : json.items())
 			{
-				// If is map is valid on server
-				if (g_engfuncs.pfnIsMapValid(MapName))
-				{
-					// If has to skip corrent map
-					if (!CurrentMap && !Q_stricmp(STRING(gpGlobals->mapname), MapName))
-					{
-						continue;
-					}
+				// Get map name from json data
+				auto MapName = Q_strdup(el.value().get<std::string>().data());
 
-					// Insert on map list with index
-					MapList.insert(std::make_pair(MapIndex++, el.value()));
+				// If is not empty
+				if (MapName)
+				{
+					// If is map is valid on server
+					if (g_engfuncs.pfnIsMapValid(MapName))
+					{
+						// If has to skip corrent map
+						if (!CurrentMap && !Q_stricmp(STRING(gpGlobals->mapname), MapName))
+						{
+							continue;
+						}
+
+						// Insert on map list with index
+						MapList.insert(std::make_pair(MapIndex++, el.value()));
+					}
 				}
 			}
+		}
+		else
+		{
+			LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_MAP_LIST_FILE);
 		}
 	}
 	catch (nlohmann::json::parse_error& e)
