@@ -18,7 +18,7 @@ OBJECTS 	= *.cpp
 LINKER 		= -static-libgcc -static-libstdc++ -lcurl -lssl -lcrypto -ldl -lm -lz
 
 # C flags
-CFLAGS 		= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -DHTTP_ONLY -m32 -msse3 -msse4.1 -shared
+CFLAGS 		= -std=gnu++11 -pipe -g0 -O3 -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -DCURL_STATICLIB -DHTTP_ONLY -m32 -msse3 -msse4.1 -shared
 
 # Include directory
 INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
@@ -35,7 +35,7 @@ $(BIN_DIR)/%.o: %.c
 all:
 	mkdir -p $(BIN_DIR)
 
-	$(MAKE) $(NAME) && strip -x $(BIN_DIR)/$(NAME)_mm.so
+	$(MAKE) $(NAME)
 
 $(NAME): $(OBJ_LINUX)
 
