@@ -68,13 +68,13 @@ void CMatchApi::ClientConnectCallback(CURL* ch, size_t Size, const char* Memory,
 
 						if (Result.contains("kick"))
 						{
-							auto Kick = Result["kick"].get<bool>();
+							auto Kick = (bool)(Result["kick"]);
 
 							if (Kick)
 							{
 								if (Result.contains("reason"))
 								{
-									auto Reason = Result["reason"].get<std::string>();
+									auto Reason = (std::string)(Result["reason"]);
 
 									gMatchUtil.DropClient(EntityIndex, "%s", Reason.c_str());
 								}
@@ -87,7 +87,7 @@ void CMatchApi::ClientConnectCallback(CURL* ch, size_t Size, const char* Memory,
 							{
 								if (Result.contains("reason"))
 								{
-									auto Reason = Result["reason"].get<std::string>();
+									auto Reason = (std::string)(Result["reason"]);
 
 									if (!Reason.empty())
 									{

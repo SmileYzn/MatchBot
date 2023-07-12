@@ -486,22 +486,29 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 			for (auto const& el : json.items())
 			{
 				// Get map name from json data
-				auto MapName = Q_strdup(el.value().get<std::string>().data());
+				auto Map = (std::string)(el.value());
 
-				// If is not empty
-				if (MapName)
+				// If map is not empty
+				if (!Map.empty())
 				{
-					// If is map is valid on server
-					if (g_engfuncs.pfnIsMapValid(MapName))
-					{
-						// If has to skip corrent map
-						if (!CurrentMap && !Q_stricmp(STRING(gpGlobals->mapname), MapName))
-						{
-							continue;
-						}
+					// Get Map Name from string
+					auto MapName = Q_strdup(Map.data());
 
-						// Insert on map list with index
-						MapList.insert(std::make_pair(MapIndex++, el.value()));
+					// If is not empty
+					if (MapName)
+					{
+						// If is map is valid on server
+						if (g_engfuncs.pfnIsMapValid(MapName))
+						{
+							// If has to skip corrent map
+							if (!CurrentMap && !Q_stricmp(STRING(gpGlobals->mapname), MapName))
+							{
+								continue;
+							}
+
+							// Insert on map list with index
+							MapList.insert(std::make_pair(MapIndex++, el.value()));
+						}
 					}
 				}
 			}
