@@ -1061,7 +1061,6 @@ void CMatchStats::DefuseBombStart(CBasePlayer* Player)
 	}
 }
 
-
 // Defuse Bomb End
 void CMatchStats::DefuseBombEnd(CBasePlayer* Player, bool Defused)
 {
