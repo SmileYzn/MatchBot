@@ -14,7 +14,7 @@ void CMatchAdmin::ServerActivate()
     try
     {
         // File stream
-        std::ifstream fp(MB_ADMIN_LIST_FILE);
+        std::ifstream fp(MB_ADMIN_LIST_FILE, std::ios::in);
 
         // If file is open
         if (fp)
@@ -41,6 +41,9 @@ void CMatchAdmin::ServerActivate()
                     this->m_Data.insert(std::make_pair(Admin["Auth"], Admin["Flags"]));
                 }
             }
+
+            // Close File
+            fp.close();
         }
         else
         {

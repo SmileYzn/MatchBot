@@ -17,7 +17,7 @@ void CMatchLanguage::Load(const char* Language)
 			try
 			{
 				// File stream
-				std::ifstream fp(MB_LANGUAGE_FILE);
+				std::ifstream fp(MB_LANGUAGE_FILE, std::ios::in);
 
 				// If file is open
 				if (fp)
@@ -50,16 +50,16 @@ void CMatchLanguage::Load(const char* Language)
 										auto Text = el.value().get<std::string>();
 
 										// For chat and hudmessages
-										gMatchUtil.ReplaceAll(Text, "^1", "\1");
-										gMatchUtil.ReplaceAll(Text, "^3", "\3");
-										gMatchUtil.ReplaceAll(Text, "^4", "\4");
-										gMatchUtil.ReplaceAll(Text, "^n", "\n");
+										//gMatchUtil.ReplaceAll(Text, "^1", "\1");
+										//gMatchUtil.ReplaceAll(Text, "^3", "\3");
+										//gMatchUtil.ReplaceAll(Text, "^4", "\4");
+										//gMatchUtil.ReplaceAll(Text, "^n", "\n");
 
-										// For Menus
-										gMatchUtil.ReplaceAll(Text, "^w", "\\w");
-										gMatchUtil.ReplaceAll(Text, "^y", "\\y");
-										gMatchUtil.ReplaceAll(Text, "^r", "\\r");
-										gMatchUtil.ReplaceAll(Text, "^R", "\\R");
+										//// For Menus
+										//gMatchUtil.ReplaceAll(Text, "^w", "\\w");
+										//gMatchUtil.ReplaceAll(Text, "^y", "\\y");
+										//gMatchUtil.ReplaceAll(Text, "^r", "\\r");
+										//gMatchUtil.ReplaceAll(Text, "^R", "\\R");
 
 										// Insert on final container
 										this->m_Data.insert(std::make_pair(row.key(), Text));
@@ -68,15 +68,18 @@ void CMatchLanguage::Load(const char* Language)
 							}
 						}
 					}
+
+					// Close file
+					fp.close();
 				}
 				else
 				{
-					LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_LANGUAGE_FILE);
+					//LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_LANGUAGE_FILE);
 				}
 			}
 			catch (nlohmann::json::parse_error& e)
 			{
-				LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+				//LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
 			}
 		}
 	}

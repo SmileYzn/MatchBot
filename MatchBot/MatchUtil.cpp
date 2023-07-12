@@ -465,7 +465,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 	try
 	{
 		// File stream
-		std::ifstream fp(MB_MAP_LIST_FILE);
+		std::ifstream fp(MB_MAP_LIST_FILE, std::ios::in);
 
 		// If file is open
 		if (fp)
@@ -505,6 +505,9 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 					}
 				}
 			}
+
+			// Close File
+			fp.close();
 		}
 		else
 		{
