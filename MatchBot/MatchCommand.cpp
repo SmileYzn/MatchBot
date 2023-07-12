@@ -42,7 +42,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		if (parg1)
 		{
 			// Compare if is an admin or player prefix
-			if (parg1[0u] == gMatchBot.m_AdminPrefix->string[0] || parg1[0u] == gMatchBot.m_PlayerPrefix->string[1])
+			if (parg1[0u] == gMatchBot.m_AdminPrefix->string[0u] || parg1[0u] == gMatchBot.m_PlayerPrefix->string[0u])
 			{
 				// Get arguments
 				auto pCmdArgs = g_engfuncs.pfnCmd_Args();
