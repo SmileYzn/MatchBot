@@ -63,6 +63,8 @@ void CMatchLanguage::Load(const char* Language)
 
 										// Insert on final container
 										this->m_Data.insert(std::make_pair(row.key(), Text));
+
+										LOG_CONSOLE(PLID, "[%s] %s %s", __func__, row.key().c_str(), Text.c_str());
 									}
 								}
 							}
