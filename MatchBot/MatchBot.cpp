@@ -672,17 +672,21 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	}
 
 	// Do not allow auto selection, this broken team systems
-	if (Slot == 5)
+	if (Slot == MENU_SLOT_TEAM_RANDOM)
 	{
-		// Send message and block it
-		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3Auto Team Select\1 is not allowed."));
+		// If player is unassigned
+		if (Player->m_iTeam != UNASSIGNED)
+		{
+			// Send message and block it
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3Auto Team Select\1 is not allowed."));
 
-		// Block it
-		return true;
+			// Block it
+			return true;
+		}
 	}
 
 	// If is spectator
-	if (Slot == 6)
+	if (Slot == MENU_SLOT_TEAM_SPECT)
 	{
 		// If we not allow spectators
 		if (!CVAR_GET_FLOAT("allow_spectators"))
@@ -723,7 +727,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	}
 
 	// If player is trying to join in Terrorists or CTs team while spectator or unnasigned
-	if (Slot == TERRORIST || Slot == CT)
+	if (Slot == MENU_SLOT_TEAM_TERRORIST || Slot == MENU_SLOT_TEAM_CT)
 	{
 		// Count player count in desired team, and check if is not full
 		if (gMatchUtil.GetCount((TeamName)Slot) >= (int)(this->m_PlayersMax->value / 2.0f))

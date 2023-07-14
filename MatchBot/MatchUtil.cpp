@@ -2,6 +2,7 @@
 
 CMatchUtil gMatchUtil;
 
+// Make Directory
 int CMatchUtil::MakeDirectory(const char* Path)
 {
 	struct stat st = { 0 };

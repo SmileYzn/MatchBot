@@ -25,6 +25,7 @@ public:
 	// Register console variable
 	cvar_t* CvarRegister(const char* Name, const char* Value);
 
+	// Register console variable
 	cvar_t* CvarRegister(const char* Name, const char* Value, int Flags);
 
 	// Send Team Info to player
