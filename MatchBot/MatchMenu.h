@@ -29,7 +29,6 @@ public:
 private:
 	void Display(int EntityIndex, int Page);
 	void ShowMenu(int EntityIndex, int Slots, int Time, std::string Text);
-	void HideMenu(int EntityIndex);
 
 	std::string m_Text;
 	std::vector<P_MENU_ITEM> m_Data;

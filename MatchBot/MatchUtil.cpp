@@ -168,7 +168,7 @@ void CMatchUtil::ClientPrint(edict_t* pEntity, int msg_dest, const char* Format,
 
 	static int iMsgTextMsg;
 
-	if (iMsgTextMsg || (iMsgTextMsg = GET_USER_MSG_ID(PLID, "TextMsg", NULL)))
+	if (iMsgTextMsg || (iMsgTextMsg = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "TextMsg", NULL)))
 	{
 		if (pEntity)
 		{

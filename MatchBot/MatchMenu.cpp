@@ -62,7 +62,27 @@ void CMatchMenu::Hide(int EntityIndex)
 {
 	this->m_Page = -1;
 
-	this->HideMenu(EntityIndex);
+	auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
+
+	if (Player)
+	{
+		Player->m_iMenu = Menu_OFF;
+
+		if (!Player->IsDormant() && !Player->IsBot())
+		{
+			static int iMsgShowMenu;
+
+			if (iMsgShowMenu || (iMsgShowMenu = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "ShowMenu", NULL)))
+			{
+				g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgShowMenu, nullptr, Player->edict());
+				g_engfuncs.pfnWriteShort(0);
+				g_engfuncs.pfnWriteChar(0);
+				g_engfuncs.pfnWriteByte(0);
+				g_engfuncs.pfnWriteString("");
+				g_engfuncs.pfnMessageEnd();
+			}
+		}
+	}
 }
 
 bool CMatchMenu::Handle(int EntityIndex, int Key)
@@ -259,30 +279,4 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text
 	}
 }
 
-void CMatchMenu::HideMenu(int EntityIndex)
-{
-	auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
-
-	if (Player)
-	{
-		if (!Player->IsBot())
-		{
-			if (!Player->IsDormant())
-			{
-				static int iMsgShowMenu;
-
-				if (iMsgShowMenu || (iMsgShowMenu = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "ShowMenu", NULL)))
-				{
-					Player->m_iMenu = Menu_OFF;
-
-					g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgShowMenu, nullptr, Player->edict());
-					g_engfuncs.pfnWriteShort(0);
-					g_engfuncs.pfnWriteChar(0);
-					g_engfuncs.pfnWriteByte(0);
-					g_engfuncs.pfnWriteString("");
-					g_engfuncs.pfnMessageEnd();
-				}
-			}
-		}
-	}
 }
