@@ -984,7 +984,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 					if (this->GetRound() >= (int)(this->m_PlayRounds->value / 2.0f))
 					{
 						// Change State
-						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_HALFTIME);
+						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay + 1.0f, false, (void*)this->NextState, STATE_HALFTIME);
 					}
 
 					break;
@@ -1004,7 +1004,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 					// If any team reached Half rounds + 1, end match
 					if (ScoreTR > Half || ScoreCT > Half)
 					{
-						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_END);
+						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay + 1.0f, false, (void*)this->NextState, STATE_END);
 					}
 					// If both teams reached half of total rounds, check for overtime
 					else if ((ScoreTR == Half) && (ScoreCT == Half))
@@ -1012,12 +1012,12 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 						// Play Overtime directly (mb_play_ot_mode = 1)
 						if (this->m_PlayMode->value == 1)
 						{
-							gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_HALFTIME);
+							gMatchTask.Create(TASK_CHANGE_STATE, tmDelay + 1.0f, false, (void*)this->NextState, STATE_HALFTIME);
 						}
 						// End match tied (mb_play_ot_mode = 2)
 						else if (this->m_PlayMode->value == 2)
 						{
-							gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_END);
+							gMatchTask.Create(TASK_CHANGE_STATE, tmDelay + 1.0f, false, (void*)this->NextState, STATE_END);
 						}
 						// Start Overtime vote (mb_play_ot_mode = 3)
 						else if (this->m_PlayMode->value == 3)
@@ -1039,13 +1039,13 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 					if (this->GetScoreOT(TERRORIST) > Half || this->GetScoreOT(CT) > Half)
 					{
 						// End match with a winner
-						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_END);
+						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay + 1.0f, false, (void*)this->NextState, STATE_END);
 					}
 					// Swap Teams for every half of OT rounds
 					else if ((this->GetRound() % (int)(Half)) == 0)
 					{
 						// Swap Teams
-						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay, false, (void*)this->NextState, STATE_HALFTIME);
+						gMatchTask.Create(TASK_CHANGE_STATE, tmDelay + 1.0f, false, (void*)this->NextState, STATE_HALFTIME);
 					}
 
 					break;

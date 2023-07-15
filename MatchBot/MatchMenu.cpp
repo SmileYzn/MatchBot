@@ -278,5 +278,3 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text
 		}
 	}
 }
-
-}
