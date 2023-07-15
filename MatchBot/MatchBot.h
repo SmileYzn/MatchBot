@@ -201,6 +201,7 @@ public:
 	cvar_t* m_RestrictWeapons = nullptr;
 	cvar_t* m_ExtraSmokeCount = nullptr;
 	cvar_t* m_FixSpawnDistance = nullptr;
+	cvar_t* m_PauseTime = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 	cvar_t* m_ApiUrl = nullptr;

@@ -1,7 +1,5 @@
 #pragma once
 
-#define MATCH_PAUSE_TIME 60
-
 class CMatchPause
 {
 public:
@@ -13,7 +11,8 @@ public:
 
 	void SetRoundTime(int Time, bool FreezePeriod);
 private:
-	bool m_Pause = false;
+	bool	m_Pause   = false;
+	float	m_BuyTime = 0.0f;
 };
 
 extern CMatchPause gMatchPause;

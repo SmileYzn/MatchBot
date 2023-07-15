@@ -110,6 +110,9 @@ void CMatchBot::ServerActivate()
 	// Distance to respawn player if try to bug respawn on de_dust2 ramp and other maps (Distance in units to enable fix, 0 to disable)
 	this->m_FixSpawnDistance = gMatchUtil.CvarRegister("mb_fix_spawn_distance", "60.0");
 
+	// Amount of seconds to pause match (0 Disable, or number of seconds to pause the match)
+	this->m_PauseTime = gMatchUtil.CvarRegister("mb_pause_time", "60.0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 

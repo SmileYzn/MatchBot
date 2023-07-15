@@ -17,6 +17,16 @@ void CMatchPause::Init(CBasePlayer* Player)
 				// Pause Match
 				this->m_Pause = true;
 
+				// If map has buyzone
+				if (CSGameRules()->m_bMapHasBuyZone)
+				{
+					// Get default buy time
+					this->m_BuyTime = g_engfuncs.pfnCVarGetFloat("mp_buytime");
+
+					// Set buytime
+					g_engfuncs.pfnCVarSetFloat("mp_buytime", gMatchBot.m_PauseTime->value);
+				}
+				
 				// If admin issued command
 				if (Player)
 				{
@@ -67,14 +77,21 @@ void CMatchPause::RoundRestart()
 			// Disable it
 			this->m_Pause = false;
 
-			// Pause for 60 seconds (Create variable?)
-			this->SetRoundTime(MATCH_PAUSE_TIME + 1, true);
+			// If map has buyzone
+			if (CSGameRules()->m_bMapHasBuyZone)
+			{
+				// Restore default buy time
+				g_engfuncs.pfnCVarSetFloat("mp_buytime", this->m_BuyTime);
+			}
+
+			// Pause for 60 seconds
+			this->SetRoundTime(static_cast<int>(gMatchBot.m_PauseTime->value) + 1, true);
 
 			// Create Pause Timer Task
-			gMatchTask.Create(TASK_PAUSE_MATCH, 0.5, true, (void*)this->PauseTimer, MATCH_PAUSE_TIME);
+			gMatchTask.Create(TASK_PAUSE_MATCH, 0.5, true, (void*)this->PauseTimer, static_cast<int>(gMatchBot.m_PauseTime->value));
 
 			// Remain time in seconds
-			time_t RemainTime = MATCH_PAUSE_TIME;
+			time_t RemainTime = static_cast<time_t>(gMatchBot.m_PauseTime->value);
 
 			// Create time struct
 			struct tm* tm_info = localtime(&RemainTime);

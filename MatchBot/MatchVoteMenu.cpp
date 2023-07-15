@@ -392,71 +392,75 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 		// If vote state is not running
 		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
 		{
-			// Get Players
-			auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);
-
-			// If player count match
-			if (gMatchBot.m_PlayerVotePause->value && (Players.size() >= (size_t)round(gMatchBot.m_PlayerVotePause->value)))
+			// If pause timer is enabled
+			if (gMatchBot.m_PauseTime->value > 0.0f)
 			{
-				// If has CS GameRules
-				if (g_pGameRules)
+				// Get Players
+				auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);
+
+				// If player count match
+				if (gMatchBot.m_PlayerVotePause->value && (Players.size() >= (size_t)round(gMatchBot.m_PlayerVotePause->value)))
 				{
-					// If is not in freeze time period
-					if (!CSGameRules()->IsFreezePeriod())
+					// If has CS GameRules
+					if (g_pGameRules)
 					{
-						// If player not voted yet
-						if (!this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam])
+						// If is not in freeze time period
+						if (!CSGameRules()->IsFreezePeriod())
 						{
-							// Add Vote
-							this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam] = true;
-
-							// Needed votes
-							auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
-
-							// Get Vote Count
-							auto VoteCount = 0;
-
-							// Loop Players in team
-							for (const auto& Temp : Players)
+							// If player not voted yet
+							if (!this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam])
 							{
-								// Count Vote if is true
-								if (this->m_Votes[Temp->entindex()].VotePause[Temp->m_iTeam])
+								// Add Vote
+								this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam] = true;
+
+								// Needed votes
+								auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+
+								// Get Vote Count
+								auto VoteCount = 0;
+
+								// Loop Players in team
+								for (const auto& Temp : Players)
 								{
-									VoteCount++;
+									// Count Vote if is true
+									if (this->m_Votes[Temp->entindex()].VotePause[Temp->m_iTeam])
+									{
+										VoteCount++;
+									}
 								}
-							}
 
-							// Vote Map Progress to change map
-							auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+								// Vote Map Progress to change map
+								auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
 
-							// If need more votes to change map
-							if (VoteProgress < 100.0f)
-							{
-								// Send messages
-								gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for pause match: %2.0f%% of votes to pause match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
-								gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to vote for a pause."));
+								// If need more votes to change map
+								if (VoteProgress < 100.0f)
+								{
+									// Send messages
+									gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for pause match: %2.0f%% of votes to pause match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
+									gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to vote for a pause."));
+								}
+								else
+								{
+									// Pause Match
+									gMatchPause.Init(nullptr);
+								}
 							}
 							else
 							{
-								// Pause Match
-								gMatchPause.Init(nullptr);
+								// Send error message
+								gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("You already voted to pause the game."));
 							}
-						}
-						else
-						{
-							// Send error message
-							gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("You already voted to pause the game."));
-						}
 
-						// Return result
-						return true;
+							// Return result
+							return true;
+						}
 					}
 				}
-			}
-			else
-			{
-				// Send message
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), (int)(gMatchBot.m_PlayerVotePause->value));
+				else
+				{
+					// Send message
+					gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), (int)(gMatchBot.m_PlayerVotePause->value));
+				}
 			}
 		}
 	}
