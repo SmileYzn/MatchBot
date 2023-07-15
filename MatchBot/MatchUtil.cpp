@@ -79,19 +79,24 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 
 	if (iMsgSayText || (iMsgSayText = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "SayText", NULL)))
 	{
-		va_list argList;
+		char Buffer[191] = { 0 };
 
-		va_start(argList, Format);
+		va_list ArgList;
+		va_start(ArgList, Format);
+		Q_vsnprintf(Buffer, sizeof(Buffer), Format, ArgList);
+		va_end(ArgList);
 
-		char Buffer[191];
+		if (gMatchBot.m_MatchTag)
+		{
+			if (gMatchBot.m_MatchTag->string)
+			{
+				char Temp[191] = { 0 };
 
-		vsnprintf(Buffer, sizeof(Buffer), Format, argList);
+				Q_snprintf(Temp, sizeof(Temp), "^4[%s]^1 %s", gMatchBot.m_MatchTag->string, Buffer);
 
-		va_end(argList);
-
-		char SayText[191];
-
-		snprintf(SayText, sizeof(SayText), "\4[%s]\1 %s", gMatchBot.GetTag(), Buffer);
+				Q_strcpy_s(Buffer, Temp);
+			}
+		}
 
 		if (Sender < PRINT_TEAM_BLUE || Sender > gpGlobals->maxClients)
 		{
@@ -102,6 +107,8 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 			Sender = abs(Sender) + MAX_CLIENTS;
 		}
 
+		this->ParseLinesAndColors(Buffer);
+
 		if (!FNullEnt(pEntity))
 		{
 			if (!(pEntity->v.flags & FL_FAKECLIENT))
@@ -109,7 +116,7 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 				g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgSayText, nullptr, pEntity);
 				g_engfuncs.pfnWriteByte(Sender ? Sender : ENTINDEX(pEntity));
 				g_engfuncs.pfnWriteString("%s");
-				g_engfuncs.pfnWriteString(SayText);
+				g_engfuncs.pfnWriteString(Buffer);
 				g_engfuncs.pfnMessageEnd();
 			}
 		}
@@ -126,7 +133,7 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 						g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgSayText, nullptr, pTempEntity);
 						g_engfuncs.pfnWriteByte(Sender ? Sender : i);
 						g_engfuncs.pfnWriteString("%s");
-						g_engfuncs.pfnWriteString(SayText);
+						g_engfuncs.pfnWriteString(Buffer);
 						g_engfuncs.pfnMessageEnd();
 					}
 				}
@@ -404,6 +411,8 @@ void CMatchUtil::HudMessage(edict_t* pEntity, hudtextparms_t textparms, const ch
 
 	va_end(argList);
 
+	this->ParseLinesAndColors(Buffer);
+
 	if (pEntity)
 	{
 		g_engfuncs.pfnMessageBegin(MSG_ONE_UNRELIABLE, SVC_TEMPENTITY, NULL, pEntity);
@@ -653,4 +662,47 @@ void CMatchUtil::DropClient(int EntityIndex, const char* Format, ...)
 			}
 		}
 	}
+}
+
+int CMatchUtil::ParseLinesAndColors(char* Buffer)
+{
+	size_t len = strlen(Buffer);
+
+	int offs = 0;
+
+	if (len > 0)
+	{
+		int c;
+
+		for (size_t i = 0; i < len; i++)
+		{
+			c = Buffer[i];
+
+			if (c == '^' && (i != len - 1))
+			{
+				c = Buffer[++i];
+
+				if (c == 'n' || c == 't' || (c >= '1' && c <= '4'))
+				{
+					switch (c)
+					{
+						case '1': c = '\x01'; break;
+						case '2': c = '\x02'; break;
+						case '3': c = '\x03'; break;
+						case '4': c = '\x04'; break;
+						case 'n': c = '\n'; break;
+						case 't': c = '\t'; break;
+					}
+
+					offs++;
+				}
+			}
+
+			Buffer[i - offs] = c;
+		}
+
+		Buffer[len - offs] = '\0';
+	}
+
+	return offs;
 }

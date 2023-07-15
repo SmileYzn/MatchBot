@@ -99,7 +99,7 @@ void CMatchVoteTeam::Stop()
 	}
 	else
 	{
-		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The choice of the teams failed: \3No votes."));
+		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The choice of the teams failed: ^3No votes."));
 
 		gMatchVoteTeam.SetMode(RANDOM_LONG(1,2));
 	}
@@ -125,7 +125,7 @@ void CMatchVoteTeam::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
 
 	if (Player)
 	{
-		gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 choosed \3%s\1"), STRING(Player->edict()->v.netname), Item.Text.c_str());
+		gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 choosed ^3%s^1"), STRING(Player->edict()->v.netname), Item.Text.c_str());
 
 		gMatchVoteTeam.AddVote(Item.Info, 1);
 	}

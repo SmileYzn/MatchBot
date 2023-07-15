@@ -8,7 +8,7 @@ void CMatchReady::Init(int PlayersMin)
 
 	std::fill(this->m_Ready.begin(), this->m_Ready.end(), false);
 
-	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Say \4.ready\1 to continue."));
+	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Say ^4.ready^1 to continue."));
 
 	gMatchTask.Create(TASK_READY_SYSTEM, 0.5f, true, (void*)this->Task, PlayersMin);
 }
@@ -96,7 +96,7 @@ void CMatchReady::PlayerGetIntoGame(CBasePlayer* Player)
 	{
 		if (!this->GetReady(Player->entindex()))
 		{
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Say \4.ready\1 to continue."));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Say ^4.ready^1 to continue."));
 		}
 	}
 }
@@ -121,7 +121,7 @@ bool CMatchReady::Ready(CBasePlayer* Player)
 			{
 				this->SetReady(Player->entindex(), true);
 
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 is ready."), STRING(Player->edict()->v.netname));
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 is ready."), STRING(Player->edict()->v.netname));
 
 				return true;
 			}
@@ -143,7 +143,7 @@ bool CMatchReady::NotReady(CBasePlayer* Player)
 			{
 				this->SetReady(Player->entindex(), false);
 
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 is not ready."), STRING(Player->edict()->v.netname));
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 is not ready."), STRING(Player->edict()->v.netname));
 
 				return true;
 			}

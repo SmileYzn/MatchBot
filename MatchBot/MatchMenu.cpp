@@ -19,6 +19,11 @@ void CMatchMenu::Create(std::string Title, bool Exit, void* CallbackFunction)
 {
 	this->Clear();
 
+	gMatchUtil.ReplaceAll(Title, "^w", "\\w");
+	gMatchUtil.ReplaceAll(Title, "^y", "\\y");
+	gMatchUtil.ReplaceAll(Title, "^r", "\\r");
+	gMatchUtil.ReplaceAll(Title, "^R", "\\R");
+
 	this->m_Text = Title;
 
 	this->m_Page = -1;

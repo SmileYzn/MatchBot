@@ -6,7 +6,7 @@ void CMatchLO3::Run()
 {
 	this->Restart(3);
 
-	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Live in three restarts! \3Get Ready!!"));
+	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Live in three restarts! ^3Get Ready!!"));
 }
 
 void CMatchLO3::Restart(int Time)
@@ -26,6 +26,6 @@ void CMatchLO3::Restart(int Time)
 
 		gMatchUtil.HudMessage(NULL, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 1, 12.0, 12.0, 0.0f, 0.0f, 1), _T("--- MATCH IS LIVE ---"));
 
-		gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("\4Match Is Live! Good Luck & Have Fun!!"));
+		gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("^4Match Is Live! Good Luck & Have Fun!!"));
 	}
 }

@@ -153,7 +153,7 @@ void CMatchBot::ServerActivate()
 	this->SetState(STATE_DEAD);
 
 	// Load Language
-	gMatchLanguage.Load(this->m_Language->string);
+	gMatchLanguage.Load();
 }
 
 // On server deactivate
@@ -257,7 +257,7 @@ void CMatchBot::SetState(int State)
 		case STATE_WARMUP:
 		{
 			// Display message when starts
-			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting \4%s\1, Get Ready!"), this->GetState(this->m_State));
+			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
 
 			// Start Warmup things
 			gMatchWarmup.Init();
@@ -336,7 +336,7 @@ void CMatchBot::SetState(int State)
 				gMatchUtil.ServerCommand("bot_knives_only");
 
 				// Send message
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting \4Knife Round\1, Get Ready!"));
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4Knife Round^1, Get Ready!"));
 			}
 			else
 			{
@@ -350,7 +350,7 @@ void CMatchBot::SetState(int State)
 				gMatchUtil.ServerCommand("bot_all_weapons");
 
 				// Send message
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting \4%s\1, Get Ready!"), this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
 			}
 
 			// Start LO3 script
@@ -374,7 +374,7 @@ void CMatchBot::SetState(int State)
 				if ((int)gMatchUtil.GetPlayers(true, true).size() < this->m_PlayersMin->value)
 				{
 					// Send message
-					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
+					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("^3%s^1 started, Get Ready!"), this->GetState(this->m_State));
 
 					// Init Warmup things
 					gMatchWarmup.Init();
@@ -410,9 +410,9 @@ void CMatchBot::SetState(int State)
 			else
 			{
 				// Send message
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 started, Get Ready!"), this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("^3%s^1 started, Get Ready!"), this->GetState(this->m_State));
 
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Wait for an server \4Administrator\1 restart the match!"), this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Wait for an server ^3Administrator^1 restart the match!"), this->GetState(this->m_State));
 			}
 
 			break;
@@ -430,7 +430,7 @@ void CMatchBot::SetState(int State)
 			this->m_Score[CT][STATE_SECOND_HALF] = 0;
 
 			// Send messages
-			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting \4%s\1, Get Ready!"), this->GetState(this->m_State));
+			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
 
 			// Send scores
 			this->Scores(nullptr, true);
@@ -444,7 +444,7 @@ void CMatchBot::SetState(int State)
 		case STATE_OVERTIME:
 		{
 			// Message
-			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting \4%s\1, Get Ready!"), this->GetState(this->m_State));
+			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
 
 			// Send Scores
 			this->Scores(nullptr, true);
@@ -678,7 +678,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 		if (Player->m_iTeam != UNASSIGNED)
 		{
 			// Send message and block it
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3Auto Team Select\1 is not allowed."));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3Auto Team Select^1 is not allowed."));
 
 			// Block it
 			return true;
@@ -692,7 +692,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 		if (!CVAR_GET_FLOAT("allow_spectators"))
 		{
 			// Send message and block it
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3%s\1 are not allowed."), this->GetTeam(SPECTATOR, false));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 are not allowed."), this->GetTeam(SPECTATOR, false));
 
 			// Block it
 			return true;
@@ -705,7 +705,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 		if (Player->IsAlive())
 		{
 			// Send message
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You are already on the \3%s\1 team."), this->GetTeam(Player->m_iTeam, false));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You are already on the ^3%s^1 team."), this->GetTeam(Player->m_iTeam, false));
 
 			// Block it
 			return true;
@@ -733,7 +733,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 		if (gMatchUtil.GetCount((TeamName)Slot) >= (int)(this->m_PlayersMax->value / 2.0f))
 		{
 			// Send message
-			gMatchUtil.SayText(Player->edict(), (Slot == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("The \3%s\1 team is complete."), this->GetTeam((TeamName)Slot, false));
+			gMatchUtil.SayText(Player->edict(), (Slot == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("The ^3%s^1 team is complete."), this->GetTeam((TeamName)Slot, false));
 
 			// Block it
 			return true;
@@ -754,8 +754,8 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 		if (!Player->IsBot())
 		{
 			// Send messages
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (\3%s\1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say \4.help\1 to view command list."));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (^3%s^1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4.help^1 to view command list."));
 		}
 	}
 }
@@ -789,7 +789,7 @@ void CMatchBot::PlayerDisconnect()
 void CMatchBot::Status(CBasePlayer* Player)
 {
 	// Send message
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("\3%s\1: Players %d, (%d Required of %d Allowed)"), this->GetState(this->m_State), gMatchUtil.GetPlayers(true, true).size(), (int)m_PlayersMin->value, (int)m_PlayersMax->value);
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1: Players %d, (%d Required of %d Allowed)"), this->GetState(this->m_State), gMatchUtil.GetPlayers(true, true).size(), (int)m_PlayersMin->value, (int)m_PlayersMax->value);
 
 	// If match is running
 	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_END)
@@ -834,12 +834,12 @@ void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 			if (this->m_State != STATE_END)
 			{
 				// Send to player or to all players if empty
-				gMatchUtil.SayText(Target, Sender, _T("\3%s\1 (\4%d\1) - (\4%d\1) \3%s\1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
+				gMatchUtil.SayText(Target, Sender, _T("^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
 			}
 			else
 			{
 				// Send to player or to all players if empty
-				gMatchUtil.SayText(Target, Sender, _T("Game Over: \3%s\1 (\4%d\1) - (\4%d\1) \3%s\1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
+				gMatchUtil.SayText(Target, Sender, _T("Game Over: ^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"), this->GetTeam(TERRORIST, false), this->GetScore(TERRORIST), this->GetScore(CT), this->GetTeam(CT, false));
 			}
 		}
 		else // Score Method 2: Show winner name and scores
@@ -856,12 +856,12 @@ void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 				if (this->m_State != STATE_END)
 				{
 					// Send message
-					gMatchUtil.SayText(Target, Sender, _T("The \3%s\1 are winning: %d-%d"), this->GetTeam(Winner, false), this->GetScore(Winner), this->GetScore(Losers));
+					gMatchUtil.SayText(Target, Sender, _T("The ^3%s^1 are winning: %d-%d"), this->GetTeam(Winner, false), this->GetScore(Winner), this->GetScore(Losers));
 				}
 				else
 				{
 					// Send message
-					gMatchUtil.SayText(Target, Sender,(this->m_State == STATE_END) ? _T("Game Over! The \3%s\1 have won the game: %d-%d") : _T("The \3%s\1 are winning: %d-%d"),this->GetTeam(Winner, false),this->GetScore(Winner),this->GetScore(Losers));
+					gMatchUtil.SayText(Target, Sender,(this->m_State == STATE_END) ? _T("Game Over! The ^3%s^1 have won the game: %d-%d") : _T("The ^3%s^1 are winning: %d-%d"),this->GetTeam(Winner, false),this->GetScore(Winner),this->GetScore(Losers));
 				}
 			}
 			else
@@ -1201,7 +1201,7 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 			else
 			{
 				// Message here
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start an vote in \3%s\1 state."), this->GetState(this->m_State));
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start an vote in ^3%s^1 state."), this->GetState(this->m_State));
 			}
 		}
 		else
@@ -1247,7 +1247,7 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 		else
 		{
 			// Message here
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start an vote in \3%s\1 state."), this->GetState(this->m_State));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start an vote in ^3%s^1 state."), this->GetState(this->m_State));
 		}
 	}
 	else
@@ -1273,7 +1273,7 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 			gMatchTimer.Stop(false);
 
 			// Send message to all players
-			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 started match."), STRING(Player->edict()->v.netname));
+			gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 started match."), STRING(Player->edict()->v.netname));
 
 			// Next state is first half if match is in warmup
 			auto State = STATE_FIRST_HALF;
@@ -1313,7 +1313,7 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 		else
 		{
 			// Error message
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start match in \3%s\1 state."), this->GetState(this->m_State));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot start match in ^3%s^1 state."), this->GetState(this->m_State));
 		}
 	}
 	else
@@ -1338,11 +1338,11 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 			// Send message to all players
 			if (Player)
 			{
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 stopped match."), STRING(Player->edict()->v.netname));
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 stopped match."), STRING(Player->edict()->v.netname));
 			}
 			else
 			{
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 stopped match."), Plugin_info.name);
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("^3%s^1 stopped match."), Plugin_info.name);
 			}
 
 			// If is in Knife Round
@@ -1367,7 +1367,7 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 		else
 		{
 			// Error message
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot stop match in \3%s\1 state."), this->GetState(this->m_State));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot stop match in ^3%s^1 state."), this->GetState(this->m_State));
 		}
 	}
 	else
@@ -1390,12 +1390,12 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 			if (Player)
 			{
 				// Send message
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 restarted %s, get ready!"), STRING(Player->edict()->v.netname), this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 restarted %s, get ready!"), STRING(Player->edict()->v.netname), this->GetState(this->m_State));
 			}
 			else
 			{
 				// Send message
-				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("\3%s\1 restarted %s, get ready!"), Plugin_info.name, this->GetState(this->m_State));
+				gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("^3%s^1 restarted %s, get ready!"), Plugin_info.name, this->GetState(this->m_State));
 
 			}
 
@@ -1408,7 +1408,7 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 			if (Player)
 			{
 				// Error message
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot restart match in \3%s\1 state."), this->GetState(this->m_State));
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot restart match in ^3%s^1 state."), this->GetState(this->m_State));
 			}
 		}
 	}
@@ -1436,7 +1436,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 		this->m_Score[Winner][STATE_SECOND_HALF] = HalfRounds;
 
 		// Send message
-		gMatchUtil.SayText(nullptr, (Winner == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("Game Over! The \3%s\1 team surrendered!!"), this->GetTeam(Loser, false));
+		gMatchUtil.SayText(nullptr, (Winner == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("Game Over! The ^3%s^1 team surrendered!!"), this->GetTeam(Loser, false));
 
 		// Remove LO3 script if is running
 		gMatchTask.Remove(TASK_TIMER_LO3);

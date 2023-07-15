@@ -21,7 +21,7 @@ void CMatchPause::Init(CBasePlayer* Player)
 				if (Player)
 				{
 					// Send Message
-					gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 Paused Match: Game will pause on next round start."), STRING(Player->edict()->v.netname));
+					gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 Paused Match: Game will pause on next round start."), STRING(Player->edict()->v.netname));
 				}
 				else
 				{
@@ -45,7 +45,7 @@ void CMatchPause::Init(CBasePlayer* Player)
 			if (Player)
 			{
 				// Send error message
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot pause match in \3%s\1 state."), gMatchBot.GetState(gMatchBot.GetState()));
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_RED, _T("Cannot pause match in ^3%s^1 state."), gMatchBot.GetState(gMatchBot.GetState()));
 			}
 		}
 	}
@@ -89,7 +89,7 @@ void CMatchPause::RoundRestart()
 				if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)
 				{
 					// Send message
-					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Match paused: Match will continue in \3%s\1."), Time);
+					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Match paused: Match will continue in ^3%s^1."), Time);
 				}
 			}
 		}
@@ -121,7 +121,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 				if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)
 				{
 					// Send message
-					gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 0, 0.53, 0.53, 0.0, 0.0, 1), _T("MATCH PAUSED\n%s LEFT"), Time);
+					gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 0, 0.53, 0.53, 0.0, 0.0, 1), _T("MATCH PAUSED^n%s LEFT"), Time);
 				}
 			}
 		}

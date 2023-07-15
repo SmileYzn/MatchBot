@@ -54,7 +54,7 @@ bool CMatchReport::Menu(CBasePlayer* Player)
 
 							gMatchMenu[EntityIndex].Show(Player->entindex());
 
-							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Select player to rerport with reason: \3%s."), this->m_Reason[EntityIndex].c_str());
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Select player to rerport with reason: ^3%s."), this->m_Reason[EntityIndex].c_str());
 
 							return true;
 						}
@@ -70,7 +70,7 @@ bool CMatchReport::Menu(CBasePlayer* Player)
 				}
 			}
 
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: .report \3<Description of report>\1"));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: .report ^3<Description of report>^1"));
 
 			return false;
 		}
@@ -118,6 +118,6 @@ void CMatchReport::Insert(CBasePlayer* Player, CBasePlayer* Target)
 
 	strftime(Time, sizeof(Time), "%D %R", localtime(&Report.Time));
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Report about \3%s\1 sent at %s."), STRING(Target->edict()->v.netname), Time);
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Report about ^3%s^1 sent at %s."), STRING(Target->edict()->v.netname), Time);
 	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Administrators will review report and take an action if needed."));
 }

@@ -1328,7 +1328,7 @@ bool CMatchStats::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
 									(
 										Player->edict(),
 										Target->entindex(),
-										_T("\3%s\1 with %d HP (%d AP)"),
+										_T("^3%s^1 with %d HP (%d AP)"),
 										STRING(Target->edict()->v.netname),
 										(int)Target->edict()->v.health,
 										(int)Target->edict()->v.armorvalue
@@ -1383,7 +1383,7 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player, bool Command, bool InConsole)
 									(
 										Player->edict(),
 										Target->entindex(),
-										_T("Hit \3%s\1 %d time(s) (Damage %d)"),
+										_T("Hit ^3%s^1 %d time(s) (Damage %d)"),
 										STRING(Target->edict()->v.netname),
 										this->m_RoundHit[Player->entindex()][Target->entindex()],
 										this->m_RoundDmg[Player->entindex()][Target->entindex()]
@@ -1451,7 +1451,7 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player, bool Command, bool InC
 								(
 									Player->edict(),
 									Target->entindex(),
-									_T("Hit by \3%s\1 %d time(s) (Damage %d)"),
+									_T("Hit by ^3%s^1 %d time(s) (Damage %d)"),
 									STRING(Target->edict()->v.netname),
 									this->m_RoundHit[Target->entindex()][Player->entindex()],
 									this->m_RoundDmg[Target->entindex()][Player->entindex()]
@@ -1505,7 +1505,7 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
 									(
 										Player->edict(),
 										Target->entindex(),
-										_T("(%d dmg | %d hits) to (%d dmg | %d hits) from \3%s\1 (%d HP)"),
+										_T("(%d dmg | %d hits) to (%d dmg | %d hits) from ^3%s^1 (%d HP)"),
 										this->m_RoundDmg[Player->entindex()][Target->entindex()],
 										this->m_RoundHit[Player->entindex()][Target->entindex()],
 										this->m_RoundDmg[Target->entindex()][Player->entindex()],

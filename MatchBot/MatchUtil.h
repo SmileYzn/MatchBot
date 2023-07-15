@@ -82,6 +82,9 @@ public:
 	// Drop client from server
 	void DropClient(int EntityIndex, const char* Format, ...);
 
+	// New Lines and colors
+	int ParseLinesAndColors(char* Buffer);
+
 private:
 	// Variables Pointer
 	std::map<std::string, cvar_t> m_CvarData;

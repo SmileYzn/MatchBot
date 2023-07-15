@@ -95,12 +95,12 @@ void CMatchVoteMap::Stop(int VoteFailType)
 
         gMatchChangeMap.ChangeMap(Winner.Name, 5.0f, true);
 
-        gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Winner.Name.c_str());
+        gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to ^4%s^1..."), Winner.Name.c_str());
     }
     else
     {
         // Send vote failed message
-        gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The map choice has failed: \3No votes."));
+        gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("The map choice has failed: ^3No votes."));
 
         // What to do if vote map fail
         switch (VoteFailType)
@@ -166,7 +166,7 @@ void CMatchVoteMap::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
     {
         if (!Item.Disabled)
         {
-            gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 choosed \3%s\1"), STRING(Player->edict()->v.netname), Item.Text.c_str());
+            gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 choosed ^3%s^1"), STRING(Player->edict()->v.netname), Item.Text.c_str());
 
             gMatchVoteMap.AddVote(Item.Info, 1);
         }
@@ -258,7 +258,7 @@ bool CMatchVoteMap::ChangeRandomMap()
         if (g_engfuncs.pfnIsMapValid(Map))
         {
             // Send message to players
-            gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to \4%s\1..."), Map);
+            gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Changing map to ^4%s^1..."), Map);
 
             // Remove Vote Map Variable
             g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_VoteMap, "0");

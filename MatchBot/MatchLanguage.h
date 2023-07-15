@@ -10,13 +10,13 @@ class CMatchLanguage
 {
 public:
 	// Load Language file
-	void Load(const char* Language);
+	void Load();
 
 	// Get language by key, return same key if not found
 	const char* Get(const char* Key);
 
 private:
-	std::unordered_map<std::string, std::string> m_Data;
+	nlohmann::ordered_json m_Data;
 };
 
 extern CMatchLanguage gMatchLanguage;

@@ -45,7 +45,7 @@ void CMatchCaptain::Init(int PlayersMin)
 	}
 	else
 	{
-		gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("The choice of the teams failed: \3Not enough players.\1"));
+		gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("The choice of the teams failed: ^3Not enough players.^1"));
 
 		this->Stop(STATE_FIRST_HALF);
 	}
@@ -104,7 +104,7 @@ void CMatchCaptain::PlayerDisconnect(edict_t* pEdict)
 		}
 		else
 		{
-			gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("The choice of the teams failed: \3Not enough players.\1"));
+			gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("The choice of the teams failed: ^3Not enough players.^1"));
 
 			this->Stop(STATE_WARMUP);
 		}
@@ -124,7 +124,7 @@ void CMatchCaptain::SetCaptain(CBasePlayer* Player, TeamName Team)
 
 	Player->ClearConditions(BIT_CONDITION_INMENU);
 
-	gMatchUtil.SayText(nullptr, (Team == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("The \3%s\1 captain is: %s"), gMatchBot.GetTeam(Team, false), STRING(Player->edict()->v.netname));
+	gMatchUtil.SayText(nullptr, (Team == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("The ^3%s^1 captain is: %s"), gMatchBot.GetTeam(Team, false), STRING(Player->edict()->v.netname));
 }
 
 void CMatchCaptain::GetPlayer(CBasePlayer* Captain, CBasePlayer* Target)
@@ -146,7 +146,7 @@ void CMatchCaptain::GetPlayer(CBasePlayer* Captain, CBasePlayer* Target)
 
 			this->PlayerList(this->m_PlayersMin);
 
-			gMatchUtil.SayText(nullptr, (Captain->m_iTeam == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("\3%s\1 choosed \3%s\1"), STRING(Captain->edict()->v.netname), STRING(Target->edict()->v.netname));
+			gMatchUtil.SayText(nullptr, (Captain->m_iTeam == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("^3%s^1 choosed ^3%s^1"), STRING(Captain->edict()->v.netname), STRING(Target->edict()->v.netname));
 
 			this->NextMenu(Captain);
 		}

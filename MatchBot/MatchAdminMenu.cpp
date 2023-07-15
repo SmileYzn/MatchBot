@@ -205,7 +205,7 @@ void CMatchAdminMenu::BanMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 		{
 			if (Item.Extra < 0)
 			{
-				gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Choose a time to ban: \\w%s\\y"), STRING(Target->edict()->v.netname)), true, (void*)gMatchAdminMenu.BanMenuHandle);
+				gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Choose a time to ban: ^w%s^y"), STRING(Target->edict()->v.netname)), true, (void*)gMatchAdminMenu.BanMenuHandle);
 
 				std::vector<time_t> BanTimes = { 0, 5, 10, 15, 30, 60, 120, 240, 480, 960, 1440, 10080, 43200 };
 
@@ -309,7 +309,7 @@ void CMatchAdminMenu::TeamMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 		{
 			if (Item.Extra == UNASSIGNED)
 			{
-				gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Set \\w%s\\y Team"), STRING(Target->edict()->v.netname)), true, (void*)gMatchAdminMenu.TeamMenuHandle);
+				gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Set ^w%s^y Team"), STRING(Target->edict()->v.netname)), true, (void*)gMatchAdminMenu.TeamMenuHandle);
 
 				gMatchMenu[EntityIndex].AddItem(Target->entindex(), gMatchBot.GetTeam(TERRORIST, false), Target->m_iTeam == TERRORIST, TERRORIST);
 
@@ -372,7 +372,7 @@ void CMatchAdminMenu::MapMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 
 		gMatchChangeMap.ChangeMap(Item.Text, 5.0f, true);
 
-		gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 changed map to: \4%s\1..."), STRING(Player->edict()->v.netname), Item.Text.c_str());
+		gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 changed map to: ^4%s^1..."), STRING(Player->edict()->v.netname), Item.Text.c_str());
 	}
 }
 
@@ -488,14 +488,14 @@ bool CMatchAdminMenu::Message(CBasePlayer* Player)
 			{
 				Args.erase(std::remove(Args.begin(), Args.end(), '\"'), Args.end());
 
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3(%s)\1: %s"), STRING(Player->edict()->v.netname), Args.c_str());
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3(%s)^1: %s"), STRING(Player->edict()->v.netname), Args.c_str());
 
 				return true;
 			}
 		}
 	}
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !msg \3<Text Message>\1"));
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !msg ^3<Text Message>^1"));
 
 	return false;
 }
@@ -518,7 +518,7 @@ bool CMatchAdminMenu::Rcon(CBasePlayer* Player)
 
 			if (Args.find("rcon_password") != std::string::npos || Args.find("sv_password") != std::string::npos)
 			{
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("These commands are protected here, only \3Server\1 can use."));
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("These commands are protected here, only ^3Server^1 can use."));
 				return false;
 			}
 
@@ -528,14 +528,14 @@ bool CMatchAdminMenu::Rcon(CBasePlayer* Player)
 
 				gMatchUtil.ServerCommand(Args.c_str());
 
-				gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("\3Executed\1: %s"), Args.c_str());
+				gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("^3Executed^1: %s"), Args.c_str());
 
 				return true;
 			}
 		}
 	}
 
-	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !cmd \3<Server Command>\1"));
+	gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: !cmd ^3<Server Command>^1"));
 
 	return false;
 }
@@ -567,12 +567,12 @@ void CMatchAdminMenu::SwapTeams(int EntityIndex)
 			}
 
 			// Send message
-			gMatchUtil.SayText(nullptr, Player->entindex(), _T("\3%s\1 changed team sides manually."), STRING(Player->edict()->v.netname));
+			gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 changed team sides manually."), STRING(Player->edict()->v.netname));
 		}
 		else
 		{
 			// Send message
-			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("Can only swap teams during \4%s\1 period."), gMatchBot.GetState(STATE_WARMUP));
+			gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("Can only swap teams during ^4%s^1 period."), gMatchBot.GetState(STATE_WARMUP));
 		}
 	}
 }
