@@ -1594,7 +1594,7 @@ bool CMatchStats::SayText(int msg_dest, int msg_type, const float* pOrigin, edic
 			auto SenderID = gMatchMessage.GetLong(0);
 			//
 			// If sender index and target entity index is same (To prevent hook for each entity)
-			if (SenderID = ENTINDEX(pEntity))
+			if (SenderID == ENTINDEX(pEntity))
 			{
 				// Get CBasePlayer data
 				auto Player = UTIL_PlayerByIndexSafe(SenderID);
