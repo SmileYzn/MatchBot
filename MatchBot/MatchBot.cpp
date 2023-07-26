@@ -18,7 +18,7 @@ void CMatchBot::ServerActivate()
 	this->m_AdminPrefix = gMatchUtil.CvarRegister("mb_admin_prefix", "!");
 
 	// Player commands prefix (Default .)
-	this->m_PlayerPrefix = gMatchUtil.CvarRegister("m_playey_prefix", ".");
+	this->m_PlayerPrefix = gMatchUtil.CvarRegister("m_player_prefix", ".");
 
 	// Minimum players in game to start match
 	this->m_PlayersMin = gMatchUtil.CvarRegister("mb_players_min", "10");
