@@ -77,13 +77,6 @@ void CMatchPause::RoundRestart()
 			// Disable it
 			this->m_Pause = false;
 
-			// If map has buyzone
-			if (CSGameRules()->m_bMapHasBuyZone)
-			{
-				// Restore default buy time
-				g_engfuncs.pfnCVarSetFloat("mp_buytime", this->m_BuyTime);
-			}
-
 			// Pause for 60 seconds
 			this->SetRoundTime(static_cast<int>(gMatchBot.m_PauseTime->value) + 1, true);
 
@@ -146,12 +139,24 @@ void CMatchPause::PauseTimer(int PauseTime)
 		{
 			// Remove Pause Task
 			gMatchTask.Remove(TASK_PAUSE_MATCH);
+			
+			// If has CS Game Rules
+			if (g_pGameRules)
+			{
+				//if has buyzone
+				if (CSGameRules()->m_bMapHasBuyZone)
+				{
+					// Restore default buy time
+					g_engfuncs.pfnCVarSetFloat("mp_buytime", gMatchPause.m_BuyTime);
+				}
+			}
 
 			// Restore Freezetime
 			gMatchPause.SetRoundTime((int)CVAR_GET_FLOAT("mp_freezetime"), true);
 		}
 	}
 }
+
 
 void CMatchPause::SetRoundTime(int Time, bool FreezePeriod)
 {
