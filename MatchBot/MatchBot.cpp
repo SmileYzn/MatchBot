@@ -758,7 +758,7 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 		{
 			// Send messages
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (^3%s^1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4%shelp^1 to view command list."), this->m_Language->string);
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4%shelp^1 to view command list."), this->m_PlayerPrefix->string);
 		}
 	}
 }
