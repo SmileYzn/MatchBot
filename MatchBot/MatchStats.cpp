@@ -1308,7 +1308,8 @@ bool CMatchStats::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
 		{
 			if (g_pGameRules)
 			{
-				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating || CSGameRules()->IsFreezePeriod())
+				// Removed || CSGameRules()->IsFreezePeriod(), showing full enemy team hp on freezetime its not needed.
+				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating)
 				{
 					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
 					{
