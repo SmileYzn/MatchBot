@@ -147,7 +147,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 				if (CSGameRules()->m_bMapHasBuyZone)
 				{
 					// Restore default buy time
-					g_engfuncs.pfnCVarSetFloat("mp_buytime", this->m_BuyTime);
+					g_engfuncs.pfnCVarSetFloat("mp_buytime", gMatchPause.m_BuyTime);
 				}
 			}
 
