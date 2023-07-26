@@ -296,7 +296,7 @@
     "Starting ^4Knife Round^1, Get Ready!": {
         "en": "Starting ^4Knife Round^1, Get Ready!",
         "bp": "Iniciando ^4Knife Round^1, Fique Atento!",
-        "es": "Comenzando ^4Knife Round^1, Prepárate!",
+        "es": "Comenzando ^4Ronda de Cuchillos^1, Prepárate!",
         "ru": "Начинается ^4Ножевой раунд^1, Готовьтесь!"
     },
     "^3%s^1 started, Get Ready!": {
@@ -308,7 +308,7 @@
     "Wait for an server ^4Administrator^1 restart the match!": {
         "en": "Wait for an server ^4Administrator^1 restart the match!",
         "bp": "Aguarde um ^4Administrator^1 reiniciar a partida!",
-        "es": "¡Espera a que un ^4Administrador^1 reinicie el juego!",
+        "es": "¡Espera a que un ^4Administrador^1 reinicie la partida!",
         "ru": "Ожидайте, пока ^4Администратор сервера^1 перезапустит матч!"
     },
     "Changing teams automatically.": {
@@ -506,7 +506,7 @@
     "^3%s^1 Paused Match: Game will pause on next round start.": {
         "en": "^3%s^1 Paused Match: Game will pause on next round start.",
         "bp": "^3%s^1 Pausou a Partida: O jogo vai pausar no próximo round.",
-        "es": "^3%s^1 Partida Parada: La partida se pausará en la proxima ronda.",
+        "es": "^3%s^1 Partida en Pausa: La partida se pausará en la proxima ronda.",
         "ru": "^3%s^1 Приостановлен матч: Игра будет приостановлена в начале следующего раунда."
     },
     "Match will pause on next round start.": {
@@ -530,7 +530,7 @@
     "Match paused: Match will continue in ^3%s^1.": {
         "en": "Match paused: Match will continue in ^3%s^1.",
         "bp": "Partida Pausada: O jogo vai recomeçar em ^3%s^1.",
-        "es": "Partida Pausada: El juego continuará en ^3%s^1.",
+        "es": "Partida Pausada: La partida continuará en ^3%s^1.",
         "ru": "Матч приостановлен: Игра продолжится через ^3%s^1."
     },
     "MATCH PAUSED^n%s LEFT": {
@@ -716,7 +716,7 @@
     "Player Vote Menu:": {
         "en": "Player Vote Menu:",
         "bp": "Menu de Votação:",
-        "es": "Menú de votación:",
+        "es": "Menu de Votación:",
         "ru": "Меню голосования:"
     },
     "Vote Kick": {
@@ -866,7 +866,7 @@
     "Say ^3.vote^1 to vote for a surrender.": {
         "en": "Say ^3.vote^1 to vote for a surrender.",
         "bp": "Say ^3.vote^1 para votar para rendição.",
-        "es": "Say ^3.vote^1 para votar por una rendición.",
+        "es": "Escribe ^3.vote^1 para votar por una rendición.",
         "ru": "Напишите ^3.vote^1, чтобы проголосовать за сдачу."
     },
     "You already voted to surrender the game.": {
@@ -956,7 +956,7 @@
     "Select teams started.": {
         "en": "Select teams started.",
         "bp": "Escolha dos times iniciada.",
-        "es": "Selección de equipos comenzada.",
+        "es": "La selección de equipos ha comenzado.",
         "ru": "Выбор команд начат."
     },
     "The choice of the teams failed: ^3No votes.": {
@@ -1028,7 +1028,7 @@
     "Game Over! The ^3%s^1 team surrendered!!": {
         "en": "Game Over! The ^3%s^1 team surrendered!!",
         "bp": "Fim de jogo! O time ^3%s^1 se rendeu!!",
-        "es": "Juego terminado! El equipo ^3%s^1 se rendeu!!",
+        "es": "Partida terminada! El equipo ^3%s^1 se ha rendido!!",
         "ru": "Конец игры! Команда ^3%s^1 сдалась!!"
     },
     "Vote to cancel the match": {
@@ -1040,25 +1040,25 @@
     "^3%s^1 voted to cancel the match: %2.0f%% of votes to cancel the match.": {
         "en": "^3%s^1 voted to cancel the match: %2.0f%% of votes to cancel the match.",
         "bp": "^3%s^1 votou para cancelar a partida: %2.0f%% de votos para cancelar a partida.",
-        "es": "^3%s^1 votou para cancelar el juego: %2.0f%% de votos para cancelar el partido.",
+        "es": "^3%s^1 ha votado para cancelar la partida: %2.0f%% de votos para cancelar la partida.",
         "ru": "^3%s^1 проголосовал за отмену матча: %2.0f%% голосов за отмену матча."
     },
     "Say ^3.vote^1 to cancel the match.": {
         "en": "Say ^3.vote^1 to cancel the match.",
         "bp": "Say ^3.vote^1 para cancelar a partida.",
-        "es": "Say ^3.vote^1 para cancelar el juego.",
+        "es": "Escribe ^3.vote^1 para cancelar la partida.",
         "ru": "Напишите ^3.vote^1 чтобы отменить матч."
     },
     "Canceling match...": {
         "en": "Canceling match...",
         "bp": "Cancelando partida...",
-        "es": "Cancelando el juego...",
+        "es": "Cancelando la partida...",
         "ru": "Отмена матча..."
     },
     "You already voted to cancel the match.": {
         "en": "You already voted to cancel the match.",
         "bp": "Você já votou para cancelar a partida.",
-        "es": "Ya votaste para cancelar el partido.",
+        "es": "Ya votaste para cancelar la partida.",
         "ru": "Вы уже проголосовали за отмену матча."
     },
     "Select player to report:": {
@@ -1106,7 +1106,7 @@
     "Failed to authenticate, contact us: %s": {
         "en": "Failed to authenticate, contact us: %s",
         "bp": "Falha ao autenticar, entre em contato: %s",
-        "es": "No se pudo autenticar, contáctenos: %s",
+        "es": "No se ha podido autenticar, contáctenos: %s",
         "ru": "Не удалось аутентифицироваться, свяжитесь с нами: %s"
     }
 }
