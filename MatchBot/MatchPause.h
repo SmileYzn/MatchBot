@@ -7,8 +7,6 @@ public:
 
 	void RoundRestart();
 
-	void RestoreBuyTimeOnPauseEnd();
-
 	static void PauseTimer(int PauseTime);
 
 	void SetRoundTime(int Time, bool FreezePeriod);
