@@ -69,168 +69,168 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 	else
 	{
 		// Player Commands
-		if (!Q_stricmp(pcmd,".status"))
+		if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"status"))
 		{
 			gMatchBot.Status(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".score"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"score"))
 		{
 			gMatchBot.Scores(Player, false);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".ready"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"ready"))
 		{
 			gMatchReady.Ready(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".notready"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"notready"))
 		{
 			gMatchReady.NotReady(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".hp"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"hp"))
 		{
 			gMatchStats.ShowHP(Player, true, false);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".dmg"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"dmg"))
 		{
 			gMatchStats.ShowDamage(Player, true, false);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".rdmg"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"rdmg"))
 		{
 			gMatchStats.ShowReceivedDamage(Player, true, false);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".sum"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"sum"))
 		{
 			gMatchStats.ShowSummary(Player, true, false);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".help"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"help"))
 		{
 			gMatchBot.Help(Player, false);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".vote"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"vote"))
 		{
 			gMatchVoteMenu.Menu(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".votekick"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"votekick"))
 		{
 			gMatchVoteMenu.VoteKick(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".votemap"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"votemap"))
 		{
 			gMatchVoteMenu.VoteMap(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,".votepause"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"votepause"))
 		{
 			gMatchVoteMenu.VotePause(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd, ".voterestart"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"voterestart"))
 		{
 			gMatchVoteMenu.VoteRestart(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd, ".votestop"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"votestop"))
 		{
 			gMatchVoteMenu.VoteStop(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd, ".report"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_PlayerPrefix->string+"report"))
 		{
 			gMatchReport.Menu(Player);
 			return true;
 		}
 		// Admin Commands
-		else if (!Q_stricmp(pcmd,"!menu") || !Q_stricmp(pcmd,"mb_menu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"menu") || !Q_stricmp(pcmd,"mb_menu"))
 		{
 			gMatchAdminMenu.MainMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!kick") || !Q_stricmp(pcmd,"mb_kick_menu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"kick") || !Q_stricmp(pcmd,"mb_kick_menu"))
 		{
 			gMatchAdminMenu.KickMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!ban") || !Q_stricmp(pcmd,"mb_ban_menu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"ban") || !Q_stricmp(pcmd,"mb_ban_menu"))
 		{
 			gMatchAdminMenu.BanMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!kill") || !Q_stricmp(pcmd,"mb_kill_menu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"kill") || !Q_stricmp(pcmd,"mb_kill_menu"))
 		{
 			gMatchAdminMenu.SlayMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!team") || !Q_stricmp(pcmd,"mb_team_menu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"team") || !Q_stricmp(pcmd,"mb_team_menu"))
 		{
 			gMatchAdminMenu.TeamMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!map") || !Q_stricmp(pcmd,"mb_mapmenu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"map") || !Q_stricmp(pcmd,"mb_mapmenu"))
 		{
 			gMatchAdminMenu.MapMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!control") || !Q_stricmp(pcmd,"mb_control_menu"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"control") || !Q_stricmp(pcmd,"mb_control_menu"))
 		{
 			gMatchAdminMenu.ControlMenu(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!msg") || !Q_stricmp(pcmd,"mb_message"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"msg") || !Q_stricmp(pcmd,"mb_message"))
 		{
 			gMatchAdminMenu.Message(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!cmd") || !Q_stricmp(pcmd,"mb_command"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"cmd") || !Q_stricmp(pcmd,"mb_command"))
 		{
 			gMatchAdminMenu.Rcon(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!swap") || !Q_stricmp(pcmd,"mb_swap_teams"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"swap") || !Q_stricmp(pcmd,"mb_swap_teams"))
 		{
 			gMatchAdminMenu.SwapTeams(Player->entindex());
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!votemap") || !Q_stricmp(pcmd,"mb_start_vote_map"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"votemap") || !Q_stricmp(pcmd,"mb_start_vote_map"))
 		{
 			gMatchBot.StartVoteMap(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!voteteam") || !Q_stricmp(pcmd,"mb_start_vote_team"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"voteteam") || !Q_stricmp(pcmd,"mb_start_vote_team"))
 		{
 			gMatchBot.StartVoteTeam(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!start") || !Q_stricmp(pcmd,"mb_start_match"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"start") || !Q_stricmp(pcmd,"mb_start_match"))
 		{
 			gMatchBot.StartMatch(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!stop") || !Q_stricmp(pcmd,"mb_stop_match"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"stop") || !Q_stricmp(pcmd,"mb_stop_match"))
 		{
 			gMatchBot.StopMatch(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!restart") || !Q_stricmp(pcmd,"mb_restart_match"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"restart") || !Q_stricmp(pcmd,"mb_restart_match"))
 		{
 			gMatchBot.RestartMatch(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!pause") || !Q_stricmp(pcmd,"mb_pause_match"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"pause") || !Q_stricmp(pcmd,"mb_pause_match"))
 		{
 			gMatchPause.Init(Player);
 			return true;
 		}
-		else if (!Q_stricmp(pcmd,"!help") || !Q_stricmp(pcmd,"mb_help"))
+		else if (!Q_stricmp(pcmd, gMatchBot.m_AdminPrefix->string+"help") || !Q_stricmp(pcmd,"mb_help"))
 		{
 			gMatchBot.Help(Player, true);
 			return true;

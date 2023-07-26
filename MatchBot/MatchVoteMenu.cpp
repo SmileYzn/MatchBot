@@ -236,7 +236,7 @@ void CMatchVoteMenu::VoteKickHandle(int EntityIndex, P_MENU_ITEM Item)
 				{
 					// Send vote kick messages
 					gMatchUtil.SayText(nullptr, PlayerIndex, _T("^3%s^1 voted to kick ^3%s^1: %2.0f%% of votes to kick."), STRING(Player->edict()->v.netname), STRING(Target->edict()->v.netname), VoteProgress);
-					gMatchUtil.SayText(nullptr, PlayerIndex, _T("Say ^3.vote^1 to open vote kick."));
+					gMatchUtil.SayText(nullptr, PlayerIndex, _T("Say ^3%svote^1 to open vote kick."), gMatchBot.m_PlayerPrefix->string);
 				}
 				else
 				{
@@ -361,7 +361,7 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 			{
 				// Send messages
 				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 nomitated ^4%s^1: %2.0f%% of votes to change map."), STRING(Player->edict()->v.netname), MapName.c_str(), VoteProgress);
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to nominate a map."));
+				gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%svote^1 to nominate a map."), gMatchBot.m_PlayerPrefix->string);
 			}
 			else
 			{
@@ -437,7 +437,7 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 								{
 									// Send messages
 									gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for pause match: %2.0f%% of votes to pause match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
-									gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to vote for a pause."));
+									gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%svote^1 to vote for a pause."), gMatchBot.m_PlayerPrefix->string);
 								}
 								else
 								{
@@ -520,7 +520,7 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 					{
 						// Send messages
 						gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 voted to restart ^3%s^1: %2.0f%% of votes to restart match."), STRING(Player->edict()->v.netname), gMatchBot.GetState(MatchState), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to restart match."));
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%svote^1 to restart match."), gMatchBot.m_PlayerPrefix->string);
 					}
 					else
 					{
@@ -599,7 +599,7 @@ bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
 					{
 						// Send messages
 						gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for surrender: %2.0f%% of votes to surrender match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to vote for a surender."));
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%svote^1 to vote for a surender."), gMatchBot.m_PlayerPrefix->string);
 					}
 					else
 					{
@@ -679,7 +679,7 @@ bool CMatchVoteMenu::VoteStop(CBasePlayer* Player)
 					{
 						// Send messages
 						gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 voted to cancel the match: %2.0f%% of votes to cancel the match."), STRING(Player->edict()->v.netname), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to cancel the match."));
+						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%svote^1 to cancel the match."), gMatchBot.m_PlayerPrefix->string);
 					}
 					else
 					{

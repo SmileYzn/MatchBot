@@ -70,7 +70,7 @@ bool CMatchReport::Menu(CBasePlayer* Player)
 				}
 			}
 
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: .report ^3<Description of report>^1"));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Usage: %sreport ^3<Description of report>^1"), gMatchBot.m_PlayerPrefix->string);
 
 			return false;
 		}

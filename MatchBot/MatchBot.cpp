@@ -18,7 +18,7 @@ void CMatchBot::ServerActivate()
 	this->m_AdminPrefix = gMatchUtil.CvarRegister("mb_admin_prefix", "!");
 
 	// Player commands prefix (Default .)
-	this->m_PlayerPrefix = gMatchUtil.CvarRegister("m_playey_prefix", ".");
+	this->m_PlayerPrefix = gMatchUtil.CvarRegister("mb_player_prefix", ".");
 
 	// Minimum players in game to start match
 	this->m_PlayersMin = gMatchUtil.CvarRegister("mb_players_min", "10");
@@ -758,7 +758,7 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 		{
 			// Send messages
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (^3%s^1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4.help^1 to view command list."));
+			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4%shelp^1 to view command list."), this->m_Language->string);
 		}
 	}
 }

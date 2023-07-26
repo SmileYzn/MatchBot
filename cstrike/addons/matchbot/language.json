@@ -359,11 +359,11 @@
         "es": "%s Versión %s (^3%s^1)",
         "ru": "%s Сборка %s (^3%s^1)"
     },
-    "Say ^4.help^1 to view command list.": {
-        "en": "Say ^4.help^1 to view command list.",
-        "bp": "Say ^4.help^1 para ver a lista de comandos.",
-        "es": "Escribe ^4.help^1 para ver la lista de comandos.",
-        "ru": "Напишите ^4.help^1 для просмотра списка команд."
+    "Say ^4%shelp^1 to view command list.": {
+        "en": "Say ^4%shelp^1 to view command list.",
+        "bp": "Say ^4%shelp^1 para ver a lista de comandos.",
+        "es": "Escribe ^4%shelp^1 para ver la lista de comandos.",
+        "ru": "Напишите ^4%shelp^1 для просмотра списка команд."
     },
     "^3%s^1: Players %d, (%d Required of %d Allowed)": {
         "en": "^3%s^1: Players %d, (%d Required of %d Allowed)",
@@ -761,11 +761,11 @@
         "es": "^3%s^1 votó a favor de kickear ^3%s^1: %2.0f%% de votos a favor de kickear.",
         "ru": "^3%s^1 проголосовал за кик ^3%s^1: %2.0f%% голосов за кик."
     },
-    "Say ^3.vote^1 to open vote kick.": {
-        "en": "Say ^3.vote^1 to open vote kick.",
-        "bp": "Say ^3.vote^1 para abrir o vote kick.",
-        "es": "Escribe ^3.vote^1 para comenzar vote kick.",
-        "ru": "Напишите ^3.vote^1, чтобы начать голосование за кик."
+    "Say ^3%svote^1 to open vote kick.": {
+        "en": "Say ^3%svote^1 to open vote kick.",
+        "bp": "Say ^3%svote^1 para abrir o vote kick.",
+        "es": "Escribe ^3%svote^1 para comenzar vote kick.",
+        "ru": "Напишите ^3%svote^1, чтобы начать голосование за кик."
     },
     "Kicked by Vote Kick.": {
         "en": "Kicked by Vote Kick.",
@@ -791,11 +791,11 @@
         "es": "^3%s^1 ha nominado ^4%s^1: %2.0f%% de votos para cambiar de mapa.",
         "ru": "^3%s^1 номинировал ^4%s^1: %2.0f%% голосов за смену карты."
     },
-    "Say ^3.vote^1 to nominate a map.": {
-        "en": "Say ^3.vote^1 to nominate a map.",
-        "bp": "Say ^3.vote^1 para nomear um mapa.",
-        "es": "Escribe ^3.vote^1 para nominar un mapa.",
-        "ru": "Напишите ^3.vote^1, чтобы номинировать карту."
+    "Say ^3%svote^1 to nominate a map.": {
+        "en": "Say ^3%svote^1 to nominate a map.",
+        "bp": "Say ^3%svote^1 para nomear um mapa.",
+        "es": "Escribe ^3%svote^1 para nominar un mapa.",
+        "ru": "Напишите ^3%svote^1, чтобы номинировать карту."
     },
     "Already nominated ^3%s^1...": {
         "en": "Already nominated ^3%s^1...",
@@ -809,11 +809,11 @@
         "es": "^3%s^1 desde ^3%s^1 ha votado para pausar la partida: %2.0f%% de votos para pausar la partida.",
         "ru": "^3%s^1 из команды ^3%s^1 проголосовал за паузу матча: %2.0f%% голосов за паузу."
     },
-    "Say ^3.vote^1 to vote for a pause.": {
-        "en": "Say ^3.vote^1 to vote for a pause.",
-        "bp": "Say ^3.vote^1 para votar uma pausa.",
-        "es": "Escribe ^3.vote^1 para votar una pausa.",
-        "ru": "Напишите ^3.vote^1, чтобы проголосовать за паузу."
+    "Say ^3%svote^1 to vote for a pause.": {
+        "en": "Say ^3%svote^1 to vote for a pause.",
+        "bp": "Say ^3%svote^1 para votar uma pausa.",
+        "es": "Escribe ^3%svote^1 para votar una pausa.",
+        "ru": "Напишите ^3%svote^1, чтобы проголосовать за паузу."
     },
     "You already voted to pause the game.": {
         "en": "You already voted to pause the game.",
@@ -827,11 +827,11 @@
         "es": "^3%s^1 votó para reiniciar ^3%s^1: %2.0f%% de votos para reiniciar la partida.",
         "ru": "^3%s^1 проголосовал за перезапуск ^3%s^1: %2.0f%% голосов за перезапуск матча."
     },
-    "Say ^3.vote^1 to restart match.": {
-        "en": "Say ^3.vote^1 to restart match.",
-        "bp": "Say ^3.vote^1 para reiniciar a partida.",
-        "es": "Esribe ^3.vote^1 para reiniciar la partida.",
-        "ru": "Напишите ^3.vote^1, чтобы перезапустить матч."
+    "Say ^3%svote^1 to restart match.": {
+        "en": "Say ^3%svote^1 to restart match.",
+        "bp": "Say ^3%svote^1 para reiniciar a partida.",
+        "es": "Esribe ^3%svote^1 para reiniciar la partida.",
+        "ru": "Напишите ^3%svote^1, чтобы перезапустить матч."
     },
     "Restarting match..": {
         "en": "Restarting match..",
@@ -863,11 +863,11 @@
         "es": "^3%s^1 de ^3%s^1 votó por la rendición: %2.0f%% de votos para rendir partido.",
         "ru": "^3%s^1 из команды ^3%s^1 проголосовал за сдачу: %2.0f%% голосов за сдачу."
     },
-    "Say ^3.vote^1 to vote for a surrender.": {
-        "en": "Say ^3.vote^1 to vote for a surrender.",
-        "bp": "Say ^3.vote^1 para votar para rendição.",
-        "es": "Say ^3.vote^1 para votar por una rendición.",
-        "ru": "Напишите ^3.vote^1, чтобы проголосовать за сдачу."
+    "Say ^3%svote^1 to vote for a surrender.": {
+        "en": "Say ^3%svote^1 to vote for a surrender.",
+        "bp": "Say ^3%svote^1 para votar para rendição.",
+        "es": "Say ^3%svote^1 para votar por una rendición.",
+        "ru": "Напишите ^3%svote^1, чтобы проголосовать за сдачу."
     },
     "You already voted to surrender the game.": {
         "en": "You already voted to surrender the game.",
@@ -1043,11 +1043,11 @@
         "es": "^3%s^1 votou para cancelar el juego: %2.0f%% de votos para cancelar el partido.",
         "ru": "^3%s^1 проголосовал за отмену матча: %2.0f%% голосов за отмену матча."
     },
-    "Say ^3.vote^1 to cancel the match.": {
-        "en": "Say ^3.vote^1 to cancel the match.",
-        "bp": "Say ^3.vote^1 para cancelar a partida.",
-        "es": "Say ^3.vote^1 para cancelar el juego.",
-        "ru": "Напишите ^3.vote^1 чтобы отменить матч."
+    "Say ^3%svote^1 to cancel the match.": {
+        "en": "Say ^3%svote^1 to cancel the match.",
+        "bp": "Say ^3%svote^1 para cancelar a partida.",
+        "es": "Say ^3%svote^1 para cancelar el juego.",
+        "ru": "Напишите ^3%svote^1 чтобы отменить матч."
     },
     "Canceling match...": {
         "en": "Canceling match...",
@@ -1085,11 +1085,11 @@
         "es": "El motivo debe tener al menos %d caracteres.",
         "ru": "Причина должна быть длиной не менее %d символов."
     },
-    "Usage: .report ^3<Description of report>^1": {
-        "en": "Usage: .report ^3<Description of report>^1",
-        "bp": "Uso: .report ^3<Descrição do relatório>^1",
-        "es": "Uso: .report ^3<Descripción del informe>^1",
-        "ru": "Использование: .report ^3<Описание жалобы>^1"
+    "Usage: %sreport ^3<Description of report>^1": {
+        "en": "Usage: %sreport ^3<Description of report>^1",
+        "bp": "Uso: %sreport ^3<Descrição do relatório>^1",
+        "es": "Uso: %sreport ^3<Descripción del informe>^1",
+        "ru": "Использование: %sreport ^3<Описание жалобы>^1"
     },
     "Report about ^3%s^1 sent at %s.": {
         "en": "Report about ^3%s^1 sent at %s.",
