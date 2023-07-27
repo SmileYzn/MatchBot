@@ -539,11 +539,11 @@
         "es": "JUEGO PAUSADO^n%s RESTANTES",
         "ru": "МАТЧ ПРИОСТАНОВЛЕН^n%s ОСТАЛОСЬ"
     },
-    "Say ^4.ready^1 to continue.": {
-        "en": "Say ^4.ready^1 to continue.",
-        "bp": "Say ^4.ready^1 para continuar.",
-        "es": "Escribe ^4.ready^1 para continuar.",
-        "ru": "Напишите ^4.ready^1, чтобы продолжить."
+    "Say ^4%sready^1 to continue.": {
+        "en": "Say ^4%sready^1 to continue.",
+        "bp": "Say ^4%sready^1 para continuar.",
+        "es": "Escribe ^4%sready^1 para continuar.",
+        "ru": "Напишите ^4%sready^1, чтобы продолжить."
     },
     "All players are ready!": {
         "en": "All players are ready!",

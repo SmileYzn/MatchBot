@@ -20,7 +20,7 @@ void CMatchBot::ServerActivate()
 	// Player commands prefix (Default .)
 	this->m_PlayerPrefix = gMatchUtil.CvarRegister("mb_player_prefix", ".");
 
-  // Minimum players in game to start match
+  	// Minimum players in game to start match
 	this->m_PlayersMin = gMatchUtil.CvarRegister("mb_players_min", "10");
 
 	// Maximum allowed players in game
