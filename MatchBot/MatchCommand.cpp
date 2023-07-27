@@ -244,9 +244,10 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 }
 
 bool CMatchCommand::CompareCommand(const char* pcmd, const char* prefix, const char* mbCommand) {
-    // Combina el prefijo y la parte variable en una cadena completa
-    std::string fullCommand = std::string(prefix) + mbCommand;
+    
+	char Temp[191] = { 0 };
+	
+	Q_snprintf(Temp, sizeof(prefix) + sizeof(mbCommand) + 1, prefix, mbCommand);
 
-    // Realiza la comparación con pcmd usando strcmp
-    return (std::strcmp(pcmd, fullCommand.c_str()) == 0);
+    return (!Q_stricmp(pcmd,Temp));
 }
