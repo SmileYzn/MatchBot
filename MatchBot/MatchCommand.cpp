@@ -245,9 +245,14 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 
 bool CMatchCommand::CompareCommand(const char* pcmd, const char* prefix, const char* pCommand) {
     
-	char Temp[191] = { 0 };
+	size_t prefixLen = strlen(prefix);
+	size_t commandLen = strlen(pCommand);
+	char * Temp = new char[prefixLen+ commandLen + 1];
+
+	memcpy(Temp, prefix, prefixLen);
+	memcpy(Temp + prefixLen, pCommand, commandLen);
 	
-	Q_snprintf(Temp, sizeof(prefix) + sizeof(pCommand) + 1, prefix, pCommand);
+	Temp[prefixLen + commandLen] = '\0';
 	
     return (!Q_stricmp(pcmd,Temp));
 }
