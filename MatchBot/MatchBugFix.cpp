@@ -19,28 +19,3 @@ void CMatchBugFix::ExplodeSmokeGrenade(CGrenade* Entity)
 		}
 	}
 }
-
-void CMatchBugFix::PlayerDuck(CBasePlayer* Player)
-{
-	if (gMatchBot.m_FixSpawnDistance->value > 0.0f)
-	{
-		auto State = gMatchBot.GetState();
-
-		if (State == STATE_FIRST_HALF || State == STATE_SECOND_HALF || State == STATE_OVERTIME)
-		{
-			if (g_pGameRules)
-			{
-				if (CSGameRules()->IsFreezePeriod())
-				{
-					if (Player->IsAlive())
-					{
-						if ((Player->edict()->v.origin - Player->m_vLastOrigin).IsLengthGreaterThan(gMatchBot.m_FixSpawnDistance->value))
-						{
-							Player->RoundRespawn();
-						}
-					}
-				}
-			}
-		}
-	}
-}

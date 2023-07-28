@@ -240,4 +240,3 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 	// Return result
 	return false;
 }
-

@@ -113,8 +113,6 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->registerHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
-	g_ReGameHookchains->CBasePlayer_Duck()->registerHook(ReGameDLL_CBasePlayer_Duck);
-
 	return true;
 }
 
@@ -155,8 +153,6 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CGrenade_ExplodeBomb()->unregisterHook(ReGameDLL_CGrenade_ExplodeBomb);
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
-
-	g_ReGameHookchains->CBasePlayer_Duck()->unregisterHook(ReGameDLL_CBasePlayer_Duck);
 
 	return true;
 }
@@ -263,6 +259,8 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 
 	gMatchBot.RoundRestart(false);
 
+	gMatchLO3.RoundRestart();
+
 	gMatchStats.RoundRestart(false);
 
 	gMatchPause.RoundRestart();
@@ -357,11 +355,4 @@ void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGre
 	chain->callNext(pthis);
 
 	gMatchBugFix.ExplodeSmokeGrenade(pthis);
-}
-
-void ReGameDLL_CBasePlayer_Duck(IReGameHook_CBasePlayer_Duck* chain, CBasePlayer* Player)
-{
-	chain->callNext(Player);
-
-	gMatchBugFix.PlayerDuck(Player);
 }

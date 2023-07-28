@@ -3,9 +3,11 @@
 class CMatchLO3
 {
 public:
-	void Run();
+	void Start();
+	void RoundRestart();
 
-	static void Restart(int Time);
+private:
+	int m_Restart = 0;
 };
 
 extern CMatchLO3 gMatchLO3;

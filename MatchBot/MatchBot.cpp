@@ -107,9 +107,6 @@ void CMatchBot::ServerActivate()
 	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
 	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
 
-	// Distance to respawn player if try to bug respawn on de_dust2 ramp and other maps (Distance in units to enable fix, 0 to disable)
-	this->m_FixSpawnDistance = gMatchUtil.CvarRegister("mb_fix_spawn_distance", "60.0");
-
 	// Amount of seconds to pause match (0 Disable, or number of seconds to pause the match)
 	this->m_PauseTime = gMatchUtil.CvarRegister("mb_pause_time", "60.0");
 
@@ -357,7 +354,7 @@ void CMatchBot::SetState(int State)
 			}
 
 			// Start LO3 script
-			gMatchLO3.Run();
+			gMatchLO3.Start();
 
 			break;
 		}
@@ -439,7 +436,7 @@ void CMatchBot::SetState(int State)
 			this->Scores(nullptr, true);
 
 			// LO3 Script
-			gMatchLO3.Run();
+			gMatchLO3.Start();
 
 			break;
 		}
@@ -453,7 +450,7 @@ void CMatchBot::SetState(int State)
 			this->Scores(nullptr, true);
 
 			// LO3 Script
-			gMatchLO3.Run();
+			gMatchLO3.Start();
 
 			break;
 		}
@@ -517,9 +514,6 @@ void CMatchBot::SetState(int State)
 			{
 				// Execute config file
 				gMatchUtil.ServerCommand("exec addons/matchbot/cfg/%s", this->m_Config[this->m_State]->string);
-
-				// Force execute in current frame
-				SERVER_EXECUTE();
 			}
 		}
 	}
@@ -1335,9 +1329,6 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 		// If match is running
 		if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
 		{
-			// Remove LO3 script if is running
-			gMatchTask.Remove(TASK_TIMER_LO3);
-
 			// Send message to all players
 			if (Player)
 			{
@@ -1440,9 +1431,6 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 
 		// Send message
 		gMatchUtil.SayText(nullptr, (Winner == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("Game Over! The ^3%s^1 team surrendered!!"), this->GetTeam(Loser, false));
-
-		// Remove LO3 script if is running
-		gMatchTask.Remove(TASK_TIMER_LO3);
 
 		// If is in Knife Round
 		if (this->m_PlayKnifeRound)
