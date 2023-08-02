@@ -2,6 +2,65 @@
 
 CMatchCommand gMatchCommand;
 
+// On Server Activate
+void CMatchCommand::ServerActivate()
+{
+	try
+	{
+		// File stream
+		std::ifstream fp(MB_COMMANDS_FILE, std::ios::in);
+
+		// If file is open
+		if (fp)
+		{
+			// Reset pointer
+			fp.clear();
+
+			// Go to begin of file
+			fp.seekg(0, std::ios::beg);
+
+			// Read data from json file
+			nlohmann::ordered_json Json = nlohmann::ordered_json::parse(fp, nullptr, true, true);
+
+			// Loop
+			for (auto & row : Json.items())
+			{
+				// Get info
+				auto Info = row.value();
+
+				// If has id
+				if (Info.contains("id") && !Info["id"].empty())
+				{
+					// If has flag
+					if (Info.contains("flag") && !Info["flag"].empty())
+					{
+						P_COMMAND_INFO Command = { 0 };
+
+						Command.Index = Info["id"].get<int>();
+
+						Command.Flag = gMatchAdmin.ReadFlags(std::string(Info["flag"]).c_str());
+
+						Command.Description = std::string(Info["description"]);
+
+						this->m_Data.insert(std::make_pair(row.key(), Command));
+					}
+				}
+			}
+
+			// Close file
+			fp.close();
+		}
+		else
+		{
+			LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_COMMANDS_FILE);
+		}
+	}
+	catch (nlohmann::json::parse_error& e)
+	{
+		LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+	}
+}
+
 // On Client command
 bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1)
 {
@@ -68,171 +127,193 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 	}
 	else
 	{
-		// Player Commands
-		if (!Q_stricmp(pcmd,".status"))
+		// Get Command
+		auto const Command = this->m_Data.find(pcmd);
+
+		// If command was found
+		if (Command != this->m_Data.end())
 		{
-			gMatchBot.Status(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".score"))
-		{
-			gMatchBot.Scores(Player, false);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".ready"))
-		{
-			gMatchReady.Ready(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".notready"))
-		{
-			gMatchReady.NotReady(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".hp"))
-		{
-			gMatchStats.ShowHP(Player, true, false);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".dmg"))
-		{
-			gMatchStats.ShowDamage(Player, true, false);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".rdmg"))
-		{
-			gMatchStats.ShowReceivedDamage(Player, true, false);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".sum"))
-		{
-			gMatchStats.ShowSummary(Player, true, false);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".help"))
-		{
-			gMatchBot.Help(Player, false);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".vote"))
-		{
-			gMatchVoteMenu.Menu(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".votekick"))
-		{
-			gMatchVoteMenu.VoteKick(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".votemap"))
-		{
-			gMatchVoteMenu.VoteMap(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,".votepause"))
-		{
-			gMatchVoteMenu.VotePause(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd, ".voterestart"))
-		{
-			gMatchVoteMenu.VoteRestart(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd, ".votestop"))
-		{
-			gMatchVoteMenu.VoteStop(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd, ".report"))
-		{
-			gMatchReport.Menu(Player);
-			return true;
-		}
-		// Admin Commands
-		else if (!Q_stricmp(pcmd,"!menu") || !Q_stricmp(pcmd,"mb_menu"))
-		{
-			gMatchAdminMenu.MainMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!kick") || !Q_stricmp(pcmd,"mb_kick_menu"))
-		{
-			gMatchAdminMenu.KickMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!ban") || !Q_stricmp(pcmd,"mb_ban_menu"))
-		{
-			gMatchAdminMenu.BanMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!kill") || !Q_stricmp(pcmd,"mb_kill_menu"))
-		{
-			gMatchAdminMenu.SlayMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!team") || !Q_stricmp(pcmd,"mb_team_menu"))
-		{
-			gMatchAdminMenu.TeamMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!map") || !Q_stricmp(pcmd,"mb_mapmenu"))
-		{
-			gMatchAdminMenu.MapMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!control") || !Q_stricmp(pcmd,"mb_control_menu"))
-		{
-			gMatchAdminMenu.ControlMenu(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!msg") || !Q_stricmp(pcmd,"mb_message"))
-		{
-			gMatchAdminMenu.Message(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!cmd") || !Q_stricmp(pcmd,"mb_command"))
-		{
-			gMatchAdminMenu.Rcon(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!swap") || !Q_stricmp(pcmd,"mb_swap_teams"))
-		{
-			gMatchAdminMenu.SwapTeams(Player->entindex());
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!votemap") || !Q_stricmp(pcmd,"mb_start_vote_map"))
-		{
-			gMatchBot.StartVoteMap(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!voteteam") || !Q_stricmp(pcmd,"mb_start_vote_team"))
-		{
-			gMatchBot.StartVoteTeam(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!start") || !Q_stricmp(pcmd,"mb_start_match"))
-		{
-			gMatchBot.StartMatch(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!stop") || !Q_stricmp(pcmd,"mb_stop_match"))
-		{
-			gMatchBot.StopMatch(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!restart") || !Q_stricmp(pcmd,"mb_restart_match"))
-		{
-			gMatchBot.RestartMatch(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!pause") || !Q_stricmp(pcmd,"mb_pause_match"))
-		{
-			gMatchPause.Init(Player);
-			return true;
-		}
-		else if (!Q_stricmp(pcmd,"!help") || !Q_stricmp(pcmd,"mb_help"))
-		{
-			gMatchBot.Help(Player, true);
+			// If player do not has access to that command
+			if (!gMatchAdmin.Access(Player->entindex(), Command->second.Flag))
+			{
+				// Send message
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+
+				// Return result
+				return true;
+			}
+
+			// Switch of command index
+			switch (Command->second.Index)
+			{
+				case CMD_PLAYER_STATUS:
+				{
+					gMatchBot.Status(Player);
+					break;
+				}
+				case CMD_PLAYER_SCORE:
+				{
+					gMatchBot.Scores(Player, false);
+					break;
+				}
+				case CMD_PLAYER_READY:
+				{
+					gMatchReady.Ready(Player);
+					break;
+				}
+				case CMD_PLAYER_NOTREADY:
+				{
+					gMatchReady.NotReady(Player);
+					break;
+				}
+				case CMD_PLAYER_HP:
+				{
+					gMatchStats.ShowHP(Player, true, false);
+					break;
+				}
+				case CMD_PLAYER_DMG:
+				{
+					gMatchStats.ShowDamage(Player, true, false);
+					break;
+				}
+				case CMD_PLAYER_RDMG:
+				{
+					gMatchStats.ShowReceivedDamage(Player, true, false);
+					break;
+				}
+				case CMD_PLAYER_SUM:
+				{
+					gMatchStats.ShowSummary(Player, true, false);
+					break;
+				}
+				case CMD_PLAYER_HELP:
+				{
+					gMatchBot.Help(Player, false);
+					break;
+				}
+				case CMD_PLAYER_VOTE:
+				{
+					gMatchVoteMenu.Menu(Player);
+					break;
+				}
+				case CMD_PLAYER_VOTE_KICK:
+				{
+					gMatchVoteMenu.VoteKick(Player);
+					break;
+				}
+				case CMD_PLAYER_VOTE_MAP:
+				{
+					gMatchVoteMenu.VoteMap(Player);
+					break;
+				}
+				case CMD_PLAYER_VOTE_PAUSE:
+				{
+					gMatchVoteMenu.VotePause(Player);
+					break;
+				}
+				case CMD_PLAYER_VOTE_RESTART:
+				{
+					gMatchVoteMenu.VoteRestart(Player);
+					break;
+				}
+				case CMD_PLAYER_VOTE_STOP:
+				{
+					gMatchVoteMenu.VoteStop(Player);
+					break;
+				}
+				case CMD_PLAYER_REPORT:
+				{
+					gMatchReport.Menu(Player);
+					break;
+				}
+				case CMD_ADMIN_MENU:
+				{
+					gMatchAdminMenu.MainMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_KICK:
+				{
+					gMatchAdminMenu.KickMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_BAN:
+				{
+					gMatchAdminMenu.BanMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_KILL:
+				{
+					gMatchAdminMenu.SlayMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_TEAM:
+				{
+					gMatchAdminMenu.TeamMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_MAP:
+				{
+					gMatchAdminMenu.MapMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_CONTROL:
+				{
+					gMatchAdminMenu.ControlMenu(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_MESSAGE:
+				{
+					gMatchAdminMenu.Message(Player);
+					break;
+				}
+				case CMD_ADMIN_COMMAND:
+				{
+					gMatchAdminMenu.Rcon(Player);
+					break;
+				}
+				case CMD_ADMIN_SWAP:
+				{
+					gMatchAdminMenu.SwapTeams(Player->entindex());
+					break;
+				}
+				case CMD_ADMIN_VOTE_MAP:
+				{
+					gMatchBot.StartVoteMap(Player);
+					break;
+				}
+				case CMD_ADMIN_VOTE_TEAM:
+				{
+					gMatchBot.StartVoteTeam(Player);
+					break;
+				}
+				case CMD_ADMIN_START_MATCH:
+				{
+					gMatchBot.StartMatch(Player);
+					break;
+				}
+				case CMD_ADMIN_STOP_MATCH:
+				{
+					gMatchBot.StopMatch(Player);
+					break;
+				}
+				case CMD_ADMIN_RESTART_MATCH:
+				{
+					gMatchBot.RestartMatch(Player);
+					break;
+				}
+				case CMD_ADMIN_PAUSE_MATCH:
+				{
+					gMatchPause.Init(Player);
+					break;
+				}
+				case CMD_ADMIN_HELP:
+				{
+					gMatchBot.Help(Player, true);
+					break;
+				}
+			}
+
+			// Return result
 			return true;
 		}
 	}

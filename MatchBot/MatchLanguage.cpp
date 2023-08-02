@@ -25,33 +25,6 @@ void CMatchLanguage::Load()
 			// Read data from json file
 			this->m_Data = nlohmann::ordered_json::parse(fp, nullptr, true, true);
 
-			//// Loop each item of array
-			//for (auto const& row : json.items())
-			//{
-			//	// If value is not empty
-			//	if (!row.value().empty())
-			//	{
-			//		// Loop objects of value
-			//		for (auto const& el : row.value().items())
-			//		{
-			//			// If is equal to defined language
-			//			if (el.key().compare(Language) == 0)
-			//			{
-			//				// If text value is not empty
-			//				if (!el.value().empty())
-			//				{
-			//					// If text value is an string
-			//					if (el.value().is_string())
-			//					{
-			//						// Insert
-			//						this->m_Data.insert(std::make_pair(row.key(), std::string(el.value())));
-			//					}
-			//				}
-			//			}
-			//		}
-			//	}
-			//}
-
 			// Close file
 			fp.close();
 		}

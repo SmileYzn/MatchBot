@@ -1,0 +1,167 @@
+{
+  ".status": {
+    "id":  1,
+    "flag": "z",
+    "description": "Show the match status"
+  },
+  ".score": {
+    "id": 2,
+    "flag": "z",
+    "description": "Show the match scores"
+  },
+  ".ready": {
+    "id": 3,
+    "flag": "z",
+    "description": "Tells the server the Player is ready"
+  },
+  ".notready": {
+    "id": 4,
+    "flag": "z",
+    "description": "Tells the server the Player is not ready"
+  },
+  ".hp": {
+    "id": 5,
+    "flag": "z",
+    "description": "Health of other players"
+  },
+  ".dmg": {
+    "id": 6,
+    "flag": "z",
+    "description": "Damage done to other players"
+  },
+  ".rdmg": {
+    "id": 7,
+    "flag": "z",
+    "description": "Show received damage"
+  },
+  ".sum": {
+    "id": 8,
+    "flag": "z",
+    "description": "Show round summary"
+  },
+  ".help": {
+    "id": 9,
+    "flag": "z",
+    "description": "Show player help page"
+  },
+  ".vote": {
+    "id": 10,
+    "flag": "z",
+    "description": "Vote menu"
+  },
+  ".votekick": {
+    "id": 11,
+    "flag": "z",
+    "description": "Vote kick menu"
+  },
+  ".votemap": {
+    "id": 12,
+    "flag": "z",
+    "description": "Vote map menu"
+  },
+  ".votepause": {
+    "id": 13,
+    "flag": "z",
+    "description": "Vote pause menu"
+  },
+  ".voterestart": {
+    "id": 14,
+    "flag": "z",
+    "description": "Vote restart menu"
+  },
+  ".votestop": {
+    "id": 15,
+    "flag": "z",
+    "description": "Vote stop match menu"
+  },
+  ".report": {
+    "id": 16,
+    "flag": "z",
+    "description": "Report an player"
+  },
+  "!menu": {
+    "id": 17,
+    "flag": "u",
+    "description": "Main admin menu"
+  },
+  "!kick": {
+    "id": 18,
+    "flag": "c",
+    "description": "Kick menu"
+  },
+  "!ban": {
+    "id": 19,
+    "flag": "d",
+    "description": "Ban menu"
+  },
+  "!kill": {
+    "id": 20,
+    "flag": "e",
+    "description": "Slay menu"
+  },
+  "!team": {
+    "id": 21,
+    "flag": "m",
+    "description": "Team menu"
+  },
+  "!map": {
+    "id": 22,
+    "flag": "f",
+    "description": "Vote Menu"
+  },
+  "!control": {
+    "id": 23,
+    "flag": "n",
+    "description": "Match Bot control menu"
+  },
+  "!msg": {
+    "id": 24,
+    "flag": "i",
+    "description": "Send a global chat message"
+  },
+  "!cmd": {
+    "id": 25,
+    "flag": "l",
+    "description": "Send server command"
+  },
+  "!swap": {
+    "id": 26,
+    "flag": "g",
+    "description": "Swap Teams"
+  },
+  "!votemap": {
+    "id": 27,
+    "flag": "j",
+    "description": "Start vote map"
+  },
+  "!voteteam": {
+    "id": 28,
+    "flag": "j",
+    "description": "Start vote team"
+  },
+  "!start": {
+    "id": 29,
+    "flag": "n",
+    "description": "Start match"
+  },
+  "!stop": {
+    "id": 30,
+    "flag": "n",
+    "description": "Stop match"
+  },
+  "!restart": {
+    "id": 31,
+    "flag": "n",
+    "description": "Restart match"
+  },
+  "!pause": {
+    "id": 32,
+    "flag": "n",
+    "description": "Pause the match"
+  },
+  "!help": {
+    "id": 33,
+    "flag": "o",
+    "description": "Show admin help page"
+  }
+}
