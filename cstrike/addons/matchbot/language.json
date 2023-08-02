@@ -473,6 +473,12 @@
         "es": "^3%s^1 eligió a ^3%s^1",
         "ru": "^3%s^1 выбрал ^3%s^1"
     },
+    "^3%s^1 already on the team ^3%s^1": {
+        "en": "^3%s^1 already on the team ^3%s^1",
+        "bp": "^3%s^1 já está no time ^3%s^1",
+        "es": "^3%s^1 já está na equipe ^3%s^1",
+        "ru": "^3%s^1 уже в команде ^3%s^1"
+    },
     " (C) *": {
         "en": " (C) *",
         "bp": " (C) *",

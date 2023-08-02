@@ -75,7 +75,7 @@ void CMatchCaptain::PlayerDisconnect(edict_t* pEdict)
 	{
 		auto Players = gMatchUtil.GetPlayers(false, true);
 
-		if ((int)Players.size() > (this->m_PlayersMin / 2))
+		if (Players.size() > (size_t)(this->m_PlayersMin / 2))
 		{
 			auto Captain = UTIL_PlayerByIndexSafe(ENTINDEX(pEdict));
 
@@ -135,20 +135,29 @@ void CMatchCaptain::GetPlayer(CBasePlayer* Captain, CBasePlayer* Target)
 	{
 		if (Target != nullptr)
 		{
-			Target->CSPlayer()->JoinTeam(Captain->m_iTeam);
-
-			if (!Target->IsAlive())
+			if (Target->m_iTeam == SPECTATOR)
 			{
-				Target->RoundRespawn();
+				Target->CSPlayer()->JoinTeam(Captain->m_iTeam);
+
+				if (!Target->IsAlive())
+				{
+					Target->RoundRespawn();
+				}
+
+				Captain->ClearConditions(BIT_CONDITION_INMENU);
+
+				this->PlayerList(this->m_PlayersMin);
+
+				gMatchUtil.SayText(nullptr, (Captain->m_iTeam == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("^3%s^1 choosed ^3%s^1"), STRING(Captain->edict()->v.netname), STRING(Target->edict()->v.netname));
+
+				this->NextMenu(Captain);
 			}
+			else
+			{
+				gMatchUtil.SayText(nullptr, (Target->m_iTeam == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("^3%s^1 already on the team ^3%s^1"), STRING(Target->edict()->v.netname), gMatchBot.GetTeam(Target->m_iTeam, false));
 
-			Captain->ClearConditions(BIT_CONDITION_INMENU);
-
-			this->PlayerList(this->m_PlayersMin);
-
-			gMatchUtil.SayText(nullptr, (Captain->m_iTeam == TERRORIST ? PRINT_TEAM_RED : PRINT_TEAM_BLUE), _T("^3%s^1 choosed ^3%s^1"), STRING(Captain->edict()->v.netname), STRING(Target->edict()->v.netname));
-
-			this->NextMenu(Captain);
+				this->Menu(Captain);
+			}
 		}
 		else
 		{
