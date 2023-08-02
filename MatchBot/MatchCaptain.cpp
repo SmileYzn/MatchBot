@@ -210,25 +210,32 @@ void CMatchCaptain::NextMenu(CBasePlayer* Captain)
 
 void CMatchCaptain::Menu(CBasePlayer* Captain)
 {
-	auto EntityIndex = Captain->entindex();
-
-	gMatchMenu[EntityIndex].Create(gMatchBot.GetTeam(SPECTATOR,false), false, (void*)this->MenuHandle);
-
-	auto Players = gMatchUtil.GetPlayers(false, true);
-
-	for (auto const& Player : Players)
+	if (gMatchUtil.GetCount(SPECTATOR) == 1 || Captain->IsBot())
 	{
-		if (Player->m_iTeam == SPECTATOR)
-		{
-			gMatchMenu[EntityIndex].AddItem(Player->entindex(), STRING(Player->edict()->v.netname));
-		}
+		gMatchTask.Create(Captain->entindex(), 1.0f, false, (void*)this->GetRandomPlayer, Captain->entindex());
 	}
+	else
+	{
+		auto EntityIndex = Captain->entindex();
 
-	gMatchMenu[EntityIndex].Show(EntityIndex);
+		gMatchMenu[EntityIndex].Create(gMatchBot.GetTeam(SPECTATOR, false), false, (void*)this->MenuHandle);
 
-	Captain->SetConditions(BIT_CONDITION_INMENU);
+		auto Players = gMatchUtil.GetPlayers(false, true);
 
-	gMatchTask.Create(Captain->entindex(), Captain->IsBot() ? 1.0f : 10.0f, false, (void*)this->GetRandomPlayer, Captain->entindex());
+		for (auto const& Player : Players)
+		{
+			if (Player->m_iTeam == SPECTATOR)
+			{
+				gMatchMenu[EntityIndex].AddItem(Player->entindex(), STRING(Player->edict()->v.netname));
+			}
+		}
+
+		gMatchMenu[EntityIndex].Show(EntityIndex);
+
+		Captain->SetConditions(BIT_CONDITION_INMENU);
+
+		gMatchTask.Create(Captain->entindex(), 10.0f, false, (void*)this->GetRandomPlayer, Captain->entindex());
+	}
 }
 
 void CMatchCaptain::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
