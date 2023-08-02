@@ -76,8 +76,11 @@ int CMatchAdmin::ReadFlags(const char* c)
 // Set Flags on Entity Index on connect
 bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
-    // Add empty Flags to user
+    // Set empty Flags to user
     this->m_Flag[ENTINDEX(pEntity)] = ADMIN_ALL;
+
+    // If admin information is not found, set default user Z Flag
+    this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags("z");
 
     // Get Player Auth Index
     auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEntity);
@@ -102,9 +105,6 @@ bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
             }
         }
     }
-
-    // If admin information is not found, set default user Z Flag
-    this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags("z");
 
     // Return true to allow player connection
     return true;
