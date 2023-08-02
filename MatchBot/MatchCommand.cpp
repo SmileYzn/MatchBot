@@ -143,6 +143,8 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				return true;
 			}
 
+			LOG_CONSOLE(PLID, "[%s] Flags: %d Flag: %d",__func__,Flags,Command->second.Flag);
+
 			// Switch of command index
 			switch (Command->second.Index)
 			{
