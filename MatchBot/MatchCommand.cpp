@@ -133,13 +133,13 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		// If command was found
 		if (Command != this->m_Data.end())
 		{
-			// If player do not has access to that command
-			if (!gMatchAdmin.Access(Player->entindex(), Command->second.Flag))
-			{
-				// Send message
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+			// Get Admin Flags
+			auto Flags = gMatchAdmin.GetFlags(Player->entindex());
 
-				// Return result
+			// If do not have an access to main menu
+			if (!(Flags & Command->second.Flag))
+			{
+				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 				return true;
 			}
 
