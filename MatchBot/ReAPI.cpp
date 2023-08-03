@@ -82,8 +82,6 @@ bool ReAPI_Init()
 
 	g_RehldsSvs = g_RehldsApi->GetServerStatic();
 
-	g_RehldsHookchains->ClientConnected()->registerHook(ReAPI_ClientConnected);
-
 	g_RehldsHookchains->SV_DropClient()->registerHook(ReAPI_SV_DropClient);
 
 	return true;
@@ -91,18 +89,9 @@ bool ReAPI_Init()
 
 bool ReAPI_Stop()
 {
-	g_RehldsHookchains->ClientConnected()->unregisterHook(ReAPI_ClientConnected);
-
 	g_RehldsHookchains->SV_DropClient()->unregisterHook(ReAPI_SV_DropClient);
 
 	return true;
-}
-
-void ReAPI_ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* client)
-{
-	chain->callNext(client);
-
-	gMatchApi.ClientConnected(client);
 }
 
 void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, bool crash, const char* Reason)
@@ -112,8 +101,6 @@ void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, 
 	if (!FNullEnt(pEdict))
 	{
 		gMatchCaptain.PlayerDisconnect(pEdict);
-
-		gMatchStats.PlayerDisconnect(pEdict);
 
 		gMatchVoteMenu.PlayerDisconnect(pEdict);
 	}

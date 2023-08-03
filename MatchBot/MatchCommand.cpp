@@ -225,11 +225,6 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 					gMatchVoteMenu.VoteStop(Player);
 					break;
 				}
-				case CMD_PLAYER_REPORT:
-				{
-					gMatchReport.Menu(Player);
-					break;
-				}
 				case CMD_ADMIN_MENU:
 				{
 					gMatchAdminMenu.MainMenu(Player->entindex());

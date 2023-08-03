@@ -74,93 +74,88 @@
     "flag": "z",
     "description": "Vote stop match menu"
   },
-  ".report": {
-    "id": 16,
-    "flag": "z",
-    "description": "Report an player"
-  },
   "!menu": {
-    "id": 17,
+    "id": 16,
     "flag": "u",
     "description": "Main admin menu"
   },
   "!kick": {
-    "id": 18,
+    "id": 17,
     "flag": "c",
     "description": "Kick menu"
   },
   "!ban": {
-    "id": 19,
+    "id": 18,
     "flag": "d",
     "description": "Ban menu"
   },
   "!kill": {
-    "id": 20,
+    "id": 19,
     "flag": "e",
     "description": "Slay menu"
   },
   "!team": {
-    "id": 21,
+    "id": 20,
     "flag": "m",
     "description": "Team menu"
   },
   "!map": {
-    "id": 22,
+    "id": 21,
     "flag": "f",
     "description": "Vote Menu"
   },
   "!control": {
-    "id": 23,
+    "id": 22,
     "flag": "n",
     "description": "Match Bot control menu"
   },
   "!msg": {
-    "id": 24,
+    "id": 23,
     "flag": "i",
     "description": "Send a global chat message"
   },
   "!cmd": {
-    "id": 25,
+    "id": 24,
     "flag": "l",
     "description": "Send server command"
   },
   "!swap": {
-    "id": 26,
+    "id": 25,
     "flag": "g",
     "description": "Swap Teams"
   },
   "!votemap": {
-    "id": 27,
+    "id": 26,
     "flag": "j",
     "description": "Start vote map"
   },
   "!voteteam": {
-    "id": 28,
+    "id": 27,
     "flag": "j",
     "description": "Start vote team"
   },
   "!start": {
-    "id": 29,
+    "id": 28,
     "flag": "n",
     "description": "Start match"
   },
   "!stop": {
-    "id": 30,
+    "id": 29,
     "flag": "n",
     "description": "Stop match"
   },
   "!restart": {
-    "id": 31,
+    "id": 30,
     "flag": "n",
     "description": "Restart match"
   },
   "!pause": {
-    "id": 32,
+    "id": 31,
     "flag": "n",
     "description": "Pause the match"
   },
   "!help": {
-    "id": 33,
+    "id": 32,
     "flag": "o",
     "description": "Show admin help page"
   }

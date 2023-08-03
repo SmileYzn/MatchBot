@@ -57,12 +57,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;$(ProjectDir)include\curl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>MatchBot.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(ProjectDir)include\curl\lib\libcurl_a_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -76,7 +76,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;$(ProjectDir)include\curl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include\metamod;$(ProjectDir)include\cssdk\common;$(ProjectDir)include\cssdk\dlls;$(ProjectDir)include\cssdk\engine;$(ProjectDir)include\cssdk\game_shared;$(ProjectDir)include\cssdk\pm_shared;$(ProjectDir)include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
@@ -84,7 +84,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ModuleDefinitionFile>MatchBot.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(ProjectDir)include\curl\lib\libcurl_a.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>.\PostCompile.bat</Command>
@@ -100,14 +101,11 @@
     <ClInclude Include="MatchCaptain.h" />
     <ClInclude Include="MatchChangeMap.h" />
     <ClInclude Include="MatchCommand.h" />
-    <ClInclude Include="MatchCurl.h" />
     <ClInclude Include="MatchLanguage.h" />
     <ClInclude Include="MatchLO3.h" />
     <ClInclude Include="MatchMenu.h" />
     <ClInclude Include="MatchMessage.h" />
     <ClInclude Include="MatchPause.h" />
-    <ClInclude Include="MatchReport.h" />
-    <ClInclude Include="MatchApi.h" />
     <ClInclude Include="MatchRestrictItem.h" />
     <ClInclude Include="MatchBugFix.h" />
     <ClInclude Include="MatchStats.h" />
@@ -134,15 +132,12 @@
     <ClCompile Include="MatchAdminMenu.cpp" />
     <ClCompile Include="MatchCaptain.cpp" />
     <ClCompile Include="MatchChangeMap.cpp" />
-    <ClCompile Include="MatchCurl.cpp" />
     <ClCompile Include="MatchLanguage.cpp" />
     <ClCompile Include="MatchMenu.cpp" />
     <ClCompile Include="MatchCommand.cpp" />
     <ClCompile Include="MatchLO3.cpp" />
     <ClCompile Include="MatchMessage.cpp" />
     <ClCompile Include="MatchPause.cpp" />
-    <ClCompile Include="MatchReport.cpp" />
-    <ClCompile Include="MatchApi.cpp" />
     <ClCompile Include="MatchRestrictItem.cpp" />
     <ClCompile Include="MatchBugFix.cpp" />
     <ClCompile Include="MatchStats.cpp" />

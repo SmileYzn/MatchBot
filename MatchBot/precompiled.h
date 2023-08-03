@@ -41,14 +41,6 @@
 #include <direct.h>
 #endif
 
-// cURL sources
-#ifndef CURL_STATICLIB
-#define CURL_STATICLIB
-#endif
-
-// cURL sources
-#include <curl/curl.h>
-
 // CSSDK
 #include <extdll.h>
 #include <eiface.h>
@@ -86,19 +78,16 @@
 #include "MatchMenu.h"
 #include "MatchAdmin.h"
 #include "MatchAdminMenu.h"
-#include "MatchApi.h"
 #include "MatchBot.h"
 #include "MatchBugFix.h"
 #include "MatchCaptain.h"
 #include "MatchChangeMap.h"
 #include "MatchCommand.h"
-#include "MatchCurl.h"
 #include "MatchLanguage.h"
 #include "MatchLO3.h"
 #include "MatchMessage.h"
 #include "MatchPause.h"
 #include "MatchReady.h"
-#include "MatchReport.h"
 #include "MatchRestrictItem.h"
 #include "MatchStats.h"
 #include "MatchTimer.h"

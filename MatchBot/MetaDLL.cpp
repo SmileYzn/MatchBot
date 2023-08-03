@@ -32,12 +32,6 @@ BOOL DLL_PRE_ClientConnect(edict_t* pEntity, const char* pszName, const char* ps
 		return FALSE;
 	}
 
-	if (!gMatchStats.PlayerConnect(pEntity, pszName, pszAddress, szRejectReason))
-	{
-		RETURN_META_VALUE(MRES_SUPERCEDE, FALSE);
-		return FALSE;
-	}
-
 	RETURN_META_VALUE(MRES_IGNORED, TRUE);
 	return TRUE;
 }
@@ -63,8 +57,6 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
 	gMatchTask.ServerActivate();
 
-	gMatchCurl.ServerActivate();
-
 	gMatchCommand.ServerActivate();
 
 	gMatchBot.ServerActivate();
@@ -75,16 +67,12 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 	gMatchStats.ServerActivate();
 
-	gMatchReport.ServerActivate();
-
 	RETURN_META(MRES_IGNORED);
 }
 
 void DLL_POST_ServerDeactivate(void)
 {
 	gMatchTask.ServerDeactivate();
-
-	gMatchCurl.ServerDeactivate();
 
 	gMatchBot.ServerDeactivate();
 
@@ -94,8 +82,6 @@ void DLL_POST_ServerDeactivate(void)
 void DLL_POST_StartFrame(void)
 {
 	gMatchTask.ServerFrame();
-
-	gMatchCurl.ServerFrame();
 
 	RETURN_META(MRES_IGNORED);
 }

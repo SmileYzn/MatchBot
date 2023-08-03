@@ -97,20 +97,6 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CBasePlayer_TakeDamage()->registerHook(ReGameDLL_CBasePlayer_TakeDamage);
 
-	g_ReGameHookchains->CSGameRules_PlayerKilled()->registerHook(ReGameDLL_CSGameRules_PlayerKilled);
-
-	g_ReGameHookchains->CBasePlayer_SetAnimation()->registerHook(ReGameDLL_CBasePlayer_SetAnimation);
-
-	g_ReGameHookchains->CBasePlayer_DropPlayerItem()->registerHook(ReGameDLL_CBasePlayer_DropPlayerItem);
-
-	g_ReGameHookchains->PlantBomb()->registerHook(ReGameDLL_PlantBomb);
-
-	g_ReGameHookchains->CGrenade_DefuseBombStart()->registerHook(ReGameDLL_CGrenade_DefuseBombStart);
-
-	g_ReGameHookchains->CGrenade_DefuseBombEnd()->registerHook(ReGameDLL_CGrenade_DefuseBombEnd);
-
-	g_ReGameHookchains->CGrenade_ExplodeBomb()->registerHook(ReGameDLL_CGrenade_ExplodeBomb);
-
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->registerHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
 	return true;
@@ -137,20 +123,6 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->RoundEnd()->unregisterHook(ReGameDLL_RoundEnd);
 
 	g_ReGameHookchains->CBasePlayer_TakeDamage()->unregisterHook(ReGameDLL_CBasePlayer_TakeDamage);
-
-	g_ReGameHookchains->CSGameRules_PlayerKilled()->unregisterHook(ReGameDLL_CSGameRules_PlayerKilled);
-
-	g_ReGameHookchains->CBasePlayer_SetAnimation()->unregisterHook(ReGameDLL_CBasePlayer_SetAnimation);
-
-	g_ReGameHookchains->CBasePlayer_DropPlayerItem()->unregisterHook(ReGameDLL_CBasePlayer_DropPlayerItem);
-
-	g_ReGameHookchains->PlantBomb()->unregisterHook(ReGameDLL_PlantBomb);
-
-	g_ReGameHookchains->CGrenade_DefuseBombStart()->unregisterHook(ReGameDLL_CGrenade_DefuseBombStart);
-
-	g_ReGameHookchains->CGrenade_DefuseBombEnd()->unregisterHook(ReGameDLL_CGrenade_DefuseBombEnd);
-
-	g_ReGameHookchains->CGrenade_ExplodeBomb()->unregisterHook(ReGameDLL_CGrenade_ExplodeBomb);
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
@@ -180,8 +152,6 @@ BOOL ReGameDLL_HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, C
 		Slot = 0;
 	}
 
-	gMatchStats.PlayerJoinTeam(Player, Slot);
-
 	return chain->callNext(Player, Slot);
 }
 
@@ -193,8 +163,6 @@ bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame* chai
 
 	gMatchReady.PlayerGetIntoGame(Player);
 
-	gMatchStats.PlayerGetIntoGame(Player);
-
 	return ret;
 }
 
@@ -204,8 +172,6 @@ void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain,
 	{
 		amount = 0;
 	}
-
-	gMatchStats.PlayerAddAccount(pthis, amount, type, bTrackChange);
 
 	chain->callNext(pthis, amount, type, bTrackChange);
 }
@@ -228,12 +194,9 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 
 	if (Player)
 	{
-		if (!Player->IsDormant())
+		if (gMatchCommand.ClientCommand(Player, pcmd, parg1))
 		{
-			if (gMatchCommand.ClientCommand(Player, pcmd, parg1))
-			{
-				return;
-			}
+			return;
 		}
 	}
 
@@ -253,15 +216,11 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 {
 	gMatchBot.RoundRestart(true);
 
-	gMatchStats.RoundRestart(true);
-
 	chain->callNext();
 
 	gMatchBot.RoundRestart(false);
 
 	gMatchLO3.RoundRestart();
-
-	gMatchStats.RoundRestart(false);
 
 	gMatchPause.RoundRestart();
 }
@@ -284,70 +243,6 @@ int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage* chain, 
 	gMatchStats.PlayerDamage(pThis, pevInflictor, pevAttacker, flDamage, bitsDamageType);
 
 	return ret;
-}
-
-void ReGameDLL_CSGameRules_PlayerKilled(IReGameHook_CSGameRules_PlayerKilled* chain, CBasePlayer* pVictim, entvars_t* pevKiller, entvars_t* pevInflictor)
-{
-	chain->callNext(pVictim, pevKiller, pevInflictor);
-
-	gMatchStats.PlayerKilled(pVictim, pevKiller, pevInflictor);
-}
-
-void ReGameDLL_CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation* chain, CBasePlayer* pthis, PLAYER_ANIM playerAnim)
-{
-	chain->callNext(pthis, playerAnim);
-
-	gMatchStats.PlayerSetAnimation(pthis, playerAnim);
-}
-
-bool ReGameDLL_CBasePlayer_MakeBomber(IReGameHook_CBasePlayer_MakeBomber* chain, CBasePlayer* pthis)
-{
-	auto ret = chain->callNext(pthis);
-
-	gMatchStats.PlayerMakeBomber(pthis);
-
-	return ret;
-}
-
-CBaseEntity* ReGameDLL_CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem* chain, CBasePlayer* pthis, const char* pszItemName)
-{
-	auto ret = chain->callNext(pthis, pszItemName);
-
-	gMatchStats.PlayerDropItem(pthis, pszItemName);
-
-	return ret;
-}
-
-CGrenade* ReGameDLL_PlantBomb(IReGameHook_PlantBomb* chain, entvars_t* pevOwner, Vector& vecStart, Vector& vecVelocity)
-{
-	gMatchStats.PlantBomb(pevOwner, false);
-
-	auto ret = chain->callNext(pevOwner, vecStart, vecVelocity);
-
-	gMatchStats.PlantBomb(pevOwner, true);
-
-	return ret;
-}
-
-void ReGameDLL_CGrenade_DefuseBombStart(IReGameHook_CGrenade_DefuseBombStart* chain, CGrenade* pthis, CBasePlayer* pPlayer)
-{
-	chain->callNext(pthis, pPlayer);
-
-	gMatchStats.DefuseBombStart(pPlayer);
-}
-
-void ReGameDLL_CGrenade_DefuseBombEnd(IReGameHook_CGrenade_DefuseBombEnd* chain, CGrenade* pthis, CBasePlayer* pPlayer, bool bDefused)
-{
-	gMatchStats.DefuseBombEnd(pPlayer, bDefused);
-
-	chain->callNext(pthis, pPlayer, bDefused);
-}
-
-void ReGameDLL_CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb* chain, CGrenade* pthis, TraceResult* ptr, int bitsDamageType)
-{
-	gMatchStats.ExplodeBomb(pthis, ptr, bitsDamageType);
-
-	chain->callNext(pthis, ptr, bitsDamageType);
 }
 
 void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade* chain, CGrenade* pthis)
