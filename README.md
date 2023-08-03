@@ -54,7 +54,10 @@ At the end, server will start a vote map to changelevel to next map automaticall
 <li>Other features that is not listed here you can see in your wiki</li>
 </ul>
 
-<h3> Match BOT command list </h3>
+<h3>Match BOT Server Variables</h3>
+
+<details>
+  <summary>Click to expand</summary>
 
 | Matchbot.cfg commands list         |  Default value | Description                                    |
 | :--------------------------------- | :-----:  | :--------------------------------------------- |
@@ -91,9 +94,6 @@ At the end, server will start a vote map to changelevel to next map automaticall
 | mb_fix_spawn_distance              | 60.0     | Distance to respawn player if try to bug respawn on de_dust2 ramp and other maps. <br /> `0` Disabled. <br /> `n.0` Distance in units to enable fix. |
 | mb_help_file                       | cstrike/addons/matchbot/users_help.html     | Users Help File or Website url (Without HTTPS). <br /> If is website url, works only with HTTP (Not HTTPS).|
 | mb_help_file_admin                 | cstrike/addons/matchbot/admin_help.html      | Admin Help File or Website url (Without HTTPS). <br /> If is website url, works only with HTTP (Not HTTPS).|
-| mb_api_url                         | -       | Match Bot HTTP Requests URL. <br/>Leave empty to disable whole matchbot API.|
-| mb_api_timeout                     | 5       | Timeout of Match Bot HTTP API Requests. |
-| mb_api_auth_type                   | 0       | Player Authentication type on connect. <br /> `0` Disable player authentication on connect. <br /> `1` Kick Player only when receive response from authentication server to kick it. <br /> `2` Kick Player if authentication failed or authentication server is offline. |
 | mb_cfg_match_bot                   | matchbot.cfg  | Match Bot main config. <br /> Executed when Match Bot loads at new map.|
 | mb_cfg_warmup                      | warmup.cfg    | Warmup config. <br /> Executed at Warmup session.|
 | mb_cfg_start                       | start.cfg     | Start config. <br /> Executed when vote system starts vote teams or vote map.|
@@ -102,6 +102,7 @@ At the end, server will start a vote map to changelevel to next map automaticall
 | mb_cfg_2nd                         | esl.cfg       | Second Half config. <br /> Executed when match is live at second half.|
 | mb_cfg_overtime                    | esl-ot.cfg    | Overtime config. <br /> Executed at overtime extras rounds.|
 | mb_cfg_end                         | end.cfg       | End config. <br /> Executed right after match ends.|
+</details>
 
 <h3>Why CS 1.6 it's sucks</h3>
 <p>
