@@ -73,6 +73,26 @@ void CMatchUtil::TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeam
 	}
 }
 
+void CMatchUtil::MakeDeathMessage(edict_t* pKiller, edict_t* pVictim, bool Headshot, const char* Weapon)
+{
+	static int iMsgDeathMsg;
+
+	if (iMsgDeathMsg || (iMsgDeathMsg = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "DeathMsg", NULL)))
+	{
+		g_engfuncs.pfnMessageBegin(MSG_ALL, iMsgDeathMsg, NULL, NULL);
+
+		g_engfuncs.pfnWriteByte(!FNullEnt(pKiller) ? ENTINDEX(pKiller) : 0);
+
+		g_engfuncs.pfnWriteByte(!FNullEnt(pVictim) ? ENTINDEX(pVictim) : 0);
+
+		g_engfuncs.pfnWriteByte(Headshot ? 1 : 0);
+
+		g_engfuncs.pfnWriteString(Weapon);
+
+		g_engfuncs.pfnMessageEnd();
+	}
+}
+
 void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 {
 	static int iMsgSayText;

@@ -30,6 +30,9 @@ public:
 
 	// Send Team Info to player
 	void TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName);
+
+	// Make Death Message
+	void MakeDeathMessage(edict_t* pKiller, edict_t* pVictim, bool Headshot, const char* Weapon);
 	
 	// Send say text message
 	void SayText(edict_t* pEntity, int Sender, const char* Format, ...);

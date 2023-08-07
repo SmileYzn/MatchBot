@@ -97,6 +97,11 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 				}
 			}
 		}
+		else
+		{
+			// Make C4 Death Message
+			gMatchUtil.MakeDeathMessage(nullptr, Victim->edict(), false, "worldspawn");;
+		}
 	}
 }
 

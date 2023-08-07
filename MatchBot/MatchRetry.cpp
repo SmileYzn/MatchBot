@@ -4,31 +4,23 @@ CMatchRetry gMatchRetry;
 
 bool CMatchRetry::PlayerConnect(edict_t* pEdict, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
-	if (g_RehldsFuncs)
+	if (!FNullEnt(pEdict))
 	{
-		if (!FNullEnt(pEdict))
+		auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+
+		if (Auth)
 		{
-			auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEdict);
-
-			if (Auth)
+			if (this->m_Data.find(Auth) != this->m_Data.end())
 			{
-				if (this->m_Data.find(Auth) != this->m_Data.end())
+				auto TimeLeft = (int)(this->m_Data[Auth] - gpGlobals->time);
+
+				if (TimeLeft > 0)
 				{
-					auto TimeLeft = (int)(this->m_Data[Auth] - gpGlobals->time);
-
-					if (TimeLeft > 0)
-					{
-						auto GameClient = g_RehldsSvs->GetClient(ENTINDEX(pEdict) - 1);
-
-						if (GameClient)
-						{
-							g_RehldsFuncs->DropClient(GameClient, false, _T("Wait %d seconds before reconnect."), TimeLeft);
-						}
-					}
-					else
-					{
-						this->m_Data.erase(Auth);
-					}
+					gMatchUtil.DropClient(ENTINDEX(pEdict), _T("Wait %d seconds before reconnect."), TimeLeft);
+				}
+				else
+				{
+					this->m_Data.erase(Auth);
 				}
 			}
 		}
