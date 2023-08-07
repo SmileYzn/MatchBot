@@ -201,6 +201,8 @@ public:
 	cvar_t* m_RestrictWeapons = nullptr;
 	cvar_t* m_ExtraSmokeCount = nullptr;
 	cvar_t* m_PauseTime = nullptr;
+	cvar_t* m_RetryMode = nullptr;
+	cvar_t* m_RetryTime = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };

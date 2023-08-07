@@ -110,6 +110,12 @@ void CMatchBot::ServerActivate()
 	// Amount of seconds to pause match (0 Disable, or number of seconds to pause the match)
 	this->m_PauseTime = gMatchUtil.CvarRegister("mb_pause_time", "60.0");
 
+	// Anti reconnect mode (0 Disabled, 1 Enable when player explicity drop from server, 2 Enabled for any disconnect reason)
+	this->m_RetryMode = gMatchUtil.CvarRegister("mb_retry_mode", "0");
+
+	// Anti reconnect time (Time in seconds to prevent the player reconnect to server)
+	this->m_RetryTime = gMatchUtil.CvarRegister("mb_retry_time", "30.0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 

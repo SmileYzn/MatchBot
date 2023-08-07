@@ -89,6 +89,7 @@
 #include "MatchPause.h"
 #include "MatchReady.h"
 #include "MatchRestrictItem.h"
+#include "MatchRetry.h"
 #include "MatchStats.h"
 #include "MatchTimer.h"
 #include "MatchTask.h"

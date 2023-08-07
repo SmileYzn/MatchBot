@@ -108,6 +108,7 @@
     <ClInclude Include="MatchPause.h" />
     <ClInclude Include="MatchRestrictItem.h" />
     <ClInclude Include="MatchBugFix.h" />
+    <ClInclude Include="MatchRetry.h" />
     <ClInclude Include="MatchStats.h" />
     <ClInclude Include="MatchTask.h" />
     <ClInclude Include="MatchTimer.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="MatchPause.cpp" />
     <ClCompile Include="MatchRestrictItem.cpp" />
     <ClCompile Include="MatchBugFix.cpp" />
+    <ClCompile Include="MatchRetry.cpp" />
     <ClCompile Include="MatchStats.cpp" />
     <ClCompile Include="MatchTimer.cpp" />
     <ClCompile Include="MatchVoteMap.cpp" />

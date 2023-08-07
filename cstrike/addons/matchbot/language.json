@@ -1115,4 +1115,10 @@
         "es": "No se ha podido autenticar, contáctenos: %s",
         "ru": "Не удалось аутентифицироваться, свяжитесь с нами: %s"
     }
+    "Wait %d seconds before reconnect.": {
+        "en": "Wait %d seconds before reconnect.",
+        "bp": "Aguarde %d segundos antes de reconectar-se.",
+        "es": "Espere %d segundos antes de volver a conectarse.",
+        "ru": "Подождите %d секунд перед повторным подключением.",
+    }
 }
