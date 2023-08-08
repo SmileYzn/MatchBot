@@ -26,10 +26,10 @@ public:
 
 	bool Handle(int EntityIndex, int Key);
 
-private:
 	void Display(int EntityIndex, int Page);
 	void ShowMenu(int EntityIndex, int Slots, int Time, std::string Text);
 
+private:
 	std::string m_Text;
 	std::vector<P_MENU_ITEM> m_Data;
 	int m_Page = 0;

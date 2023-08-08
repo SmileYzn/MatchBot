@@ -99,9 +99,6 @@ bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const cha
             {
                 // Set Flags to this entity
                 this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags(Admin->second.c_str());
-
-                // Return true to allow player connection
-                return true;
             }
         }
     }
@@ -132,4 +129,25 @@ int CMatchAdmin::Access(int EntityIndex, int Level)
 
     // Return level check
     return (this->m_Flag[EntityIndex] & Level);
+}
+
+// Get Flags
+std::string CMatchAdmin::GetFlags(edict_t* pEdict)
+{
+    // Get player auth index
+    auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+
+    // If is not empty
+    if (Auth)
+    {
+        // If is not at end
+        if (this->m_Data.find(Auth) != this->m_Data.end())
+        {
+            // Return flags
+            return this->m_Data[Auth];
+        }
+    }
+
+    // Empty
+    return "";
 }

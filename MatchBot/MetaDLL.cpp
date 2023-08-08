@@ -38,6 +38,12 @@ BOOL DLL_PRE_ClientConnect(edict_t* pEntity, const char* pszName, const char* ps
 		return FALSE;
 	}
 
+	if (!gMatchPlayer.PlayerConnect(pEntity, pszName, pszAddress, szRejectReason))
+	{
+		RETURN_META_VALUE(MRES_SUPERCEDE, FALSE);
+		return FALSE;
+	}
+
 	RETURN_META_VALUE(MRES_IGNORED, TRUE);
 	return TRUE;
 }
@@ -72,6 +78,8 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 	gMatchVoteMenu.ServerActivate();
 
 	gMatchStats.ServerActivate();
+
+	gMatchPlayer.ServerActivate();
 
 	RETURN_META(MRES_IGNORED);
 }

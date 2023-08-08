@@ -56,6 +56,9 @@ public:
 	// Check if user has access level
 	int Access(int EntityIndex, int Level);
 
+	// Get Flags
+	std::string GetFlags(edict_t* pEdict);
+
 private:
 	// User Admin Info Data container
 	std::map<std::string, std::string> m_Data;

@@ -97,6 +97,9 @@
     <Filter Include="MatchBot\MatchRetry">
       <UniqueIdentifier>{7ab4b7dc-1143-4c24-a988-5326d841efb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MatchBot\MatcnPlayer">
+      <UniqueIdentifier>{ef58dc5a-58e0-41ae-bad2-f1d1a85307ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatchBot.h">
@@ -194,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="MatchRetry.h">
       <Filter>MatchBot\MatchRetry</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchPlayer.h">
+      <Filter>MatchBot\MatcnPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -294,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="MatchRetry.cpp">
       <Filter>MatchBot\MatchRetry</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchPlayer.cpp">
+      <Filter>MatchBot\MatcnPlayer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -45,6 +45,9 @@ void CMatchAdminMenu::MainMenu(int EntityIndex)
 	// Swap teams instantly
 	gMatchMenu[EntityIndex].AddItem(8, _T("Swap Teams"), !(Flags & ADMIN_CVAR));
 
+	// Player List
+	gMatchMenu[EntityIndex].AddItem(9, _T("Player List"), !(Flags & ADMIN_MENU));
+
 	// Show menu 
 	gMatchMenu[EntityIndex].Show(EntityIndex);
 }
@@ -115,6 +118,11 @@ void CMatchAdminMenu::MainMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			case 8: // Swap Teams
 			{
 				gMatchAdminMenu.SwapTeams(Player->entindex());
+				break;
+			}
+			case 9: // Player List
+			{
+				gMatchPlayer.PlayerMenu(Player->entindex());
 				break;
 			}
 		}

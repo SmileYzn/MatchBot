@@ -87,6 +87,7 @@
 #include "MatchLO3.h"
 #include "MatchMessage.h"
 #include "MatchPause.h"
+#include "MatchPlayer.h"
 #include "MatchReady.h"
 #include "MatchRestrictItem.h"
 #include "MatchRetry.h"
