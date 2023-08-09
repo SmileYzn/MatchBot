@@ -1114,11 +1114,95 @@
         "bp": "Falha ao autenticar, entre em contato: %s",
         "es": "No se ha podido autenticar, contáctenos: %s",
         "ru": "Не удалось аутентифицироваться, свяжитесь с нами: %s"
-    }
+    },
     "Wait %d seconds before reconnect.": {
         "en": "Wait %d seconds before reconnect.",
         "bp": "Aguarde %d segundos antes de reconectar-se.",
         "es": "Espere %d segundos antes de volver a conectarse.",
-        "ru": "Подождите %d секунд перед повторным подключением.",
+        "ru": "Подождите %d секунд перед повторным подключением."
+    },
+    "Player List": {
+	"en": "Player List",
+	"bp": "Jogadores",
+	"es": "Jugadore",
+	"ru": "Список игроков"
+    },
+    "Online": {
+        "en": "Online",
+        "bp": "Online",
+        "es": "En línea",
+        "ru": "В сети"
+    },
+    "Offline": {
+        "en": "Offline",
+        "bp": "Offline",
+        "es": "Desconectado",
+        "ru": "Не в сети"
+    },
+    "In Game": {
+        "en": "In Game",
+        "bp": "No Jogo",
+        "es": "En el juego",
+        "ru": "В игре"
+    },
+    "Player List is empty...": {
+        "en": "Player List is empty...",
+        "bp": "A lista de jogadores está vazia...",
+        "es": "La lista de jugadores está vacía...",
+        "ru": "Список игроков пуст..."
+    },
+    "Name": {
+        "en": "Name",
+        "bp": "Nome",
+        "es": "Nombre",
+        "ru": "Имя"
+    },
+    "Steam": {
+        "en": "Steam",
+        "bp": "Steam",
+        "es": "Steam",
+        "ru": "Пар"
+    },
+    "Address": {
+        "en": "Address",
+        "bp": "IP",
+        "es": "IP",
+        "ru": "Адрес"
+    },
+    "Flags": {
+        "en": "Flags",
+        "bp": "Acesso",
+        "es": "IP",
+        "ru": "Доступ"
+    },
+    "Team": {
+        "en": "Team",
+        "bp": "Time",
+        "es": "Equipo",
+        "ru": "Команда"
+    },
+    "User Index": {
+        "en": "User Index",
+        "bp": "User Index",
+        "es": "User Index",
+        "ru": "Индекс пользователя"
+    },
+    "Status": {
+        "en": "Status",
+        "bp": "Status",
+        "es": "Estado",
+        "ru": "Положение дел"
+    },
+    "Status": {
+        "en": "Status",
+        "bp": "Status",
+        "es": "Estado",
+        "ru": "Положение дел"
+    },
+    "^3%s^1 is not in connected.": {
+        "en": "^3%s^1 is not in connected.",
+        "bp": "^3%s^1 não está no jogo.",
+        "es": "^3%s^1 no está conectado.",
+        "ru": "^3%s^1 не подключен."
     }
 }

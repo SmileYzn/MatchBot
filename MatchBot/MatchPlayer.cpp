@@ -80,7 +80,7 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 		this->m_Player[UserIndex].Name = STRING(Player->edict()->v.netname);
 
 		// Address
-		this->m_Player[UserIndex].Address = Player->IsBot() ? "127.0.0.1:27005" : this->m_Player[UserIndex].Address;
+		this->m_Player[UserIndex].Address = Player->IsBot() ? "loopback" : this->m_Player[UserIndex].Address;
 
 		// Admin Flags
 		this->m_Player[UserIndex].Flags = gMatchAdmin.GetFlags(Player->edict());
@@ -112,7 +112,7 @@ void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 		this->m_Player[UserIndex].Name = STRING(Player->edict()->v.netname);
 
 		// Address
-		this->m_Player[UserIndex].Address = Player->IsBot() ? "127.0.0.1:27005" : this->m_Player[UserIndex].Address;
+		this->m_Player[UserIndex].Address = Player->IsBot() ? "loopback" : this->m_Player[UserIndex].Address;
 
 		// Admin Flags
 		this->m_Player[UserIndex].Flags = gMatchAdmin.GetFlags(Player->edict());
@@ -163,7 +163,7 @@ void CMatchPlayer::PlayerMenu(int EntityIndex)
 
 	if (!this->m_Player.empty())
 	{
-		gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Player List (Count %zu)"), this->m_Player.size()), true, (void*)this->PlayerMenuHandle);
+		gMatchMenu[EntityIndex].Create(_T("Player List"), true, (void*)this->PlayerMenuHandle);
 
 		for (auto const& Player : this->m_Player)
 		{
@@ -175,7 +175,7 @@ void CMatchPlayer::PlayerMenu(int EntityIndex)
 				}
 				else
 				{
-					gMatchMenu[EntityIndex].AddItem(Player.first, gMatchUtil.FormatString("%s \\R\\y%s", Player.second.Name.c_str(), (Player.second.Status == 1) ? _T("ON") : _T("OFF")));
+					gMatchMenu[EntityIndex].AddItem(Player.first, gMatchUtil.FormatString("%s \\R\\y%s", Player.second.Name.c_str(), (Player.second.Status == 1) ? _T("Online") : _T("Offline")));
 				}
 			}
 		}
@@ -210,13 +210,13 @@ void CMatchPlayer::ShowInfo(CBasePlayer* Player,int UserId)
 
 		// Console Print
 		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s", std::string(32, '=').c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "Name: %s", this->m_Player[UserId].Name.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "Steam: %s", this->m_Player[UserId].Auth.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "Address: %s", this->m_Player[UserId].Address.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "Flags: %s", this->m_Player[UserId].Flags.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "Team: %s", gMatchBot.GetTeam(this->m_Player[UserId].LastTeam, false));
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "User Index: #%d", UserId);
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "Status: %s", (this->m_Player[UserId].Status > 0) ? (this->m_Player[UserId].Status == 1 ? "Connected" : "In Game") : "Disconnected");
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Name"), this->m_Player[UserId].Name.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Steam"), this->m_Player[UserId].Auth.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Address"), this->m_Player[UserId].Address.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Flags"), this->m_Player[UserId].Flags.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Team"), gMatchBot.GetTeam(this->m_Player[UserId].LastTeam, false));
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: #%d", _T("User Index"), UserId);
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Status"), (this->m_Player[UserId].Status > 0) ? (this->m_Player[UserId].Status == 1 ? _T("Online") : _T("In Game")) : _T("Offline"));
 		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s", std::string(32, '=').c_str());
 
 		// Create Menu
@@ -224,14 +224,20 @@ void CMatchPlayer::ShowInfo(CBasePlayer* Player,int UserId)
 		(
 			gMatchUtil.FormatString
 			(
-				"%s Information:\\w\n\nSteam: \\y%s\\w\nIP: \\y%s\\w\nFlags: \\y%s\\w\nLast Team: \\y%s\\w\nUser Index: \\y#%d\\w\nStatus: %s",
+				"%s:\\w\n\n%s: \\y%s\\w\n%s: \\y%s\\w\n%s: \\y%s\\w\n%s: \\y%s\\w\n%s: \\y#%d\\w\n%s: \\y%s",
 				this->m_Player[UserId].Name.c_str(),
+				_T("Steam"),
 				this->m_Player[UserId].Auth.c_str(),
+				_T("Address"),
 				this->m_Player[UserId].Address.c_str(),
+				_T("Flags"),
 				this->m_Player[UserId].Flags.c_str(),
+				_T("Team"),
 				gMatchBot.GetTeam(this->m_Player[UserId].LastTeam, false),
+				_T("User Index"),
 				UserId,
-				(this->m_Player[UserId].Status > 0) ? (this->m_Player[UserId].Status == 1 ? "\\yConnected" : "\\yIn Game") : "\\rDisconnected"
+				_T("Status"),
+				(this->m_Player[UserId].Status > 0) ? (this->m_Player[UserId].Status == 1 ? _T("Online") : _T("In Game")) : _T("Offline")
 			),
 			true,
 			(void*)this->PlayerMenuActionHandle

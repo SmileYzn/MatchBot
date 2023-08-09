@@ -499,7 +499,7 @@ const char* CMatchUtil::FormatString(const char* Format, ...)
 {
 	va_list argList;
 
-	static char VarArgs[256];
+	static char VarArgs[512];
 
 	va_start(argList, Format);
 
