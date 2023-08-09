@@ -131,6 +131,36 @@ int CMatchAdmin::Access(int EntityIndex, int Level)
     return (this->m_Flag[EntityIndex] & Level);
 }
 
+// Check access by auth index
+int CMatchAdmin::Access(std::string Auth, int Level)
+{
+    auto Admin = this->m_Data.find(Auth);
+
+    // If found
+    if (Admin != this->m_Data.end())
+    {
+        // Set Flags to this entity
+        auto Flags = this->ReadFlags(Admin->second.c_str());
+
+        // If level is ADMIN_ADMIN
+        if (Level == ADMIN_ADMIN)
+        {
+            // Check if has any admin flag (ADMIN_ADMIN)
+            return (Flags > ADMIN_ALL && !(Flags & ADMIN_USER));
+        }
+        else if (Level == ADMIN_ALL) // If is zero (ADMIN_ALL)
+        {
+            return 1;
+        }
+
+        // Return level check
+        return (Flags & Level);
+    }
+
+    // Player do not have an access from that level
+    return 0;
+}
+
 // Get Flags
 std::string CMatchAdmin::GetFlags(edict_t* pEdict)
 {
@@ -149,5 +179,5 @@ std::string CMatchAdmin::GetFlags(edict_t* pEdict)
     }
 
     // Empty
-    return "";
+    return "z";
 }

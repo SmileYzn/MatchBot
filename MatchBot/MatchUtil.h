@@ -54,6 +54,9 @@ public:
 
 	// Get team players in vector
 	std::vector<CBasePlayer*> GetPlayers(TeamName Team, bool ReturnBots);
+
+	// Get player by user index
+	CBasePlayer* GetPlayerByUserId(int UserIndex);
 	
 	// Execute server command
 	void ServerCommand(const char* Format, ...);

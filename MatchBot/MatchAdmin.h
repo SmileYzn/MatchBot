@@ -56,6 +56,9 @@ public:
 	// Check if user has access level
 	int Access(int EntityIndex, int Level);
 
+	// Check if user has access level
+	int Access(std::string Auth, int Level);
+
 	// Get Flags
 	std::string GetFlags(edict_t* pEdict);
 

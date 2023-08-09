@@ -344,6 +344,28 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(TeamName Team, bool ReturnBots)
 	return Players;
 }
 
+// Get player by user index
+CBasePlayer* CMatchUtil::GetPlayerByUserId(int UserIndex)
+{
+	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	{
+		auto Player = UTIL_PlayerByIndexSafe(i);
+
+		if (Player)
+		{
+			if (!Player->IsDormant())
+			{
+				if (UserIndex == g_engfuncs.pfnGetPlayerUserId(Player->edict()))
+				{
+					return Player;
+				}
+			}
+		}
+	}
+
+	return nullptr;
+}
+
 void CMatchUtil::ServerCommand(const char* Format, ...)
 {
 	char cmd[255] = { 0 };
