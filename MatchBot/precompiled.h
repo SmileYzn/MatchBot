@@ -86,6 +86,7 @@
 #include "MatchLanguage.h"
 #include "MatchLO3.h"
 #include "MatchMessage.h"
+#include "MatchMute.h"
 #include "MatchPause.h"
 #include "MatchPlayer.h"
 #include "MatchReady.h"

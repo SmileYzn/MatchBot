@@ -45,6 +45,11 @@ void CMatchMenu::AddItem(int Info, std::string Text, bool Disabled)
 
 void CMatchMenu::AddItem(int Info, std::string Text, bool Disabled, int Extra)
 {
+	gMatchUtil.ReplaceAll(Text, "^w", "\\w");
+	gMatchUtil.ReplaceAll(Text, "^y", "\\y");
+	gMatchUtil.ReplaceAll(Text, "^r", "\\r");
+	gMatchUtil.ReplaceAll(Text, "^R", "\\R");
+
 	P_MENU_ITEM ItemData = { Info, Text, Disabled, Extra };
 
 	this->m_Data.push_back(ItemData);

@@ -33,7 +33,7 @@ public:
 	void PlayerDisconnect(edict_t* pEdict);
 
 	// Player Menu
-	void PlayerMenu(int EntityIndex);
+	void PlayerMenu(CBasePlayer* Player);
 
 	// Player menu handle
 	static void PlayerMenuHandle(int EntityIndex, P_MENU_ITEM Item);

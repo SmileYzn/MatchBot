@@ -225,6 +225,11 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 					gMatchVoteMenu.VoteStop(Player);
 					break;
 				}
+				case CMD_PLAYER_MUTE_MENU:
+				{
+					gMatchMute.Menu(Player);
+					break;
+				}
 				case CMD_ADMIN_MENU:
 				{
 					gMatchAdminMenu.MainMenu(Player->entindex());
@@ -308,6 +313,11 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				case CMD_ADMIN_HELP:
 				{
 					gMatchBot.Help(Player, true);
+					break;
+				}
+				case CMD_ADMIN_PLAYER_LIST:
+				{
+					gMatchPlayer.PlayerMenu(Player);
 					break;
 				}
 			}

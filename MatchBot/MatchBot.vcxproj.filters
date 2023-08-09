@@ -100,6 +100,9 @@
     <Filter Include="MatchBot\MatchPlayer">
       <UniqueIdentifier>{ef58dc5a-58e0-41ae-bad2-f1d1a85307ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MatchBot\MatchMute">
+      <UniqueIdentifier>{f391eefb-28c3-4a1f-96a2-d9ea339a5d29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatchBot.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="MatchPlayer.h">
       <Filter>MatchBot\MatchPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchMute.h">
+      <Filter>MatchBot\MatchMute</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +309,9 @@
     </ClCompile>
     <ClCompile Include="MatchPlayer.cpp">
       <Filter>MatchBot\MatchPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchMute.cpp">
+      <Filter>MatchBot\MatchMute</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

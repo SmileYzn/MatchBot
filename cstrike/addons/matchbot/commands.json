@@ -74,89 +74,99 @@
     "flag": "z",
     "description": "Vote stop match menu"
   },
-  "!menu": {
+  ".mute": {
     "id": 16,
+    "flag": "z",
+    "description": "Show Mute Menu"
+  },
+  "!menu": {
+    "id": 33,
     "flag": "u",
     "description": "Main admin menu"
   },
   "!kick": {
-    "id": 17,
+    "id": 34,
     "flag": "c",
     "description": "Kick menu"
   },
   "!ban": {
-    "id": 18,
+    "id": 35,
     "flag": "d",
     "description": "Ban menu"
   },
   "!kill": {
-    "id": 19,
+    "id": 36,
     "flag": "e",
     "description": "Slay menu"
   },
   "!team": {
-    "id": 20,
+    "id": 37,
     "flag": "m",
     "description": "Team menu"
   },
   "!map": {
-    "id": 21,
+    "id": 38,
     "flag": "f",
     "description": "Vote Menu"
   },
   "!control": {
-    "id": 22,
+    "id": 39,
     "flag": "n",
     "description": "Match Bot control menu"
   },
   "!msg": {
-    "id": 23,
+    "id": 40,
     "flag": "i",
     "description": "Send a global chat message"
   },
   "!cmd": {
-    "id": 24,
+    "id": 41,
     "flag": "l",
     "description": "Send server command"
   },
   "!swap": {
-    "id": 25,
+    "id": 42,
     "flag": "g",
     "description": "Swap Teams"
   },
   "!votemap": {
-    "id": 26,
+    "id": 43,
     "flag": "j",
     "description": "Start vote map"
   },
   "!voteteam": {
-    "id": 27,
+    "id": 44,
     "flag": "j",
     "description": "Start vote team"
   },
   "!start": {
-    "id": 28,
+    "id": 45,
     "flag": "n",
     "description": "Start match"
   },
   "!stop": {
-    "id": 29,
+    "id": 46,
     "flag": "n",
     "description": "Stop match"
   },
   "!restart": {
-    "id": 30,
+    "id": 47,
     "flag": "n",
     "description": "Restart match"
   },
   "!pause": {
-    "id": 31,
+    "id": 48,
     "flag": "n",
     "description": "Pause the match"
   },
   "!help": {
-    "id": 32,
+    "id": 49,
     "flag": "o",
     "description": "Show admin help page"
+  },
+  "!players": {
+    "id": 50,
+    "flag": "u",
+    "description": "Show Player List Menu"
   }
 }

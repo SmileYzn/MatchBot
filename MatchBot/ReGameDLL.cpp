@@ -101,6 +101,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->registerHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
+	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->registerHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
+
 	return true;
 }
 
@@ -129,6 +131,8 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CBasePlayer_TakeDamage()->unregisterHook(ReGameDLL_CBasePlayer_TakeDamage);
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
+
+	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->unregisterHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
 	return true;
 }
@@ -263,4 +267,16 @@ void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGre
 	chain->callNext(pthis);
 
 	gMatchBugFix.ExplodeSmokeGrenade(pthis);
+}
+
+bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer* chain, CBasePlayer* pListener, CBasePlayer* pSender)
+{
+	auto ret = chain->callNext(pListener, pSender);
+
+	if (gMatchMute.GetMute(pListener, pSender))
+	{
+		return false;
+	}
+
+	return ret;
 }

@@ -151,40 +151,45 @@ void CMatchPlayer::PlayerDisconnect(edict_t* pEdict)
 }
 
 // Player Menu
-void CMatchPlayer::PlayerMenu(int EntityIndex)
+void CMatchPlayer::PlayerMenu(CBasePlayer* Player)
 {
-	auto Flags = gMatchAdmin.GetFlags(EntityIndex);
+	auto EntityIndex = Player->entindex();
 
-	if (!(Flags & ADMIN_MENU))
+	if (EntityIndex)
 	{
-		gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
-		return;
-	}
+		auto Flags = gMatchAdmin.GetFlags(EntityIndex);
 
-	if (!this->m_Player.empty())
-	{
-		gMatchMenu[EntityIndex].Create(_T("Player List"), true, (void*)this->PlayerMenuHandle);
-
-		for (auto const& Player : this->m_Player)
+		if (!(Flags & ADMIN_MENU))
 		{
-			if (!gMatchAdmin.Access(Player.second.Auth, ADMIN_IMMUNITY))
-			{
-				if (Player.second.Status == 2)
-				{
-					gMatchMenu[EntityIndex].AddItem(Player.first, gMatchUtil.FormatString("%s \\R\\y%s", Player.second.Name.c_str(), gMatchBot.GetTeam(Player.second.LastTeam, true)));
-				}
-				else
-				{
-					gMatchMenu[EntityIndex].AddItem(Player.first, gMatchUtil.FormatString("%s \\R\\y%s", Player.second.Name.c_str(), (Player.second.Status == 1) ? _T("Online") : _T("Offline")));
-				}
-			}
+			gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+			return;
 		}
 
-		gMatchMenu[EntityIndex].Show(EntityIndex);
-	}
-	else
-	{
-		gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("Player List is empty..."));
+		if (!this->m_Player.empty())
+		{
+			gMatchMenu[EntityIndex].Create(_T("Player List"), true, (void*)this->PlayerMenuHandle);
+
+			for (auto const& Target : this->m_Player)
+			{
+				if (!gMatchAdmin.Access(Target.second.Auth, ADMIN_IMMUNITY))
+				{
+					if (Target.second.Status == 2)
+					{
+						gMatchMenu[EntityIndex].AddItem(Target.first, gMatchUtil.FormatString("%s \\R\\y%s", Target.second.Name.c_str(), gMatchBot.GetTeam(Target.second.LastTeam, true)));
+					}
+					else
+					{
+						gMatchMenu[EntityIndex].AddItem(Target.first, gMatchUtil.FormatString("%s \\R\\y%s", Target.second.Name.c_str(), (Target.second.Status == 1) ? _T("Online") : _T("Offline")));
+					}
+				}
+			}
+
+			gMatchMenu[EntityIndex].Show(EntityIndex);
+		}
+		else
+		{
+			gMatchUtil.SayText(INDEXENT(EntityIndex), PRINT_TEAM_DEFAULT, _T("Player List is empty..."));
+		}
 	}
 }
 

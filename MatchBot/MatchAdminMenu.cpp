@@ -122,7 +122,7 @@ void CMatchAdminMenu::MainMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			}
 			case 9: // Player List
 			{
-				gMatchPlayer.PlayerMenu(Player->entindex());
+				gMatchPlayer.PlayerMenu(Player);
 				break;
 			}
 		}
