@@ -32,7 +32,6 @@ void CMatchMute::Menu(CBasePlayer* Player)
 				}
 			}
 
-
 			gMatchMenu[EntityIndex].Show(EntityIndex);
 		}
 	}
