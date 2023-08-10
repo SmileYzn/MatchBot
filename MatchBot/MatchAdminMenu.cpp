@@ -226,9 +226,11 @@ void CMatchAdminMenu::BanMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			}
 			else
 			{
-				gMatchUtil.ServerCommand("banid %d #%d kick;wait;writeid", Item.Extra, g_engfuncs.pfnGetPlayerUserId(Target->edict()));
-
 				gMatchAdminMenu.BanMenu(EntityIndex);
+
+				gMatchUtil.ServerCommand(_T("banid %d #%d kick"), Item.Extra, g_engfuncs.pfnGetPlayerUserId(Target->edict()));
+
+				gMatchUtil.ServerCommand("wait;wait;writeid;writeip");
 			}
 		}
 	}

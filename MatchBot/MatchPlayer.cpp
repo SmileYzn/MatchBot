@@ -363,7 +363,9 @@ void CMatchPlayer::PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 
 		if (Info)
 		{
-			gMatchUtil.ServerCommand("banid %d %s kick;wait;writeid", Item.Info, Info->Auth.c_str());
+			gMatchUtil.ServerCommand(_T("banid %d %s kick"), Item.Info, Info->Auth.c_str());
+
+			gMatchUtil.ServerCommand("wait;wait;writeid;writeip");
 		}
 	}
 }
