@@ -1209,30 +1209,30 @@
         "en": "Mute Menu:",
         "bp": "Mute Menu:",
         "es": "Menú de silencio:",
-        "ru": "Меню отключения звука:",
+        "ru": "Меню отключения звука:"
     },
     "%s ^r^RMuted": {
         "en": "%s ^r^RMuted",
         "bp": "%s ^r^RMudo",
         "es": "%s ^r^RApagado",
-        "ru": "%s ^r^RПриглушен",
+        "ru": "%s ^r^RПриглушен"
     },
     "%s ^r^RListening": {
         "en": "%s ^r^RListening",
         "bp": "%s ^r^ROuvindo",
         "es": "%s ^r^REscuchando",
-        "ru": "%s ^r^RПрослушивание",
+        "ru": "%s ^r^RПрослушивание"
     },
     "You have muted ^3%s...": {
         "en": "You have muted ^3%s...",
         "bp": "Você mutou ^3%s...",
         "es": "Tú has silenciado ^3%s...",
-        "ru": "Вы отключили звук ^3%s...",
+        "ru": "Вы отключили звук ^3%s..."
     },
     "You have unmuted ^3%s...": {
         "en": "You have unmuted ^3%s...",
         "bp": "Você está ouvindo ^3%s...",
         "es": "Has des-silenciado ^3%s...",
-        "ru": "Вы разблокировали ^3%s...",
-    },
+        "ru": "Вы разблокировали ^3%s..."
+    }
 }
