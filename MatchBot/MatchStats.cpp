@@ -103,7 +103,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 			auto Attacker = UTIL_PlayerByIndexSafe(ENTINDEX(pevAttacker));
 
 			// Make C4 Death Message
-			gMatchUtil.MakeDeathMessage(Attacker ? Attacker->edict() : nullptr, Victim->edict(), false, "c4");
+			gMatchUtil.MakeDeathMessage((Attacker != nullptr) ? ((Attacker->entindex() != Victim->entindex()) ? Attacker->edict() : nullptr) : nullptr, Victim->edict(), false, "c4");
 		}
 	}
 }
