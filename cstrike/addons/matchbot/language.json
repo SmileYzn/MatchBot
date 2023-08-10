@@ -171,13 +171,13 @@
 	"en": "banid %d #%d kick",
 	"bp": "banid %d #%d kick",
 	"es": "banid %d #%d kick",
-	"ru": "banid %d #%d kick",
+	"ru": "banid %d #%d kick"
     },
     "banid %d %s kick": {
 	"en": "banid %d %s kick",
 	"bp": "banid %d %s kick",
 	"es": "banid %d %s kick",
-	"ru": "banid %d %s kick",
+	"ru": "banid %d %s kick"
     },
     "Change Team": {
         "en": "Change Team",
