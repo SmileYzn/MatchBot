@@ -18,13 +18,16 @@ void CMatchMute::Menu(CBasePlayer* Player)
 			{
 				if (Target->entindex() != EntityIndex)
 				{
-					if (this->GetMute(Player, Target))
+					if (!gMatchAdmin.Access(EntityIndex, ADMIN_IMMUNITY))
 					{
-						gMatchMenu[EntityIndex].AddItem(Target->entindex(), gMatchUtil.FormatString(_T("%s ^r^RMuted"), STRING(Target->edict()->v.netname)), false, 0);
-					}
-					else
-					{
-						gMatchMenu[EntityIndex].AddItem(Target->entindex(), gMatchUtil.FormatString(_T("%s ^y^RListening"), STRING(Target->edict()->v.netname)), false, 1);
+						if (this->GetMute(Player, Target))
+						{
+							gMatchMenu[EntityIndex].AddItem(Target->entindex(), gMatchUtil.FormatString(_T("%s ^r^RMuted"), STRING(Target->edict()->v.netname)), false, 0);
+						}
+						else
+						{
+							gMatchMenu[EntityIndex].AddItem(Target->entindex(), gMatchUtil.FormatString(_T("%s ^y^RListening"), STRING(Target->edict()->v.netname)), false, 1);
+						}
 					}
 				}
 			}
