@@ -1184,13 +1184,13 @@
     "You have muted ^3%s...": {
         "en": "You have muted ^3%s...",
         "bp": "Você mutou ^3%s...",
-        "es": "Has muteado a^3%s...",
+        "es": "Has muteado a ^3%s...",
         "ru": "Вы отключили звук ^3%s..."
     },
     "You have unmuted ^3%s...": {
         "en": "You have unmuted ^3%s...",
         "bp": "Você está ouvindo ^3%s...",
-        "es": "Has desmuteado a^3%s...",
+        "es": "Has desmuteado a ^3%s...",
         "ru": "Вы разблокировали ^3%s..."
     }
 }
