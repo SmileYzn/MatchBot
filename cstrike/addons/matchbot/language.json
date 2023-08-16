@@ -1079,7 +1079,6 @@
         "es": "Ya votaste para cancelar la partida.",
         "ru": "Вы уже проголосовали за отмену матча."
     },
-
     "Wait %d seconds before reconnect.": {
         "en": "Wait %d seconds before reconnect.",
         "bp": "Aguarde %d segundos antes de reconectar-se.",
@@ -1087,10 +1086,10 @@
         "ru": "Подождите %d секунд перед повторным подключением."
     },
     "Player List": {
-	"en": "Player List",
-	"bp": "Jogadores",
-	"es": "Listado Jugadores",
-	"ru": "Список игроков"
+	    "en": "Player List",
+	    "bp": "Jogadores",
+	    "es": "Listado Jugadores",
+	    "ru": "Список игроков"
     },
     "Online": {
         "en": "Online",
