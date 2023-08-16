@@ -20,7 +20,6 @@ At the end, server will start a vote map to changelevel to next map automaticall
     <li>ReHLDS</li>
     <li>ReGameDLL_CS</li>
     <li>Metamod</li>
-    <li>Libcurl</li>
 </ul> 
 
 <h3>Features</h3>
@@ -92,9 +91,7 @@ At the end, server will start a vote map to changelevel to next map automaticall
 | mb_restrict_weapons                |000000000000000000000000000000000000000| Restricted Weapons by item index slot position (1 to block item, 0 to allow). <br />`0` Shieldgun. <br /> `1` P228. <br /> `2` Glock. <br /> `3` Scout. <br /> `4` Hegrenade. <br /> `5` Xm1014. <br /> `6` C4. <br /> `7` Mac10. <br /> `8` Aug. <br /> `9` Smokegrenade. <br /> `10` Elite. <br /> `11` Fiveseven. <br /> `12` Ump45. <br /> `13` Sg550. <br /> `14` Galil. <br /> `15` Famas. <br /> `16` Usp. <br /> `17` Glock18. <br /> `18` Awp. <br /> `19` Mp5n. <br /> `20` M249. <br /> `21` M3. <br /> `22` M4a1. <br /> `23` Tmp. <br /> `24` G3sg1. <br /> `25` Flashbang. <br /> `26` Deagle. <br /> `27` Sg552. <br /> `28` Ak47. <br /> `29` Knife. <br /> `30` P90. <br /> `31` Nvg. <br /> `32` Defusekit. <br /> `33` Kevlar. <br /> `34` Assault. <br /> `35` Longjump. <br /> `36` Sodacan. <br /> `37` Healthkit. <br /> `38` Antidote. <br /> `39` Battery. |
 | mb_extra_smoke_count               | 2        | Extra Smokegranade explosion fix .<br /> `0` Disabled. <br /> `n` Number of extra smoke puffs. |
 | mb_pause_time                      | 60.0     | Amount of seconds to pause match. <br /> `0` Disabled. <br /> `n` Or number of seconds to pause the match. |
-
-| mb_retry_mode                      | 0        | Anti reconnect mode. <br /> `0` Disabled. <br /> `1` Enable when player explicity drop from server. <br / > `2` Enable for any disconnect reason. |
-
+| mb_retry_mode                      | 0        | Anti reconnect mode. <br /> `0` Disabled. <br /> `1` Enable when player explicity drop from server. <br /> `2` Enable for any disconnect reason. |
 | mb_retry_time                      | 30.0     | Anti reconnect time  <br /> Time in seconds to prevent the player reconnect to server |
 | mb_help_file                       | cstrike/addons/matchbot/users_help.html     | Users Help File or Website url (Without HTTPS). <br /> If is website url, works only with HTTP (Not HTTPS).|
 | mb_help_file_admin                 | cstrike/addons/matchbot/admin_help.html      | Admin Help File or Website url (Without HTTPS). <br /> If is website url, works only with HTTP (Not HTTPS).|
