@@ -13,9 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Add i386 architecture
-      run: dpkg --add-architecture i386
       
     - name: Update repository
       run: apt-get update
