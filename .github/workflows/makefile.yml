@@ -13,12 +13,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Add i386 architecture
+      run: sudo dpkg --add-architecture i386
       
     - name: Update repository
-      run: apt-get update
+      run: sudo apt-get update
 
     - name: Install build dependencies
-      run: apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib
+      run: sudo apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib
 
     - name: Run build
       working-directory: ./MatchBot
