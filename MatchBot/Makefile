@@ -15,7 +15,7 @@ COMPILER 	= g++
 OBJECTS 	= *.cpp
 
 # Linker Libs
-LINKER 		= -static-libgcc -static-libstdc++
+LINKER 		= 
 
 # C flags
 CFLAGS 		= -std=gnu++17 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -m32 -msse3 -msse4.1 -shared
