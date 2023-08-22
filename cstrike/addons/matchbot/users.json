@@ -8,7 +8,7 @@
 // d - Ban Menu
 // e - Slay / Kill
 // f - Change map
-// g - Swap Teams command
+// g - Change cvars, Swap Teams command
 // h - Execute Config files
 // i - Send message to all players
 // j - Start Vote Map, Vote Teams and others votes
@@ -30,11 +30,6 @@
 // Example of admin accounts
 //
 [
-	{
-		"Name": "Player",
-		"Auth": "STEAM_ID_LAN",
-		"Flags": "abcdefghijklmnopqrstuvy"
-	},
 	{
 		"Name": "SmileY",
 		"Auth": "STEAM_0:1:20326844",

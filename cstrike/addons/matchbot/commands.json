@@ -168,5 +168,10 @@
     "id": 50,
     "flag": "u",
     "description": "Show Player List Menu"
+  },
+  "!cvars": {
+    "id": 51,
+    "flag": "g",
+    "description": "Show Cvar Menu"
   }
 }

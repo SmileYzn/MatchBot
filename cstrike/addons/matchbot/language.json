@@ -1192,5 +1192,11 @@
         "bp": "Você está ouvindo ^3%s...",
         "es": "Has desmuteado a ^3%s...",
         "ru": "Вы разблокировали ^3%s..."
+    },
+    "Cvars Menu": {
+        "en": "Cvars Menu",
+        "bp": "Menu de Cvars",
+        "es": "Menú Cvars",
+        "ru": "Меню переменных"
     }
 }

@@ -83,6 +83,7 @@
 #include "MatchCaptain.h"
 #include "MatchChangeMap.h"
 #include "MatchCommand.h"
+#include "MatchCvarMenu.h"
 #include "MatchLanguage.h"
 #include "MatchLO3.h"
 #include "MatchMessage.h"

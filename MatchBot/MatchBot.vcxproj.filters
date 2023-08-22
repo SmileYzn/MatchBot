@@ -103,6 +103,9 @@
     <Filter Include="MatchBot\MatchMute">
       <UniqueIdentifier>{f391eefb-28c3-4a1f-96a2-d9ea339a5d29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MatchBot\MatchCvarMenu">
+      <UniqueIdentifier>{73296d2e-78f5-4fc7-9abd-ba3969953f9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatchBot.h">
@@ -206,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="MatchMute.h">
       <Filter>MatchBot\MatchMute</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchCvarMenu.h">
+      <Filter>MatchBot\MatchCvarMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -312,6 +318,9 @@
     </ClCompile>
     <ClCompile Include="MatchMute.cpp">
       <Filter>MatchBot\MatchMute</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchCvarMenu.cpp">
+      <Filter>MatchBot\MatchCvarMenu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -320,6 +320,11 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 					gMatchPlayer.PlayerMenu(Player);
 					break;
 				}
+				case CMD_ADMIN_CVAR_MENU:
+				{
+					gMatchCvarMenu.Menu(Player);
+					break;
+				}
 			}
 
 			// Return result

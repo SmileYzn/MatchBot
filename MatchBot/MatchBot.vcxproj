@@ -98,6 +98,7 @@
     <None Include="MatchBot.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MatchCvarMenu.h" />
     <ClInclude Include="MatchAdmin.h" />
     <ClInclude Include="MatchAdminMenu.h" />
     <ClInclude Include="MatchBot.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="TimeFormat.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MatchCvarMenu.cpp" />
     <ClCompile Include="MatchAdmin.cpp" />
     <ClCompile Include="MatchAdminMenu.cpp" />
     <ClCompile Include="MatchCaptain.cpp" />

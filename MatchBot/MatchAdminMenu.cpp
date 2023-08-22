@@ -48,6 +48,9 @@ void CMatchAdminMenu::MainMenu(int EntityIndex)
 	// Player List
 	gMatchMenu[EntityIndex].AddItem(9, _T("Player List"), !(Flags & ADMIN_MENU));
 
+	// Console Variables Menu
+	gMatchMenu[EntityIndex].AddItem(10, _T("Cvars Menu"), !(Flags & ADMIN_CVAR));
+
 	// Show menu 
 	gMatchMenu[EntityIndex].Show(EntityIndex);
 }
@@ -123,6 +126,11 @@ void CMatchAdminMenu::MainMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			case 9: // Player List
 			{
 				gMatchPlayer.PlayerMenu(Player);
+				break;
+			}
+			case 10: // Cvars Menu
+			{
+				gMatchCvarMenu.Menu(Player);
 				break;
 			}
 		}

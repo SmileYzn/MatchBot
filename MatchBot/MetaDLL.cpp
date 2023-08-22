@@ -81,6 +81,8 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 	gMatchPlayer.ServerActivate();
 
+	gMatchCvarMenu.ServerActivate();
+
 	RETURN_META(MRES_IGNORED);
 }
 
