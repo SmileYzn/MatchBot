@@ -91,6 +91,9 @@ public:
 	// New Lines and colors
 	int ParseLinesAndColors(char* Buffer);
 
+	// Find Player
+	CBasePlayer* FindPlayer(std::string Target);
+
 private:
 	// Variables Pointer
 	std::map<std::string, cvar_t> m_CvarData;

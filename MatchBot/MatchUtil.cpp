@@ -748,3 +748,74 @@ int CMatchUtil::ParseLinesAndColors(char* Buffer)
 
 	return offs;
 }
+
+CBasePlayer* CMatchUtil::FindPlayer(std::string Target)
+{
+	if (!Target.empty())
+	{
+		if (Target.length() > 1)
+		{
+			if (Target[0u] == '#')
+			{
+				if (!Target.substr(1).empty())
+				{
+					auto Find = Q_atoi(Target.substr(1).c_str());
+
+					if (Find > 0)
+					{
+						for (auto i = 1; i <= gpGlobals->maxClients; i++)
+						{
+							auto Player = UTIL_PlayerByIndexSafe(i);
+
+							if (Player)
+							{
+								if (!Player->IsDormant())
+								{
+									if (g_engfuncs.pfnGetPlayerUserId(Player->edict()) == Find)
+									{
+										return Player;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				std::transform(Target.begin(), Target.end(), Target.begin(), [](unsigned char character)
+				{
+					return std::tolower(character);
+				});
+
+				for (auto i = 1; i <= gpGlobals->maxClients; i++)
+				{
+					auto Player = UTIL_PlayerByIndexSafe(i);
+
+					if (Player)
+					{
+						if (!Player->IsDormant())
+						{
+							std::string Name = STRING(Player->edict()->v.netname);
+
+							if (!Name.empty())
+							{
+								std::transform(Name.begin(), Name.end(), Name.begin(), [](unsigned char character)
+								{
+									return std::tolower(character);
+								});
+
+								if (Name.find(Target) != std::string::npos)
+								{
+									return Player;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return nullptr;
+}

@@ -118,7 +118,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 						// Execute interal client command with arguments
 						g_engfuncs.pfnClientCommand(Player->edict(), pCmdFormat, pCmdArgs);
 
-						// Return results
+						// Block chat
 						return true;
 					}
 				}
@@ -142,7 +142,10 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				// If do not have an access to main menu
 				if (!(Flags & Command->second.Flag))
 				{
+					// Print Message
 					gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
+
+					// Block chat
 					return true;
 				}
 			}
@@ -153,185 +156,182 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				case CMD_PLAYER_STATUS:
 				{
 					gMatchBot.Status(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_SCORE:
 				{
 					gMatchBot.Scores(Player, false);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_READY:
 				{
 					gMatchReady.Ready(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_NOTREADY:
 				{
 					gMatchReady.NotReady(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_HP:
 				{
 					gMatchStats.ShowHP(Player, true, false);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_DMG:
 				{
 					gMatchStats.ShowDamage(Player, true, false);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_RDMG:
 				{
 					gMatchStats.ShowReceivedDamage(Player, true, false);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_SUM:
 				{
 					gMatchStats.ShowSummary(Player, true, false);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_HELP:
 				{
 					gMatchBot.Help(Player, false);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_VOTE:
 				{
 					gMatchVoteMenu.Menu(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_VOTE_KICK:
 				{
 					gMatchVoteMenu.VoteKick(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_VOTE_MAP:
 				{
 					gMatchVoteMenu.VoteMap(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_VOTE_PAUSE:
 				{
 					gMatchVoteMenu.VotePause(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_VOTE_RESTART:
 				{
 					gMatchVoteMenu.VoteRestart(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_VOTE_STOP:
 				{
 					gMatchVoteMenu.VoteStop(Player);
-					break;
+					return true;
 				}
 				case CMD_PLAYER_MUTE_MENU:
 				{
 					gMatchMute.Menu(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_MENU:
 				{
 					gMatchAdminMenu.MainMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_KICK:
 				{
 					gMatchAdminMenu.KickMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_BAN:
 				{
 					gMatchAdminMenu.BanMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_KILL:
 				{
 					gMatchAdminMenu.SlayMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_TEAM:
 				{
 					gMatchAdminMenu.TeamMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_MAP:
 				{
 					gMatchAdminMenu.MapMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_CONTROL:
 				{
 					gMatchAdminMenu.ControlMenu(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_MESSAGE:
 				{
 					gMatchAdminMenu.Message(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_COMMAND:
 				{
 					gMatchAdminMenu.Rcon(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_SWAP:
 				{
 					gMatchAdminMenu.SwapTeams(Player->entindex());
-					break;
+					return true;
 				}
 				case CMD_ADMIN_VOTE_MAP:
 				{
 					gMatchBot.StartVoteMap(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_VOTE_TEAM:
 				{
 					gMatchBot.StartVoteTeam(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_START_MATCH:
 				{
 					gMatchBot.StartMatch(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_STOP_MATCH:
 				{
 					gMatchBot.StopMatch(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_RESTART_MATCH:
 				{
 					gMatchBot.RestartMatch(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_PAUSE_MATCH:
 				{
 					gMatchPause.Init(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_HELP:
 				{
 					gMatchBot.Help(Player, true);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_PLAYER_LIST:
 				{
 					gMatchPlayer.PlayerMenu(Player);
-					break;
+					return true;
 				}
 				case CMD_ADMIN_CVAR_MENU:
 				{
 					gMatchCvarMenu.Menu(Player);
-					break;
+					return true;
 				}
 			}
-
-			// Return result
-			return true;
 		}
 	}
 
-	// Return result
+	// Allow in chat
 	return false;
 }
