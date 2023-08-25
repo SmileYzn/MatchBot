@@ -56,9 +56,6 @@
 #include <regamedll_api.h>
 #include <regamedll_const.h>
 
-// Game Events for Match Stats Round Events
-#include <GameEvent.h>
-
 // Plugin Includes
 #include "MetaMod.h"
 #include "MetaDLL.h"
@@ -70,6 +67,9 @@
 
 // Time Format Class
 #include "TimeFormat.h"
+
+// Memory Script Class
+#include "MemScript.hpp"
 
 // JSON
 #include "include/json.hpp"

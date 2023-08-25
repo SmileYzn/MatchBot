@@ -54,6 +54,44 @@ void CMatchAdmin::ServerActivate()
     {
         LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
     }
+
+    //CMemScript* lpMemScript = new CMemScript;
+
+    //if (lpMemScript)
+    //{
+    //    if(lpMemScript->SetBuffer("cstrike/addons/matchbot/users.txt"))
+    //    {
+    //        try
+    //        {
+    //            while (true)
+    //            {
+    //                if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
+    //                {
+    //                    break;
+    //                }
+
+    //                if (!lpMemScript->GetString().compare("end"))
+    //                {
+    //                    break;
+    //                }
+
+    //                auto Name = lpMemScript->GetString();
+
+    //                auto Auth = lpMemScript->GetAsString();
+
+    //                auto Flags = lpMemScript->GetAsString();
+
+    //                LOG_CONSOLE(PLID, "[%s] %s %s %s", __func__, Name.c_str(), Auth.c_str(), Flags.c_str());
+    //            }
+    //        }
+    //        catch (...)
+    //        {
+    //            LOG_CONSOLE(PLID, "%s", lpMemScript->GetError().c_str());
+    //        }
+    //    }
+
+    //    delete lpMemScript;
+    //}
 }
 
 // Read flags from character array

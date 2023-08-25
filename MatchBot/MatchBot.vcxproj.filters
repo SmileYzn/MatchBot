@@ -213,6 +213,9 @@
     <ClInclude Include="MatchCvarMenu.h">
       <Filter>MatchBot\MatchCvarMenu</Filter>
     </ClInclude>
+    <ClInclude Include="MemScript.hpp">
+      <Filter>MetaMod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="MatchBot.def">
