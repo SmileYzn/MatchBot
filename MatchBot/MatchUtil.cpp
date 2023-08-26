@@ -549,7 +549,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 						if (!CurrentMap)
 						{
 							// Compare with current map
-							if (!Map.compare(STRING(gpGlobals->mapname)) == 0)
+							if (Map.compare(STRING(gpGlobals->mapname)) == 0)
 							{
 								// Skip map
 								continue;
