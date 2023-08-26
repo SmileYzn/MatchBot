@@ -545,6 +545,17 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 					// If is not empty
 					if (!Map.empty())
 					{
+						// If has to skip corrent map
+						if (!CurrentMap)
+						{
+							// Compare with current map
+							if (!Map.compare(STRING(gpGlobals->mapname)) == 0)
+							{
+								// Skip map
+								continue;
+							}
+						}
+
 						// Copy to map name
 						auto MapName = Q_strdup(Map.c_str());
 
