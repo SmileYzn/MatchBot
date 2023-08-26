@@ -124,14 +124,12 @@
     <ClInclude Include="MatchVoteTeam.h" />
     <ClInclude Include="MatchWarmup.h" />
     <ClInclude Include="MatchReady.h" />
-    <ClInclude Include="MemScript.hpp" />
     <ClInclude Include="MetaDLL.h" />
     <ClInclude Include="MetaEngine.h" />
     <ClInclude Include="MetaMod.h" />
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="ReAPI.h" />
     <ClInclude Include="ReGameDLL.h" />
-    <ClInclude Include="TimeFormat.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MatchCvarMenu.cpp" />

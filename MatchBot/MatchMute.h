@@ -10,7 +10,7 @@ public:
 	void SetMute(CBasePlayer* Player, CBasePlayer* Target, bool Mute);
 
 private:
-	std::map<std::string, std::map<std::string, bool>> m_Player;
+	std::unordered_map<std::string, std::map<std::string, bool>> m_Player;
 };
 
 extern CMatchMute gMatchMute;

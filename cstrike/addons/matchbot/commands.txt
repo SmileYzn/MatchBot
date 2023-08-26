@@ -1,0 +1,46 @@
+﻿// File:		commands.txt
+// Updated:		10:22 2023/08/26
+// Description: 	This file is used to manage commands and access.
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// ID			Index of command;
+// Command		Command string
+// Flag			Flag access to that command, see users.txt
+// Description		Description of command
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//	ID		Command		Flag		Description
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+	1		".status"	"z"		// Show the match status
+	2		".score"	"z"		// Show the match scores
+	3		".ready"	"z"		// Tells the server the Player is ready
+	4		".notready"	"z"		// Tells the server the Player is not ready
+	5		".hp"		"z"		// Health of other players
+	6		".dmg"		"z"		// Damage done to other players
+	7		".rdmg"		"z"		// Show received damage
+	8		".sum"		"z"		// Show round summary
+	9		".help"		"z"		// Show player help page
+	10		".vote"		"z"		// Vote menu
+	11		".votekick"	"z"		// Vote kick menu
+	12		".votemap"	"z"		// Vote map menu
+	13		".votepause"	"z"		// Vote pause menu
+	14		".voterestart"	"z"		// Vote restart menu
+	15		".votestop"	"z"		// Vote stop match menu
+	16		".mute"		"z"		// Show Mute Menu
+	33		"!menu"		"u"		// Main admin menu
+	34		"!kick"		"c"		// Kick menu
+	35		"!ban"		"d"		// Ban menu
+	36		"!kill"		"e"		// Slay menu
+	37		"!team"		"m"		// Team menu
+	38		"!map"		"f"		// Vote Menu
+	39		"!control"	"n"		// Match Bot control menu
+	40		"!msg"		"i"		// Send a global chat message
+	41		"!cmd"		"l"		// Send server command
+	42		"!swap"		"g"		// Swap Teams
+	43		"!votemap"	"j"		// Start vote map
+	44		"!voteteam"	"j"		// Start vote team
+	45		"!start"	"n"		// Start match
+	46		"!stop"		"n"		// Stop match
+	47		"!restart"	"n"		// Restart match
+	48		"!pause"	"n"		// Pause the match
+	49		"!help"		"o"		// Show admin help page
+	50		"!players"	"u"		// Show Player List Menu
+	51		"!cvars"	"g"		// Show Cvar Menu

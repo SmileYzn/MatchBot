@@ -512,70 +512,68 @@ const char* CMatchUtil::FormatString(const char* Format, ...)
 
 std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 {
+	// Map List container
 	std::map<int, std::string> MapList;
 
-	try
+	// Map Index
+	auto MapIndex = 0;
+
+	// Memory Script instance
+	CMemScript* lpMemScript = new CMemScript;
+
+	// If is not null
+	if (lpMemScript)
 	{
-		// File stream
-		std::ifstream fp(MB_MAP_LIST_FILE, std::ios::in);
-
-		// If file is open
-		if (fp)
+		// Try to load file
+		if (lpMemScript->SetBuffer(MB_MAP_LIST_FILE))
 		{
-			// Reset pointer
-			fp.clear();
-
-			// Go to begin of file
-			fp.seekg(0, std::ios::beg);
-
-			// Read data
-			auto json = nlohmann::json::parse(fp, nullptr, true, true);
-
-			// Map Index
-			auto MapIndex = 0;
-
-			// Loop each item
-			for (auto const& el : json.items())
+			try
 			{
-				// Get map name from json data
-				auto Map = (std::string)(el.value());
-
-				// If map is not empty
-				if (!Map.empty())
+				// Loop lines
+				while (true)
 				{
-					// Get Map Name from string
-					auto MapName = Q_strdup(Map.data());
+					// If file content ended
+					if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
+					{
+						// Break loop
+						break;
+					}
+
+					// Get Map name as string
+					auto Map = lpMemScript->GetString();
 
 					// If is not empty
-					if (MapName)
+					if (!Map.empty())
 					{
-						// If is map is valid on server
-						if (g_engfuncs.pfnIsMapValid(MapName))
-						{
-							// If has to skip corrent map
-							if (!CurrentMap && !Q_stricmp(STRING(gpGlobals->mapname), MapName))
-							{
-								continue;
-							}
+						// Copy to map name
+						auto MapName = Q_strdup(Map.c_str());
 
-							// Insert on map list with index
-							MapList.insert(std::make_pair(MapIndex++, el.value()));
+						// If is not null
+						if (MapName)
+						{
+							// If is not empty
+							if (MapName[0u] != '\0')
+							{
+								// Check if is valid map name
+								if (g_engfuncs.pfnIsMapValid(MapName))
+								{
+									// Insert into map list container
+									MapList[MapIndex++] = Map;
+								}
+							}
 						}
 					}
 				}
 			}
+			catch (...)
+			{
+				// Catch for erros
+				LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+			}
+		}
 
-			// Close File
-			fp.close();
-		}
-		else
-		{
-			LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_MAP_LIST_FILE);
-		}
-	}
-	catch (nlohmann::json::parse_error& e)
-	{
-		LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+		// Delete Memory Script instance
+		delete lpMemScript;
 	}
 
 	return MapList;

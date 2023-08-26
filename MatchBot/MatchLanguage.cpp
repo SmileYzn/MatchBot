@@ -8,35 +8,66 @@ void CMatchLanguage::Load()
 	// Clear Current translation system data
 	this->m_Data.clear();
 
-	try
-	{
-		// File stream
-		std::ifstream fp(MB_LANGUAGE_FILE, std::ios::in);
+    // Memory Script instance
+    CMemScript* lpMemScript = new CMemScript;
 
-		// If file is open
-		if (fp)
-		{
-			// Reset pointer
-			fp.clear();
+    // If is not null
+    if (lpMemScript)
+    {
+        // Try to load file
+        if (lpMemScript->SetBuffer(MB_LANGUAGE_FILE))
+        {
+            try
+            {
+                // Loop lines
+                while (true)
+                {
+                    // If file content ended
+                    if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
+                    {
+                        // Break loop
+                        break;
+                    }
 
-			// Go to begin of file
-			fp.seekg(0, std::ios::beg);
+                    // Sentence Key
+                    auto Key = lpMemScript->GetString();
 
-			// Read data from json file
-			this->m_Data = nlohmann::ordered_json::parse(fp, nullptr, true, true);
+                    // If is not empty
+                    if (!Key.empty())
+                    {
+                        // Loop lines
+                        while (true)
+                        {
+                            // If is end of section
+                            if (lpMemScript->GetAsString().compare("end") == 0)
+                            {
+                                // Break loop
+                                break;
+                            }
 
-			// Close file
-			fp.close();
-		}
-		else
-		{
-			LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_LANGUAGE_FILE);
-		}
-	}
-	catch (nlohmann::json::parse_error& e)
-	{
-		LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
-	}
+                            // Get language
+                            auto Lang = lpMemScript->GetString();
+
+                            // If is not empty
+                            if (!Lang.empty())
+                            {
+                                // Load Sentence
+                                this->m_Data[Key][Lang] = lpMemScript->GetAsString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (...)
+            {
+                // Catch for erros
+                LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+            }
+        }
+
+        // Delete Memory Script instance
+        delete lpMemScript;
+    }
 }
 
 // Get language by key, return same key if not found
@@ -52,13 +83,13 @@ const char* CMatchLanguage::Get(const char* Key)
 			if (gMatchBot.m_Language->string)
 			{
 				// If contain the given key
-				if (this->m_Data.contains(Key))
+				if (this->m_Data.find(Key) != this->m_Data.end())
 				{
 					// If the language key contains the translation of language string
-					if (this->m_Data[Key].contains(gMatchBot.m_Language->string))
+					if (this->m_Data[Key].find(gMatchBot.m_Language->string) != this->m_Data[Key].end())
 					{
 						// Return pointer
-						return this->m_Data[Key][gMatchBot.m_Language->string].get_ptr<nlohmann::json::string_t*>()->c_str();
+                        return this->m_Data[Key][gMatchBot.m_Language->string].c_str();
 					}
 				}
 			}

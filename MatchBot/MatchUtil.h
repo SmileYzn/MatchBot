@@ -14,7 +14,7 @@ constexpr auto PRINT_CENTER = 4;
 constexpr auto PRINT_RADIO = 5;
 
 // Map List File
-constexpr auto MB_MAP_LIST_FILE = "cstrike/addons/matchbot/maplist.json";
+constexpr auto MB_MAP_LIST_FILE = "cstrike/addons/matchbot/maplist.txt";
 
 class CMatchUtil
 {
@@ -96,7 +96,7 @@ public:
 
 private:
 	// Variables Pointer
-	std::map<std::string, cvar_t> m_CvarData;
+	std::unordered_map<std::string, cvar_t> m_CvarData;
 };
 
 extern CMatchUtil gMatchUtil;

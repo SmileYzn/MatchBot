@@ -5,59 +5,49 @@ CMatchCommand gMatchCommand;
 // On Server Activate
 void CMatchCommand::ServerActivate()
 {
-	try
+	// Memory Script instance
+	CMemScript* lpMemScript = new CMemScript;
+
+	// If is not null
+	if (lpMemScript)
 	{
-		// File stream
-		std::ifstream fp(MB_COMMANDS_FILE, std::ios::in);
-
-		// If file is open
-		if (fp)
+		// Try to load file
+		if (lpMemScript->SetBuffer(MB_COMMANDS_FILE))
 		{
-			// Reset pointer
-			fp.clear();
-
-			// Go to begin of file
-			fp.seekg(0, std::ios::beg);
-
-			// Read data from json file
-			nlohmann::ordered_json Json = nlohmann::ordered_json::parse(fp, nullptr, true, true);
-
-			// Loop
-			for (auto & row : Json.items())
+			try
 			{
-				// Get info
-				auto Info = row.value();
-
-				// If has id
-				if (Info.contains("id") && !Info["id"].empty())
+				// Loop lines
+				while (true)
 				{
-					// If has flag
-					if (Info.contains("flag") && !Info["flag"].empty())
+					// If file content ended
+					if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
 					{
-						P_COMMAND_INFO Command = { 0 };
-
-						Command.Index = Info["id"].get<int>();
-
-						Command.Flag = gMatchAdmin.ReadFlags(std::string(Info["flag"]).c_str());
-
-						Command.Description = std::string(Info["description"]);
-
-						this->m_Data.insert(std::make_pair(row.key(), Command));
+						// Break loop
+						break;
 					}
+
+					// Command Index
+					auto Index = lpMemScript->GetNumber();
+
+					//  Command String
+					auto Command = lpMemScript->GetAsString();
+
+					// Command Flag
+					auto Flag = gMatchAdmin.ReadFlags(lpMemScript->GetAsString().c_str());
+
+					// Insert to container
+					this->m_Data[Command] = {Index, Flag};
 				}
 			}
+			catch (...)
+			{
+				// Catch for erros
+				LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+			}
+		}
 
-			// Close file
-			fp.close();
-		}
-		else
-		{
-			LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_COMMANDS_FILE);
-		}
-	}
-	catch (nlohmann::json::parse_error& e)
-	{
-		LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+		// Delete Memory Script instance
+		delete lpMemScript;
 	}
 }
 

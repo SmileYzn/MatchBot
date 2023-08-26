@@ -1,0 +1,1404 @@
+﻿// File:		language.txt
+// Updated:		11:40 2023/08/26
+// Description: 	This file is used to manage translation phrases.
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+"Dead"
+	"en"		"Dead"
+	"bp"		"Nenhum"
+	"es"		"Ninguno"
+	"ru"		"Мёртв"
+end
+
+"Warmup"
+	"en"		"Warmup"
+	"bp"		"Aquecimento"
+	"es"		"Calentamiento"
+	"ru"		"Разминка"
+end
+
+"Starting"
+	"en"		"Starting"
+	"bp"		"Inciando"
+	"es"		"Comenzando"
+	"ru"		"Начало"
+end
+
+"First Half"
+	"en"		"First Half"
+	"bp"		"Primero Tempo"
+	"es"		"Primera Parte"
+	"ru"		"Первый тайм"
+end
+
+"Half Time"
+	"en"		"Half Time"
+	"bp"		"Intervalo"
+	"es"		"Descanso"
+	"ru"		"Перерыв"
+end
+
+"Second Half"
+	"en"		"Second Half"
+	"bp"		"Segundo Tempo"
+	"es"		"Segunda Parte"
+	"ru"		"Второй тайм"
+end
+
+"Overtime"
+	"en"		"Overtime"
+	"bp"		"Overtime"
+	"es"		"Overtime"
+	"ru"		"Овертайм"
+end
+
+"Finished"
+	"en"		"Finished"
+	"bp"		"Finalizado"
+	"es"		"Finalizado"
+	"ru"		"Завершено"
+end
+
+"Unassigned"
+	"en"		"Unassigned"
+	"bp"		"Unassigned"
+	"es"		"Sin asignar"
+	"ru"		"Не назначено"
+end
+
+"Terrorists"
+	"en"		"Terrorists"
+	"bp"		"Terroristas"
+	"es"		"Terroristas"
+	"ru"		"Террористы"
+end
+
+"Counter-Terrorists"
+	"en"		"Counter-Terrorists"
+	"bp"		"Contra-Terroristas"
+	"es"		"Antiterroristas"
+	"ru"		"Контр-террористы"
+end
+
+"Spectators"
+	"en"		"Spectators"
+	"bp"		"Espectadores"
+	"es"		"Espectadores"
+	"ru"		"Зрители"
+end
+
+"NONE"
+	"en"		"NONE"
+	"bp"		"NENHUM"
+	"es"		"NINGUNO"
+	"ru"		"Нет"
+end
+
+"TR"
+	"en"		"TR"
+	"bp"		"TR"
+	"es"		"TT"
+	"ru"		"Т"
+end
+
+"CT"
+	"en"		"CT"
+	"bp"		"CT"
+	"es"		"CT"
+	"ru"		"КТ"
+end
+
+"SPEC"
+	"en"		"SPEC"
+	"bp"		"SPEC"
+	"es"		"SPEC"
+	"ru"		"НАБЛ"
+end
+
+"Team Player"
+	"en"		"Team Player"
+	"bp"		"Time do jogador"
+	"es"		"Equipo de jugador"
+	"ru"		"Игрок команды"
+end
+
+"You do not have access to that command."
+	"en"		"You do not have access to that command."
+	"bp"		"Você não tem acesso a esse comando."
+	"es"		"No tienes acceso a este comando."
+	"ru"		"У вас нет доступа к этой команде."
+end
+
+"Match BOT Menu"
+	"en"		"Match BOT Menu"
+	"bp"		"Match BOT Menu"
+	"es"		"Match BOT Menu"
+	"ru"		"Меню Match BOT"
+end
+
+"Kick Player"
+	"en"		"Kick Player"
+	"bp"		"Kickar Jogador"
+	"es"		"Kickear Jugador"
+	"ru"		"Выгнать игрока"
+end
+
+"Ban Player"
+	"en"		"Ban Player"
+	"bp"		"Banir Jogador"
+	"es"		"Banear Jugador"
+	"ru"		"Забанить игрока"
+end
+
+"Slay Player"
+	"en"		"Slay Player"
+	"bp"		"Matar Jogador"
+	"es"		"Matar Jugador"
+	"ru"		"Убить игрока"
+end
+
+"Change Map"
+	"en"		"Change Map"
+	"bp"		"Mudar Mapa"
+	"es"		"Cambiar de Mapa"
+	"ru"		"Сменить карту"
+end
+
+"Match Control"
+	"en"		"Match Control"
+	"bp"		"Controlar Partida"
+	"es"		"Controlar Partida"
+	"ru"		"Управление матчем"
+end
+
+"Send Message"
+	"en"		"Send Message"
+	"bp"		"Enviar Mensagem"
+	"es"		"Enviar Mensaje"
+	"ru"		"Отправить сообщение"
+end
+
+"Send Command"
+	"en"		"Send Command"
+	"bp"		"Enviar Comando"
+	"es"		"Enviar Comando"
+	"ru"		"Отправить команду"
+end
+
+"Swap Teams"
+	"en"		"Swap Teams"
+	"bp"		"Trocar Times"
+	"es"		"Cambiar Equipos"
+	"ru"		"Поменять команды"
+end
+
+"Choose a time to ban: ^w%s^y"
+	"en"		"Choose a time to ban: ^w%s^y"
+	"bp"		"Escolha o tempo para banir: ^w%s^y"
+	"es"		"Escoja tiempo para banear: ^w%s^y"
+	"ru"		"Выберите время для бана: ^w%s^y"
+end
+
+"banid %d #%d kick"
+	"en"		"banid %d #%d kick"
+	"bp"		"banid %d #%d kick"
+	"es"		"banid %d #%d kick"
+	"ru"		"banid %d #%d kick"
+end
+
+"banid %d %s kick"
+	"en"		"banid %d %s kick"
+	"bp"		"banid %d %s kick"
+	"es"		"banid %d %s kick"
+	"ru"		"banid %d %s kick"
+end
+
+"Change Team"
+	"en"		"Change Team"
+	"bp"		"Mudar Time"
+	"es"		"Cambiar Equipo"
+	"ru"		"Сменить команду"
+end
+
+"Set ^w%s^y Team"
+	"en"		"Set ^w%s^y Team"
+	"bp"		"Mudar Time: ^w%s^y"
+	"es"		"Cambiar Equipo: ^w%s^y"
+	"ru"		"Установить команду ^w%s^y"
+end
+
+"^3%s^1 changed map to: ^4%s^1..."
+	"en"		"^3%s^1 changed map to: ^4%s^1..."
+	"bp"		"^3%s^1 mudou o mapa para: ^4%s^1..."
+	"es"		"^3%s^1 cambió de mapa a: ^4%s^1..."
+	"ru"		"^3%s^1 сменил карту на: ^4%s^1..."
+end
+
+"Run Vote Map"
+	"en"		"Run Vote Map"
+	"bp"		"Executar Vote Map"
+	"es"		"Ejecutar Vote de Mapa"
+	"ru"		"Запустить голосование за карту"
+end
+
+"Run Vote Teams"
+	"en"		"Run Vote Teams"
+	"bp"		"Executar Escolha dos times"
+	"es"		"Ejecutar Vote de Equipos"
+	"ru"		"Запустить голосование за команды"
+end
+
+"Continue Match"
+	"en"		"Continue Match"
+	"bp"		"Continuar Partida"
+	"es"		"Continuar Partida"
+	"ru"		"Продолжить матч"
+end
+
+"Start Match"
+	"en"		"Start Match"
+	"bp"		"Iniciar Partida"
+	"es"		"Iniciar Partida"
+	"ru"		"Начать матч"
+end
+
+"Stop Match"
+	"en"		"Stop Match"
+	"bp"		"Parar Partida"
+	"es"		"Parar Partida"
+	"ru"		"Остановить матч"
+end
+
+"Restart Match"
+	"en"		"Restart Match"
+	"bp"		"Reiniciar Partida"
+	"es"		"Reiniciar Partida"
+	"ru"		"Перезапустить матч"
+end
+
+"Pause Match"
+	"en"		"Pause Match"
+	"bp"		"Pausar Partida"
+	"es"		"Pausar Partida"
+	"ru"		"Приостановить матч"
+end
+
+"Toggle Match BOT"
+	"en"		"Toggle Match BOT"
+	"bp"		"Alterar Match BOT"
+	"es"		"Alternar Match BOT"
+	"ru"		"Переключить Match BOT"
+end
+
+"^3(%s)^1: %s"
+	"en"		"^3(%s)^1: %s"
+	"bp"		"^3(%s)^1: %s"
+	"es"		"^3(%s)^1: %s"
+	"ru"		"^3(%s)^1: %s"
+end
+
+"Usage: !msg ^3<Text Message>^1"
+	"en"		"Usage: !msg ^3<Text Message>^1"
+	"bp"		"Uso: !msg ^3<Mensagem>^1"
+	"es"		"Uso: !msg ^3<Mensaje>^1"
+	"ru"		"Использование: !msg ^3<Текст сообщения>^1"
+end
+
+"These commands are protected here, only ^3Server^1 can use."
+	"en"		"These commands are protected here, only ^3Server^1 can use."
+	"bp"		"Comando protegido, apenas o ^3Servidor^1 pode usar."
+	"es"		"Comando protegido, solamente el ^3Servidor^1 lo puede usar."
+	"ru"		"Эти команды защищены, только ^3Сервер^1 может использовать их."
+end
+
+"^3Executed^1: %s"
+	"en"		"^3Executed^1: %s"
+	"bp"		"^3Executou^1: %s"
+	"es"		"^3Ejecutado^1: %s"
+	"ru"		"^3Выполнено^1: %s"
+end
+
+"Usage: !cmd ^3<Server Command>^1"
+	"en"		"Usage: !cmd ^3<Server Command>^1"
+	"bp"		"Uso: !cmd ^3<Commando de Servidor>^1"
+	"es"		"Uso: !cmd ^3<Comando de Servidor>^1"
+	"ru"		"Использование: !cmd ^3<Команда сервера>^1"
+end
+
+"^3%s^1 changed team sides manually."
+	"en"		"^3%s^1 changed team sides manually."
+	"bp"		"^3%s^1 mudou os times manualmente."
+	"es"		"^3%s^1 cambió de equipos manualmente."
+	"ru"		"^3%s^1 изменил стороны команд вручную."
+end
+
+"Can only swap teams during ^4%s^1 period."
+	"en"		"Can only swap teams during ^4%s^1 period."
+	"bp"		"Pode mudar os times apenas no período ^4%s^1."
+	"es"		"Solo se puede cambiar de equipos en el periodo de ^4%s^1."
+	"ru"		"Можно менять команды только в период ^4%s^1."
+end
+
+"Starting ^4%s^1, Get Ready!"
+	"en"		"Starting ^4%s^1, Get Ready!"
+	"bp"		"Iniciando ^4%s^1, Fique Atento!"
+	"es"		"Comenzando ^4%s^1, Prepárate!"
+	"ru"		"Начинается ^4%s^1, Готовьтесь!"
+end
+
+"Knife Round"
+	"en"		"Knife Round"
+	"bp"		"Round Faca"
+	"es"		"Ronda de Cuchillos"
+	"ru"		"Ножевой раунд"
+end
+
+"Knife Round Enabled"
+	"en"		"Knife Round Enabled"
+	"bp"		"Round Faca Habilitado"
+	"es"		"Ronda de Cuchillos Habilitada"
+	"ru"		"Ножевой раунд включен"
+end
+
+"Starting ^4Knife Round^1, Get Ready!"
+	"en"		"Starting ^4Knife Round^1, Get Ready!"
+	"bp"		"Iniciando ^4Knife Round^1, Fique Atento!"
+	"es"		"Comenzando ^4Ronda de Cuchillos^1, Prepárate!"
+	"ru"		"Начинается ^4Ножевой раунд^1, Готовьтесь!"
+end
+
+"^3%s^1 started, Get Ready!"
+	"en"		"^3%s^1 started, Get Ready!"
+	"bp"		"^3%s^1 iniciado, Fique Atento!"
+	"es"		"^3%s^1 comenzando, Prepárate!"
+	"ru"		"^3%s^1 начался, Готовьтесь!"
+end
+
+"Wait for an server ^4Administrator^1 restart the match!"
+	"en"		"Wait for an server ^4Administrator^1 restart the match!"
+	"bp"		"Aguarde um ^4Administrator^1 reiniciar a partida!"
+	"es"		"¡Espera a que un ^4Administrador^1 reinicie la partida!"
+	"ru"		"Ожидайте, пока ^4Администратор сервера^1 перезапустит матч!"
+end
+
+"Changing teams automatically."
+	"en"		"Changing teams automatically."
+	"bp"		"Trocando times automaticamente."
+	"es"		"Cambiando de equipos automáticamente."
+	"ru"		"Автоматическая смена команд."
+end
+
+"Server is full."
+	"en"		"Server is full."
+	"bp"		"Servidor cheio."
+	"es"		"Servidor lleno."
+	"ru"		"Сервер заполнен."
+end
+
+"^3Auto Team Select^1 is not allowed."
+	"en"		"^3Auto Team Select^1 is not allowed."
+	"bp"		"^3Auto Seleção^1 não permitida."
+	"es"		"^3Auto Selección de Equipos^1 no permitida."
+	"ru"		"^3Авто выбор команд^1 запрещён."
+end
+
+"^3%s^1 are not allowed."
+	"en"		"^3%s^1 are not allowed."
+	"bp"		"^3%s^1 não é permitido."
+	"es"		"^3%s^1 no está permitido."
+	"ru"		"^3%s^1 запрещены."
+end
+
+"You are already on the ^3%s^1 team."
+	"en"		"You are already on the ^3%s^1 team."
+	"bp"		"Você já está no time ^3%s^1."
+	"es"		"Actualmente estás en el equipo ^3%s^1."
+	"ru"		"Вы уже находитесь в команде ^3%s^1."
+end
+
+"Cannot switch when the game is started."
+	"en"		"Cannot switch when the game is started."
+	"bp"		"Não é possível mudar de time no meio da partida."
+	"es"		"No es posible cambiar de equipo en medio de la partida."
+	"ru"		"Невозможно менять команды после начала игры."
+end
+
+"The ^3%s^1 team is complete."
+	"en"		"The ^3%s^1 team is complete."
+	"bp"		"O time ^3%s^1 está completo."
+	"es"		"El equipo ^3%s^1 está completo."
+	"ru"		"Команда ^3%s^1 полная."
+end
+
+"%s Build %s (^3%s^1)"
+	"en"		"%s Build %s (^3%s^1)"
+	"bp"		"%s Versão %s (^3%s^1)"
+	"es"		"%s Versión %s (^3%s^1)"
+	"ru"		"%s Сборка %s (^3%s^1)"
+end
+
+"Say ^4.help^1 to view command list."
+	"en"		"Say ^4.help^1 to view command list."
+	"bp"		"Say ^4.help^1 para ver a lista de comandos."
+	"es"		"Escribe ^4.help^1 para ver la lista de comandos."
+	"ru"		"Напишите ^4.help^1 для просмотра списка команд."
+end
+
+"^3%s^1: Players %d, (%d Required of %d Allowed)"
+	"en"		"^3%s^1: Players %d, (%d Required of %d Allowed)"
+	"bp"		"^3%s^1: Jogadores %d, (%d Requeridos de %d Permitidos)"
+	"es"		"^3%s^1: Jugadores %d, (%d Requeridos de %d Permitidos)"
+	"ru"		"^3%s^1: Игроки %d, (%d Требуется из %d Возможных)"
+end
+
+"^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"en"		"^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"bp"		"^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"es"		"^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"ru"		"^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+end
+
+"Game Over: ^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"en"		"Game Over: ^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"bp"		"Fim de Jogo: ^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"es"		"Fin de la Partida: ^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+	"ru"		"Конец игры: ^3%s^1 (^4%d^1) - (^4%d^1) ^3%s^1"
+end
+
+"Game Over! The ^3%s^1 have won the game: %d-%d"
+	"en"		"Game Over! The ^3%s^1 have won the game: %d-%d"
+	"bp"		"Fim de Jogo! Os ^3%s^1 venceram: %d-%d"
+	"es"		"Fin de la Partida! Los ^3%s^1 han ganado: %d-%d"
+	"ru"		"Игра окончена! ^3%s^1 победили: %d-%d"
+end
+
+"The ^3%s^1 are winning: %d-%d"
+	"en"		"The ^3%s^1 are winning: %d-%d"
+	"bp"		"Os ^3%s^1 estão vencendo: %d-%d"
+	"es"		"Los ^3%s^1 están ganando: %d-%d"
+	"ru"		"Команда ^3%s^1 выигрывает: %d-%d"
+end
+
+"Game Over! Score is tied: %d-%d"
+	"en"		"Game Over! Score is tied: %d-%d"
+	"bp"		"Fim de Jogo! Placar empatado: %d-%d"
+	"es"		"Fin de la Partida! Marcador está empatado: %d-%d"
+	"ru"		"Игра окончена! Счёт равный: %d-%d"
+end
+
+"Score is tied: %d-%d"
+	"en"		"Score is tied: %d-%d"
+	"bp"		"Placar empatado: %d-%d"
+	"es"		"Marcador está empatado: %d-%d"
+	"ru"		"Счёт равный: %d-%d"
+end
+
+"* Round %d won by: %s"
+	"en"		"* Round %d won by: %s"
+	"bp"		"* Round %d ganho por: %s"
+	"es"		"* Ronda %d ganada por: %s"
+	"ru"		"* Раунд %d выигран командой: %s"
+end
+
+"Cannot start an vote in ^3%s^1 state."
+	"en"		"Cannot start an vote in ^3%s^1 state."
+	"bp"		"Não é possível votar no estado ^3%s^1."
+	"es"		"No es posible comenzar el vote en el estado ^3%s^1."
+	"ru"		"Невозможно начать голосование в состоянии ^3%s^1."
+end
+
+"^3%s^1 started match."
+	"en"		"^3%s^1 started match."
+	"bp"		"^3%s^1 iniciou a partida."
+	"es"		"^3%s^1 comienza la partida."
+	"ru"		"^3%s^1 начал матч."
+end
+
+"Cannot start match in ^3%s^1 state."
+	"en"		"Cannot start match in ^3%s^1 state."
+	"bp"		"Não é possível iniciar a partida no estado ^3%s^1."
+	"es"		"No es posible comenzar la partida en el estado ^3%s^1."
+	"ru"		"Невозможно начать матч в состоянии ^3%s^1."
+end
+
+"^3%s^1 stopped match."
+	"en"		"^3%s^1 stopped match."
+	"bp"		"^3%s^1 parou a partida."
+	"es"		"^3%s^1 paró la partida."
+	"ru"		"^3%s^1 остановил матч."
+end
+
+"Cannot stop match in ^3%s^1 state."
+	"en"		"Cannot stop match in ^3%s^1 state."
+	"bp"		"Não é possível parar a partida no estado ^3%s^1."
+	"es"		"No es posible parar la partida en el estado ^3%s^1."
+	"ru"		"Невозможно остановить матч в состоянии ^3%s^1."
+end
+
+"^3%s^1 restarted %s, get ready!"
+	"en"		"^3%s^1 restarted %s, get ready!"
+	"bp"		"^3%s^1 reiniciou o %s, fique atento!"
+	"es"		"^3%s^1 reinició el %s, prepárate!"
+	"ru"		"^3%s^1 перезапустил %s, готовьтесь!"
+end
+
+"Cannot restart match in ^3%s^1 state."
+	"en"		"Cannot restart match in ^3%s^1 state."
+	"bp"		"Não é possível reiniciar a partida no estado ^3%s^1."
+	"es"		"No es posible reiniciar la partida en el estado ^3%s^1."
+	"ru"		"Невозможно перезапустить матч в состоянии ^3%s^1."
+end
+
+"The choice of the teams failed: ^3Not enough players.^1"
+	"en"		"The choice of the teams failed: ^3Not enough players.^1"
+	"bp"		"A escolha dos times falhou: ^3Faltam jogadores.^1"
+	"es"		"La selección de equipos ha fallado: ^3Faltan jugadores.^1"
+	"ru"		"Выбор команд не удался: ^3Недостаточно игроков.^1"
+end
+
+"The ^3%s^1 captain is: %s"
+	"en"		"The ^3%s^1 captain is: %s"
+	"bp"		"O capitão do time ^3%s^1: %s"
+	"es"		"El capitán del equipo ^3%s^1 "
+	"ru"		"Капитан команды ^3%s^1: %s"
+end
+
+"^3%s^1 choosed ^3%s^1"
+	"en"		"^3%s^1 choosed ^3%s^1"
+	"bp"		"^3%s^1 escolheu ^3%s^1"
+	"es"		"^3%s^1 eligió a ^3%s^1"
+	"ru"		"^3%s^1 выбрал ^3%s^1"
+end
+
+"^3%s^1 already on the team ^3%s^1"
+	"en"		"^3%s^1 already on the team ^3%s^1"
+	"bp"		"^3%s^1 já está no time ^3%s^1"
+	"es"		"^3%s^1 já está na equipe ^3%s^1"
+	"ru"		"^3%s^1 уже в команде ^3%s^1"
+end
+
+" (C) *"
+	"en"		" (C) *"
+	"bp"		" (C) *"
+	"es"		" (C) *"
+	"ru"		" (C) *"
+end
+
+" (C)"
+	"en"		" (C)"
+	"bp"		" (C)"
+	"es"		" (C)"
+	"ru"		" (C)"
+end
+
+"Live in three restarts! ^3Get Ready!!"
+	"en"		"Live in three restarts! ^3Get Ready!!"
+	"bp"		"Valendo em três restarts! ^3Fique Atento!!"
+	"es"		"Live en tres restarts! ^3Prepárate!!"
+	"ru"		"Игра через три рестарта! ^3Приготовьтесь!!"
+end
+
+"--- MATCH IS LIVE ---"
+	"en"		"--- MATCH IS LIVE ---"
+	"bp"		"--- MATCH IS LIVE ---"
+	"es"		"--- LA PARTIDA HA COMENZADO ---"
+	"ru"		"--- МАТЧ ИДЕТ ---"
+end
+
+"^4Match Is Live! Good Luck & Have Fun!!"
+	"en"		"^4Match Is Live! Good Luck & Have Fun!!"
+	"bp"		"^4Match Is Live! Good Luck & Have Fun!!"
+	"es"		"^4La Partida Ha Comenzado! Good Luck & Have Fun!!"
+	"ru"		"^4Матч идет! Удачи и хорошей игры!!"
+end
+
+"^3%s^1 Paused Match: Game will pause on next round start."
+	"en"		"^3%s^1 Paused Match: Game will pause on next round start."
+	"bp"		"^3%s^1 Pausou a Partida: O jogo vai pausar no próximo round."
+	"es"		"^3%s^1 Partida en Pausa: La partida se pausará en la proxima ronda."
+	"ru"		"^3%s^1 Приостановлен матч: Игра будет приостановлена в начале следующего раунда."
+end
+
+"Match will pause on next round start."
+	"en"		"Match will pause on next round start."
+	"bp"		"A partida será pausada no próximo round."
+	"es"		"La partida se pausará en la proxima ronda."
+	"ru"		"Матч будет приостановлен перед началом следующего раунда."
+end
+
+"Cannot pause match in freeze time period."
+	"en"		"Cannot pause match in freeze time period."
+	"bp"		"Não é possível pausar a partida no freezetime."
+	"es"		"No es posible pausar la partida en freezetime."
+	"ru"		"Невозможно приостановить матч во время freeze time."
+end
+
+"Cannot pause match in ^3%s^1 state."
+	"en"		"Cannot pause match in ^3%s^1 state."
+	"bp"		"Não é possível pausar a partida no estado ^3%s^1."
+	"es"		"No es posible pausar la partida en el estado ^3%s^1."
+	"ru"		"Невозможно приостановить матч в состоянии ^3%s^1."
+end
+
+"Match paused: Match will continue in ^3%s^1."
+	"en"		"Match paused: Match will continue in ^3%s^1."
+	"bp"		"Partida Pausada: O jogo vai recomeçar em ^3%s^1."
+	"es"		"Partida Pausada: La partida continuará en ^3%s^1."
+	"ru"		"Матч приостановлен: Игра продолжится через ^3%s^1."
+end
+
+"MATCH PAUSED^n%s LEFT"
+	"en"		"MATCH PAUSED^n%s LEFT"
+	"bp"		"JOGO PAUSADO^n%s RESTANTES"
+	"es"		"JUEGO PAUSADO^n%s RESTANTES"
+	"ru"		"МАТЧ ПРИОСТАНОВЛЕН^n%s ОСТАЛОСЬ"
+end
+
+"Say ^4.ready^1 to continue."
+	"en"		"Say ^4.ready^1 to continue."
+	"bp"		"Say ^4.ready^1 para continuar."
+	"es"		"Escribe ^4.ready^1 para continuar."
+	"ru"		"Напишите ^4.ready^1, чтобы продолжить."
+end
+
+"All players are ready!"
+	"en"		"All players are ready!"
+	"bp"		"Todos os jogadores estão prontos!"
+	"es"		"Todos los jugadores están preparados!"
+	"ru"		"Все игроки готовы!"
+end
+
+"Not Ready (%d of %d):"
+	"en"		"Not Ready (%d of %d):"
+	"bp"		"Aquecendo (%d de %d):"
+	"es"		"No Preparado (%d de %d):"
+	"ru"		"Не готовы (%d из %d):"
+end
+
+"Ready (%d of %d):"
+	"en"		"Ready (%d of %d):"
+	"bp"		"Prontos (%d de %d):"
+	"es"		"Preparado (%d de %d):"
+	"ru"		"Готовы (%d из %d):"
+end
+
+"^3%s^1 is ready."
+	"en"		"^3%s^1 is ready."
+	"bp"		"^3%s^1 está pronto."
+	"es"		"^3%s^1 está preparado."
+	"ru"		"^3%s^1 готов."
+end
+
+"Unable to use this command now."
+	"en"		"Unable to use this command now."
+	"bp"		"Impossível usar esse comando agora."
+	"es"		"No se puede utilizar este comando ahora."
+	"ru"		"Сейчас невозможно использовать эту команду."
+end
+
+"^3%s^1 is not ready."
+	"en"		"^3%s^1 is not ready."
+	"bp"		"^3%s^1 não está pronto."
+	"es"		"^3%s^1 não está preparado."
+	"ru"		"^3%s^1 не готов."
+end
+
+"^3%s^1 with %d HP (%d AP)"
+	"en"		"^3%s^1 with %d HP (%d AP)"
+	"bp"		"^3%s^1 tem %d HP (%d AP)"
+	"es"		"^3%s^1 con %d HP (%d AP)"
+	"ru"		"^3%s^1 с %d HP (%d AP)"
+end
+
+"No one is alive."
+	"en"		"No one is alive."
+	"bp"		"Ninguém está vivo."
+	"es"		"Nadie está vivo."
+	"ru"		"Никто не жив."
+end
+
+"Hit ^3%s^1 %d time(s) (Damage %d)"
+	"en"		"Hit ^3%s^1 %d time(s) (Damage %d)"
+	"bp"		"Acertou ^3%s^1 %d vez(es) (Dano %d)"
+	"es"		"Aciertos ^3%s^1 %d vec(es) (Daño %d)"
+	"ru"		"Попадание по ^3%s^1 %d раз(а) (Урон %d)"
+end
+
+"* Hit %s %d time(s) (Damage %d)"
+	"en"		"* Hit %s %d time(s) (Damage %d)"
+	"bp"		"* Acertou %s %d vez(es) (Dano %d)"
+	"es"		"* Aciertos %s %d vec(es) (Daño %d)"
+	"ru"		"* Попадание по %s %d раз(а) (Урон %d)"
+end
+
+"You haven't hit anyone this round."
+	"en"		"You haven't hit anyone this round."
+	"bp"		"Você não acertou ninguém nesse round."
+	"es"		"No has realizado ningun daño esta ronda."
+	"ru"		"Вы ни в кого не попали в этом раунде."
+end
+
+"Hit by ^3%s^1 %d time(s) (Damage %d)"
+	"en"		"Hit by ^3%s^1 %d time(s) (Damage %d)"
+	"bp"		"Atingido por ^3%s^1 %d vez(es) (Dano %d)"
+	"es"		"Alcanzado por ^3%s^1 %d vec(es) (Dano %d)"
+	"ru"		"Попадание от ^3%s^1 %d раз(а) (Урон %d)"
+end
+
+"You weren't hit this round."
+	"en"		"You weren't hit this round."
+	"bp"		"Você não foi atingido nesse round."
+	"es"		"No te han alcanzado esta ronda."
+	"ru"		"В вас не попали в этом раунде."
+end
+
+"(%d dmg | %d hits) to (%d dmg | %d hits) from ^3%s^1 (%d HP)"
+	"en"		"(%d dmg | %d hits) to (%d dmg | %d hits) from ^3%s^1 (%d HP)"
+	"bp"		"(%d dano | %d acertos) para (%d dano | %d acertos) de ^3%s^1 (%d HP)"
+	"es"		"(%d daño | %d aciertos) a (%d daño | %d aciertos) de ^3%s^1 (%d HP)"
+	"ru"		"(%d урон | %d попадания) к (%d урон | %d попадания) от ^3%s^1 (%d HP)"
+end
+
+"* (%d dmg | %d hits) to (%d dmg | %d hits) from %s (%d HP)"
+	"en"		"* (%d dmg | %d hits) to (%d dmg | %d hits) from %s (%d HP)"
+	"bp"		"* (%d dano | %d acertos) para (%d dano | %d acertos) de %s (%d HP)"
+	"es"		"* (%d daño | %d aciertos) a (%d daño | %d aciertos) de %s (%d HP)"
+	"ru"		"* (%d урон | %d попадания) к (%d урон | %d попадания) от %s (%d HP)"
+end
+
+"No stats in this round."
+	"en"		"No stats in this round."
+	"bp"		"Nenhuma estatística nesse round."
+	"es"		"Ninguna estadística en esta ronda."
+	"ru"		"В этом раунде нет статистики."
+end
+
+"Match will start when all players join in game."
+	"en"		"Match will start when all players join in game."
+	"bp"		"A partida vai começar quando todos estiverem no jogo."
+	"es"		"La partida comenzará cuando se unan todos los jugadores."
+	"ru"		"Матч начнется, когда все игроки присоединятся к игре."
+end
+
+"All players are in teams and are ready!"
+	"en"		"All players are in teams and are ready!"
+	"bp"		"Todos os jogadores estão nos times e prontos!"
+	"es"		"Todos los jugadores están en equipos y preparados!"
+	"ru"		"Все игроки находятся в командах и готовы!"
+end
+
+"WARMUP^n%d PLAYERS LEFT"
+	"en"		"WARMUP^n%d PLAYERS LEFT"
+	"bp"		"AQUECIMENTO^n%d JOGADORES RESTANTES"
+	"es"		"CALENTAMIENTO^n%d JUGADORES RESTANTES"
+	"ru"		"РАЗМИНКА^nОСТАЛОСЬ ИГРОКОВ: %d"
+end
+
+"WARMUP^n%d PLAYER LEFT"
+	"en"		"WARMUP^n%d PLAYER LEFT"
+	"bp"		"AQUECIMENTO^n%d JOGADOR RESTANTE"
+	"es"		"CALENTAMIENTO^n%d JUGADOR RESTANTE"
+	"ru"		"РАЗМИНКА^nОСТАЛСЯ %d ИГРОК"
+end
+
+"STARTING MATCH"
+	"en"		"STARTING MATCH"
+	"bp"		"INICIANDO PARTIDA"
+	"es"		"COMENZANDO PARTIDA"
+	"ru"		"НАЧАЛО МАТЧА"
+end
+
+"Vote Map:"
+	"en"		"Vote Map:"
+	"bp"		"Escolha do mapa:"
+	"es"		"Elección de mapa:"
+	"ru"		"Голосование за карту:"
+end
+
+"Starting Vote Map."
+	"en"		"Starting Vote Map."
+	"bp"		"Iniciando escolha do mapa."
+	"es"		"Comenzando a elegir el mapa."
+	"ru"		"Началось голосование за карту."
+end
+
+"Changing map to ^4%s^1..."
+	"en"		"Changing map to ^4%s^1..."
+	"bp"		"Alterando mapa para ^4%s^1..."
+	"es"		"Cambiando mapa a ^4%s^1..."
+	"ru"		"Смена карты на ^4%s^1..."
+end
+
+"The map choice has failed: ^3No votes."
+	"en"		"The map choice has failed: ^3No votes."
+	"bp"		"A escolha do mapa falhou: ^3Nenhum voto."
+	"es"		"La elección de mapa ha fallado: ^3Sin votos."
+	"ru"		"Выбор карты не удался: ^3Нет голосов."
+end
+
+"votes"
+	"en"		"votes"
+	"bp"		"votos"
+	"es"		"votos"
+	"ru"		"голосов"
+end
+
+"vote"
+	"en"		"vote"
+	"bp"		"voto"
+	"es"		"voto"
+	"ru"		"голос"
+end
+
+"No votes..."
+	"en"		"No votes..."
+	"bp"		"Nenhum voto..."
+	"es"		"Sin votos..."
+	"ru"		"Нет голосов..."
+end
+
+"Player Vote Menu:"
+	"en"		"Player Vote Menu:"
+	"bp"		"Menu de Votação:"
+	"es"		"Menu de Votación:"
+	"ru"		"Меню голосования:"
+end
+
+"Vote Kick"
+	"en"		"Vote Kick"
+	"bp"		"Votar Kick"
+	"es"		"Votar Kick"
+	"ru"		"Голосование за кик"
+end
+
+"Vote Map"
+	"en"		"Vote Map"
+	"bp"		"Votar Mapa"
+	"es"		"Votar Mapa"
+	"ru"		"Голосование за карту"
+end
+
+"Vote Tactical Timeout"
+	"en"		"Vote Tactical Timeout"
+	"bp"		"Votar Pausa Técnica"
+	"es"		"Votar Descanso Técnico"
+	"ru"		"Голосование за тактический тайм-аут"
+end
+
+"Vote Restart Match"
+	"en"		"Vote Restart Match"
+	"bp"		"Votar Reiniciar Partida"
+	"es"		"Votar Reiniciar Partida"
+	"ru"		"Голосование за перезапуск матча"
+end
+
+"Vote Kick:"
+	"en"		"Vote Kick:"
+	"bp"		"Vote Kick:"
+	"es"		"Vote Kick:"
+	"ru"		"Голосование за кик:"
+end
+
+"We need ^3%d^1 players in ^3%s^1 team to Vote Kick."
+	"en"		"We need ^3%d^1 players in ^3%s^1 team to Vote Kick."
+	"bp"		"Preciamos de ^3%d^1 jogadores no time ^3%s^1 para o Vote Kick."
+	"es"		"Necesitamos ^3%d^1 jugadores en ^3%s^1 equipo para Votar Kick."
+	"ru"		"Нужно ^3%d^1 игроков в команде ^3%s^1, чтобы проголосовать за кик."
+end
+
+"^3%s^1 voted to kick ^3%s^1: %2.0f%% of votes to kick."
+	"en"		"^3%s^1 voted to kick ^3%s^1: %2.0f%% of votes to kick."
+	"bp"		"^3%s^1 votou para kickar ^3%s^1: %2.0f%% de votos para kickar."
+	"es"		"^3%s^1 votó a favor de kickear ^3%s^1: %2.0f%% de votos a favor de kickear."
+	"ru"		"^3%s^1 проголосовал за кик ^3%s^1: %2.0f%% голосов за кик."
+end
+
+"Say ^3.vote^1 to open vote kick."
+	"en"		"Say ^3.vote^1 to open vote kick."
+	"bp"		"Say ^3.vote^1 para abrir o vote kick."
+	"es"		"Escribe ^3.vote^1 para comenzar vote kick."
+	"ru"		"Напишите ^3.vote^1, чтобы начать голосование за кик."
+end
+
+"Kicked by Vote Kick."
+	"en"		"Kicked by Vote Kick."
+	"bp"		"Kickado pelo Vote Kick."
+	"es"		"Kickeado por Vote Kick."
+	"ru"		"Выгнан по голосованию за кик."
+end
+
+"^3%s^1 Kicked: ^4%d^1 votes reached."
+	"en"		"^3%s^1 Kicked: ^4%d^1 votes reached."
+	"bp"		"^3%s^1 Kickado: ^4%d^1 votos alcançados."
+	"es"		"^3%s^1 Kickeado: ^4%d^1 votos alzancados."
+	"ru"		"^3%s^1 Выгнан: ^4%d^1 голосов набрано."
+end
+
+"Already voted to kick: ^3%s^1..."
+	"en"		"Already voted to kick: ^3%s^1..."
+	"bp"		"Já votou para kickar: ^3%s^1..."
+	"es"		"Ya has votado a favor de kickear: ^3%s^1..."
+	"ru"		"Вы уже проголосовали за кик: ^3%s^1..."
+end
+
+"^3%s^1 nomitated ^4%s^1: %2.0f%% of votes to change map."
+	"en"		"^3%s^1 nominated ^4%s^1: %2.0f%% of votes to change map."
+	"bp"		"^3%s^1 nomeou ^4%s^1: %2.0f%% of votes to change map."
+	"es"		"^3%s^1 ha nominado ^4%s^1: %2.0f%% de votos para cambiar de mapa."
+	"ru"		"^3%s^1 номинировал ^4%s^1: %2.0f%% голосов за смену карты."
+end
+
+"Say ^3.vote^1 to nominate a map."
+	"en"		"Say ^3.vote^1 to nominate a map."
+	"bp"		"Say ^3.vote^1 para nomear um mapa."
+	"es"		"Escribe ^3.vote^1 para nominar un mapa."
+	"ru"		"Напишите ^3.vote^1, чтобы номинировать карту."
+end
+
+"Already nominated ^3%s^1..."
+	"en"		"Already nominated ^3%s^1..."
+	"bp"		"Já nomeou ^3%s^1..."
+	"es"		"Ya está nominado ^3%s^1..."
+	"ru"		"Уже номинирована ^3%s^1..."
+end
+
+"^3%s^1 from ^3%s^1 voted for pause match: %2.0f%% of votes to pause match."
+	"en"		"^3%s^1 from ^3%s^1 voted for pause match: %2.0f%% of votes to pause match."
+	"bp"		"^3%s^1 do time ^3%s^1 votou para pausar a partida: %2.0f%% dos votos para pausar."
+	"es"		"^3%s^1 desde ^3%s^1 ha votado para pausar la partida: %2.0f%% de votos para pausar la partida."
+	"ru"		"^3%s^1 из команды ^3%s^1 проголосовал за паузу матча: %2.0f%% голосов за паузу."
+end
+
+"Say ^3.vote^1 to vote for a pause."
+	"en"		"Say ^3.vote^1 to vote for a pause."
+	"bp"		"Say ^3.vote^1 para votar uma pausa."
+	"es"		"Escribe ^3.vote^1 para votar una pausa."
+	"ru"		"Напишите ^3.vote^1, чтобы проголосовать за паузу."
+end
+
+"You already voted to pause the game."
+	"en"		"You already voted to pause the game."
+	"bp"		"Você já votou para pausar a partida."
+	"es"		"Ya has votado para pausar la partida."
+	"ru"		"Вы уже проголосовали за паузу в игре."
+end
+
+"^3%s^1 voted to restart ^3%s^1: %2.0f%% of votes to restart match."
+	"en"		"^3%s^1 voted to restart ^3%s^1: %2.0f%% of votes to restart match."
+	"bp"		"^3%s^1 votou para reiniciar ^3%s^1: %2.0f%% dos votos para reiniciar a partida."
+	"es"		"^3%s^1 votó para reiniciar ^3%s^1: %2.0f%% de votos para reiniciar la partida."
+	"ru"		"^3%s^1 проголосовал за перезапуск ^3%s^1: %2.0f%% голосов за перезапуск матча."
+end
+
+"Say ^3.vote^1 to restart match."
+	"en"		"Say ^3.vote^1 to restart match."
+	"bp"		"Say ^3.vote^1 para reiniciar a partida."
+	"es"		"Esribe ^3.vote^1 para reiniciar la partida."
+	"ru"		"Напишите ^3.vote^1, чтобы перезапустить матч."
+end
+
+"Restarting match.."
+	"en"		"Restarting match.."
+	"bp"		"Reiniciando partida.."
+	"es"		"Reiniciando partida.."
+	"ru"		"Перезапуск матча..."
+end
+
+"You already voted to restart match."
+	"en"		"You already voted to restart match."
+	"bp"		"Você já votou para reiniciar a partida."
+	"es"		"Ya has votado para reiniciar la partida."
+	"ru"		"Вы уже проголосовали за перезапуск матча."
+end
+
+"%d players is needed to enable that command."
+	"en"		"%d players is needed to enable that command."
+	"bp"		"São necessários %d jogadores para habilitar esse comando."
+	"es"		"Se necesitan %d jugadores para habilitar ese comando."
+	"ru"		"Для активации этой команды необходимо %d игроков."
+end
+
+"Vote Surrender"
+	"en"		"Vote Surrender"
+	"bp"		"Votar Rendição"
+	"es"		"Vota por la rendición"
+	"ru"		"Голосование за сдачу"
+end
+
+"^3%s^1 from ^3%s^1 voted for surrender: %2.0f%% of votes to surrender match."
+	"en"		"^3%s^1 from ^3%s^1 voted for surrender: %2.0f%% of votes to surrender match."
+	"bp"		"^3%s^1 de ^3%s^1 votou rendição: %2.0f%% de votos para rendição."
+	"es"		"^3%s^1 de ^3%s^1 votó por la rendición: %2.0f%% de votos para rendir partido."
+	"ru"		"^3%s^1 из команды ^3%s^1 проголосовал за сдачу: %2.0f%% голосов за сдачу."
+end
+
+"Say ^3.vote^1 to vote for a surrender."
+	"en"		"Say ^3.vote^1 to vote for a surrender."
+	"bp"		"Say ^3.vote^1 para votar para rendição."
+	"es"		"Escribe ^3.vote^1 para votar por una rendición."
+	"ru"		"Напишите ^3.vote^1, чтобы проголосовать за сдачу."
+end
+
+"You already voted to surrender the game."
+	"en"		"You already voted to surrender the game."
+	"bp"		"Você já votou pela rendição."
+	"es"		"Ya has votado para rendirte."
+	"ru"		"Вы уже проголосовали за сдачу игры."
+end
+
+"Play Overtime"
+	"en"		"Play Overtime"
+	"bp"		"Jogar Overtime"
+	"es"		"Jugar Overtime"
+	"ru"		"Играть дополнительное время"
+end
+
+"Play sudden death round"
+	"en"		"Play sudden death round"
+	"bp"		"Jogar round de desempate"
+	"es"		"Jugar ronda de desempate"
+	"ru"		"Сыграть решающий раунд"
+end
+
+"End match with tied scores"
+	"en"		"End match with tied scores"
+	"bp"		"Finalizar partida com placar empatado"
+	"es"		"Finalizar la partida con el marcador en empate"
+	"ru"		"Завершить матч с ничьей"
+end
+
+"Match is tied, what you want to do?"
+	"en"		"Match is tied, what you want to do?"
+	"bp"		"Placar empatado, o que você deseja fazer?"
+	"es"		"La partida está en empate, ¿qué quieres hacer?"
+	"ru"		"Матч закончился вничью, что вы хотите сделать?"
+end
+
+"Match is tied, Overtime vote started."
+	"en"		"Match is tied, Overtime vote started."
+	"bp"		"Placar empatado, votação para jogar Overtime iniciada."
+	"es"		"La partida está en empate, comienza la votación para jugar Overtime."
+	"ru"		"Матч закончился вничью, начато голосование за сверхурочное время."
+end
+
+"Match will continue in: ^3Sudden Death Round."
+	"en"		"Match will continue in: ^3Sudden Death Round."
+	"bp"		"A partida vai continar no: ^3Round de morte súbita."
+	"es"		"La partida continuará a: ^3Ronda de muerte súbita."
+	"ru"		"Матч продолжится: ^3Решающий раунд."
+end
+
+"The choice of overtime failed: ^3No votes."
+	"en"		"The choice of overtime failed: ^3No votes."
+	"bp"		"A escolha do overtime falhou: ^3Nenhum voto."
+	"es"		"La elección de overtime ha fallado: ^3Sin votos."
+	"ru"		"Голосование за сверхурочное время не удалось: ^3нет голосов."
+end
+
+"Overtime Vote:"
+	"en"		"Overtime Vote:"
+	"bp"		"Escolha do Overtime:"
+	"es"		"Elección de Overtime:"
+	"ru"		"Голосование за сверхурочное время:"
+end
+
+"Leaders Sorted"
+	"en"		"Leaders Sorted"
+	"bp"		"Capitães"
+	"es"		"Capitanes"
+	"ru"		"Лидеры отсортированы"
+end
+
+"Random"
+	"en"		"Random"
+	"bp"		"Automático"
+	"es"		"Aleatorio"
+	"ru"		"Случайно"
+end
+
+"Not Sorted"
+	"en"		"Not Sorted"
+	"bp"		"Sem Sorteio"
+	"es"		"Sin Sorteo"
+	"ru"		"Не отсортировано"
+end
+
+"Skill Sorted"
+	"en"		"Skill Sorted"
+	"bp"		"Balancear Skill"
+	"es"		"Balance de Skill"
+	"ru"		"Отсортировано по уровню навыков"
+end
+
+"Game Mode:"
+	"en"		"Game Mode:"
+	"bp"		"Modo de Jogo:"
+	"es"		"Modo de Juego:"
+	"ru"		"Режим игры:"
+end
+
+"Select teams started."
+	"en"		"Select teams started."
+	"bp"		"Escolha dos times iniciada."
+	"es"		"La selección de equipos ha comenzado."
+	"ru"		"Выбор команд начат."
+end
+
+"The choice of the teams failed: ^3No votes."
+	"en"		"The choice of the teams failed: ^3No votes."
+	"bp"		"A escolha dos times falhou: ^3Nenhum voto."
+	"es"		"La selección de equipos ha fallado: ^3Sin votos."
+	"ru"		"Не удалось выбрать команды: ^3нет голосов."
+end
+
+"Mixing teams now."
+	"en"		"Mixing teams now."
+	"bp"		"Misturando os times agora."
+	"es"		"Mezclando equipos."
+	"ru"		"Смешивание команд в процессе."
+end
+
+"The teams will remain the same."
+	"en"		"The teams will remain the same."
+	"bp"		"Os times serão os mesmos."
+	"es"		"Los equipos serán los mismos."
+	"ru"		"Команды останутся прежними."
+end
+
+"Balancing teams by skills."
+	"en"		"Balancing teams by skills."
+	"bp"		"Balanceando times por skill."
+	"es"		"Balanceando equipos por skill."
+	"ru"		"Балансировка команд по уровню навыков."
+end
+
+"Swapping teams now."
+	"en"		"Swapping teams now."
+	"bp"		"Trocando os times agora."
+	"es"		"Cambiando de equipos ahora."
+	"ru"		"Смена команд сейчас."
+end
+
+"Deathmatch respawning is enabled until match begin!"
+	"en"		"Deathmatch respawning is enabled until match begin!"
+	"bp"		"Deathmatch habilitado até o início da partida!"
+	"es"		"Deathmatch habilitado hasta el comienzo de la partida!"
+	"ru"		"Deathmatch включен до начала матча!"
+end
+
+"Deathmatch respawning disabled."
+	"en"		"Deathmatch respawning disabled."
+	"bp"		"Deathmatch desabilitado."
+	"es"		"Deathmatch deshabilitado."
+	"ru"		"Deathmatch отключен."
+end
+
+"%s won, what team you want?"
+	"en"		"%s won, what team you want?"
+	"bp"		"%s venceu, qual o time que você deseja?"
+	"es"		"%s ha ganado, ¿qué equipo escoges?"
+	"ru"		"%s победил, за какую команду вы хотите играть?"
+end
+
+"%s won Knife Round, swap teams vote started."
+	"en"		"%s won Knife Round, swap teams vote started."
+	"bp"		"%s venceu o Round Faca, escolha dos times iniciada."
+	"es"		"%s ha ganado la Ronda de Cuchillos, elección de equipos iniciada."
+	"ru"		"%s победил в ножевом раунде, началось голосование за смену команд."
+end
+
+"Swap Teams Vote:"
+	"en"		"Swap Teams Vote:"
+	"bp"		"Escolha dos times:"
+	"es"		"Eleccion de Equipos:"
+	"ru"		"Голосование за смену команд:"
+end
+
+"%s %d : %d %s"
+	"en"		"%s %d : %d %s"
+	"bp"		"%s %d : %d %s"
+	"es"		"%s %d : %d %s"
+	"ru"		"%s %d : %d %s"
+end
+
+"Game Over! The ^3%s^1 team surrendered!!"
+	"en"		"Game Over! The ^3%s^1 team surrendered!!"
+	"bp"		"Fim de jogo! O time ^3%s^1 se rendeu!!"
+	"es"		"Partida terminada! El equipo ^3%s^1 se ha rendido!!"
+	"ru"		"Конец игры! Команда ^3%s^1 сдалась!!"
+end
+
+"Vote to cancel the match"
+	"en"		"Vote to Cancel The Match"
+	"bp"		"Votar para cancelar a partida"
+	"es"		"Vota para cancelar el partido"
+	"ru"		"Голосование за отмену матча"
+end
+
+"^3%s^1 voted to cancel the match: %2.0f%% of votes to cancel the match."
+	"en"		"^3%s^1 voted to cancel the match: %2.0f%% of votes to cancel the match."
+	"bp"		"^3%s^1 votou para cancelar a partida: %2.0f%% de votos para cancelar a partida."
+	"es"		"^3%s^1 ha votado para cancelar la partida: %2.0f%% de votos para cancelar la partida."
+	"ru"		"^3%s^1 проголосовал за отмену матча: %2.0f%% голосов за отмену матча."
+end
+
+"Say ^3.vote^1 to cancel the match."
+	"en"		"Say ^3.vote^1 to cancel the match."
+	"bp"		"Say ^3.vote^1 para cancelar a partida."
+	"es"		"Escribe ^3.vote^1 para cancelar la partida."
+	"ru"		"Напишите ^3.vote^1 чтобы отменить матч."
+end
+
+"Canceling match..."
+	"en"		"Canceling match..."
+	"bp"		"Cancelando partida..."
+	"es"		"Cancelando la partida..."
+	"ru"		"Отмена матча..."
+end
+
+"You already voted to cancel the match."
+	"en"		"You already voted to cancel the match."
+	"bp"		"Você já votou para cancelar a partida."
+	"es"		"Ya votaste para cancelar la partida."
+	"ru"		"Вы уже проголосовали за отмену матча."
+end
+
+"Wait %d seconds before reconnect."
+	"en"		"Wait %d seconds before reconnect."
+	"bp"		"Aguarde %d segundos antes de reconectar-se."
+	"es"		"Espere %d segundos antes de volver a conectarse."
+	"ru"		"Подождите %d секунд перед повторным подключением."
+end
+
+"Player List"
+	"en"		"Player List"
+	"bp"		"Jogadores"
+	"es"		"Listado Jugadores"
+	"ru"		"Список игроков"
+end
+
+"Online"
+	"en"		"Online"
+	"bp"		"Online"
+	"es"		"En línea"
+	"ru"		"В сети"
+end
+
+"Offline"
+	"en"		"Offline"
+	"bp"		"Offline"
+	"es"		"Desconectado"
+	"ru"		"Не в сети"
+end
+
+"In Game"
+	"en"		"In Game"
+	"bp"		"No Jogo"
+	"es"		"En el juego"
+	"ru"		"В игре"
+end
+
+"Player List is empty..."
+	"en"		"Player List is empty..."
+	"bp"		"A lista de jogadores está vazia..."
+	"es"		"La lista de jugadores está vacía..."
+	"ru"		"Список игроков пуст..."
+end
+
+"Name"
+	"en"		"Name"
+	"bp"		"Nome"
+	"es"		"Nombre"
+	"ru"		"Имя"
+end
+
+"Steam"
+	"en"		"Steam"
+	"bp"		"Steam"
+	"es"		"Steam"
+	"ru"		"Стим"
+end
+
+"Address"
+	"en"		"Address"
+	"bp"		"IP"
+	"es"		"IP"
+	"ru"		"Адрес"
+end
+
+"Flags"
+	"en"		"Flags"
+	"bp"		"Acesso"
+	"es"		"Acceso"
+	"ru"		"Доступ"
+end
+
+"Team"
+	"en"		"Team"
+	"bp"		"Time"
+	"es"		"Equipo"
+	"ru"		"Команда"
+end
+
+"User Index"
+	"en"		"User Index"
+	"bp"		"User Index"
+	"es"		"Indice Usuario"
+	"ru"		"Индекс пользователя"
+end
+
+"Status"
+	"en"		"Status"
+	"bp"		"Status"
+	"es"		"Estado"
+	"ru"		"Статус"
+end
+
+"^3%s^1 is not in connected."
+	"en"		"^3%s^1 is not in connected."
+	"bp"		"^3%s^1 não está no jogo."
+	"es"		"^3%s^1 no está conectado."
+	"ru"		"^3%s^1 не подключен."
+end
+
+"Mute Menu:"
+	"en"		"Mute Menu:"
+	"bp"		"Mute Menu:"
+	"es"		"Menú de silencio:"
+	"ru"		"Меню отключения звука:"
+end
+
+"%s ^r^RMuted"
+	"en"		"%s ^r^RMuted"
+	"bp"		"%s ^r^RMudo"
+	"es"		"%s ^r^RMuteado"
+	"ru"		"%s ^r^RПриглушен"
+end
+
+"%s ^r^RListening"
+	"en"		"%s ^r^RListening"
+	"bp"		"%s ^r^ROuvindo"
+	"es"		"%s ^r^REscuchando"
+	"ru"		"%s ^r^RПрослушивание"
+end
+
+"You have muted ^3%s..."
+	"en"		"You have muted ^3%s..."
+	"bp"		"Você mutou ^3%s..."
+	"es"		"Has muteado a ^3%s..."
+	"ru"		"Вы отключили звук ^3%s..."
+end
+
+"You have unmuted ^3%s..."
+	"en"		"You have unmuted ^3%s..."
+	"bp"		"Você está ouvindo ^3%s..."
+	"es"		"Has desmuteado a ^3%s..."
+	"ru"		"Вы разблокировали ^3%s..."
+end
+
+"Cvars Menu"
+	"en"		"Cvars Menu"
+	"bp"		"Menu de Cvars"
+	"es"		"Menú Cvars"
+	"ru"		"Меню переменных"
+end
+

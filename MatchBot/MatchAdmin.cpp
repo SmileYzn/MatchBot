@@ -6,137 +6,114 @@ CMatchAdmin gMatchAdmin;
 void CMatchAdmin::ServerActivate()
 {
     // Clear Admin Data
-	this->m_Data.clear();
+    this->m_Data.clear();
 
     // Clear Flags Data
     this->m_Flag.clear();
 
-    try
+    // Memory Script instance
+    CMemScript* lpMemScript = new CMemScript;
+
+    // If is not null
+    if (lpMemScript)
     {
-        // File stream
-        std::ifstream fp(MB_ADMIN_LIST_FILE, std::ios::in);
-
-        // If file is open
-        if (fp)
+        // Try to load file
+        if(lpMemScript->SetBuffer(MB_ADMIN_LIST_FILE))
         {
-            // Reset pointer
-            fp.clear();
-
-            // Go to begin of file
-            fp.seekg(0, std::ios::beg);
-
-            // Read data from json file
-            auto json = nlohmann::json::parse(fp, nullptr, true, true);
-
-            // Loop each item of array
-            for (auto const& row : json.items())
+            try
             {
-                // Get admin data as map string
-                auto Admin = row.value().get<std::map<std::string, std::string>>();
-
-                // If Auth and Flags fields is here
-                if (!Admin["Auth"].empty() && !Admin["Flags"].empty())
+                // Loop lines
+                while (true)
                 {
-                    // Insert info on admin data
-                    this->m_Data.insert(std::make_pair(Admin["Auth"], Admin["Flags"]));
+                    // If file content ended
+                    if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
+                    {
+                        // Break loop
+                        break;
+                    }
+
+                    // Admin Info struct
+                    P_ADMIN_INFO Info = { };
+
+                    // Read Name as string
+                    Info.Name = lpMemScript->GetString();
+
+                    // Read SteamID as string
+                    Info.Auth = lpMemScript->GetAsString();
+
+                    // Read Flags as string
+                    Info.Flag = lpMemScript->GetAsString();
+
+                    // Insert on container
+                    this->m_Data.insert(std::make_pair(Info.Auth, Info));
                 }
             }
-
-            // Close File
-            fp.close();
+            catch (...)
+            {
+                // Catch for erros
+                LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+            }
         }
-        else
-        {
-            LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_ADMIN_LIST_FILE);
-        }
+
+        // Delete Memory Script instance
+        delete lpMemScript;
     }
-    catch (nlohmann::json::parse_error& e)
-    {
-        LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
-    }
-
-    //CMemScript* lpMemScript = new CMemScript;
-
-    //if (lpMemScript)
-    //{
-    //    if(lpMemScript->SetBuffer("cstrike/addons/matchbot/users.txt"))
-    //    {
-    //        try
-    //        {
-    //            while (true)
-    //            {
-    //                if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
-    //                {
-    //                    break;
-    //                }
-
-    //                if (!lpMemScript->GetString().compare("end"))
-    //                {
-    //                    break;
-    //                }
-
-    //                auto Name = lpMemScript->GetString();
-
-    //                auto Auth = lpMemScript->GetAsString();
-
-    //                auto Flags = lpMemScript->GetAsString();
-
-    //                LOG_CONSOLE(PLID, "[%s] %s %s %s", __func__, Name.c_str(), Auth.c_str(), Flags.c_str());
-    //            }
-    //        }
-    //        catch (...)
-    //        {
-    //            LOG_CONSOLE(PLID, "%s", lpMemScript->GetError().c_str());
-    //        }
-    //    }
-
-    //    delete lpMemScript;
-    //}
 }
 
 // Read flags from character array
-int CMatchAdmin::ReadFlags(const char* c)
+int CMatchAdmin::ReadFlags(const char* Flags)
 {
     // Zero
-    int Flags = ADMIN_ALL;
+    int Result = ADMIN_ALL;
 
-    // While has charcaters to read
-    while (*c)
+    // If is not null
+    if (Flags)
     {
-        // Add a Flag
-        Flags |= BIT(*c++ - 'a');
+        // If is not empty
+        if (Flags[0u] != '\0')
+        {
+            // While has charcaters to read
+            while (*Flags)
+            {
+                // Add a Flag
+                Result |= BIT(*Flags++ - 'a');
+            }
+        }
     }
 
     // Return flags
-    return Flags;
+    return Result;
 }
 
 // Set Flags on Entity Index on connect
 bool CMatchAdmin::PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
-    // Set empty Flags to user
-    this->m_Flag[ENTINDEX(pEntity)] = ADMIN_ALL;
-
-    // If admin information is not found, set default user Z Flag
-    this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags("z");
-
-    // Get Player Auth Index
-    auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEntity);
-
-    // If is not empty
-    if (Auth)
+    // If entity is not null
+    if (!FNullEnt(pEntity))
     {
-        // If is not empty
-        if (Auth[0] != '\0')
-        {
-            // Find admin Information
-            auto Admin = this->m_Data.find(Auth);
+        // Entity Index
+        auto EntityIndex = ENTINDEX(pEntity);
 
-            // If found
-            if (Admin != this->m_Data.end())
+        // Set empty Flags to user
+        this->m_Flag[EntityIndex] = ADMIN_ALL;
+
+        // If admin information is not found, set default user Z Flag
+        this->m_Flag[EntityIndex] |= this->ReadFlags("z");
+
+        // Get Player Auth Index
+        auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEntity);
+
+        // If is not empty
+        if (Auth)
+        {
+            // If is not empty
+            if (Auth[0] != '\0')
             {
-                // Set Flags to this entity
-                this->m_Flag[ENTINDEX(pEntity)] |= this->ReadFlags(Admin->second.c_str());
+                // If found
+                if (this->m_Data.find(Auth) != this->m_Data.end())
+                {
+                    this->m_Flag[EntityIndex] |= this->ReadFlags(this->m_Data[Auth].Flag.c_str());
+                }
             }
         }
     }
@@ -178,7 +155,7 @@ int CMatchAdmin::Access(std::string Auth, int Level)
     if (Admin != this->m_Data.end())
     {
         // Set Flags to this entity
-        auto Flags = this->ReadFlags(Admin->second.c_str());
+        auto Flags = this->ReadFlags(Admin->second.Flag.c_str());
 
         // If level is ADMIN_ADMIN
         if (Level == ADMIN_ADMIN)
@@ -212,7 +189,7 @@ std::string CMatchAdmin::GetFlags(edict_t* pEdict)
         if (this->m_Data.find(Auth) != this->m_Data.end())
         {
             // Return flags
-            return this->m_Data[Auth];
+            return this->m_Data[Auth].Flag;
         }
     }
 

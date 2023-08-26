@@ -8,97 +8,85 @@ void CMatchCvarMenu::ServerActivate()
 	// Clear data
 	this->m_Data.clear();
 
-	try
+	// Clear Count
+	this->m_CvarCount = 0;
+
+	// Memory Script instance
+	CMemScript* lpMemScript = new CMemScript;
+
+	// If is not null
+	if (lpMemScript)
 	{
-		// File stream
-		std::ifstream fp(MB_CVAR_MENU_FILE, std::ios::in);
-
-		// If file is open
-		if (fp)
+		// Try to load file
+		if (lpMemScript->SetBuffer(MB_CVAR_MENU_FILE))
 		{
-			// Reset pointer
-			fp.clear();
-
-			// Go to begin of file
-			fp.seekg(0, std::ios::beg);
-
-			// Read data from json file
-			auto json = nlohmann::json::parse(fp, nullptr, true, true);
-
-			// If is not empty
-			if (!json.empty())
+			try
 			{
-				//
-				this->m_CvarCount = 0;
-
-				// Loop each item of array
-				for (auto const& row : json.items())
+				// Loop lines
+				while (true)
 				{
-					// Get admin data as map string
-					auto Name = row.key().c_str();
-
-					// If name is not empty
-					if (Name)
+					// If file content ended
+					if (lpMemScript->GetToken() == eTokenResult::TOKEN_END)
 					{
-						// Set variable
-						this->m_Data[this->m_CvarCount].Variable = g_engfuncs.pfnCVarGetPointer(Name);
+						// Break loop
+						break;
+					}
 
-						// If is a valid cvar
-						if (this->m_Data[this->m_CvarCount].Variable)
+					// Cvar
+					auto Cvar = lpMemScript->GetString();
+
+					// If is not empty
+					if (!Cvar.empty())
+					{
+						// Get variable pointer
+						auto Pointer = g_engfuncs.pfnCVarGetPointer(Cvar.c_str());
+
+						// If is not null
+						if (Pointer)
 						{
-							// Get cvar object value
-							auto cvar = row.value();
+							// Set pointer
+							this->m_Data[this->m_CvarCount].Pointer = Pointer;
 
-							// If is not empty
-							if (!cvar.empty())
+							// Loop lines
+							while (true)
 							{
-								// If has array of values and access
-								if (cvar.contains("values") && cvar.contains("access"))
+								// If is end of section
+								if (lpMemScript->GetAsString().compare("end") == 0)
 								{
-									// If values is array and access is string
-									if (cvar["values"].is_array() && cvar["access"].is_string())
-									{
-										// If is not empty
-										if (!cvar["values"].empty() && !cvar["access"].empty())
-										{
-											// Access
-											this->m_Data[this->m_CvarCount].Access = gMatchAdmin.ReadFlags(std::string(cvar["access"]).c_str());
-
-											// Values
-											this->m_Data[this->m_CvarCount].Values = cvar["values"].get<std::vector<std::string>>();
-
-											// Increment variable total count
-											this->m_CvarCount++;
-										}
-									}
+									// Break loop
+									break;
 								}
+
+								// Get Value
+								this->m_Data[this->m_CvarCount].Values.push_back(lpMemScript->GetString());
 							}
+
+							// Increment cvar counter
+							this->m_CvarCount++;
 						}
 					}
 				}
 			}
+			catch (...)
+			{
+				// Catch for erros
+				LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+			}
+		}
 
-			// Close file
-			fp.close();
-		}
-		else
-		{
-			// Log fail
-			LOG_CONSOLE(PLID, "[%s] Failed to open file: %s", __func__, MB_CVAR_MENU_FILE);
-		}
-	}
-	catch (nlohmann::json::parse_error& e)
-	{
-		// Get exception
-		LOG_CONSOLE(PLID, "[%s] %s", __func__, e.what());
+		// Delete Memory Script instance
+		delete lpMemScript;
 	}
 }
 
 // Cvar Menu
 void CMatchCvarMenu::Menu(CBasePlayer* Player)
 {
+	// Get entity index
+	auto EntityIndex = Player->entindex();
+
 	// If did not have cvar flag
-	if (!(gMatchAdmin.GetFlags(Player->entindex()) & ADMIN_CVAR))
+	if (!gMatchAdmin.Access(EntityIndex, ADMIN_CVAR))
 	{
 		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("You do not have access to that command."));
 		return;
@@ -107,21 +95,14 @@ void CMatchCvarMenu::Menu(CBasePlayer* Player)
 	// If cvar list is not empty
 	if (!this->m_Data.empty())
 	{
-		// Get entity index
-		auto EntityIndex = Player->entindex();
-
 		// Create menu
 		gMatchMenu[EntityIndex].Create(_T("Cvars Menu"), true, (void*)this->MenuHandle);
 
 		// Loop variable items
 		for (auto const& row : this->m_Data)
 		{
-			// Check if user has access to that variable
-			if (gMatchAdmin.Access(EntityIndex, row.second.Access))
-			{
-				// Add item on menu
-				gMatchMenu[EntityIndex].AddItem(row.first, gMatchUtil.FormatString("%s \\R%s", row.second.Variable->name, row.second.Variable->string), false, row.first);
-			}
+			// Add item on menu
+			gMatchMenu[EntityIndex].AddItem(row.first, gMatchUtil.FormatString("%s \\R%s", row.second.Pointer->name, row.second.Pointer->string), false, row.first);
 		}
 
 		// Show menu to player
@@ -154,21 +135,21 @@ void CMatchCvarMenu::UpdateValue(int ItemIndex)
 		{
 			if (it < end)
 			{
-				if (!it->compare(this->m_Data[ItemIndex].Variable->string))
+				if (!it->compare(this->m_Data[ItemIndex].Pointer->string))
 				{
 					if (++it >= end)
 					{
 						it = begin;
 					}
 
-					g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Variable->name, it->c_str());
+					g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Pointer->name, it->c_str());
 
 					break;
 				}
 			}
 			else
 			{
-				g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Variable->name, begin->c_str());
+				g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Pointer->name, begin->c_str());
 				break;;
 			}
 		}

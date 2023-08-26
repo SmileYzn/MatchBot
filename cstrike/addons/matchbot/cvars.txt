@@ -1,0 +1,75 @@
+﻿// File:		cvars.txt
+// Updated:		11:50 2023/08/26
+// Description: 	This file is used to manage cvars menu and the access.
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+"sv_alltalk"
+	"0"		// Dead don't hear alive
+	"1"		// No restrictions
+	"2"		// Teammates hear each other
+	"3"		// Same as 2, but spectators hear everybody
+	"4"		// Alive hear alive, dead hear dead and alive.
+	"5"		// Alive hear alive teammates, dead hear dead and alive.
+end
+
+"mp_friendlyfire"
+	"0"		// Friendly Fire Disabled
+	"1"		// Friendlh Fire Enabled
+end
+
+"mp_freezetime"
+	"0"		// Off
+	"10"		// 10 seconds
+	"15"		// 15 seconds
+	"30"		// 30 seconds
+	"60"		// 60 seconds
+end
+
+"mp_startmoney"
+	"800"		// Default
+	"10000"		// 10000
+	"16000"		// 16000
+end
+
+
+"mp_buy_anywhere"
+	"0"		// Disabled
+	"1"		// Both teams
+	"2"		// Only Terrorists team
+	"3"		// Only CT team
+end
+
+"allow_spectators"
+	"0"		// Block spectators
+	"1"		// Allow spectators
+end
+
+"sv_password"
+	""		// Open Server
+	"a300s"		// 
+	"9c272"		// 
+	"sd091"		// 
+	"22382"		// 
+	"9sm2c"		// 
+	"d0912"		// 
+	"mc019"		// 
+	"c0929"		// 
+	"ds019"		// 
+	"c0020"		// 
+	"6y0y2"		// 
+end
+
+"sv_proxies"
+	"0"		// Do not allow HLTV proxies
+	"1"		// Allow 1 slot
+	"2"		// Allow 2 slots
+	"3"		// Allow 3 slots
+end
+
+"sv_gravity"
+	"800"		// Default
+	"600"		// 600
+	"200"		// 200
+	"100"		// 100
+	"50"		// 50
+	"0"		// 0
+end

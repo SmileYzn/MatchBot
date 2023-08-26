@@ -30,6 +30,7 @@
 #include <string>
 #include <array>
 #include <map>
+#include <unordered_map>
 #include <vector>
 
 // System Includes
@@ -66,13 +67,10 @@
 #include "ReGameDLL.h"
 
 // Time Format Class
-#include "TimeFormat.h"
+#include "include/TimeFormat.h"
 
 // Memory Script Class
-#include "MemScript.hpp"
-
-// JSON
-#include "include/json.hpp"
+#include "include/MemScript.h"
 
 // Match Bot
 #include "MatchMenu.h"

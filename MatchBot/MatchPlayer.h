@@ -48,7 +48,7 @@ public:
 	static void PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item);
 	
 private:
-	std::map<int, P_PLAYER_INFO> m_Player;
+	std::unordered_map<int, P_PLAYER_INFO> m_Player;
 };
 
 extern CMatchPlayer gMatchPlayer;

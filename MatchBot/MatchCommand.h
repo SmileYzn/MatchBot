@@ -1,14 +1,13 @@
 #pragma once
 
 // Default commands file
-constexpr auto MB_COMMANDS_FILE = "cstrike/addons/matchbot/commands.json";
+constexpr auto MB_COMMANDS_FILE = "cstrike/addons/matchbot/commands.txt";
 
 // Command info
 typedef struct S_COMMAND_INFO
 {
 	int Index;
 	int Flag;
-	std::string Description;
 }P_COMMAND_INFO, *LP_COMMAND_INFO;
 
 // Command indexes
@@ -62,7 +61,7 @@ public:
 	bool ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1);
 
 private:
-	std::map<std::string, P_COMMAND_INFO> m_Data;
+	std::unordered_map<std::string, P_COMMAND_INFO> m_Data;
 };
 
 extern CMatchCommand gMatchCommand;

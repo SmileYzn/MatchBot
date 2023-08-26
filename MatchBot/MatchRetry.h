@@ -7,7 +7,7 @@ public:
 	void PlayerDisconnect(edict_t* pEdict, bool crash, const char* Reason);
 
 private:
-	std::map<std::string, float> m_Data;
+	std::unordered_map<std::string, float> m_Data;
 };
 
 extern CMatchRetry gMatchRetry;

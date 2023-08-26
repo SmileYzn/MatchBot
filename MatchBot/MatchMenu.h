@@ -8,7 +8,7 @@ typedef struct S_MENU_ITEM
 	std::string Text;
 	bool		Disabled;
 	int			Extra;
-} P_MENU_ITEM, * LP_MENU_ITEM;
+} P_MENU_ITEM, *LP_MENU_ITEM;
 
 class CMatchMenu
 {
@@ -28,7 +28,6 @@ public:
 
 	void Display(int EntityIndex, int Page);
 	void ShowMenu(int EntityIndex, int Slots, int Time, std::string Text);
-
 private:
 	std::string m_Text;
 	std::vector<P_MENU_ITEM> m_Data;

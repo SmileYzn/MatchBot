@@ -1,12 +1,11 @@
 #pragma once
 
 // Default cvar menu file
-constexpr auto MB_CVAR_MENU_FILE = "cstrike/addons/matchbot/cvars.json";
+constexpr auto MB_CVAR_MENU_FILE = "cstrike/addons/matchbot/cvars.txt";
 
 typedef struct S_CVAR_MENU_INFO
 {
-	int Access;
-	cvar_t* Variable;
+	cvar_t* Pointer;
 	std::vector<std::string> Values;
 } P_CVAR_MENU_INFO, *LP_CVAR_MENU_INFO;
 
@@ -20,7 +19,7 @@ public:
 
 private:
 	int m_CvarCount = 0;
-	std::map<int, P_CVAR_MENU_INFO> m_Data;
+	std::unordered_map<int, P_CVAR_MENU_INFO> m_Data;
 };
 
 extern CMatchCvarMenu gMatchCvarMenu;

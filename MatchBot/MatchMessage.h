@@ -32,7 +32,7 @@ typedef struct MESSAGE_DATA_S
 	int msg_type;
 	const float* pOrigin;
 	edict_t* pEntity;
-	std::map<int, P_MESSAGE_PARAM> Param;
+	std::unordered_map<int, P_MESSAGE_PARAM> Param;
 } P_MESSAGE_DATA, * LP_MESSAGE_DATA;
 
 class CMatchMessage
@@ -113,7 +113,7 @@ private:
 	P_MESSAGE_DATA m_Data = { 0 };
 
 	// Message Hooks
-	std::map<int, MESSAGE_BEGIN_FUNC> m_Hook;
+	std::unordered_map<int, MESSAGE_BEGIN_FUNC> m_Hook;
 };
 
 extern CMatchMessage gMatchMessage;

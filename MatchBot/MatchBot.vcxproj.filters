@@ -174,9 +174,6 @@
     <ClInclude Include="MatchAdminMenu.h">
       <Filter>MatchBot\MatchAdminMenu</Filter>
     </ClInclude>
-    <ClInclude Include="TimeFormat.h">
-      <Filter>MatchBot</Filter>
-    </ClInclude>
     <ClInclude Include="MatchPause.h">
       <Filter>MatchBot\MatchPause</Filter>
     </ClInclude>
@@ -212,9 +209,6 @@
     </ClInclude>
     <ClInclude Include="MatchCvarMenu.h">
       <Filter>MatchBot\MatchCvarMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="MemScript.hpp">
-      <Filter>MetaMod</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

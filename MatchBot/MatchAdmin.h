@@ -1,7 +1,7 @@
 #pragma once
 
 // Admin settings file
-constexpr auto MB_ADMIN_LIST_FILE = "cstrike/addons/matchbot/users.json";
+constexpr auto MB_ADMIN_LIST_FILE = "cstrike/addons/matchbot/users.txt";
 
 // Admin struct info
 typedef struct S_ADMIN_INFO
@@ -9,7 +9,7 @@ typedef struct S_ADMIN_INFO
 	std::string Auth;
 	std::string Name;
 	std::string Flag;
-} P_ADMIN_INFO, * LP_ADMIN_INFO;
+} P_ADMIN_INFO, *LP_ADMIN_INFO;
 
 // AMX Mod X Team Flags
 constexpr auto ADMIN_ALL			= 0;        /* everyone */
@@ -45,7 +45,7 @@ public:
 	void ServerActivate();
 
 	// Read flags from character array
-	int ReadFlags(const char* c);
+	int ReadFlags(const char* Flags);
 
 	// Set Flags on Entity Index on connect
 	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
@@ -64,10 +64,10 @@ public:
 
 private:
 	// User Admin Info Data container
-	std::map<std::string, std::string> m_Data;
+	std::unordered_map<std::string, P_ADMIN_INFO> m_Data;
 
 	// Entity flags 
-	std::map<int, int> m_Flag;
+	std::unordered_map<int, int> m_Flag;
 };
 
 extern CMatchAdmin gMatchAdmin;
