@@ -1,6 +1,6 @@
-﻿// File:		maplist.txt
-// Updated:		09:50 2023/08/26
-// Description: 	This file is used to list maps to map menus.
+﻿// File: 	maplist.txt
+// Updated: 	09:50 2023/08/26
+// Description: This file is used to list maps to map menus.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 de_dust2
 de_tuscan

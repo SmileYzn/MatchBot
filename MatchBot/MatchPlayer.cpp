@@ -308,6 +308,20 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						if (Target)
 						{
 							gMatchUtil.ServerCommand("kick #%d", Item.Extra);
+
+							LOG_MESSAGE
+							(
+								PLID,
+								"\"%s<%i><%s><%s>\" kick \"%s<%i><%s><%s>\"",
+								STRING(Player->edict()->v.netname),
+								g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+								g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+								gMatchBot.GetTeam(Player->m_iTeam, true),
+								STRING(Target->edict()->v.netname),
+								g_engfuncs.pfnGetPlayerUserId(Target->edict()),
+								g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+								gMatchBot.GetTeam(Target->m_iTeam, true)
+							);
 						}
 						else
 						{
@@ -323,6 +337,20 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						if (Target)
 						{
 							MDLL_ClientKill(Target->edict());
+
+							LOG_MESSAGE
+							(
+								PLID,
+								"\"%s<%i><%s><%s>\" slays \"%s<%i><%s><%s>\"",
+								STRING(Player->edict()->v.netname),
+								g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+								g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+								gMatchBot.GetTeam(Player->m_iTeam, true),
+								STRING(Target->edict()->v.netname),
+								g_engfuncs.pfnGetPlayerUserId(Target->edict()),
+								g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+								gMatchBot.GetTeam(Target->m_iTeam, true)
+							);
 						}
 						else
 						{
@@ -366,6 +394,21 @@ void CMatchPlayer::PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 			gMatchUtil.ServerCommand(_T("banid %d %s kick"), Item.Info, Info->Auth.c_str());
 
 			gMatchUtil.ServerCommand("wait;wait;writeid;writeip");
+
+			LOG_MESSAGE
+			(
+				PLID,
+				"\"%s<%i><%s><%s>\" banned \"%s<%i><%s><%s>\" for %d min(s)",
+				STRING(Player->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchBot.GetTeam(Player->m_iTeam, true),
+				Info->Name.c_str(),
+				"",
+				Info->Auth.c_str(),
+				gMatchBot.GetTeam(Info->LastTeam, true),
+				Item.Info
+			);
 		}
 	}
 }

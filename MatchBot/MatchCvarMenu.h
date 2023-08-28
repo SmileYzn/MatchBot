@@ -15,7 +15,7 @@ public:
 	void ServerActivate();
 	void Menu(CBasePlayer* Player);
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
-	void UpdateValue(int ItemIndex);
+	void UpdateValue(CBasePlayer* Player, int ItemIndex);
 
 private:
 	int m_CvarCount = 0;

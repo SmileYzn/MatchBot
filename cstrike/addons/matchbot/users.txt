@@ -1,6 +1,6 @@
-﻿// File:		users.txt
-// Updated:		09:20 2023/08/26
-// Description: 	This file is used to manage admins and flags.
+﻿// File: 	users.txt
+// Updated: 	09:20 2023/08/26
+// Description: This file is used to manage admins and flags.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Name			The nickname of user;
 // SteamID		The SteamID to store flags;

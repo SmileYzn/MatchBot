@@ -117,13 +117,13 @@ void CMatchCvarMenu::MenuHandle(int EntityIndex, P_MENU_ITEM Item)
 
 	if (Player)
 	{
-		gMatchCvarMenu.UpdateValue(Item.Info);
+		gMatchCvarMenu.UpdateValue(Player, Item.Info);
 
 		gMatchCvarMenu.Menu(Player);
 	}
 }
 
-void CMatchCvarMenu::UpdateValue(int ItemIndex)
+void CMatchCvarMenu::UpdateValue(CBasePlayer* Player, int ItemIndex)
 {
 	if (this->m_Data.find(ItemIndex) != this->m_Data.end())
 	{
@@ -144,12 +144,35 @@ void CMatchCvarMenu::UpdateValue(int ItemIndex)
 
 					g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Pointer->name, it->c_str());
 
+					LOG_MESSAGE
+					(
+						PLID,
+						"\"%s<%i><%s><%s>\" changed cvar %s to %s",
+						STRING(Player->edict()->v.netname),
+						g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+						g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+						gMatchBot.GetTeam(Player->m_iTeam, true),
+						this->m_Data[ItemIndex].Pointer->name,
+						it->c_str()
+					);
 					break;
 				}
 			}
 			else
 			{
 				g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Pointer->name, begin->c_str());
+
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" changed cvar %s to %s",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true),
+					this->m_Data[ItemIndex].Pointer->name,
+					it->c_str()
+				);
 				break;;
 			}
 		}

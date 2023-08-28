@@ -173,6 +173,20 @@ void CMatchAdminMenu::KickMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 		if (Target)
 		{
 			gMatchUtil.ServerCommand("kick #%d", g_engfuncs.pfnGetPlayerUserId(Target->edict()));
+
+			LOG_MESSAGE
+			(
+				PLID,
+				"\"%s<%i><%s><%s>\" kick \"%s<%i><%s><%s>\"",
+				STRING(Player->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchBot.GetTeam(Player->m_iTeam, true),
+				STRING(Target->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Target->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+				gMatchBot.GetTeam(Target->m_iTeam, true)
+			);
 		}
 	}
 
@@ -239,6 +253,21 @@ void CMatchAdminMenu::BanMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 				gMatchUtil.ServerCommand(_T("banid %d #%d kick"), Item.Extra, g_engfuncs.pfnGetPlayerUserId(Target->edict()));
 
 				gMatchUtil.ServerCommand("wait;wait;writeid;writeip");
+
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" banned \"%s<%i><%s><%s>\" for %d min(s)",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true),
+					STRING(Target->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Target->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+					gMatchBot.GetTeam(Target->m_iTeam, true),
+					Item.Extra
+				);
 			}
 		}
 	}
@@ -282,6 +311,20 @@ void CMatchAdminMenu::SlayMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 		if (Target)
 		{
 			MDLL_ClientKill(Target->edict());
+
+			LOG_MESSAGE
+			(
+				PLID,
+				"\"%s<%i><%s><%s>\" slays \"%s<%i><%s><%s>\"",
+				STRING(Player->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchBot.GetTeam(Player->m_iTeam, true),
+				STRING(Target->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Target->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+				gMatchBot.GetTeam(Target->m_iTeam, true)
+			);
 		}
 	}
 
@@ -350,6 +393,20 @@ void CMatchAdminMenu::TeamMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 				}
 
 				Target->CSPlayer()->JoinTeam((TeamName)Item.Extra);
+
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" set team \"%s<%i><%s><%s>\"",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true),
+					STRING(Target->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Target->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+					gMatchBot.GetTeam(Target->m_iTeam, true)
+				);
 			}
 		}
 	}
@@ -391,6 +448,17 @@ void CMatchAdminMenu::MapMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 		gMatchChangeMap.ChangeMap(Item.Text, 5.0f, true);
 
 		gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 changed map to: ^4%s^1..."), STRING(Player->edict()->v.netname), Item.Text.c_str());
+
+		LOG_MESSAGE
+		(
+			PLID,
+			"\"%s<%i><%s><%s>\" changed map to %s",
+			STRING(Player->edict()->v.netname),
+			g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+			g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+			gMatchBot.GetTeam(Player->m_iTeam, true),
+			Item.Text.c_str(),
+		);
 	}
 }
 
@@ -508,6 +576,17 @@ bool CMatchAdminMenu::Message(CBasePlayer* Player)
 
 				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3(%s)^1: %s"), STRING(Player->edict()->v.netname), Args.c_str());
 
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" message: %s",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true),
+					Args.c_str()
+				);
+
 				return true;
 			}
 		}
@@ -548,6 +627,17 @@ bool CMatchAdminMenu::Rcon(CBasePlayer* Player)
 
 				gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("^3Executed^1: %s"), Args.c_str());
 
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" server command: %s",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true),
+					Args.c_str()
+				);
+
 				return true;
 			}
 		}
@@ -586,6 +676,16 @@ void CMatchAdminMenu::SwapTeams(int EntityIndex)
 
 			// Send message
 			gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 changed team sides manually."), STRING(Player->edict()->v.netname));
+
+			LOG_MESSAGE
+			(
+				PLID,
+				"\"%s<%i><%s><%s>\" changed team sides",
+				STRING(Player->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchBot.GetTeam(Player->m_iTeam, true)
+			);
 		}
 		else
 		{

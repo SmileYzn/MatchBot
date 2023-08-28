@@ -494,6 +494,9 @@ void CMatchBot::SetState(int State)
 		}
 	}
 
+	// Log
+	LOG_MESSAGE(PLID, "%s state: %s", Plugin_info.name, this->GetState(this->m_State));
+
 	// Match Stats
 	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
 
@@ -1191,6 +1194,16 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 
 				// Start Match
 				this->SetState(STATE_START);
+
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" started vote map",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true)
+				);
 			}
 			else
 			{
@@ -1237,6 +1250,16 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 
 			// Start Match
 			this->SetState(STATE_START);
+
+			LOG_MESSAGE
+			(
+				PLID,
+				"\"%s<%i><%s><%s>\" started vote team",
+				STRING(Player->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchBot.GetTeam(Player->m_iTeam, true)
+			);
 		}
 		else
 		{
@@ -1303,6 +1326,16 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 
 			// Change state
 			gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, State);
+
+			LOG_MESSAGE
+			(
+				PLID,
+				"\"%s<%i><%s><%s>\" started match",
+				STRING(Player->edict()->v.netname),
+				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchBot.GetTeam(Player->m_iTeam, true)
+			);
 		}
 		else
 		{
@@ -1354,6 +1387,19 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 
 			// Set end state
 			gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, STATE_END);
+
+			if (Player)
+			{
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" stopped match",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true)
+				);
+			}
 		}
 		else
 		{
@@ -1392,6 +1438,19 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 
 			// Restart current state
 			this->SetState(this->m_State);
+
+			if (Player)
+			{
+				LOG_MESSAGE
+				(
+					PLID,
+					"\"%s<%i><%s><%s>\" restarted match",
+					STRING(Player->edict()->v.netname),
+					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
+					g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+					gMatchBot.GetTeam(Player->m_iTeam, true)
+				);
+			}
 		}
 		else
 		{
