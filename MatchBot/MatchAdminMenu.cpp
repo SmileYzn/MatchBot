@@ -457,7 +457,7 @@ void CMatchAdminMenu::MapMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			g_engfuncs.pfnGetPlayerUserId(Player->edict()),
 			g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
 			gMatchBot.GetTeam(Player->m_iTeam, true),
-			Item.Text.c_str(),
+			Item.Text.c_str()
 		);
 	}
 }
