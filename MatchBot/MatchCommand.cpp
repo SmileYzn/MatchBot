@@ -35,6 +35,9 @@ void CMatchCommand::ServerActivate()
 					// Command Flag
 					auto Flag = gMatchAdmin.ReadFlags(lpMemScript->GetAsString().c_str());
 
+					// Debug
+					LOG_CONSOLE(PLID, "[%s] %d %s %s", __func__, Index, Command, Flag);
+
 					// Insert to container
 					this->m_Data[Command] = {Index, Flag};
 				}
