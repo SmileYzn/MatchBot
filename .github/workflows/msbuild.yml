@@ -46,10 +46,10 @@ jobs:
     - name: Download Metamod-r
       run: |
         # Set assets data
-        $assets = "https://github.com/theAsmodai/metamod-r/releases/download/1.3.0.131/metamod-bin-1.3.0.131.zip"
+        $assets = "https://github.com/theAsmodai/metamod-r/releases/download/1.3.0.138/metamod-bin-1.3.0.138.zip"
 
         # Get ZIP file name
-        $zipName = "metamod-bin-1.3.0.131.zip"
+        $zipName = "metamod-bin-1.3.0.138.zip"
 
         # Download ZIP file
         Invoke-WebRequest -Uri $assets -Out $zipName
@@ -72,10 +72,10 @@ jobs:
     - name: Download Hitbox Fixer
       run: |
         # Set assets data
-        $assets = "https://github.com/Garey27/hitbox_fixer/releases/download/1.1.2/hitbox_fix-bin-1.1.2.zip"
+        $assets = "https://github.com/Garey27/hitbox_fixer/releases/download/1.1.5/hitbox_fix-bin-1.1.5.zip"
 
         # Get ZIP file name
-        $zipName = "hitbox_fix-bin-1.1.2.zip"
+        $zipName = "hitbox_fix-bin-1.1.5.zip"
 
         # Download ZIP file
         Invoke-WebRequest -Uri $assets -Out $zipName
