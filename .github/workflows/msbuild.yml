@@ -98,7 +98,7 @@ jobs:
     - name: Download Accuracy Fix
       run: |
         # Set assets data
-        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.0.1/accuracyfix-windows.zip"
+        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.0.4/accuracyfix-windows.zip"
 
         # Get ZIP file name
         $zipName = "accuracyfix-windows.zip"
