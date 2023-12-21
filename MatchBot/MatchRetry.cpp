@@ -12,11 +12,11 @@ bool CMatchRetry::PlayerConnect(edict_t* pEdict, const char* pszName, const char
 		{
 			if (this->m_Data.find(Auth) != this->m_Data.end())
 			{
-				auto TimeLeft = (int)(this->m_Data[Auth] - gpGlobals->time);
+				auto TimeLeft = (this->m_Data[Auth] - gpGlobals->time);
 
-				if (TimeLeft > 0)
+				if (TimeLeft > 0.0f)
 				{
-					gMatchUtil.DropClient(ENTINDEX(pEdict), _T("Wait %d seconds before reconnect."), TimeLeft);
+					gMatchUtil.DropClient(ENTINDEX(pEdict), _T("Wait %d seconds before reconnect."), (int)TimeLeft);
 				}
 				else
 				{
