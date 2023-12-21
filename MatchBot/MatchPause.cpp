@@ -81,7 +81,7 @@ void CMatchPause::RoundRestart()
 			this->SetRoundTime(static_cast<int>(gMatchBot.m_PauseTime->value) + 1, true);
 
 			// Create Pause Timer Task
-			gMatchTask.Create(TASK_PAUSE_MATCH, 0.5, true, (void*)this->PauseTimer, static_cast<int>(gMatchBot.m_PauseTime->value));
+			gMatchTask.Create(TASK_PAUSE_MATCH, 0.5f, true, (void*)this->PauseTimer, static_cast<int>(gMatchBot.m_PauseTime->value));
 
 			// Remain time in seconds
 			time_t RemainTime = static_cast<time_t>(gMatchBot.m_PauseTime->value);
