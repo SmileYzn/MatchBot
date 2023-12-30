@@ -17,13 +17,6 @@
 #define _close						close
 #define _acces						access
 #define _vsnwprintf					vswprintf
-#else
-// cURL Library windows library
-#pragma comment(lib,"ws2_32.lib")
-#pragma comment(lib,"wldap32.lib")
-#pragma comment(lib,"advapi32.lib")
-#pragma comment(lib,"crypt32.lib")
-#pragma comment(lib,"normaliz.lib")
 #endif
 
 // System Includes
