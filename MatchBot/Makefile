@@ -5,7 +5,7 @@ CSSDK 		= include/cssdk
 METAMOD 	= include/metamod
 
 # Release file output name
-NAME 		= csdm
+NAME 		= matchbot
 
 # Release directory
 BIN_DIR 	= Release
