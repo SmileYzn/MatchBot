@@ -15,7 +15,7 @@ COMPILER 	= g++
 OBJECTS 	= *.cpp
 
 # Linker Libs
-LINKER 		= 
+LINKER 		= -static-libgcc -static-libstdc++
 
 # Compiler version check to static linking
 RES_COMPILER_VERSION := $(shell expr "`$(COMPILER) -dumpversion`" ">=" "5")
