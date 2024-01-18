@@ -67,7 +67,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 	}
 
 	// If is menuselect command
-	if (!Q_strcmp(pcmd,"menuselect"))
+	if (Q_stricmp(pcmd,"menuselect") == 0)
 	{
 		// If has arguments
 		if (parg1)
@@ -76,7 +76,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 			if (Player->m_iMenu == Menu_OFF)
 			{
 				// Handle menu
-				if (gMatchMenu[Player->entindex()].Handle(Player->entindex(), atoi(parg1)))
+				if (gMatchMenu[Player->entindex()].Handle(Player->entindex(), Q_atoi(parg1)))
 				{
 					// Return result
 					return true;
@@ -85,7 +85,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 	}
 	// If player used say or say_team command
-	else if (!Q_strcmp(pcmd,"say") || !Q_strcmp(pcmd,"say_team"))
+	else if (Q_stricmp(pcmd,"say") == 0 || Q_stricmp(pcmd,"say_team") == 0)
 	{
 		// If has any argument
 		if (parg1)
