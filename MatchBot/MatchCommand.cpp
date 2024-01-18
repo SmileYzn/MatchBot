@@ -79,7 +79,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				if (gMatchMenu[Player->entindex()].Handle(Player->entindex(), atoi(parg1)))
 				{
 					// Return result
-					return true;
+					return false;
 				}
 			}
 		}
