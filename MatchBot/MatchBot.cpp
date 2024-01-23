@@ -1126,14 +1126,24 @@ void CMatchBot::RoundRestart(bool PreRestart)
 							// Loop
 							for (auto& Player : Players)
 							{
-								// Restore Frags
-								Player->edict()->v.frags = Player->edict()->v.fuser4;
+								// If has frags or deaths set
+								if (Player->edict()->v.fuser4 || Player->edict()->v.iuser4)
+								{
+									// Restore Frags
+									Player->edict()->v.frags = Player->edict()->v.fuser4;
 
-								// Restore Deaths
-								Player->m_iDeaths = Player->edict()->v.iuser4;
+									// Restore Deaths
+									Player->m_iDeaths = Player->edict()->v.iuser4;
 
-								// Update scoreboard
-								Player->AddPoints(0, TRUE);
+									// Reset
+									Player->edict()->v.fuser4 = 0.0f;
+
+									// Reset
+									Player->edict()->v.iuser4 = 0;
+
+									// Update scoreboard
+									Player->AddPoints(0, TRUE);
+								}
 							}
 						}
 					}
