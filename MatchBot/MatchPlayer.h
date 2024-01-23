@@ -2,6 +2,7 @@
 
 typedef struct S_PLAYER_INFO
 {
+	int UserId;
 	std::string Auth;
 	std::string Name;
 	std::string Address;
@@ -17,6 +18,9 @@ public:
 	// On Server Activate
 	void ServerActivate();
 
+	// Get Player Info
+	LP_PLAYER_INFO GetInfo(const char* AuthId);
+	
 	// Get Player Info
 	LP_PLAYER_INFO GetInfo(int UserIndex);
 
@@ -39,7 +43,7 @@ public:
 	static void PlayerMenuHandle(int EntityIndex, P_MENU_ITEM Item);
 
 	// Show Player Info
-	void ShowInfo(CBasePlayer* Player, int TargetIndex);
+	void ShowInfo(CBasePlayer* Player, int UserIndex);
 
 	// Player Menu Action Handler
 	static void PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item);
@@ -48,7 +52,7 @@ public:
 	static void PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item);
 	
 private:
-	std::unordered_map<int, P_PLAYER_INFO> m_Player;
+	std::unordered_map<std::string, P_PLAYER_INFO> m_Player;
 };
 
 extern CMatchPlayer gMatchPlayer;

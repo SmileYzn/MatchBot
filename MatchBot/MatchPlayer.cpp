@@ -10,12 +10,37 @@ void CMatchPlayer::ServerActivate()
 }
 
 // Get Player Info
+LP_PLAYER_INFO CMatchPlayer::GetInfo(const char* AuthId)
+{
+	if (AuthId)
+	{
+		if (AuthId[0u] != '\0')
+		{
+			if (this->m_Player.find(AuthId) != this->m_Player.end())
+			{
+				return &this->m_Player[AuthId];
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+// Get Player Info
 LP_PLAYER_INFO CMatchPlayer::GetInfo(int UserIndex)
 {
-	// Get Player Info
-	if (this->m_Player.find(UserIndex) != this->m_Player.end())
+	if (!this->m_Player.empty())
 	{
-		return &this->m_Player[UserIndex];
+		for (auto const& Player : this->m_Player)
+		{
+			if (Player.second.UserId == UserIndex)
+			{
+				if (!Player.second.Auth.empty())
+				{
+					return &this->m_Player[Player.second.Auth];
+				}
+			}
+		}
 	}
 
 	return nullptr;
@@ -28,34 +53,37 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEdict, const char* pszName, const cha
 	if (!FNullEnt(pEdict))
 	{
 		// Get Auth Index
-		auto UserIndex = g_engfuncs.pfnGetPlayerUserId(pEdict);
+		auto AuthId = g_engfuncs.pfnGetPlayerAuthId(pEdict);
 
 		// If is not null
-		if (UserIndex)
+		if (AuthId)
 		{
 			// If is not HLTV
 			if (!((pEdict->v.flags & FL_PROXY) == FL_PROXY))
 			{
+				// User Index
+				this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(pEdict);
+
 				// Auth
-				this->m_Player[UserIndex].Auth = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+				this->m_Player[AuthId].Auth = AuthId;
 
 				// Name
-				this->m_Player[UserIndex].Name = (pszName != nullptr) ? pszName : "";
+				this->m_Player[AuthId].Name = (pszName != nullptr) ? pszName : "";
 
 				// Address
-				this->m_Player[UserIndex].Address = (pszAddress != nullptr) ? pszAddress : "";
+				this->m_Player[AuthId].Address = (pszAddress != nullptr) ? pszAddress : "";
 
 				// Admin Flags
-				this->m_Player[UserIndex].Flags = gMatchAdmin.GetFlags(pEdict);
+				this->m_Player[AuthId].Flags = gMatchAdmin.GetFlags(pEdict);
 
 				// Admin Flags
-				this->m_Player[UserIndex].AdminFlags = gMatchAdmin.GetFlags(ENTINDEX(pEdict));
+				this->m_Player[AuthId].AdminFlags = gMatchAdmin.GetFlags(ENTINDEX(pEdict));
 
 				// Status
-				this->m_Player[UserIndex].Status = 1;
+				this->m_Player[AuthId].Status = 1;
 
 				// Last Team
-				this->m_Player[UserIndex].LastTeam = TeamName::UNASSIGNED;
+				this->m_Player[AuthId].LastTeam = TeamName::UNASSIGNED;
 			}
 		}
 	}
@@ -68,31 +96,34 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEdict, const char* pszName, const cha
 void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 {
 	// Get Auth Index
-	auto UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+	auto AuthId = g_engfuncs.pfnGetPlayerAuthId(Player->edict());
 
 	// If is not null
-	if (UserIndex)
+	if (AuthId)
 	{
+		// User Index
+		this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+
 		// Auth
-		this->m_Player[UserIndex].Auth = g_engfuncs.pfnGetPlayerAuthId(Player->edict());
+		this->m_Player[AuthId].Auth = AuthId;
 
 		// Name
-		this->m_Player[UserIndex].Name = STRING(Player->edict()->v.netname);
+		this->m_Player[AuthId].Name = STRING(Player->edict()->v.netname);
 
 		// Address
-		this->m_Player[UserIndex].Address = Player->IsBot() ? "loopback" : this->m_Player[UserIndex].Address;
+		this->m_Player[AuthId].Address = Player->IsBot() ? "loopback" : this->m_Player[AuthId].Address;
 
 		// Admin Flags
-		this->m_Player[UserIndex].Flags = gMatchAdmin.GetFlags(Player->edict());
+		this->m_Player[AuthId].Flags = gMatchAdmin.GetFlags(Player->edict());
 
 		// Admin Flags
-		this->m_Player[UserIndex].AdminFlags = gMatchAdmin.GetFlags(Player->entindex());
+		this->m_Player[AuthId].AdminFlags = gMatchAdmin.GetFlags(Player->entindex());
 
 		// Status
-		this->m_Player[UserIndex].Status = 2;
+		this->m_Player[AuthId].Status = 2;
 
 		// Last Team
-		this->m_Player[UserIndex].LastTeam = Player->m_iTeam;
+		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
 	}
 }
 
@@ -100,31 +131,34 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 {
 	// Get Auth Index
-	auto UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+	auto AuthId = g_engfuncs.pfnGetPlayerAuthId(Player->edict());
 
 	// If is not null
-	if (UserIndex)
+	if (AuthId)
 	{
+		// User Index
+		this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+
 		// Auth
-		this->m_Player[UserIndex].Auth = g_engfuncs.pfnGetPlayerAuthId(Player->edict());
+		this->m_Player[AuthId].Auth = AuthId;
 
 		// Name
-		this->m_Player[UserIndex].Name = STRING(Player->edict()->v.netname);
+		this->m_Player[AuthId].Name = STRING(Player->edict()->v.netname);
 
 		// Address
-		this->m_Player[UserIndex].Address = Player->IsBot() ? "loopback" : this->m_Player[UserIndex].Address;
+		this->m_Player[AuthId].Address = Player->IsBot() ? "loopback" : this->m_Player[AuthId].Address;
 
 		// Admin Flags
-		this->m_Player[UserIndex].Flags = gMatchAdmin.GetFlags(Player->edict());
+		this->m_Player[AuthId].Flags = gMatchAdmin.GetFlags(Player->edict());
 
 		// Admin Flags
-		this->m_Player[UserIndex].AdminFlags = gMatchAdmin.GetFlags(Player->entindex());
+		this->m_Player[AuthId].AdminFlags = gMatchAdmin.GetFlags(Player->entindex());
 
 		// Status
-		this->m_Player[UserIndex].Status = 2;
+		this->m_Player[AuthId].Status = 2;
 
 		// Last Team
-		this->m_Player[UserIndex].LastTeam = Player->m_iTeam;
+		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
 	}
 }
 
@@ -135,16 +169,16 @@ void CMatchPlayer::PlayerDisconnect(edict_t* pEdict)
 	if (!FNullEnt(pEdict))
 	{
 		// Get Auth Index
-		auto UserIndex = g_engfuncs.pfnGetPlayerUserId(pEdict);
+		auto AuthId = g_engfuncs.pfnGetPlayerAuthId(pEdict);
 
 		// If is not null
-		if (UserIndex)
+		if (AuthId)
 		{
 			// If is not HLTV
 			if (!((pEdict->v.flags & FL_PROXY) == FL_PROXY))
 			{
 				// Status
-				this->m_Player[UserIndex].Status = 0;
+				this->m_Player[AuthId].Status = 0;
 			}
 		}
 	}
@@ -175,11 +209,11 @@ void CMatchPlayer::PlayerMenu(CBasePlayer* Player)
 				{
 					if (Target.second.Status == 2)
 					{
-						gMatchMenu[EntityIndex].AddItem(Target.first, gMatchUtil.FormatString("%s \\R\\y%s", Target.second.Name.c_str(), gMatchBot.GetTeam(Target.second.LastTeam, true)));
+						gMatchMenu[EntityIndex].AddItem(Target.second.UserId, gMatchUtil.FormatString("%s \\R\\y%s", Target.second.Name.c_str(), gMatchBot.GetTeam(Target.second.LastTeam, true)), false, Target.second.UserId);
 					}
 					else
 					{
-						gMatchMenu[EntityIndex].AddItem(Target.first, gMatchUtil.FormatString("%s \\R\\y%s", Target.second.Name.c_str(), (Target.second.Status == 1) ? _T("Online") : _T("Offline")));
+						gMatchMenu[EntityIndex].AddItem(Target.second.UserId, gMatchUtil.FormatString("%s \\R\\y%s", Target.second.Name.c_str(), (Target.second.Status == 1) ? _T("Online") : _T("Offline")), false, Target.second.UserId);
 					}
 				}
 			}
@@ -205,23 +239,26 @@ void CMatchPlayer::PlayerMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 }
 
 // Show Player Info
-void CMatchPlayer::ShowInfo(CBasePlayer* Player,int UserId)
+void CMatchPlayer::ShowInfo(CBasePlayer* Player, int UserIndex)
 {
-	// Find Player
-	if (this->m_Player.find(UserId) != this->m_Player.end())
+	// Get Info
+	auto PlayerInfo = this->GetInfo(UserIndex);
+
+	// If is not null
+	if (PlayerInfo)
 	{
 		// Get entity index
 		auto EntityIndex = Player->entindex();
 
 		// Console Print
 		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s", std::string(32, '=').c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Name"), this->m_Player[UserId].Name.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Steam"), this->m_Player[UserId].Auth.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Address"), this->m_Player[UserId].Address.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Flags"), this->m_Player[UserId].Flags.c_str());
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Team"), gMatchBot.GetTeam(this->m_Player[UserId].LastTeam, false));
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: #%d", _T("User Index"), UserId);
-		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Status"), (this->m_Player[UserId].Status > 0) ? (this->m_Player[UserId].Status == 1 ? _T("Online") : _T("In Game")) : _T("Offline"));
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Name"), PlayerInfo->Name.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Steam"), PlayerInfo->Auth.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Address"), PlayerInfo->Address.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Flags"), PlayerInfo->Flags.c_str());
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Team"), gMatchBot.GetTeam(PlayerInfo->LastTeam, false));
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: #%d", _T("User Index"), PlayerInfo->UserId);
+		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s: %s", _T("Status"), (PlayerInfo->Status > 0) ? (PlayerInfo->Status == 1 ? _T("Online") : _T("In Game")) : _T("Offline"));
 		gMatchUtil.ClientPrint(Player->edict(), PRINT_CONSOLE, "%s", std::string(32, '=').c_str());
 
 		// Create Menu
@@ -230,41 +267,41 @@ void CMatchPlayer::ShowInfo(CBasePlayer* Player,int UserId)
 			gMatchUtil.FormatString
 			(
 				"%s:\\w\n\n%s: \\y%s\\w\n%s: \\y%s\\w\n%s: \\y%s\\w\n%s: \\y%s\\w\n%s: \\y#%d\\w\n%s: \\y%s",
-				this->m_Player[UserId].Name.c_str(),
+				PlayerInfo->Name.c_str(),
 				_T("Steam"),
-				this->m_Player[UserId].Auth.c_str(),
+				PlayerInfo->Auth.c_str(),
 				_T("Address"),
-				this->m_Player[UserId].Address.c_str(),
+				PlayerInfo->Address.c_str(),
 				_T("Flags"),
-				this->m_Player[UserId].Flags.c_str(),
+				PlayerInfo->Flags.c_str(),
 				_T("Team"),
-				gMatchBot.GetTeam(this->m_Player[UserId].LastTeam, false),
+				gMatchBot.GetTeam(PlayerInfo->LastTeam, false),
 				_T("User Index"),
-				UserId,
+				PlayerInfo->UserId,
 				_T("Status"),
-				(this->m_Player[UserId].Status > 0) ? (this->m_Player[UserId].Status == 1 ? _T("Online") : _T("In Game")) : _T("Offline")
+				(PlayerInfo->Status > 0) ? (PlayerInfo->Status == 1 ? _T("Online") : _T("In Game")) : _T("Offline")
 			),
 			true,
 			(void*)this->PlayerMenuActionHandle
 		);
 
 		// If is an admin with immunity flag
-		auto IsAdmin = (this->m_Player[UserId].AdminFlags & ADMIN_IMMUNITY);
+		auto IsAdmin = (PlayerInfo->AdminFlags & ADMIN_IMMUNITY);
 
 		// If is online
-		auto IsConnected = (this->m_Player[UserId].Status > 0);
+		auto IsConnected = (PlayerInfo->Status > 0);
 
 		// Ban
-		gMatchMenu[EntityIndex].AddItem(0, _T("Ban Player"), IsAdmin, UserId);
+		gMatchMenu[EntityIndex].AddItem(0, _T("Ban Player"), IsAdmin, PlayerInfo->UserId);
 
 		// Kick
-		gMatchMenu[EntityIndex].AddItem(1, _T("Kick Player"), (IsAdmin || !IsConnected), UserId);
+		gMatchMenu[EntityIndex].AddItem(1, _T("Kick Player"), (IsAdmin || !IsConnected), PlayerInfo->UserId);
 
 		// Kill
-		gMatchMenu[EntityIndex].AddItem(2, _T("Slay Player"), (IsAdmin || !IsConnected), UserId);
+		gMatchMenu[EntityIndex].AddItem(2, _T("Slay Player"), (IsAdmin || !IsConnected), PlayerInfo->UserId);
 
 		// Change Team
-		gMatchMenu[EntityIndex].AddItem(3, _T("Team Player"), (IsAdmin || !IsConnected), UserId);
+		gMatchMenu[EntityIndex].AddItem(3, _T("Team Player"), (IsAdmin || !IsConnected), PlayerInfo->UserId);
 
 		// Show Menu
 		gMatchMenu[EntityIndex].Show(EntityIndex);
@@ -280,15 +317,15 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 	{
 		if (Item.Extra)
 		{
-			auto Info = gMatchPlayer.GetInfo(Item.Extra);
+			auto PlayerInfo = gMatchPlayer.GetInfo(Item.Extra);
 
-			if (Info)
+			if (PlayerInfo)
 			{
 				switch (Item.Info)
 				{
 					case 0: // Ban
 					{
-						gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Choose a time to ban: ^w%s^y"), Info->Name.c_str()), true, (void*)gMatchPlayer.PlayerBanMenuActionHandle);
+						gMatchMenu[EntityIndex].Create(gMatchUtil.FormatString(_T("Choose a time to ban: ^w%s^y"), PlayerInfo->Name.c_str()), true, (void*)gMatchPlayer.PlayerBanMenuActionHandle);
 
 						std::vector<time_t> BanTimes = { 0, 5, 10, 15, 30, 60, 120, 240, 480, 960, 1440, 10080, 43200 };
 
@@ -325,7 +362,7 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						}
 						else
 						{
-							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 is not in connected."), Info->Name.c_str());
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 is not in connected."), PlayerInfo->Name.c_str());
 						}
 						
 						break;
@@ -354,7 +391,7 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						}
 						else
 						{
-							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 is not in connected."), Info->Name.c_str());
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 is not in connected."), PlayerInfo->Name.c_str());
 						}
 
 						break;
@@ -369,7 +406,7 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						}
 						else
 						{
-							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 is not in connected."), Info->Name.c_str());
+							gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 is not in connected."), PlayerInfo->Name.c_str());
 						}
 
 						break;
