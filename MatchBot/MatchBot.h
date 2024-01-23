@@ -157,7 +157,7 @@ private:
 	std::array<std::array<int, SPECTATOR + 1U>, STATE_END + 1U> m_Score;
 
 	// Overtime Scores
-	std::array<int, SPECTATOR + 1U> m_ScoreOT;
+	std::array<int, SPECTATOR + 1U> m_ScoreOvertime;
 
 	// Defaut game description
 	std::string m_GameDesc = "";

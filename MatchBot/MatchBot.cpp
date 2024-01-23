@@ -321,7 +321,7 @@ void CMatchBot::SetState(int State)
 			this->m_Score.fill({});
 
 			// Clear OT Scores
-			this->m_ScoreOT.fill(0);
+			this->m_ScoreOvertime.fill(0);
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -531,7 +531,7 @@ int CMatchBot::GetScore(TeamName Team)
 // Get Overtime score
 int CMatchBot::GetScoreOT(TeamName Team)
 {
-	return this->m_ScoreOT[Team];
+	return this->m_ScoreOvertime[Team];
 }
 
 // Get the sum of rounds played by teams scores
@@ -578,7 +578,7 @@ void CMatchBot::SwapScores()
 		if (this->GetScore(TERRORIST) == this->GetScore(CT))
 		{
 			// Reset Overtime scores (We are restarting OT)
-			this->m_ScoreOT.fill(0);
+			this->m_ScoreOvertime.fill(0);
 
 			// Do not swap teams or scores in first Overtime Half
 			return;
@@ -593,7 +593,7 @@ void CMatchBot::SwapScores()
 	}
 
 	// Swap Overtime scores
-	SWAP(this->m_ScoreOT[TERRORIST], this->m_ScoreOT[CT]);
+	SWAP(this->m_ScoreOvertime[TERRORIST], this->m_ScoreOvertime[CT]);
 }
 
 // Swap teams function
@@ -961,7 +961,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 			// Add OT score to winner team
 			if (this->m_State == STATE_OVERTIME)
 			{
-				this->m_ScoreOT[Winner]++;
+				this->m_ScoreOvertime[Winner]++;
 			}
 
 			// Print a console message to all players
@@ -1071,55 +1071,71 @@ void CMatchBot::RoundRestart(bool PreRestart)
 		if (this->m_State >= STATE_HALFTIME)
 		{
 			// If store team scores in scoreboard is set
-			if (this->m_TeamScore && this->m_TeamScore->value)
+			if (this->m_TeamScore)
 			{
-				// If sv_restart is not set
-				if (!CSGameRules()->m_bCompleteReset)
+				// If store team scores in scoreboard is set
+				if (this->m_TeamScore->value > 0.0f)
 				{
-					// Get number of CTs wins
-					CSGameRules()->m_iNumCTWins = this->GetScore(CT);
+					// If sv_restart is not set
+					if (!CSGameRules()->m_bCompleteReset)
+					{
+						// Get number of CTs wins
+						CSGameRules()->m_iNumCTWins = this->GetScore(CT);
 
-					// Get number of TRs wins
-					CSGameRules()->m_iNumTerroristWins = this->GetScore(TERRORIST);
+						// Get number of TRs wins
+						CSGameRules()->m_iNumTerroristWins = this->GetScore(TERRORIST);
 
-					// Updade scoreboards
-					CSGameRules()->UpdateTeamScores();
+						// Updade scoreboards
+						CSGameRules()->UpdateTeamScores();
+					}
 				}
 			}
 
 			// If is set to store player scores on scorebard after half time
-			if (this->m_PlayerScore && this->m_PlayerScore->value)
+			if (this->m_PlayerScore)
 			{
-				// Get players
-				auto Players = gMatchUtil.GetPlayers(true, true);
-
-				// If is PRE sv_restart event
-				if (PreRestart)
+				// If is set to store player scores on scorebard after half time
+				if (this->m_PlayerScore->value > 0.0f)
 				{
-					// Loop
-					for (auto& Player : Players)
-					{
-						// Restore Frags
-						Player->edict()->v.fuser4 = Player->edict()->v.frags;
+					// Get players
+					auto Players = gMatchUtil.GetPlayers(true, true);
 
-						// Restore Deaths
-						Player->edict()->v.iuser4 = Player->m_iDeaths;
+					// If is PRE sv_restart event
+					if (PreRestart)
+					{
+						// If is state half time
+						if (this->m_State == STATE_HALFTIME)
+						{
+							// Loop
+							for (auto& Player : Players)
+							{
+								// Store Frags
+								Player->edict()->v.fuser4 = Player->edict()->v.frags;
+
+								// Store Deaths
+								Player->edict()->v.iuser4 = Player->m_iDeaths;
+							}
+						}
 					}
-				}
-				// If is POST sv_restart event
-				else
-				{
-					// Loop
-					for (auto& Player : Players)
+					// If is POST sv_restart event
+					else
 					{
-						// Restore Frags
-						Player->edict()->v.frags = Player->edict()->v.fuser4;
+						// If is state second half or overtime
+						if (this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+						{
+							// Loop
+							for (auto& Player : Players)
+							{
+								// Restore Frags
+								Player->edict()->v.frags = Player->edict()->v.fuser4;
 
-						// Restore Deaths
-						Player->m_iDeaths = Player->edict()->v.iuser4;
+								// Restore Deaths
+								Player->m_iDeaths = Player->edict()->v.iuser4;
 
-						// Update scoreboard
-						Player->AddPoints(0, TRUE);
+								// Update scoreboard
+								Player->AddPoints(0, TRUE);
+							}
+						}
 					}
 				}
 			}
