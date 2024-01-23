@@ -154,16 +154,16 @@ private:
 	bool m_PlayKnifeRound = false;
 
 	// Scores
-	int m_Score[SPECTATOR + 1][STATE_END];
+	std::array<std::array<int, SPECTATOR + 1U>, STATE_END + 1U> m_Score;
 
 	// Overtime Scores
-	int m_ScoreOT[SPECTATOR + 1];
+	std::array<int, SPECTATOR + 1U> m_ScoreOT;
 
 	// Defaut game description
-	char m_GameDesc[32] = { 0 };
+	std::string m_GameDesc = "";
 
 	// Match Bot Config Variables
-	cvar_t* m_Config[STATE_END + 1];
+	std::array<cvar_t*, STATE_END + 1U> m_Config;
 
 public:
 	// Match Bot Variables
@@ -178,6 +178,7 @@ public:
 	cvar_t* m_PlayMode = nullptr;
 	cvar_t* m_ReadyType = nullptr;
 	cvar_t* m_ReadyTime = nullptr;
+	cvar_t* m_ReadyAuto = nullptr;
 	cvar_t* m_TeamPickupType = nullptr;
 	cvar_t* m_TeamPickMenu = nullptr;
 	cvar_t* m_VotePercent = nullptr;

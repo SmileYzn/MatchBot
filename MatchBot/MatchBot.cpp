@@ -41,6 +41,9 @@ void CMatchBot::ServerActivate()
 	// Ready System timer delay in seconds
 	this->m_ReadyTime = gMatchUtil.CvarRegister("mb_ready_time", "60.0");
 
+	// Continue match automatically at halftime if minimum players is in teams
+	this->m_ReadyAuto = gMatchUtil.CvarRegister("mb_ready_auto_continue", "1");
+
 	// Team Pickup Type (-1 Enable vote, 0 Leaders, 1 Random, 2 None, 3 Skill Balanced, 4 Swap Teams, 5 Knife Round)
 	this->m_TeamPickupType = gMatchUtil.CvarRegister("mb_team_pick_type", "-1");
 
@@ -315,10 +318,10 @@ void CMatchBot::SetState(int State)
 			gMatchWarmup.Stop();
 
 			// Clear Scores
-			memset(this->m_Score, 0, sizeof(this->m_Score));
+			this->m_Score.fill({});
 
 			// Clear OT Scores
-			memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
+			this->m_ScoreOT.fill(0);
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -367,8 +370,8 @@ void CMatchBot::SetState(int State)
 			// If ready mode is enabled or timer system is enabled
 			if (this->m_ReadyType->value)
 			{
-				// If has less players than minimum required
-				if ((int)gMatchUtil.GetPlayers(true, true).size() < this->m_PlayersMin->value)
+				// If auto continue ready is not enabled, or if has less players than minimum required
+				if (static_cast<int>(this->m_ReadyAuto->value) == 0 || (static_cast<int>(gMatchUtil.GetPlayers(true, true).size()) < static_cast<int>(this->m_PlayersMin->value)))
 				{
 					// Send message
 					gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("^3%s^1 started, Get Ready!"), this->GetState(this->m_State));
@@ -575,7 +578,7 @@ void CMatchBot::SwapScores()
 		if (this->GetScore(TERRORIST) == this->GetScore(CT))
 		{
 			// Reset Overtime scores (We are restarting OT)
-			memset(this->m_ScoreOT, 0, sizeof(this->m_ScoreOT));
+			this->m_ScoreOT.fill(0);
 
 			// Do not swap teams or scores in first Overtime Half
 			return;
@@ -608,6 +611,9 @@ void CMatchBot::SwapTeams(int ShowMessage)
 	{
 		CSGameRules()->SwapAllPlayers();
 	}
+
+	// Restart Round
+	gMatchUtil.ServerCommand("sv_restart 1");
 }
 
 // Get Knife Round Mode
@@ -1128,10 +1134,10 @@ void CMatchBot::UpdateGameName()
 	if (g_pGameRules)
 	{
 		// Store original game description
-		if (!this->m_GameDesc[0])
+		if (!this->m_GameDesc.empty())
 		{
 			// Get default game name
-			Q_strncpy(this->m_GameDesc, CSGameRules()->GetGameDescription(), sizeof(this->m_GameDesc));
+			this->m_GameDesc = CSGameRules()->GetGameDescription();
 		}
 
 		// If is enabled
@@ -1144,7 +1150,7 @@ void CMatchBot::UpdateGameName()
 			if (State == STATE_DEAD)
 			{
 				// Restore default game name
-				Q_strcpy_s(CSGameRules()->m_GameDesc, this->m_GameDesc);
+				Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc.c_str());
 			}
 			else if (State == STATE_WARMUP || State == STATE_START)
 			{
@@ -1166,7 +1172,7 @@ void CMatchBot::UpdateGameName()
 		else
 		{
 			// Restore default game name
-			Q_strcpy_s(CSGameRules()->m_GameDesc, this->m_GameDesc);
+			Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc.c_str());
 		}
 	}
 }
@@ -1479,7 +1485,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 		auto HalfRounds = (int)(this->m_PlayRounds->value / 2.0f);
 
 		// Clear Scores
-		memset(this->m_Score, 0, sizeof(this->m_Score));
+		this->m_Score.fill({});
 
 		// Set Score winner
 		this->m_Score[Winner][STATE_FIRST_HALF]  = HalfRounds;
