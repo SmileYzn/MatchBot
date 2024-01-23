@@ -12,37 +12,51 @@ void CMatchPlayer::ServerActivate()
 // Get Player Info
 LP_PLAYER_INFO CMatchPlayer::GetInfo(const char* AuthId)
 {
+	// If is not null
 	if (AuthId)
 	{
+		// If has data
 		if (AuthId[0u] != '\0')
 		{
+			// Try to find player by auth id
 			if (this->m_Player.find(AuthId) != this->m_Player.end())
 			{
+				// Return player data
 				return &this->m_Player[AuthId];
 			}
 		}
 	}
 
+	// Null
 	return nullptr;
 }
 
 // Get Player Info
 LP_PLAYER_INFO CMatchPlayer::GetInfo(int UserIndex)
 {
+	// If player list is not empty
 	if (!this->m_Player.empty())
 	{
+		// Loop list
 		for (auto const& Player : this->m_Player)
 		{
+			// If user index is equal
 			if (Player.second.UserId == UserIndex)
 			{
-				if (!Player.second.Auth.empty())
+				// Get Info by auth id
+				auto PlayerInfo = this->GetInfo(Player.first.c_str());
+
+				// If is not null
+				if (PlayerInfo)
 				{
-					return &this->m_Player[Player.second.Auth];
+					// Return information
+					return PlayerInfo;
 				}
 			}
 		}
 	}
-
+	
+	// Null
 	return nullptr;
 }
 
