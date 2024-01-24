@@ -323,9 +323,6 @@ void CMatchBot::SetState(int State)
 			// Clear OT Scores
 			this->m_ScoreOvertime.fill(0);
 
-			// Clear all player frags and deaths
-			this->m_Frags.clear();
-
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
 			{
