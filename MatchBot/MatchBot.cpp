@@ -323,6 +323,9 @@ void CMatchBot::SetState(int State)
 			// Clear OT Scores
 			this->m_ScoreOvertime.fill(0);
 
+			// Clear all player frags and deaths
+			this->m_Frags.clear();
+
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
 			{
@@ -363,9 +366,6 @@ void CMatchBot::SetState(int State)
 		{
 			// Swap team scores
 			this->SwapScores();
-
-			// Swap team sides
-			gMatchTask.Create(TASK_SWAP_TEAMS, 3.0f, false, (void*)this->SwapTeams, 1);
 
 			// If ready mode is enabled or timer system is enabled
 			if (this->m_ReadyType->value)
@@ -594,6 +594,9 @@ void CMatchBot::SwapScores()
 
 	// Swap Overtime scores
 	SWAP(this->m_ScoreOvertime[TERRORIST], this->m_ScoreOvertime[CT]);
+
+	// Swap team sides
+	gMatchTask.Create(TASK_SWAP_TEAMS, 3.0f, false, (void*)this->SwapTeams, 1);
 }
 
 // Swap teams function
@@ -1068,7 +1071,7 @@ void CMatchBot::RoundRestart(bool PreRestart)
 	if (g_pGameRules)
 	{
 		// If is live
-		if (this->m_State >= STATE_HALFTIME)
+		if (this->m_State == STATE_HALFTIME)
 		{
 			// If store team scores in scoreboard is set
 			if (this->m_TeamScore)
@@ -1103,48 +1106,30 @@ void CMatchBot::RoundRestart(bool PreRestart)
 					// If is PRE sv_restart event
 					if (PreRestart)
 					{
-						// If is state half time
-						if (this->m_State == STATE_HALFTIME)
+						// Loop
+						for (auto& Player : Players)
 						{
-							// Loop
-							for (auto& Player : Players)
-							{
-								// Store Frags
-								Player->edict()->v.fuser4 = Player->edict()->v.frags;
+							// Store Frags
+							Player->edict()->v.fuser4 = Player->edict()->v.frags;
 
-								// Store Deaths
-								Player->edict()->v.iuser4 = Player->m_iDeaths;
-							}
+							// Store Deaths
+							Player->edict()->v.iuser4 = Player->m_iDeaths;
 						}
 					}
 					// If is POST sv_restart event
 					else
 					{
-						// If is state second half or overtime
-						if (this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+						// Loop
+						for (auto& Player : Players)
 						{
-							// Loop
-							for (auto& Player : Players)
-							{
-								// If has frags or deaths set
-								if (Player->edict()->v.fuser4 || Player->edict()->v.iuser4)
-								{
-									// Restore Frags
-									Player->edict()->v.frags = Player->edict()->v.fuser4;
+							// Restore Frags
+							Player->edict()->v.frags = Player->edict()->v.fuser4;
 
-									// Restore Deaths
-									Player->m_iDeaths = Player->edict()->v.iuser4;
+							// Restore Deaths
+							Player->m_iDeaths = Player->edict()->v.iuser4;
 
-									// Reset
-									Player->edict()->v.fuser4 = 0.0f;
-
-									// Reset
-									Player->edict()->v.iuser4 = 0;
-
-									// Update scoreboard
-									Player->AddPoints(0, TRUE);
-								}
-							}
+							// Update scoreboard
+							Player->AddPoints(0, TRUE);
 						}
 					}
 				}
