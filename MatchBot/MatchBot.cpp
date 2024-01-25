@@ -110,6 +110,15 @@ void CMatchBot::ServerActivate()
 	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
 	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
 
+	// Buy grenades limit FLASH BANG
+	this->m_BlFlashCount = gMatchUtil.CvarRegister("mb_bl_flash_count", "2");
+
+	// Buy grenades limit HE GRENADE
+	this->m_BlHeGreCount = gMatchUtil.CvarRegister("mb_bl_hegre_count", "1");
+
+	// Buy grenades limit SMOKE GRENADE
+	this->m_BlSmokeCount = gMatchUtil.CvarRegister("mb_bl_smoke_count", "1");
+
 	// Amount of seconds to pause match (0 Disable, or number of seconds to pause the match)
 	this->m_PauseTime = gMatchUtil.CvarRegister("mb_pause_time", "60.0");
 
@@ -190,6 +199,9 @@ void CMatchBot::ServerDeactivate()
 		// End Match
 		this->SetState(STATE_END);
 	}
+
+	// Clean players buy grenades data
+	gMatchBugFix.cleanPlayerGrenades();
 }
 
 // Enable Match BOT if is dead

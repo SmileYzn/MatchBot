@@ -210,6 +210,9 @@ public:
 	cvar_t* m_PlayersMinCheck = nullptr;
 	cvar_t* m_RestrictWeapons = nullptr;
 	cvar_t* m_ExtraSmokeCount = nullptr;
+	cvar_t* m_BlFlashCount = nullptr;
+	cvar_t* m_BlHeGreCount = nullptr;
+	cvar_t* m_BlSmokeCount = nullptr;
 	cvar_t* m_PauseTime = nullptr;
 	cvar_t* m_RetryMode = nullptr;
 	cvar_t* m_RetryTime = nullptr;

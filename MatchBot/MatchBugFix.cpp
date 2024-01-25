@@ -1,5 +1,9 @@
 #include "precompiled.h"
 
+#define FLASH 0
+#define HEGRE 1
+#define SMOKE 2
+
 CMatchBugFix gMatchBugFix;
 
 void CMatchBugFix::ExplodeSmokeGrenade(CGrenade* Entity)
@@ -18,4 +22,38 @@ void CMatchBugFix::ExplodeSmokeGrenade(CGrenade* Entity)
 			}
 		}
 	}
+}
+
+bool CMatchBugFix::BuyGrenadesLimit(CBasePlayer *player, int slot)
+{
+	// slot smoke = 3
+	// slot hegre = 4
+	// slot smoke = 5
+	// slot - 3 = FLASH or HEGRE or SMOKE
+	if (slot < 3 || slot > 5)
+    {
+        return true;
+    }
+
+	cvar_t *buyLimit[] = {
+		gMatchBot.m_BlFlashCount,
+		gMatchBot.m_BlHeGreCount,
+		gMatchBot.m_BlSmokeCount
+	};
+    if (buyLimit[slot - 3]->value != 0.0f && gMatchBugFix.playerGrenades[player->entindex()][slot - 3] >= buyLimit[slot - 3]->value)
+    {
+        return false;
+    }
+
+    gMatchBugFix.playerGrenades[player->entindex()][slot - 3]++;
+	return true;
+}
+
+void CMatchBugFix::cleanPlayerGrenades()
+{
+	for (int i = 1; i <= MAX_CLIENTS; ++i) {
+        this->playerGrenades[i][FLASH] = 0;
+        this->playerGrenades[i][HEGRE] = 0;
+        this->playerGrenades[i][SMOKE] = 0;
+    }
 }

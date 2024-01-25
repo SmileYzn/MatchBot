@@ -101,6 +101,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->registerHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
+	g_ReGameHookchains->BuyItem()->registerHook(ReGameDLL_BuyItem);
+
 	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->registerHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
 	return true;
@@ -131,6 +133,8 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CBasePlayer_TakeDamage()->unregisterHook(ReGameDLL_CBasePlayer_TakeDamage);
 
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
+
+	g_ReGameHookchains->BuyItem()->registerHook(ReGameDLL_BuyItem);
 
 	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->unregisterHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
@@ -248,6 +252,9 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 
 	gMatchBot.RoundEnd(winStatus, event, tmDelay);
 
+	// Clean players buy grenades data
+	gMatchBugFix.cleanPlayerGrenades();
+
 	return ret;
 }
 
@@ -265,6 +272,16 @@ void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGre
 	chain->callNext(pthis);
 
 	gMatchBugFix.ExplodeSmokeGrenade(pthis);
+}
+
+void ReGameDLL_BuyItem(IReGameHook_BuyItem *chain, CBasePlayer *player, int slot)
+{
+	bool goNextChain = gMatchBugFix.BuyGrenadesLimit(player, slot);
+	if (!goNextChain) {
+		gMatchUtil.ClientPrint(player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
+		return;
+	}
+	return chain->callNext(player, slot);
 }
 
 bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer* chain, CBasePlayer* pListener, CBasePlayer* pSender)
