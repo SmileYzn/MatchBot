@@ -6,11 +6,11 @@ CMatchMessage gMatchMessage;
 void CMatchMessage::RegisterHook(const char* MsgName, bool (*Function)(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity))
 {
 	// Get message index from message name
-	auto MsgId = GET_USER_MSG_ID(PLID, MsgName, 0);
+	auto UserMsgId = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, MsgName, 0);
 
-	if (MsgId)
+	if (UserMsgId)
 	{
-		this->m_Hook[MsgId].Function = Function;
+		this->m_Hook[UserMsgId].Function = Function;
 	}
 }
 
@@ -62,7 +62,7 @@ bool CMatchMessage::MessageEnd()
 
 				if (!BlockMessage)
 				{
-					MESSAGE_BEGIN(this->m_Data.msg_dest, this->m_Data.msg_type, this->m_Data.pOrigin, this->m_Data.pEntity);
+					g_engfuncs.pfnMessageBegin(this->m_Data.msg_dest, this->m_Data.msg_type, this->m_Data.pOrigin, this->m_Data.pEntity);
 
 					for (auto const& Param : this->m_Data.Param)
 					{
@@ -70,48 +70,48 @@ bool CMatchMessage::MessageEnd()
 						{
 							case MESSAGE_TYPE_BYTE:
 							{
-								WRITE_BYTE(Param.second.iValue);
+								g_engfuncs.pfnWriteByte(Param.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_CHAR:
 							{
-								WRITE_CHAR(Param.second.iValue);
+								g_engfuncs.pfnWriteChar(Param.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_SHORT:
 							{
-								WRITE_SHORT(Param.second.iValue);
+								g_engfuncs.pfnWriteShort(Param.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_LONG:
 							{
-								WRITE_LONG(Param.second.iValue);
+								g_engfuncs.pfnWriteLong(Param.second.iValue);
 								break;
 							}
 							case MESSAGE_TYPE_ANGLE:
 							{
-								WRITE_ANGLE(Param.second.flValue);
+								g_engfuncs.pfnWriteAngle(Param.second.flValue);
 								break;
 							}
 							case MESSAGE_TYPE_COORD:
 							{
-								WRITE_COORD(Param.second.flValue);
+								g_engfuncs.pfnWriteCoord(Param.second.flValue);
 								break;
 							}
 							case MESSAGE_TYPE_STRING:
 							{
-								WRITE_STRING(Param.second.szValue);
+								g_engfuncs.pfnWriteString(Param.second.szValue);
 								break;
 							}
 							case MESSAGE_TYPE_ENTITY:
 							{
-								WRITE_ENTITY(Param.second.iValue);
+								g_engfuncs.pfnWriteEntity(Param.second.iValue);
 								break;
 							}
 						}
 					}
 
-					MESSAGE_END();
+					g_engfuncs.pfnMessageEnd();
 				}
 			}
 		}

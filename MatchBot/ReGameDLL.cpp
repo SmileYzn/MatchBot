@@ -231,11 +231,9 @@ void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreez
 
 void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
 {
-	gMatchBot.RoundRestart(true);
-
 	chain->callNext();
 
-	gMatchBot.RoundRestart(false);
+	gMatchBot.RoundRestart();
 
 	gMatchLO3.RoundRestart();
 

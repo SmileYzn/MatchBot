@@ -154,6 +154,9 @@ void CMatchBot::ServerActivate()
 
 	// Load Language
 	gMatchLanguage.Load();
+
+	// Score Info
+	gMatchMessage.RegisterHook("ScoreInfo", this->ScoreInfo);
 }
 
 // On server deactivate
@@ -323,6 +326,9 @@ void CMatchBot::SetState(int State)
 			// Clear OT Scores
 			this->m_ScoreOvertime.fill(0);
 
+			// Clear Scoreboard
+			this->m_Scoreboard.fill({});
+
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
 			{
@@ -421,10 +427,16 @@ void CMatchBot::SetState(int State)
 			gMatchWarmup.Stop();
 
 			// Clear Terrorists Scores
-			this->m_Score[TERRORIST][STATE_SECOND_HALF] = 0;
+			this->m_Score[TERRORIST][this->m_State] = 0;
 
 			// Clear CTs Scores
-			this->m_Score[CT][STATE_SECOND_HALF] = 0;
+			this->m_Score[CT][this->m_State] = 0;
+
+			// Clear Scoreboard
+			for (int i = 0; i <= MAX_CLIENTS; i++)
+			{
+				this->m_Scoreboard[i][this->m_State].fill(0);
+			}
 
 			// Send messages
 			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
@@ -493,9 +505,6 @@ void CMatchBot::SetState(int State)
 			break;
 		}
 	}
-
-	// Log
-	LOG_MESSAGE(PLID, "%s state: %s", Plugin_info.name, this->GetState(this->m_State));
 
 	// Match Stats
 	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
@@ -1062,13 +1071,13 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 }
 
 // Round restart event
-void CMatchBot::RoundRestart(bool PreRestart)
+void CMatchBot::RoundRestart()
 {
 	// If has CSGameRules loaded
 	if (g_pGameRules)
 	{
 		// If is live
-		if (this->m_State == STATE_HALFTIME)
+		if (this->m_State >= STATE_HALFTIME)
 		{
 			// If store team scores in scoreboard is set
 			if (this->m_TeamScore)
@@ -1087,47 +1096,6 @@ void CMatchBot::RoundRestart(bool PreRestart)
 
 						// Updade scoreboards
 						CSGameRules()->UpdateTeamScores();
-					}
-				}
-			}
-
-			// If is set to store player scores on scorebard after half time
-			if (this->m_PlayerScore)
-			{
-				// If is set to store player scores on scorebard after half time
-				if (this->m_PlayerScore->value > 0.0f)
-				{
-					// Get players
-					auto Players = gMatchUtil.GetPlayers(true, true);
-
-					// If is PRE sv_restart event
-					if (PreRestart)
-					{
-						// Loop
-						for (auto& Player : Players)
-						{
-							// Store Frags
-							Player->edict()->v.fuser4 = Player->edict()->v.frags;
-
-							// Store Deaths
-							Player->edict()->v.iuser4 = Player->m_iDeaths;
-						}
-					}
-					// If is POST sv_restart event
-					else
-					{
-						// Loop
-						for (auto& Player : Players)
-						{
-							// Restore Frags
-							Player->edict()->v.frags = Player->edict()->v.fuser4;
-
-							// Restore Deaths
-							Player->m_iDeaths = Player->edict()->v.iuser4;
-
-							// Update scoreboard
-							Player->AddPoints(0, TRUE);
-						}
 					}
 				}
 			}
@@ -1520,5 +1488,56 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 
 		// Set end state
 		gMatchTask.Create(TASK_CHANGE_STATE, 0.5f, false, (void*)this->NextState, STATE_END);
+	}
+}
+
+// Score Info Engine Message
+bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+{
+	gMatchBot.UpdateScoreboard(gMatchMessage.GetByte(0), gMatchMessage.GetShort(1), gMatchMessage.GetShort(2));
+
+	return false;
+}
+
+// Update Scoreboard
+void CMatchBot::UpdateScoreboard(int EntityIndex, int Score, int Deaths)
+{
+	if (EntityIndex)
+	{
+		auto Player = UTIL_PlayerByIndex(EntityIndex);
+
+		if (!FNullEnt(Player))
+		{
+			if (Player->IsPlayer())
+			{
+				this->m_Scoreboard[EntityIndex][this->m_State].fill(0);
+
+				if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+				{
+					this->m_Scoreboard[EntityIndex][this->m_State][0] = Score;
+
+					this->m_Scoreboard[EntityIndex][this->m_State][1] = Deaths;
+				}
+
+				if (this->m_PlayerScore)
+				{
+					if (this->m_PlayerScore->value > 0.0f)
+					{
+						if (this->m_State == STATE_SECOND_HALF)
+						{
+							gMatchMessage.SetArgInt(1, Score + this->m_Scoreboard[EntityIndex][STATE_FIRST_HALF][0]);
+
+							gMatchMessage.SetArgInt(2, Deaths + this->m_Scoreboard[EntityIndex][STATE_FIRST_HALF][1]);
+						}
+						else if (this->m_State == STATE_OVERTIME)
+						{
+							gMatchMessage.SetArgInt(1, Score + this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][0]);
+
+							gMatchMessage.SetArgInt(2, Deaths + this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][1]);
+						}
+					}
+				}
+			}
+		}
 	}
 }
