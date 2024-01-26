@@ -43,8 +43,10 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 		// If player is buying
 		if (type == ITEM_TYPE_BUYING)
 		{
+			// Compare item
 			switch (item)
 			{
+				// HE Grenade
 				case ITEM_HEGRENADE:
 				{
 					// If enabled restrion by round count
@@ -69,6 +71,7 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					}
 					break;
 				}
+				// Smoke Grenade
 				case ITEM_SMOKEGRENADE:
 				{
 					// If enabled restrion by round count
@@ -93,6 +96,7 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					}
 					break;
 				}
+				// Flashbang
 				case ITEM_FLASHBANG:
 				{
 					// If enabled restrion by round count

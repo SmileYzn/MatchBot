@@ -6,11 +6,9 @@ void CMatchBugFix::ExplodeSmokeGrenade(CGrenade* Entity)
 {
 	if (gMatchBot.m_ExtraSmokeCount->value > 0.0f)
 	{
-		auto State = gMatchBot.GetState();
-
-		if (State == STATE_FIRST_HALF || State == STATE_SECOND_HALF || State == STATE_OVERTIME)
+		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
 		{
-			auto Count = (int)(gMatchBot.m_ExtraSmokeCount->value);
+			auto Count = static_cast<int>(gMatchBot.m_ExtraSmokeCount->value);
 
 			for (int i = 0; i < Count; i++)
 			{
