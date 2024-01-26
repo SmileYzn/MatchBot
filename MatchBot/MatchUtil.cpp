@@ -64,7 +64,7 @@ void CMatchUtil::TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeam
 {
 	static int iMsgTeamInfo;
 
-	if (iMsgTeamInfo || (iMsgTeamInfo = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "TeamInfo", NULL)))
+	if (iMsgTeamInfo || (iMsgTeamInfo = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "TeamInfo", NULL)))
 	{
 		g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgTeamInfo, nullptr, pEntity);
 		g_engfuncs.pfnWriteByte(playerIndex);
@@ -77,7 +77,7 @@ void CMatchUtil::MakeDeathMessage(edict_t* pKiller, edict_t* pVictim, bool Heads
 {
 	static int iMsgDeathMsg;
 
-	if (iMsgDeathMsg || (iMsgDeathMsg = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "DeathMsg", NULL)))
+	if (iMsgDeathMsg || (iMsgDeathMsg = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "DeathMsg", NULL)))
 	{
 		g_engfuncs.pfnMessageBegin(MSG_ALL, iMsgDeathMsg, NULL, NULL);
 
@@ -97,7 +97,7 @@ void CMatchUtil::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 {
 	static int iMsgSayText;
 
-	if (iMsgSayText || (iMsgSayText = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "SayText", NULL)))
+	if (iMsgSayText || (iMsgSayText = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "SayText", NULL)))
 	{
 		char Buffer[191] = { 0 };
 
@@ -188,7 +188,7 @@ void CMatchUtil::ClientPrint(edict_t* pEntity, int msg_dest, const char* Format,
 
 	static int iMsgTextMsg;
 
-	if (iMsgTextMsg || (iMsgTextMsg = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "TextMsg", NULL)))
+	if (iMsgTextMsg || (iMsgTextMsg = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "TextMsg", NULL)))
 	{
 		if (pEntity)
 		{
@@ -579,7 +579,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 			catch (...)
 			{
 				// Catch for erros
-				LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+				 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] %s", __func__, lpMemScript->GetError().c_str());
 			}
 		}
 
@@ -594,7 +594,7 @@ void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
 {
 	static int iMsgMOTD;
 
-	if (iMsgMOTD || (iMsgMOTD = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "MOTD", NULL)))
+	if (iMsgMOTD || (iMsgMOTD = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "MOTD", NULL)))
 	{
 		if (MotdLength < 128)
 		{

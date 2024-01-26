@@ -360,9 +360,9 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						{
 							gMatchUtil.ServerCommand("kick #%d", Item.Extra);
 
-							LOG_MESSAGE
+							gpMetaUtilFuncs->pfnLogMessage
 							(
-								PLID,
+								&Plugin_info,
 								"\"%s<%i><%s><%s>\" kick \"%s<%i><%s><%s>\"",
 								STRING(Player->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -389,9 +389,9 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 						{
 							MDLL_ClientKill(Target->edict());
 
-							LOG_MESSAGE
+							gpMetaUtilFuncs->pfnLogMessage
 							(
-								PLID,
+								&Plugin_info,
 								"\"%s<%i><%s><%s>\" slays \"%s<%i><%s><%s>\"",
 								STRING(Player->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -446,9 +446,9 @@ void CMatchPlayer::PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 
 			gMatchUtil.ServerCommand("wait;wait;writeid;writeip");
 
-			LOG_MESSAGE
+			gpMetaUtilFuncs->pfnLogMessage
 			(
-				PLID,
+				&Plugin_info,
 				"\"%s<%i><%s><%s>\" banned \"%s<%i><%s><%s>\" for %d min(s)",
 				STRING(Player->edict()->v.netname),
 				g_engfuncs.pfnGetPlayerUserId(Player->edict()),

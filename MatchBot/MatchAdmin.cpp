@@ -51,7 +51,7 @@ void CMatchAdmin::ServerActivate()
             catch (...)
             {
                 // Catch for erros
-                LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+                gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] %s", __func__, lpMemScript->GetError().c_str());
             }
         }
 

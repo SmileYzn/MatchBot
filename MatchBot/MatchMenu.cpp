@@ -77,7 +77,7 @@ void CMatchMenu::Hide(int EntityIndex)
 		{
 			static int iMsgShowMenu;
 
-			if (iMsgShowMenu || (iMsgShowMenu = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "ShowMenu", NULL)))
+			if (iMsgShowMenu || (iMsgShowMenu = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "ShowMenu", NULL)))
 			{
 				g_engfuncs.pfnMessageBegin(MSG_ONE, iMsgShowMenu, nullptr, Player->edict());
 				g_engfuncs.pfnWriteShort(0);
@@ -246,7 +246,7 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text
 			{
 				static int iMsgShowMenu;
 
-				if (iMsgShowMenu || (iMsgShowMenu = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "ShowMenu", NULL)))
+				if (iMsgShowMenu || (iMsgShowMenu = gpMetaUtilFuncs->pfnGetUserMsgID(&Plugin_info, "ShowMenu", NULL)))
 				{
 					Player->m_iMenu = Menu_OFF;
 

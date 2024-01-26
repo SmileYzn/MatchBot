@@ -1186,9 +1186,9 @@ void CMatchBot::StartVoteMap(CBasePlayer* Player)
 				// Start Match
 				this->SetState(STATE_START);
 
-				LOG_MESSAGE
+				gpMetaUtilFuncs->pfnLogMessage
 				(
-					PLID,
+					&Plugin_info,
 					"\"%s<%i><%s><%s>\" started vote map",
 					STRING(Player->edict()->v.netname),
 					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -1242,9 +1242,9 @@ void CMatchBot::StartVoteTeam(CBasePlayer* Player)
 			// Start Match
 			this->SetState(STATE_START);
 
-			LOG_MESSAGE
+			gpMetaUtilFuncs->pfnLogMessage
 			(
-				PLID,
+				&Plugin_info,
 				"\"%s<%i><%s><%s>\" started vote team",
 				STRING(Player->edict()->v.netname),
 				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -1318,9 +1318,9 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 			// Change state
 			gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, State);
 
-			LOG_MESSAGE
+			gpMetaUtilFuncs->pfnLogMessage
 			(
-				PLID,
+				&Plugin_info,
 				"\"%s<%i><%s><%s>\" started match",
 				STRING(Player->edict()->v.netname),
 				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -1384,9 +1384,9 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 
 			if (Player)
 			{
-				LOG_MESSAGE
+				gpMetaUtilFuncs->pfnLogMessage
 				(
-					PLID,
+					&Plugin_info,
 					"\"%s<%i><%s><%s>\" stopped match",
 					STRING(Player->edict()->v.netname),
 					g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -1435,9 +1435,9 @@ void CMatchBot::RestartMatch(CBasePlayer* Player)
 
 			if (Player)
 			{
-				LOG_MESSAGE
+				gpMetaUtilFuncs->pfnLogMessage
 				(
-					PLID,
+					&Plugin_info,
 					"\"%s<%i><%s><%s>\" restarted match",
 					STRING(Player->edict()->v.netname),
 					g_engfuncs.pfnGetPlayerUserId(Player->edict()),

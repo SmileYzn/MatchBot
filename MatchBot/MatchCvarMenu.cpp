@@ -70,7 +70,7 @@ void CMatchCvarMenu::ServerActivate()
 			catch (...)
 			{
 				// Catch for erros
-				LOG_CONSOLE(PLID, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+				 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] %s", __func__, lpMemScript->GetError().c_str());
 			}
 		}
 
@@ -144,9 +144,9 @@ void CMatchCvarMenu::UpdateValue(CBasePlayer* Player, int ItemIndex)
 
 					g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Pointer->name, it->c_str());
 
-					LOG_MESSAGE
+					gpMetaUtilFuncs->pfnLogMessage
 					(
-						PLID,
+						&Plugin_info,
 						"\"%s<%i><%s><%s>\" changed cvar %s to %s",
 						STRING(Player->edict()->v.netname),
 						g_engfuncs.pfnGetPlayerUserId(Player->edict()),
@@ -162,9 +162,9 @@ void CMatchCvarMenu::UpdateValue(CBasePlayer* Player, int ItemIndex)
 			{
 				g_engfuncs.pfnCVarSetString(this->m_Data[ItemIndex].Pointer->name, begin->c_str());
 
-				LOG_MESSAGE
+				gpMetaUtilFuncs->pfnLogMessage
 				(
-					PLID,
+					&Plugin_info,
 					"\"%s<%i><%s><%s>\" changed cvar %s to %s",
 					STRING(Player->edict()->v.netname),
 					g_engfuncs.pfnGetPlayerUserId(Player->edict()),

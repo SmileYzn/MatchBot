@@ -7,11 +7,11 @@ CGameRules			*g_pGameRules;
 
 bool ReGameDLL_Init()
 {
-	const char *szGameDLLModule = GET_GAME_INFO(PLID, GINFO_DLL_FULLPATH);
+	const char *szGameDLLModule = GET_GAME_INFO(&Plugin_info, GINFO_DLL_FULLPATH);
 
 	if (!szGameDLLModule)
 	{
-		LOG_CONSOLE(PLID, "[%s] Failed to get GameDLL module", Plugin_info.logtag);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to get GameDLL module", Plugin_info.logtag);
 		return false;
 	}
 
@@ -19,7 +19,7 @@ bool ReGameDLL_Init()
 
 	if (!gameModule)
 	{
-		LOG_CONSOLE(PLID, "[%s] Failed to locate GameDLL module", Plugin_info.logtag);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to locate GameDLL module", Plugin_info.logtag);
 		return false;
 	}
 
@@ -27,7 +27,7 @@ bool ReGameDLL_Init()
 
 	if (!ifaceFactory)
 	{
-		LOG_CONSOLE(PLID, "[%s] Failed to locate interface factory in GameDLL module", Plugin_info.logtag);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to locate interface factory in GameDLL module", Plugin_info.logtag);
 		return false;
 	}
 
@@ -37,7 +37,7 @@ bool ReGameDLL_Init()
 
 	if (!g_ReGameApi)
 	{
-		LOG_CONSOLE(PLID, "[%s] Failed to locate retrieve rehlds api interface from GameDLL module, return code is %d", Plugin_info.logtag, retCode);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to locate retrieve rehlds api interface from GameDLL module, return code is %d", Plugin_info.logtag, retCode);
 		return false;
 	}
 
@@ -46,15 +46,15 @@ bool ReGameDLL_Init()
 
 	if (majorVersion != REGAMEDLL_API_VERSION_MAJOR)
 	{
-		LOG_CONSOLE(PLID, "[%s] ReGameDLL API major version mismatch; expected %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] ReGameDLL API major version mismatch; expected %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
 
 		if (majorVersion < REGAMEDLL_API_VERSION_MAJOR)
 		{
-			LOG_CONSOLE(PLID, "[%s] Please update the ReGameDLL up to a major version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR);
+			 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Please update the ReGameDLL up to a major version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR);
 		}
 		else if (majorVersion > REGAMEDLL_API_VERSION_MAJOR)
 		{
-			LOG_CONSOLE(PLID, "[%s] Please update the %s up to a major version API >= %d", Plugin_info.logtag, Plugin_info.logtag, majorVersion);
+			 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Please update the %s up to a major version API >= %d", Plugin_info.logtag, Plugin_info.logtag, majorVersion);
 		}
 
 		return false;
@@ -62,8 +62,8 @@ bool ReGameDLL_Init()
 
 	if (minorVersion < REGAMEDLL_API_VERSION_MINOR)
 	{
-		LOG_CONSOLE(PLID, "[%s] ReGameDLL API minor version mismatch; expected at least %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
-		LOG_CONSOLE(PLID, "[%s] Please update the ReGameDLL up to a minor version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] ReGameDLL API minor version mismatch; expected at least %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Please update the ReGameDLL up to a minor version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR);
 		return false;
 	}
 
@@ -73,7 +73,7 @@ bool ReGameDLL_Init()
 
 	if (!g_ReGameApi->BGetICSEntity(CSENTITY_API_INTERFACE_VERSION))
 	{
-		LOG_CONSOLE(PLID, "[%s] Interface CCSEntity API version '%s' not found", Plugin_info.logtag, CSENTITY_API_INTERFACE_VERSION);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Interface CCSEntity API version '%s' not found", Plugin_info.logtag, CSENTITY_API_INTERFACE_VERSION);
 		return false;
 	}
 
@@ -143,7 +143,7 @@ CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules* chain)
 
 	if (!g_ReGameApi->BGetIGameRules(GAMERULES_API_INTERFACE_VERSION))
 	{
-		LOG_CONSOLE(PLID, "[%s] Interface GameRules API version '%s' not found", Plugin_info.logtag, GAMERULES_API_INTERFACE_VERSION);
+		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Interface GameRules API version '%s' not found", Plugin_info.logtag, GAMERULES_API_INTERFACE_VERSION);
 	}
 	else
 	{
