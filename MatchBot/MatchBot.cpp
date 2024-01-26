@@ -1374,6 +1374,9 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 
 				// Disable Knife Round
 				this->m_PlayKnifeRound = false;
+
+				// Restart Round
+				gMatchUtil.ServerCommand("sv_restart 1");
 			}
 
 			// Set end state
