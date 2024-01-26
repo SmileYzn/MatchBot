@@ -238,6 +238,8 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 	gMatchLO3.RoundRestart();
 
 	gMatchPause.RoundRestart();
+
+	gMatchRestrictItem.RoundRestart();
 }
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)

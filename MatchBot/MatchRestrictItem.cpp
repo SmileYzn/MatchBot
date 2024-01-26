@@ -2,6 +2,24 @@
 
 CMatchRestrictItem gMatchRestrictItem;
 
+// On Round Restart Event
+void CMatchRestrictItem::RoundRestart()
+{
+	// If Match BOT is not dead
+	if (gMatchBot.GetState() != STATE_DEAD)
+	{
+		// Get in game players
+		auto Players = gMatchUtil.GetPlayers(true, true);
+
+		// Loop Players
+		for (auto& Player : Players)
+		{
+			// Reset item count
+			memset(&Player->m_rgItems, 0, sizeof(Player->m_rgItems));
+		}
+	}
+}
+
 // Check item restrictions
 bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item, ItemRestType type)
 {
@@ -52,13 +70,6 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					// If enabled restrion by round count
 					if (gMatchBot.m_RoundGrenadeCount->value > 0.0f)
 					{
-						// If is freezetime and player do not have HE Grenade
-						if (CSGameRules()->IsFreezePeriod() && !Player->m_rgAmmo[AMMO_HEGRENADE])
-						{
-							// Reset variable
-							Player->m_rgItems[0] = 0;
-						}
-
 						// Increment and check limit
 						if (Player->m_rgItems[0]++ > static_cast<int>(gMatchBot.m_RoundGrenadeCount->value))
 						{
@@ -77,13 +88,6 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					// If enabled restrion by round count
 					if (gMatchBot.m_RoundSmokeCount->value > 0.0f)
 					{
-						// If is freezetime and player do not have Smoke Grenade
-						if (CSGameRules()->IsFreezePeriod() && !Player->m_rgAmmo[AMMO_SMOKEGRENADE])
-						{
-							// Reset variable
-							Player->m_rgItems[1] = 0;
-						}
-
 						// Increment and check limit
 						if (Player->m_rgItems[1]++ > static_cast<int>(gMatchBot.m_RoundSmokeCount->value))
 						{
@@ -102,13 +106,6 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					// If enabled restrion by round count
 					if (gMatchBot.m_RoundSmokeCount->value > 0.0f)
 					{
-						// If is freezetime and player do not have Smoke Grenade
-						if (CSGameRules()->IsFreezePeriod() && !Player->m_rgAmmo[AMMO_FLASHBANG])
-						{
-							// Reset variable
-							Player->m_rgItems[2] = 0;
-						}
-
 						// Increment and check limit
 						if (Player->m_rgItems[2]++ > static_cast<int>(gMatchBot.m_RoundFlashCount->value))
 						{
