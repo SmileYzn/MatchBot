@@ -119,6 +119,15 @@ void CMatchBot::ServerActivate()
 	// Anti reconnect time (Time in seconds to prevent the player reconnect to server)
 	this->m_RetryTime = gMatchUtil.CvarRegister("mb_retry_time", "30.0");
 
+	// Number of HE grenade allowed per round (0 Disable restriction)
+	this->m_RoundGrenadeCount = gMatchUtil.CvarRegister("mb_round_grenade_count", "0");
+
+	// Number of smoke grenade allowed per round (0 Disable restriction)
+	this->m_RoundSmokeCount = gMatchUtil.CvarRegister("mb_round_smoke_count", "0");
+
+	// Number of flashbangs allowed per round (0 Disable restriction)
+	this->m_RoundFlashCount = gMatchUtil.CvarRegister("mb_round_flash_count", "0");
+
 	// Users Help File or Website url (Without HTTPS)
 	this->m_HelpFile = gMatchUtil.CvarRegister("mb_help_file", "cstrike/addons/matchbot/users_help.html");
 

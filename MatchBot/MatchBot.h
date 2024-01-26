@@ -213,6 +213,9 @@ public:
 	cvar_t* m_PauseTime = nullptr;
 	cvar_t* m_RetryMode = nullptr;
 	cvar_t* m_RetryTime = nullptr;
+	cvar_t* m_RoundGrenadeCount = nullptr;
+	cvar_t* m_RoundSmokeCount = nullptr;
+	cvar_t* m_RoundFlashCount = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };
