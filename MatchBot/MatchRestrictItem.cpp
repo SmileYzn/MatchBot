@@ -27,7 +27,7 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 	if (gMatchBot.GetKnifeRound())
 	{
 		// Do not allow if item differs from Klevar, Assault Suit or Knife
-		if (item != ITEM_KEVLAR || item != ITEM_ASSAULT || item != ITEM_KNIFE)
+		if (item != ITEM_KEVLAR && item != ITEM_ASSAULT && item != ITEM_KNIFE)
 		{
 			// Block this item
 			BlockItem = true;
