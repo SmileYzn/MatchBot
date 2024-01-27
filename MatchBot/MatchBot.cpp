@@ -1599,6 +1599,27 @@ void CMatchBot::UpdateScoreboard(int EntityIndex, int Score, int Deaths)
 								gMatchMessage.SetArgInt(2, Deaths + this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][1]);
 								break;
 							}
+							case STATE_END:
+							{
+								// If is end of second period (The Overtime was not played)
+								if (this->GetRound() < static_cast<int>(this->m_PlayRoundsOT->value))
+								{
+									// On finish: Set Frags of second half
+									gMatchMessage.SetArgInt(1, this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][0]);
+
+									// On finish: Set Deaths of second half
+									gMatchMessage.SetArgInt(2, this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][1]);
+								}
+								else
+								{
+									// On finish: Set Frags of second half
+									gMatchMessage.SetArgInt(1, this->m_Scoreboard[EntityIndex][STATE_OVERTIME][0]);
+
+									// On finish: Set Deaths of second half
+									gMatchMessage.SetArgInt(2, this->m_Scoreboard[EntityIndex][STATE_OVERTIME][1]);
+								}
+								break;
+							}
 						}
 					}
 				}
