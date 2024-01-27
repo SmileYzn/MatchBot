@@ -71,7 +71,7 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					if (gMatchBot.m_RoundGrenadeCount->value > 0.0f)
 					{
 						// Increment and check limit
-						if (Player->m_rgItems[0]++ > static_cast<int>(gMatchBot.m_RoundGrenadeCount->value))
+						if (Player->m_rgItems[0]++ >= static_cast<int>(gMatchBot.m_RoundGrenadeCount->value))
 						{
 							// Send blocked message
 							gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
@@ -89,7 +89,7 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					if (gMatchBot.m_RoundSmokeCount->value > 0.0f)
 					{
 						// Increment and check limit
-						if (Player->m_rgItems[1]++ > static_cast<int>(gMatchBot.m_RoundSmokeCount->value))
+						if (Player->m_rgItems[1]++ >= static_cast<int>(gMatchBot.m_RoundSmokeCount->value))
 						{
 							// Send blocked message
 							gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
@@ -107,7 +107,7 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 					if (gMatchBot.m_RoundSmokeCount->value > 0.0f)
 					{
 						// Increment and check limit
-						if (Player->m_rgItems[2]++ > static_cast<int>(gMatchBot.m_RoundFlashCount->value))
+						if (Player->m_rgItems[2]++ >= static_cast<int>(gMatchBot.m_RoundFlashCount->value))
 						{
 							// Send blocked message
 							gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
