@@ -47,9 +47,6 @@ bool CMatchRestrictItem::PlayerHasRestrictItem(CBasePlayer* Player, ItemID item,
 		// Do not allow if item differs from Klevar, Assault Suit or Knife
 		if (item != ITEM_KEVLAR && item != ITEM_ASSAULT && item != ITEM_KNIFE)
 		{
-			// Send blocked message
-			gMatchUtil.ClientPrint(Player->edict(), PRINT_CENTER, "#Cstrike_TitlesTXT_Weapon_Not_Available");
-
 			// Block item
 			return true;
 		}
