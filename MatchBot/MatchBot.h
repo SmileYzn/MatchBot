@@ -122,9 +122,6 @@ public:
 	// Round end event
 	void RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDelay);
 
-	// Round restart event
-	void RoundRestart();
-
 	// Update game description
 	void UpdateGameName();
 
@@ -145,6 +142,9 @@ public:
 
 	// End Match with a winner
 	void EndMatch(TeamName Loser, TeamName Winner);
+
+	// Team Score Engine Mesage
+	static bool TeamScore(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
 	// Score Info Engine Message
 	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);

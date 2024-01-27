@@ -233,8 +233,6 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 {
 	chain->callNext();
 
-	gMatchBot.RoundRestart();
-
 	gMatchLO3.RoundRestart();
 
 	gMatchPause.RoundRestart();
