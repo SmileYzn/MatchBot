@@ -13,7 +13,7 @@ jobs:
     container: ubuntu:18.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
     
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
