@@ -38,10 +38,10 @@ jobs:
         mkdir publish\addons\matchbot\dlls
 
         # Move cstrike files to publish
-        move ${{env.SOLUTION_FILE_PATH}}\cstrike\* publish
+        copy ${{env.SOLUTION_FILE_PATH}}\cstrike\* publish
 
         # Move released dll to publish
-        move ${{env.BUILD_CONFIGURATION}}\*.dll publish\addons\matchbot\dlls
+        copy ${{env.BUILD_CONFIGURATION}}\*.dll publish\addons\matchbot\dlls
 
     - name: Download Metamod-r
       run: |

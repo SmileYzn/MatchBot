@@ -10,18 +10,22 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container: ubuntu:18.04
 
     steps:
     - uses: actions/checkout@v3
     
     - name: Add i386 architecture
-      run: sudo dpkg --add-architecture i386
+      run: dpkg --add-architecture i386
       
     - name: Update repository
-      run: sudo apt-get update
+      run: apt-get update
 
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib
+      run: apt-get install -qq -y wget unzip build-essential gcc-4.8-multilib g++-4.8-multilib libgcc1:i386
+    
+    - name: Update alternatives
+      run: update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
 
     - name: Run build
       working-directory: ./MatchBot
