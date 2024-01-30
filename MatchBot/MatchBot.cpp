@@ -333,7 +333,7 @@ void CMatchBot::SetState(int State)
 			gMatchWarmup.Stop();
 
 			// Clear Scores
-			this->m_Score.fill({});
+			this->m_Score.fill({0});
 
 			// Clear OT Scores
 			this->m_ScoreOvertime.fill(0);
@@ -1452,7 +1452,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 		auto HalfRounds = (int)(this->m_PlayRounds->value / 2.0f);
 
 		// Clear Scores
-		this->m_Score.fill({});
+		this->m_Score.fill({0});
 
 		// Set Score winner
 		this->m_Score[Winner][STATE_FIRST_HALF]  = HalfRounds;

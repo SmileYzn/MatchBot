@@ -39,10 +39,10 @@ void CMatchStats::RoundStart()
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
 		// Clear Round Damage
-		this->m_RoundDmg.fill({});
+		this->m_RoundDmg.fill({0});
 
 		// Clear Round Hits
-		this->m_RoundHit.fill({});
+		this->m_RoundHit.fill({0});
 	}
 }
 
