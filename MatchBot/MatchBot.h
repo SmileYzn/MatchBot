@@ -160,19 +160,19 @@ private:
 	bool m_PlayKnifeRound = false;
 
 	// Scores
-	std::array<std::array<int, SPECTATOR + 1U>, STATE_END + 1U> m_Score;
+	std::array<std::array<int, STATE_END + 1>, SPECTATOR + 1> m_Score;
 
 	// Overtime Scores
-	std::array<int, SPECTATOR + 1U> m_ScoreOvertime;
+	std::array<int, SPECTATOR + 1> m_ScoreOvertime;
 
 	// Defaut game description
 	std::string m_GameDesc = "";
 
 	// Match Bot Config Variables
-	std::array<cvar_t*, STATE_END + 1U> m_Config;
+	std::array<cvar_t*, STATE_END + 1> m_Config;
 
 	// Player Scoreboard frags / deaths
-	std::array<std::array<std::array<int, 2>, STATE_END + 1U>, MAX_CLIENTS + 1> m_Scoreboard;
+	std::array<std::array<std::array<int, 2>, STATE_END + 1>, MAX_CLIENTS + 1> m_Scoreboard;
 
 public:
 	// Match Bot Variables
