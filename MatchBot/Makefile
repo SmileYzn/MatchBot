@@ -50,7 +50,7 @@ $(NAME): $(OBJ_LINUX)
 	$(COMPILER) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINKER) -o$(BIN_DIR)/$(NAME)_mm.so
 
 check:
-	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=gnu++14 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
+	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=c++14 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
 
 default: all
 
