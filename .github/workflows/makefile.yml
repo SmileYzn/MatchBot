@@ -67,7 +67,7 @@ jobs:
         unzip -p accuracyfix-linux.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
 
     - name: Deploy artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: matchbot-linux
         path: publish/*
