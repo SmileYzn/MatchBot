@@ -19,7 +19,7 @@ public:
 
 private:
 	int m_CvarCount = 0;
-	std::unordered_map<int, P_CVAR_MENU_INFO> m_Data;
+	std::map<int, P_CVAR_MENU_INFO> m_Data;
 };
 
 extern CMatchCvarMenu gMatchCvarMenu;

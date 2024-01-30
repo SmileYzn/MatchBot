@@ -22,12 +22,6 @@ int CMatchUtil::MakeDirectory(const char* Path)
 // Register console variable
 cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 {
-	return this->CvarRegister(Name, Value, (FCVAR_SERVER | FCVAR_SPONLY));
-}
-
-// Register console variable
-cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value, int Flags)
-{
 	// Get cvar pointer
 	cvar_t* Pointer = g_engfuncs.pfnCVarGetPointer(Name);
 
@@ -41,7 +35,7 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value, int Flags)
 		this->m_CvarData[Name].string = (char*)(Value);
 		
 		// Set flags
-		this->m_CvarData[Name].flags = Flags ? Flags : (FCVAR_SERVER | FCVAR_SPONLY);
+		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_SPONLY);
 
 		// Register the variable
 		g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);

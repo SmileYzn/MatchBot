@@ -25,9 +25,6 @@ public:
 	// Register console variable
 	cvar_t* CvarRegister(const char* Name, const char* Value);
 
-	// Register console variable
-	cvar_t* CvarRegister(const char* Name, const char* Value, int Flags);
-
 	// Send Team Info to player
 	void TeamInfo(edict_t* pEntity, int playerIndex, const char* pszTeamName);
 
@@ -96,7 +93,7 @@ public:
 
 private:
 	// Variables Pointer
-	std::unordered_map<std::string, cvar_t> m_CvarData;
+	std::map<std::string, cvar_t> m_CvarData;
 };
 
 extern CMatchUtil gMatchUtil;

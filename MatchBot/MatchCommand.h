@@ -61,7 +61,7 @@ public:
 	bool ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1);
 
 private:
-	std::unordered_map<std::string, P_COMMAND_INFO> m_Data;
+	std::map<std::string, P_COMMAND_INFO> m_Data;
 };
 
 extern CMatchCommand gMatchCommand;

@@ -64,10 +64,10 @@ public:
 
 private:
 	// User Admin Info Data container
-	std::unordered_map<std::string, P_ADMIN_INFO> m_Data;
+	std::map<std::string, P_ADMIN_INFO> m_Data;
 
 	// Entity flags 
-	std::unordered_map<int, int> m_Flag;
+	std::map<int, int> m_Flag;
 };
 
 extern CMatchAdmin gMatchAdmin;

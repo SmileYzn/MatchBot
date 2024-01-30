@@ -33,7 +33,7 @@ public:
 	void ServerFrame();
 
 private:
-	std::unordered_map<int, P_TASK_INFO> m_Data;
+	std::map<int, P_TASK_INFO> m_Data;
 };
 
 extern CMatchTask gMatchTask;

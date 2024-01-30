@@ -52,7 +52,7 @@ public:
 	static void PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item);
 	
 private:
-	std::unordered_map<std::string, P_PLAYER_INFO> m_Player;
+	std::map<std::string, P_PLAYER_INFO> m_Player;
 };
 
 extern CMatchPlayer gMatchPlayer;
