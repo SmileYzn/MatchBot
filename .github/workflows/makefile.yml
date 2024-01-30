@@ -16,12 +16,18 @@ jobs:
     
     - name: Add i386 architecture
       run: sudo dpkg --add-architecture i386
-      
+
+    - name: Add Toolchain PPA
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa -y
+
     - name: Update repository
       run: sudo apt-get update
 
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib
+      run: sudo apt-get install -qq -y wget unzip build-essential g++-9 gcc-9
+
+    - name: Update alternatives
+      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
 
     - name: Run build
       working-directory: ./MatchBot
