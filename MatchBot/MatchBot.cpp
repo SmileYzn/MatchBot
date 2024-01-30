@@ -339,7 +339,10 @@ void CMatchBot::SetState(int State)
 			this->m_ScoreOvertime.fill(0);
 
 			// Clear Scoreboard
-			this->m_Scoreboard.fill({});
+			for (auto i = 0; i <= gpGlobals->maxClients; i++)
+			{
+				this->m_Scoreboard[i][this->m_State].fill(0);
+			}
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -445,7 +448,7 @@ void CMatchBot::SetState(int State)
 			this->m_Score[CT][this->m_State] = 0;
 
 			// Clear Scoreboard
-			for (int i = 0; i <= MAX_CLIENTS; i++)
+			for (auto i = 0; i <= gpGlobals->maxClients; i++)
 			{
 				this->m_Scoreboard[i][this->m_State].fill(0);
 			}
@@ -516,7 +519,7 @@ void CMatchBot::SetState(int State)
 
 			break;
 		}
-	}
+	};
 
 	// Match Stats
 	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
@@ -780,6 +783,12 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 			// Send messages
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (^3%s^1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4.help^1 to view command list."));
+		}
+
+		// Clear Scoreboard
+		for (auto i = STATE_DEAD; i <= STATE_END; i++)
+		{
+			this->m_Scoreboard[Player->entindex()][i].fill(0);
 		}
 	}
 }
