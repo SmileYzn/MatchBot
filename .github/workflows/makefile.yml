@@ -10,25 +10,22 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    container: centos:7
 
     steps:
     - uses: actions/checkout@v3
-
+    
+    - name: Add i386 architecture
+      run: dpkg --add-architecture i386
+      
     - name: Update repository
-      run: yes | yum -y --assumeyes makecache
+      run: apt-get update
 
     - name: Install build dependencies
-      run: yes | yum -y --assumeyes install @'Development Tools' wget unzip glibc-devel.i686 libgcc.i686 libstdc++-devel.i686
+      run: apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib
 
     - name: Run build
       working-directory: ./MatchBot
-      run: |
-        # Export compiler include path
-        export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
-
-        # Make build
-        make
+      run: make
     
     - name: Move release file to publish
       run: |
