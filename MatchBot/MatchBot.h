@@ -172,7 +172,7 @@ private:
 	std::array<cvar_t*, STATE_END + 1> m_Config;
 
 	// Player Scoreboard frags / deaths
-	std::array<std::array<std::array<int, 2>, STATE_END + 1>, MAX_CLIENTS + 1> m_Scoreboard;
+	std::array<std::array<std::array<int, 2>, STATE_END + 1U>, MAX_CLIENTS + 1> m_Scoreboard;
 
 public:
 	// Match Bot Variables

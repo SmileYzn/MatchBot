@@ -333,16 +333,13 @@ void CMatchBot::SetState(int State)
 			gMatchWarmup.Stop();
 
 			// Clear Scores
-			this->m_Score.fill({0});
+			this->m_Score.fill({});
 
 			// Clear OT Scores
 			this->m_ScoreOvertime.fill(0);
 
 			// Clear Scoreboard
-			for (auto i = 0; i <= gpGlobals->maxClients; i++)
-			{
-				this->m_Scoreboard[i][this->m_State].fill(0);
-			}
+			this->m_Scoreboard.fill({});
 
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
@@ -413,7 +410,7 @@ void CMatchBot::SetState(int State)
 				else
 				{
 					// If match is not played in total of rounds
-					if (this->GetRound() < this->m_PlayRounds->value)
+					if (this->GetRound() < static_cast<int>(this->m_PlayRounds->value))
 					{
 						// Play second Half
 						gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_SECOND_HALF);
@@ -593,7 +590,7 @@ const char* CMatchBot::GetTeam(TeamName Team, bool ShortName)
 void CMatchBot::SwapScores()
 {
 	// If we played more than maximum of rounds in match (We in Overtime)
-	if (this->GetRound() >= this->m_PlayRounds->value)
+	if (this->GetRound() >= static_cast<int>(this->m_PlayRounds->value))
 	{
 		// If scores are tied (This dettermine that OT is starting or restarting)
 		if (this->GetScore(TERRORIST) == this->GetScore(CT))
@@ -659,7 +656,7 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 	auto EntityIndex = ENTINDEX(pEntity);
 
 	// If we not allow spectaors
-	if (!CVAR_GET_FLOAT("allow_spectators"))
+	if (g_engfuncs.pfnCVarGetFloat("allow_spectators") < 1.0f)
 	{
 		// If player do not have reserved slots
 		if (!gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B))
@@ -668,7 +665,7 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 			auto Players = gMatchUtil.GetPlayers(true, false);
 
 			// If players in team reached maximum of players
-			if (Players.size() >= this->m_PlayersMax->value)
+			if (Players.size() >= static_cast<unsigned int>(this->m_PlayersMax->value))
 			{
 				// Reject connection: Server is Full
 				Q_strcpy(szRejectReason, _T("Server is full."));
@@ -757,7 +754,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	if (Slot == MENU_SLOT_TEAM_TERRORIST || Slot == MENU_SLOT_TEAM_CT)
 	{
 		// Count player count in desired team, and check if is not full
-		if (gMatchUtil.GetCount((TeamName)Slot) >= (int)(this->m_PlayersMax->value / 2.0f))
+		if (gMatchUtil.GetCount((TeamName)Slot) >= static_cast<int>(this->m_PlayersMax->value / 2.0f))
 		{
 			// Send message
 			gMatchUtil.SayText(Player->edict(), (Slot == TERRORIST) ? PRINT_TEAM_RED : PRINT_TEAM_BLUE, _T("The ^3%s^1 team is complete."), this->GetTeam((TeamName)Slot, false));
@@ -786,10 +783,7 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 		}
 
 		// Clear Scoreboard
-		for (auto i = STATE_DEAD; i <= STATE_END; i++)
-		{
-			this->m_Scoreboard[Player->entindex()][i].fill(0);
-		}
+		this->m_Scoreboard[Player->entindex()].fill({});
 	}
 }
 
@@ -933,11 +927,15 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 			// If string is not null
 			if (this->m_HelpFileAdmin->string)
 			{
-				// Reset memory
-				Q_memset(Path, 0, sizeof(Path));
+				// If is not empty
+				if (this->m_HelpFileAdmin->string[0U] != '\0')
+				{
+					// Clear 
+					Q_memset(Path, 0, sizeof(Path));
 
-				// Show motd
-				Q_strcpy_s(Path, this->m_HelpFileAdmin->string);
+					// Set to Path
+					Q_strcpy(Path, this->m_HelpFileAdmin->string);
+				}
 			}
 		}
 	}
@@ -949,11 +947,15 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 			// If string is not null
 			if (this->m_HelpFile->string)
 			{
-				// Reset memory
-				Q_memset(Path, 0, sizeof(Path));
+				// If is not empty
+				if (this->m_HelpFile->string[0U] != '\0')
+				{
+					// Clear 
+					Q_memset(Path, 0, sizeof(Path));
 
-				// Show motd
-				Q_strcpy_s(Path, this->m_HelpFile->string);
+					// Set to Path
+					Q_strcpy(Path, this->m_HelpFile->string);
+				}
 			}
 		}
 	}
@@ -1124,10 +1126,10 @@ void CMatchBot::UpdateGameName()
 			else if (State >= STATE_FIRST_HALF && State <= STATE_END)
 			{
 				// Game Name
-				char GameName[32] = { 0 };
+				static char GameName[32];
 
 				// Format game name with teams and scores
-				Q_snprintf(GameName, sizeof(GameName), _T("%s %d : %d %s"), gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+				Q_snprintf(GameName, sizeof(GameName), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 
 				// Set to game description
 				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);
@@ -1272,7 +1274,7 @@ void CMatchBot::StartMatch(CBasePlayer* Player)
 				State = STATE_SECOND_HALF;
 
 				// If we playing Overtime
-				if (this->GetRound() >= this->m_PlayRounds->value)
+				if (this->GetRound() >= static_cast<int>(this->m_PlayRounds->value))
 				{
 					// Next state is Overtime
 					State = STATE_OVERTIME;
@@ -1452,10 +1454,11 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 		auto HalfRounds = (int)(this->m_PlayRounds->value / 2.0f);
 
 		// Clear Scores
-		this->m_Score.fill({0});
+		this->m_Score.fill({});
 
 		// Set Score winner
 		this->m_Score[Winner][STATE_FIRST_HALF]  = HalfRounds;
+
 		this->m_Score[Winner][STATE_SECOND_HALF] = HalfRounds;
 
 		// Send message
@@ -1546,9 +1549,6 @@ void CMatchBot::UpdateScoreboard(int EntityIndex, int Score, int Deaths)
 			// If is player
 			if (Player->IsPlayer())
 			{
-				// Reset scoreboard variable for this player and this state
-				this->m_Scoreboard[EntityIndex][this->m_State].fill(0);
-
 				// If match is live
 				if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 				{

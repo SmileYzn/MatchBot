@@ -39,7 +39,7 @@ void CMatchCaptain::Init(int PlayersMin)
 
 		this->SetCaptain(Players[1], TeamB);
 
-		this->Menu(Players[RANDOM_LONG(0, 1)]);
+		this->Menu(Players[(TeamA == TERRORIST) ? 0 : 1]);
 
 		gMatchTask.Create(TASK_VOTE_LIST, 0.5f, true, (void*)this->PlayerList, this->m_PlayersMin);
 	}

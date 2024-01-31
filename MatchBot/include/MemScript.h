@@ -17,7 +17,7 @@ public:
 		this->m_Path.clear();
 		this->m_Code.clear();
 
-		this->m_Count = 0;
+		this->m_Count = 0U;
 		this->m_Timer = 0;
 
 		this->m_Number = 0.0f;
@@ -308,7 +308,7 @@ private:
 	std::string m_Buff;
 	std::string m_Path;
 	std::string m_Code;
-	size_t m_Count = 0;
+	size_t m_Count = 0U;
 	time_t m_Timer = 0;
 	float m_Number = 0.0f;
 	std::string m_String;

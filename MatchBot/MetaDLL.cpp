@@ -45,6 +45,7 @@ BOOL DLL_PRE_ClientConnect(edict_t* pEntity, const char* pszName, const char* ps
 	}
 
 	RETURN_META_VALUE(MRES_IGNORED, TRUE);
+
 	return TRUE;
 }
 #pragma endregion

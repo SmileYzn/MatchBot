@@ -415,14 +415,14 @@ hudtextparms_t CMatchUtil::HudParam(int red, int green, int blue, float x, float
 {
 	hudtextparms_t hud ;
 
-	hud.r1 = red;
-	hud.g1 = green;
-	hud.b1 = blue;
-	hud.a1 = 255;
-	hud.r2 = 255;
-	hud.g2 = 255;
-	hud.b2 = 255;
-	hud.a2 = 255;
+	hud.r1 = static_cast<byte>(red);
+	hud.g1 = static_cast<byte>(green);
+	hud.b1 = static_cast<byte>(blue);
+	hud.a1 = 0xFF;
+	hud.r2 = 0xFF;
+	hud.g2 = 0xFF;
+	hud.b2 = 0xFF;
+	hud.a2 = 0xFF;
 	hud.x = x;
 	hud.y = y;
 	hud.effect = effects;
@@ -584,7 +584,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 	return MapList;
 }
 
-void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, int MotdLength)
+void CMatchUtil::ShowMotd(edict_t* pEntity, char* Motd, unsigned int MotdLength)
 {
 	static int iMsgMOTD;
 
@@ -717,7 +717,7 @@ int CMatchUtil::ParseLinesAndColors(char* Buffer)
 
 	if (len > 0)
 	{
-		int c;
+		char c = '\0';
 
 		for (size_t i = 0; i < len; i++)
 		{

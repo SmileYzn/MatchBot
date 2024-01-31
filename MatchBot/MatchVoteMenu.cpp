@@ -146,7 +146,7 @@ bool CMatchVoteMenu::VoteKick(CBasePlayer* Player)
 			if (gMatchBot.m_PlayerVoteKick->value && (Players.size() >= (size_t)round(gMatchBot.m_PlayerVoteKick->value)))
 			{
 				// Get the total of votes needed to kick (Subtract the player itself vote)
-				auto VotesNeed = (Players.size() - 1);
+				auto VotesNeed = static_cast<float>(Players.size() - 1);
 
 				// Loop players
 				for (auto Target : Players)
@@ -158,7 +158,7 @@ bool CMatchVoteMenu::VoteKick(CBasePlayer* Player)
 						if (!gMatchAdmin.Access(Target->entindex(), ADMIN_IMMUNITY))
 						{
 							// Get percentage of vote count
-							auto VoteCount = 0;
+							auto VoteCount = 0.0f;
 
 							// Loop client votes
 							for (int i = 1; i <= gpGlobals->maxClients; ++i)
@@ -166,12 +166,12 @@ bool CMatchVoteMenu::VoteKick(CBasePlayer* Player)
 								// Check if voted
 								if (this->m_Votes[i].VoteKick[Target->entindex()])
 								{
-									VoteCount++;
+									VoteCount += 1.0f;
 								}
 							}
 
 							// Add to menu
-							gMatchMenu[Player->entindex()].AddItem(Target->entindex(), gMatchUtil.FormatString("%s \\y\\R%2.0f%%", STRING(Target->edict()->v.netname), (float)(VoteCount * 100 / VotesNeed)), this->m_Votes[Player->entindex()].VoteKick[Target->entindex()]);
+							gMatchMenu[Player->entindex()].AddItem(Target->entindex(), gMatchUtil.FormatString("%s \\y\\R%2.0f%%", STRING(Target->edict()->v.netname), ((VoteCount * 100.0f) / VotesNeed)), this->m_Votes[Player->entindex()].VoteKick[Target->entindex()]);
 						}
 					}
 				}
@@ -213,7 +213,7 @@ void CMatchVoteMenu::VoteKickHandle(int EntityIndex, P_MENU_ITEM Item)
 				gMatchVoteMenu.m_Votes[PlayerIndex].VoteKick[TargetIndex] = true;
 
 				// Get percentage of vote count
-				auto VoteCount = 0;
+				auto VoteCount = 0.0f;
 
 				// Loop clients
 				for (int i = 1; i <= gpGlobals->maxClients; ++i)
@@ -221,15 +221,15 @@ void CMatchVoteMenu::VoteKickHandle(int EntityIndex, P_MENU_ITEM Item)
 					// Check if voted
 					if (gMatchVoteMenu.m_Votes[i].VoteKick[Target->entindex()])
 					{
-						VoteCount++;
+						VoteCount += 1.0f;
 					}
 				}
 
 				// Get votes needed
-				auto VotesNeed = (gMatchUtil.GetCount(Player->m_iTeam) - 1);
+				auto VotesNeed = static_cast<float>(gMatchUtil.GetCount(Player->m_iTeam) - 1);
 
 				// Vote Map Progress to change map
-				auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+				auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
 				// If reached count
 				if (VoteProgress < 100.0f)
@@ -274,13 +274,13 @@ bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 				gMatchMenu[Player->entindex()].Create(_T("Vote Map:"), true, (void*)this->VoteMapHandle);
 
 				// Needed votes
-				auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+				auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
 
 				// Loop Map List
 				for (auto const& Map : this->m_MapList)
 				{
 					// Get Vote Count
-					auto VoteCount = 0;
+					auto VoteCount = 0.0f;
 
 					// Loop in game players
 					for (const auto& Temp : Players)
@@ -289,12 +289,12 @@ bool CMatchVoteMenu::VoteMap(CBasePlayer* Player)
 						if (this->m_Votes[Temp->entindex()].VoteMap[Map.first])
 						{
 							// Count vote
-							VoteCount++;
+							VoteCount += 1.0f;
 						}
 					}
 
 					// Add Menu Item
-					gMatchMenu[Player->entindex()].AddItem(Map.first, gMatchUtil.FormatString("%s \\y\\R%2.0f%%", Map.second.c_str(), (float)((VoteCount * 100) / VotesNeed)), this->m_Votes[Player->entindex()].VoteMap[Map.first]);
+					gMatchMenu[Player->entindex()].AddItem(Map.first, gMatchUtil.FormatString("%s \\y\\R%2.0f%%", Map.second.c_str(), ((VoteCount * 100.0f) / VotesNeed)), this->m_Votes[Player->entindex()].VoteMap[Map.first]);
 				}
 
 				// Show Menu to player
@@ -337,10 +337,10 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 			auto Players = gMatchUtil.GetPlayers(true, true);
 
 			// Needed votes
-			auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+			auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
 
 			// Get Vote Count
-			auto VoteCount = 0;
+			auto VoteCount = 0.0f;
 
 			// Loop in game players
 			for (const auto& Temp : Players)
@@ -349,12 +349,12 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 				if (gMatchVoteMenu.m_Votes[Temp->entindex()].VoteMap[Item.Info])
 				{
 					// Count vote
-					VoteCount++;
+					VoteCount += 1.0f;
 				}
 			}
 
 			// Vote Map Progress to change map
-			auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+			auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
 			// If need more votes to change map
 			if (VoteProgress < 100.0f)
@@ -414,10 +414,10 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 								this->m_Votes[Player->entindex()].VotePause[Player->m_iTeam] = true;
 
 								// Needed votes
-								auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+								auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
 
 								// Get Vote Count
-								auto VoteCount = 0;
+								auto VoteCount = 0.0f;
 
 								// Loop Players in team
 								for (const auto& Temp : Players)
@@ -425,12 +425,12 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 									// Count Vote if is true
 									if (this->m_Votes[Temp->entindex()].VotePause[Temp->m_iTeam])
 									{
-										VoteCount++;
+										VoteCount += 1.0f;
 									}
 								}
 
 								// Vote Map Progress to change map
-								auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+								auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
 								// If need more votes to change map
 								if (VoteProgress < 100.0f)
@@ -497,10 +497,10 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 					this->m_Votes[Player->entindex()].VoteRestart[MatchState] = true;
 
 					// Needed votes
-					auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+					auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
 
 					// Get Vote Count
-					auto VoteCount = 0;
+					auto VoteCount = 0.0f;
 
 					// Loop in game Players
 					for (const auto& Temp : Players)
@@ -508,12 +508,12 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 						// If has voted to restart this state
 						if (this->m_Votes[Temp->entindex()].VoteRestart[MatchState])
 						{
-							VoteCount++;
+							VoteCount += 1.0f;
 						}
 					}
 
 					// Vote Restart Progress to restart current period
-					auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+					auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
 					// If need more votes to restart period
 					if (VoteProgress < 100.0f)
@@ -576,10 +576,10 @@ bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
 					this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam] = true;
 
 					// Needed votes
-					auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+					auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
 
 					// Get Vote Count
-					auto VoteCount = 0;
+					auto VoteCount = 0.0f;
 
 					// Loop Players in team
 					for (const auto& Temp : Players)
@@ -587,12 +587,12 @@ bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
 						// Count Vote if is true
 						if (this->m_Votes[Temp->entindex()].VoteSurrender[Temp->m_iTeam])
 						{
-							VoteCount++;
+							VoteCount += 1.0f;
 						}
 					}
 
 					// Vote Map Progress to change map
-					auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+					auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
 					// If need more votes to change map
 					if (VoteProgress < 100.0f)
@@ -656,10 +656,10 @@ bool CMatchVoteMenu::VoteStop(CBasePlayer* Player)
 					this->m_Votes[Player->entindex()].VoteStop[MatchState] = true;
 
 					// Needed votes
-					auto VotesNeed = (Players.size() * gMatchBot.m_VotePercent->value);
+					auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
 
 					// Get Vote Count
-					auto VoteCount = 0;
+					auto VoteCount = 0.0f;
 
 					// Loop in game Players
 					for (const auto& Temp : Players)
@@ -667,12 +667,12 @@ bool CMatchVoteMenu::VoteStop(CBasePlayer* Player)
 						// If has voted to restart this state
 						if (this->m_Votes[Temp->entindex()].VoteStop[MatchState])
 						{
-							VoteCount++;
+							VoteCount += 1.0f;
 						}
 					}
 
 					// Vote Restart Progress to restart current period
-					auto VoteProgress = (float)((VoteCount * 100) / VotesNeed);
+					auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
 					// If need more votes to restart period
 					if (VoteProgress < 100.0f)

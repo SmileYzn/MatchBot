@@ -39,10 +39,10 @@ void CMatchStats::RoundStart()
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
 	{
 		// Clear Round Damage
-		this->m_RoundDmg.fill({0});
+		this->m_RoundDmg.fill({});
 
 		// Clear Round Hits
-		this->m_RoundHit.fill({0});
+		this->m_RoundHit.fill({});
 	}
 }
 
@@ -89,7 +89,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 					if (CSGameRules()->FPlayerCanTakeDamage(Victim, Attacker))
 					{
 						// Attacker Round Damage
-						this->m_RoundDmg[AttackerIndex][VictimIndex] += (int)(Victim->m_iLastClientHealth - clamp(Victim->edict()->v.health, 0.0f, Victim->edict()->v.health));
+						this->m_RoundDmg[AttackerIndex][VictimIndex] += (Victim->m_iLastClientHealth - static_cast<int>(clamp(Victim->edict()->v.health, 0.0f, Victim->edict()->v.health)));
 
 						// Attacker Round Hits
 						this->m_RoundHit[AttackerIndex][VictimIndex]++;
@@ -117,7 +117,6 @@ bool CMatchStats::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
 		{
 			if (g_pGameRules)
 			{
-				// Removed || CSGameRules()->IsFreezePeriod(), showing full enemy team hp on freezetime its not needed.
 				if (!Player->IsAlive() || CSGameRules()->m_bRoundTerminating)
 				{
 					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)

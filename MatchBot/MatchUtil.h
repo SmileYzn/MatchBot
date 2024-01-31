@@ -77,7 +77,7 @@ public:
 	std::map<int, std::string> GetMapList(bool CurrentMap);
 
 	// Show MOTD to player
-	void ShowMotd(edict_t* pEntity, char* Motd, int MotdLength);
+	void ShowMotd(edict_t* pEntity, char* Motd, unsigned int MotdLength);
 
 	// Replace all in string
 	void ReplaceAll(std::string& String, const std::string& From, const std::string& To);

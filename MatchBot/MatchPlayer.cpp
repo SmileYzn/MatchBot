@@ -300,7 +300,7 @@ void CMatchPlayer::ShowInfo(CBasePlayer* Player, int UserIndex)
 		);
 
 		// If is an admin with immunity flag
-		auto IsAdmin = (PlayerInfo->AdminFlags & ADMIN_IMMUNITY);
+		auto IsAdmin = static_cast<bool>(PlayerInfo->AdminFlags & ADMIN_IMMUNITY);
 
 		// If is online
 		auto IsConnected = (PlayerInfo->Status > 0);
