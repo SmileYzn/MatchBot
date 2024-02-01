@@ -85,7 +85,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 		}
 	}
 	// If player used say or say_team command
-	else if (Q_strcmp(pcmd,"say") == 0 || Q_strcmp(pcmd,"say_team") == 0)
+	else if (Q_stricmp(pcmd, "say") == 0 || Q_stricmp(pcmd, "say_team") == 0)
 	{
 		// If has any argument
 		if (parg1)

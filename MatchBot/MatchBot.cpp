@@ -521,6 +521,9 @@ void CMatchBot::SetState(int State)
 	// Match Stats
 	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
 
+	// Player Vote Menu
+	gMatchVoteMenu.SetState(this->m_State);
+
 	// Match Scores Game Name
 	this->UpdateGameName();
 

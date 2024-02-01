@@ -20,36 +20,37 @@ typedef struct S_PLAYER_VOTES
 	// Vote Stop Array
 	std::array<bool, MAX_CLIENTS + 1> VoteStop;
 
+	// Reset all votes
 	void Reset()
 	{
 		// Reset Vote Kick
-		std::fill(this->VoteKick.begin(), this->VoteKick.end(), false);
+		this->VoteKick.fill(false);
 
 		// Reset Vote Map
-		std::fill(this->VoteMap.begin(), this->VoteMap.end(), false);
+		this->VoteMap.fill(false);
 
 		// Reset Vote Pause
-		std::fill(this->VotePause.begin(), this->VotePause.end(), false);
+		this->VotePause.fill(false);
 
 		// Reset Vote Restart
-		std::fill(this->VoteRestart.begin(), this->VoteRestart.end(), false);
+		this->VoteRestart.fill(false);
 
 		// Reset Vote Surrender
-		std::fill(this->VoteSurrender.begin(), this->VoteSurrender.end(), false);
+		this->VoteSurrender.fill(false);
 
 		// Reset Vote Stop
-		std::fill(this->VoteStop.begin(), this->VoteStop.end(), false);
+		this->VoteStop.fill(false);
 	}
 } P_PLAYER_VOTES, * LP_PLAYER_VOTES;
 
 class CMatchVoteMenu
 {
 public:
-	// Server Activate
-	void ServerActivate();
+	// Match Bot States
+	void SetState(int State);
 
 	// Player Disconnect
-	void PlayerDisconnect(edict_t* pEdict);
+	void PlayerDisconnect(edict_t* pEntity);
 
 	// Main Vote Menu
 	bool Menu(CBasePlayer* Player);

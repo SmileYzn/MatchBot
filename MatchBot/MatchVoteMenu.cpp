@@ -3,33 +3,53 @@
 CMatchVoteMenu gMatchVoteMenu;
 
 // Server Activate
-void CMatchVoteMenu::ServerActivate()
+void CMatchVoteMenu::SetState(int State)
 {
-	// Clear Votes
-	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	// Switch State
+	if (State == STATE_DEAD)
 	{
-		// Clear all votes
-		this->m_Votes[i].Reset();
-	}
+		// Loop max clients id
+		for (int i = 1; i <= gpGlobals->maxClients; ++i)
+		{
+			// Clear all votes
+			this->m_Votes[i].Reset();
+		}
 
-	// Clear Map List
-	this->m_MapList = gMatchUtil.GetMapList(false);
+		// Clear Map List
+		this->m_MapList = gMatchUtil.GetMapList(false);
+	}
+	else
+	{
+		// Loop max clients id
+		for (int i = 1; i <= gpGlobals->maxClients; ++i)
+		{
+			// Clear votes for pause
+			this->m_Votes[i].VotePause.fill(false);
+
+			// Clear votes for restart on that period
+			this->m_Votes[i].VoteRestart[State] = false;
+		}
+	}
 }
 
 // Player Disconnect
-void CMatchVoteMenu::PlayerDisconnect(edict_t* pEdict)
+void CMatchVoteMenu::PlayerDisconnect(edict_t* pEntity)
 {
-	// Get Player entity Index
-	auto EntityIndex = ENTINDEX(pEdict);
-
-	// Reset Player Votes
-	this->m_Votes[EntityIndex].Reset();
-
-	// Loop Clients to reset Vote Kick
-	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	// If is not null
+	if (!FNullEnt(pEntity))
 	{
-		// Reset Vote Kick Count from other players to player
-		this->m_Votes[i].VoteKick[EntityIndex] = false;
+		// Get Player entity Index
+		auto EntityIndex = ENTINDEX(pEntity);
+
+		// Reset Player Votes
+		this->m_Votes[EntityIndex].Reset();
+
+		// Loop Clients to reset Vote Kick
+		for (int i = 1; i <= gpGlobals->maxClients; ++i)
+		{
+			// Reset Vote Kick Count from other players to player
+			this->m_Votes[i].VoteKick[EntityIndex] = false;
+		}
 	}
 }
 
@@ -392,8 +412,8 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 		// If vote state is not running
 		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
 		{
-			// If pause timer is enabled
-			if (gMatchBot.m_PauseTime->value > 0.0f)
+			// If pause timer is enabled and pause limit have value
+			if (gMatchBot.m_PauseTime->value > 0.0f && gMatchBot.m_PauseLimit->value > 0.0f)
 			{
 				// Get Players
 				auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);
