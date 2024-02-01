@@ -534,7 +534,7 @@ void CMatchAdminMenu::ControlMenuHandle(int EntityIndex, P_MENU_ITEM Item)
 			}
 			case 5: // Pause Match
 			{
-				gMatchPause.Init(Player);
+				gMatchPause.Init(Player, UNASSIGNED);
 				break;
 			}
 			case 6: // Enable / Disable Match BOT

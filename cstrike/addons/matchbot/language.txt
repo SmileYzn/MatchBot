@@ -646,11 +646,11 @@ end
 	"ru"		"Матч приостановлен: Игра продолжится через ^3%s^1."
 end
 
-"MATCH PAUSED^n%s LEFT"
-	"en"		"MATCH PAUSED^n%s LEFT"
-	"bp"		"JOGO PAUSADO^n%s RESTANTES"
-	"es"		"JUEGO PAUSADO^n%s RESTANTES"
-	"ru"		"МАТЧ ПРИОСТАНОВЛЕН^n%s ОСТАЛОСЬ"
+"MATCH PAUSED BY %s^n%s LEFT"
+	"en"		"MATCH PAUSED BY %s^n%s LEFT"
+	"bp"		"JOGO PAUSADO POR %s^n%s RESTANTES"
+	"es"		"JUEGO PAUSADO POR %s^n%s RESTANTES"
+	"ru"		"МАТЧ ПРИОСТАНОВЛЕН %s^n%s ОСТАЛОСЬ"
 end
 
 "Say ^4.ready^1 to continue."

@@ -462,7 +462,7 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 								else
 								{
 									// Pause Match
-									gMatchPause.Init(nullptr);
+									gMatchPause.Init(nullptr, Player->m_iTeam);
 								}
 							}
 							else

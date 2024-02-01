@@ -300,7 +300,7 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				}
 				case CMD_ADMIN_PAUSE_MATCH:
 				{
-					gMatchPause.Init(Player);
+					gMatchPause.Init(Player, UNASSIGNED);
 					return true;
 				}
 				case CMD_ADMIN_HELP:

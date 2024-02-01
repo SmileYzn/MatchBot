@@ -3,19 +3,31 @@
 CMatchPause gMatchPause;
 
 // Init Match Pause
-void CMatchPause::Init(CBasePlayer* Player)
+void CMatchPause::Init(CBasePlayer* Player, TeamName Team)
 {
 	// Check Access
-	if (Player == nullptr || gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_B))
+	if ((Player == nullptr) || (gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_B)))
 	{
 		// Check if match is live
-		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
+		if ((gMatchBot.GetState() == STATE_FIRST_HALF) || (gMatchBot.GetState() == STATE_SECOND_HALF) || (gMatchBot.GetState() == STATE_OVERTIME))
 		{
 			// If is not in freeze time period
 			if (!CSGameRules()->IsFreezePeriod())
 			{
 				// Pause Match
 				this->m_Pause = true;
+
+				// If player is null, pause was called by a team
+				if (Player == nullptr)
+				{
+					// Set team name
+					this->m_PauseTeam = gMatchBot.GetTeam(Team, false);
+				}
+				else
+				{
+					// Set Admin Name
+					this->m_PauseTeam = STRING(Player->edict()->v.netname);
+				}
 
 				// If map has buyzone
 				if (CSGameRules()->m_bMapHasBuyZone)
@@ -28,10 +40,10 @@ void CMatchPause::Init(CBasePlayer* Player)
 				}
 				
 				// If admin issued command
-				if (Player)
+				if (this->m_PauseTeam)
 				{
 					// Send Message
-					gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 Paused Match: Game will pause on next round start."), STRING(Player->edict()->v.netname));
+					gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 Paused Match: Game will pause on next round start."), this->m_PauseTeam);
 				}
 				else
 				{
@@ -113,7 +125,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 	if (g_pGameRules)
 	{
 		// Get Rem ain time of current pause
-		time_t RemainTime = (time_t)((time_t)PauseTime - (time_t)(gpGlobals->time - CSGameRules()->m_fRoundStartTime));
+		auto RemainTime = (static_cast<time_t>(PauseTime) - static_cast<time_t>(gpGlobals->time - CSGameRules()->m_fRoundStartTime));
 
 		// If has time
 		if (RemainTime > 0)
@@ -131,7 +143,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 				if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)
 				{
 					// Send message
-					gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 0, 0.53, 0.53, 0.0, 0.0, 1), _T("MATCH PAUSED^n%s LEFT"), Time);
+					gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 0, 0.53, 0.53, 0.0, 0.0, 1), _T("MATCH PAUSED BY %s^n%s LEFT"), Time, gMatchPause.m_PauseTeam);
 				}
 			}
 		}
@@ -152,7 +164,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 			}
 
 			// Restore Freezetime
-			gMatchPause.SetRoundTime((int)CVAR_GET_FLOAT("mp_freezetime"), true);
+			gMatchPause.SetRoundTime(static_cast<int>(g_engfuncs.pfnCVarGetFloat("mp_freezetime")), true);
 		}
 	}
 }

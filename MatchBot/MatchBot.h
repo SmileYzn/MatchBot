@@ -1,14 +1,14 @@
 #pragma once
 
 // Match Bot States
-constexpr int STATE_DEAD = 0;
-constexpr int STATE_WARMUP = 1;
-constexpr int STATE_START = 2;
-constexpr int STATE_FIRST_HALF = 3;
-constexpr int STATE_HALFTIME = 4;
-constexpr int STATE_SECOND_HALF = 5;
-constexpr int STATE_OVERTIME = 6;
-constexpr int STATE_END = 7;
+constexpr auto STATE_DEAD = 0;
+constexpr auto STATE_WARMUP = 1;
+constexpr auto STATE_START = 2;
+constexpr auto STATE_FIRST_HALF = 3;
+constexpr auto STATE_HALFTIME = 4;
+constexpr auto STATE_SECOND_HALF = 5;
+constexpr auto STATE_OVERTIME = 6;
+constexpr auto STATE_END = 7;
 
 // Match Bot State Names
 const char MATCH_BOT_STATES[][32] =
