@@ -96,17 +96,17 @@ bool ReAPI_Stop()
 
 void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, bool crash, const char* Reason)
 {
-	auto pEdict = client->GetEdict();
+	auto pEntity = client->GetEdict();
 
-	if (!FNullEnt(pEdict))
+	if (!FNullEnt(pEntity))
 	{
-		gMatchCaptain.PlayerDisconnect(pEdict);
+		gMatchCaptain.PlayerDisconnect(pEntity);
 
-		gMatchVoteMenu.PlayerDisconnect(pEdict);
+		gMatchVoteMenu.PlayerDisconnect(pEntity);
 
-		gMatchRetry.PlayerDisconnect(pEdict, crash, Reason);
+		gMatchRetry.PlayerDisconnect(pEntity, crash, Reason);
 
-		gMatchPlayer.PlayerDisconnect(pEdict);
+		gMatchPlayer.PlayerDisconnect(pEntity);
 	}
 
 	chain->callNext(client, crash, Reason);

@@ -113,6 +113,9 @@ void CMatchBot::ServerActivate()
 	// Amount of seconds to pause match (0 Disable, or number of seconds to pause the match)
 	this->m_PauseTime = gMatchUtil.CvarRegister("mb_pause_time", "60.0");
 
+	// Pause match if player count in teams is less than mb_players_min value (0 Disable, 1 Enable)
+	this->m_PauseAuto = gMatchUtil.CvarRegister("mb_pause_auto", "0");
+
 	// Anti reconnect mode (0 Disabled, 1 Enable when player explicity drop from server, 2 Enabled for any disconnect reason)
 	this->m_RetryMode = gMatchUtil.CvarRegister("mb_retry_mode", "0");
 
@@ -503,7 +506,7 @@ void CMatchBot::SetState(int State)
 					auto Players = gMatchUtil.GetPlayers(true, true);
 
 					// If reached minimum of players
-					if (Players.size() > (size_t)(this->m_PlayersMin->value / 2.0f))
+					if (Players.size() > static_cast<size_t>(this->m_PlayersMin->value / 2.0f))
 					{
 						// In next state, start Vote Map
 						NextState = STATE_START;

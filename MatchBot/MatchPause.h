@@ -3,11 +3,17 @@
 class CMatchPause
 {
 public:
-	// Init Pause
+	// On server activate
+	void ServerActivate();
+
+	// Init pause
 	void Init(CBasePlayer* Player, TeamName Team);
 
 	// On restart round event
 	void RoundRestart();
+
+	//  Pause function
+	void Pause();
 
 	// Pause timer hud message 
 	static void PauseTimer(int PauseTime);
@@ -16,7 +22,8 @@ public:
 	void SetRoundTime(int Time, bool FreezePeriod);
 
 	bool m_Pause = false;
-	const char* m_PauseTeam;
+	bool m_Paused = false;
+	std::string m_PauseTeam;
 	float m_BuyTime = 0.0f;
 };
 

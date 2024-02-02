@@ -211,6 +211,7 @@ public:
 	cvar_t* m_RestrictWeapons = nullptr;
 	cvar_t* m_ExtraSmokeCount = nullptr;
 	cvar_t* m_PauseTime = nullptr;
+	cvar_t* m_PauseAuto = nullptr;
 	cvar_t* m_RetryMode = nullptr;
 	cvar_t* m_RetryTime = nullptr;
 	cvar_t* m_RoundGrenadeCount = nullptr;

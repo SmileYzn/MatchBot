@@ -646,6 +646,20 @@ end
 	"ru"		"Матч приостановлен: Игра продолжится через ^3%s^1."
 end
 
+"Paused Match: ^3%d^1 player(s) left to continue the match."
+	"en"		"Paused Match: ^3%d^1 player(s) left to continue the match."
+	"bp"		"Partida Pausada: Faltam ^3%d^1 jogador(es) para continuar a partida."
+	"es"		"Partido en pausa: quedan ^3%d^1 jugador(es) para continuar el partido."
+	"ru"		"Приостановленный матч: осталось ^3%d^ игрок(а), чтобы продолжить матч."
+end
+
+"MATCH PAUSED^n%s LEFT"
+	"en"		"MATCH PAUSED^n%s LEFT"
+	"bp"		"JOGO PAUSADO^n%s RESTANTES"
+	"es"		"JUEGO PAUSADO^n%s RESTANTES"
+	"ru"		"МАТЧ ПРИОСТАНОВЛЕН^n%s ОСТАЛОСЬ"
+end
+
 "MATCH PAUSED BY %s^n%s LEFT"
 	"en"		"MATCH PAUSED BY %s^n%s LEFT"
 	"bp"		"JOGO PAUSADO POR %s^n%s RESTANTES"
