@@ -143,7 +143,7 @@ void CMatchPause::PauseTimer(int PauseTime)
 				if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)
 				{
 					// Send message
-					gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 0, 0.53, 0.53, 0.0, 0.0, 1), _T("MATCH PAUSED BY %s^n%s LEFT"), Time, gMatchPause.m_PauseTeam);
+					gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, -1.0, 0.2, 0, 0.53, 0.53, 0.0, 0.0, 1), _T("MATCH PAUSED BY %s^n%s LEFT"), gMatchPause.m_PauseTeam, Time);
 				}
 			}
 		}
