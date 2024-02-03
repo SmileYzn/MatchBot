@@ -7,6 +7,7 @@ constexpr auto MB_COMMANDS_FILE = "cstrike/addons/matchbot/commands.txt";
 typedef struct S_COMMAND_INFO
 {
 	int Index;
+	std::string Name;
 	int Flag;
 }P_COMMAND_INFO, *LP_COMMAND_INFO;
 
@@ -29,6 +30,7 @@ enum E_COMMAND_INDEX
 	CMD_PLAYER_VOTE_RESTART,
 	CMD_PLAYER_VOTE_STOP,
 	CMD_PLAYER_MUTE_MENU,
+	CMD_PLAYER_VOTE_SURRENDER,
 	//
 	CMD_ADMIN_MENU = 33,
 	CMD_ADMIN_KICK,
@@ -48,7 +50,7 @@ enum E_COMMAND_INDEX
 	CMD_ADMIN_PAUSE_MATCH,
 	CMD_ADMIN_HELP,
 	CMD_ADMIN_PLAYER_LIST,
-	CMD_ADMIN_CVAR_MENU,
+	CMD_ADMIN_CVAR_MENU
 };
 
 class CMatchCommand
@@ -56,6 +58,9 @@ class CMatchCommand
 public:
 	// On Server Activate
 	void ServerActivate();
+
+	// Get Command info by index
+	LP_COMMAND_INFO GetInfo(E_COMMAND_INDEX CommandIndex);
 
 	// On Client Command
 	bool ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1);

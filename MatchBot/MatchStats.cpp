@@ -135,7 +135,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 					if (CSGameRules()->FPlayerCanTakeDamage(Victim, Attacker))
 					{
 						// Attacker Round Damage
-						this->m_RoundDmg[AttackerIndex][VictimIndex] += static_cast<int>(clamp(flDamage, 0.0f, 100.0f));
+						this->m_RoundDmg[AttackerIndex][VictimIndex] += flDamage;
 
 						// Attacker Round Hits
 						this->m_RoundHit[AttackerIndex][VictimIndex]++;

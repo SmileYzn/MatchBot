@@ -148,11 +148,11 @@ void CMatchPause::Pause()
 		if (this->m_BuyTime <= 0.0f)
 		{
 			// Get default buy time
-			this->m_BuyTime = g_engfuncs.pfnCVarGetFloat("mp_buytime");
+			this->m_BuyTime = gMatchBot.m_BuyTime->value;
 		}
 
 		// Set buytime
-		g_engfuncs.pfnCVarSetFloat("mp_buytime", gMatchBot.m_PauseTime->value);
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BuyTime, std::to_string(gMatchBot.m_PauseTime->value).c_str());
 	}
 
 	// Pause for 60 seconds
@@ -233,11 +233,11 @@ void CMatchPause::PauseTimer(int PauseTime)
 			if (g_pGameRules)
 			{
 				// Restore default buy time
-				g_engfuncs.pfnCVarSetFloat("mp_buytime", gMatchPause.m_BuyTime);
+				g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BuyTime, std::to_string(gMatchPause.m_BuyTime).c_str());
 			}
-
+			
 			// Restore Freezetime
-			gMatchPause.SetRoundTime(static_cast<int>(g_engfuncs.pfnCVarGetFloat("mp_freezetime")), true);
+			gMatchPause.SetRoundTime(static_cast<int>(gMatchBot.m_Freezetime->value), true);
 		}
 	}
 }

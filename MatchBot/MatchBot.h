@@ -175,6 +175,15 @@ private:
 	std::array<std::array<std::array<int, 2>, STATE_END + 1U>, MAX_CLIENTS + 1> m_Scoreboard;
 
 public:
+	// Server variables
+	cvar_t* m_BotDeathMatch = nullptr;
+	cvar_t* m_AutoTeamJoin = nullptr;
+	cvar_t* m_HumansJoinTeam = nullptr;
+	cvar_t* m_BotJoinTeam = nullptr;
+	cvar_t* m_AllowSpectators = nullptr;
+	cvar_t* m_BuyTime = nullptr;
+	cvar_t* m_Freezetime = nullptr;
+
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;
 	cvar_t* m_Language = nullptr;

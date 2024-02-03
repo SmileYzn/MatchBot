@@ -12,10 +12,13 @@ void CMatchCaptain::Init(int PlayersMin)
 
 		this->m_PlayersMin = PlayersMin;
 
-		g_engfuncs.pfnCVarSetString("mp_auto_join_team", "1");
-		g_engfuncs.pfnCVarSetString("humans_join_team", "SPEC");
-		g_engfuncs.pfnCVarSetString("bot_join_team", "SPEC");
-		g_engfuncs.pfnCVarSetString("allow_spectators", "1");
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_AutoTeamJoin, "1");
+
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_HumansJoinTeam, "SPEC");
+
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BotJoinTeam, "SPEC");
+
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_AllowSpectators, "1");
 
 		for (auto & Player : Players)
 		{
@@ -55,9 +58,13 @@ void CMatchCaptain::Stop(int NextState)
 {
 	this->m_Running = false;
 
-	g_engfuncs.pfnCVarSetString("mp_auto_join_team", "0");
-	g_engfuncs.pfnCVarSetString("humans_join_team", "any");
-	g_engfuncs.pfnCVarSetString("bot_join_team", "any");
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_AutoTeamJoin, "0");
+
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_HumansJoinTeam, "any");
+
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BotJoinTeam, "any");
+
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_AllowSpectators, "0");
 
 	if (g_pGameRules)
 	{

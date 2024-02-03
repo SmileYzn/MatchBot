@@ -30,13 +30,13 @@ void CMatchCommand::ServerActivate()
 					auto Index = lpMemScript->GetNumber();
 
 					//  Command String
-					auto Command = lpMemScript->GetAsString();
+					auto Name = lpMemScript->GetAsString();
 
 					// Command Flag
 					auto Flag = gMatchAdmin.ReadFlags(lpMemScript->GetAsString().c_str());
 
 					// Insert to container
-					this->m_Data[Command] = {Index, Flag};
+					this->m_Data[Name] = {Index, Name, Flag};
 				}
 			}
 			catch (...)
@@ -49,6 +49,24 @@ void CMatchCommand::ServerActivate()
 		// Delete Memory Script instance
 		delete lpMemScript;
 	}
+}
+
+// Get Command info
+LP_COMMAND_INFO CMatchCommand::GetInfo(E_COMMAND_INDEX CommandIndex)
+{
+	// Loop registered commands
+	for (auto const& Command : this->m_Data)
+	{
+		// If index is the same
+		if (CommandIndex == Command.second.Index)
+		{
+			// Return pointer to command data
+			return &this->m_Data[Command.first];
+		}
+	}
+
+	// Return null pointer
+	return nullptr;
 }
 
 // On Client command
@@ -221,6 +239,11 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				case CMD_PLAYER_MUTE_MENU:
 				{
 					gMatchMute.Menu(Player);
+					return true;
+				}
+				case CMD_PLAYER_VOTE_SURRENDER:
+				{
+					gMatchVoteMenu.VoteSurrender(Player);
 					return true;
 				}
 				case CMD_ADMIN_MENU:

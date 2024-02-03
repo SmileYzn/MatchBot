@@ -926,11 +926,11 @@ end
 	"ru"		"^3%s^1 проголосовал за кик ^3%s^1: %2.0f%% голосов за кик."
 end
 
-"Say ^3.vote^1 to open vote kick."
-	"en"		"Say ^3.vote^1 to open vote kick."
-	"bp"		"Say ^3.vote^1 para abrir o vote kick."
-	"es"		"Escribe ^3.vote^1 para comenzar vote kick."
-	"ru"		"Напишите ^3.vote^1, чтобы начать голосование за кик."
+"Say ^3%s^1 to open vote kick."
+	"en"		"Say ^3%s^1 to open vote kick."
+	"bp"		"Say ^3%s^1 para abrir o vote kick."
+	"es"		"Escribe ^3%s^1 para comenzar vote kick."
+	"ru"		"Напишите ^3%s^1, чтобы начать голосование за кик."
 end
 
 "Kicked by Vote Kick."
@@ -961,11 +961,11 @@ end
 	"ru"		"^3%s^1 номинировал ^4%s^1: %2.0f%% голосов за смену карты."
 end
 
-"Say ^3.vote^1 to nominate a map."
-	"en"		"Say ^3.vote^1 to nominate a map."
-	"bp"		"Say ^3.vote^1 para nomear um mapa."
-	"es"		"Escribe ^3.vote^1 para nominar un mapa."
-	"ru"		"Напишите ^3.vote^1, чтобы номинировать карту."
+"Say ^3%s^1 to nominate a map."
+	"en"		"Say ^3%s^1 to nominate a map."
+	"bp"		"Say ^3%s^1 para nomear um mapa."
+	"es"		"Escribe ^3%s^1 para nominar un mapa."
+	"ru"		"Напишите ^3%s^1, чтобы номинировать карту."
 end
 
 "Already nominated ^3%s^1..."
@@ -982,11 +982,11 @@ end
 	"ru"		"^3%s^1 из команды ^3%s^1 проголосовал за паузу матча: %2.0f%% голосов за паузу."
 end
 
-"Say ^3.vote^1 to vote for a pause."
-	"en"		"Say ^3.vote^1 to vote for a pause."
-	"bp"		"Say ^3.vote^1 para votar uma pausa."
-	"es"		"Escribe ^3.vote^1 para votar una pausa."
-	"ru"		"Напишите ^3.vote^1, чтобы проголосовать за паузу."
+"Say ^3%s^1 to vote for a pause."
+	"en"		"Say ^3%s^1 to vote for a pause."
+	"bp"		"Say ^3%s^1 para votar uma pausa."
+	"es"		"Escribe ^3%s^1 para votar una pausa."
+	"ru"		"Напишите ^3%s^1, чтобы проголосовать за паузу."
 end
 
 "You already voted to pause the game."
@@ -1003,11 +1003,11 @@ end
 	"ru"		"^3%s^1 проголосовал за перезапуск ^3%s^1: %2.0f%% голосов за перезапуск матча."
 end
 
-"Say ^3.vote^1 to restart match."
-	"en"		"Say ^3.vote^1 to restart match."
-	"bp"		"Say ^3.vote^1 para reiniciar a partida."
-	"es"		"Esribe ^3.vote^1 para reiniciar la partida."
-	"ru"		"Напишите ^3.vote^1, чтобы перезапустить матч."
+"Say ^3%s^1 to restart match."
+	"en"		"Say ^3%s^1 to restart match."
+	"bp"		"Say ^3%s^1 para reiniciar a partida."
+	"es"		"Esribe ^3%s^1 para reiniciar la partida."
+	"ru"		"Напишите ^3%s^1, чтобы перезапустить матч."
 end
 
 "Restarting match.."
@@ -1045,11 +1045,11 @@ end
 	"ru"		"^3%s^1 из команды ^3%s^1 проголосовал за сдачу: %2.0f%% голосов за сдачу."
 end
 
-"Say ^3.vote^1 to vote for a surrender."
-	"en"		"Say ^3.vote^1 to vote for a surrender."
-	"bp"		"Say ^3.vote^1 para votar para rendição."
-	"es"		"Escribe ^3.vote^1 para votar por una rendición."
-	"ru"		"Напишите ^3.vote^1, чтобы проголосовать за сдачу."
+"Say ^3%s^1 to vote for a surrender."
+	"en"		"Say ^3%s^1 to vote for a surrender."
+	"bp"		"Say ^3%s^1 para votar para rendição."
+	"es"		"Escribe ^3%s^1 para votar por una rendición."
+	"ru"		"Напишите ^3%s^1, чтобы проголосовать за сдачу."
 end
 
 "You already voted to surrender the game."
@@ -1241,7 +1241,7 @@ end
 	"ru"		"Конец игры! Команда ^3%s^1 сдалась!!"
 end
 
-"Vote to cancel the match"
+"Vote to Cancel The Match"
 	"en"		"Vote to Cancel The Match"
 	"bp"		"Votar para cancelar a partida"
 	"es"		"Vota para cancelar el partido"
@@ -1255,11 +1255,11 @@ end
 	"ru"		"^3%s^1 проголосовал за отмену матча: %2.0f%% голосов за отмену матча."
 end
 
-"Say ^3.vote^1 to cancel the match."
-	"en"		"Say ^3.vote^1 to cancel the match."
-	"bp"		"Say ^3.vote^1 para cancelar a partida."
-	"es"		"Escribe ^3.vote^1 para cancelar la partida."
-	"ru"		"Напишите ^3.vote^1 чтобы отменить матч."
+"Say ^3%s^1 to cancel the match."
+	"en"		"Say ^3%s^1 to cancel the match."
+	"bp"		"Say ^3%s^1 para cancelar a partida."
+	"es"		"Escribe ^3%s^1 para cancelar la partida."
+	"ru"		"Напишите ^3%s^1 чтобы отменить матч."
 end
 
 "Canceling match..."

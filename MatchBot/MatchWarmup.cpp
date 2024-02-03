@@ -8,7 +8,7 @@ void CMatchWarmup::Init()
 
 	this->RemoveMapObjective(true);
 
-	g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 1.0f);
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BotDeathMatch, "1");
 
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawning is enabled until match begin!"));
 }
@@ -21,7 +21,7 @@ void CMatchWarmup::Stop()
 
 		this->RemoveMapObjective(false);
 
-		g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BotDeathMatch, "0");
 
 		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Deathmatch respawning disabled."));
 	}

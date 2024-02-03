@@ -256,7 +256,16 @@ void CMatchVoteMenu::VoteKickHandle(int EntityIndex, P_MENU_ITEM Item)
 				{
 					// Send vote kick messages
 					gMatchUtil.SayText(nullptr, PlayerIndex, _T("^3%s^1 voted to kick ^3%s^1: %2.0f%% of votes to kick."), STRING(Player->edict()->v.netname), STRING(Target->edict()->v.netname), VoteProgress);
-					gMatchUtil.SayText(nullptr, PlayerIndex, _T("Say ^3.vote^1 to open vote kick."));
+
+					// Get command info
+					auto lpCommand = gMatchCommand.GetInfo(CMD_PLAYER_VOTE_KICK);
+
+					// If is not null
+					if (lpCommand)
+					{
+						// Show message
+						gMatchUtil.SayText(nullptr, PlayerIndex, _T("Say ^3%s^1 to open vote kick."), lpCommand->Name.c_str());
+					}
 				}
 				else
 				{
@@ -381,7 +390,16 @@ void CMatchVoteMenu::VoteMapHandle(int EntityIndex, P_MENU_ITEM Item)
 			{
 				// Send messages
 				gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 nomitated ^4%s^1: %2.0f%% of votes to change map."), STRING(Player->edict()->v.netname), MapName.c_str(), VoteProgress);
-				gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to nominate a map."));
+
+				// Get command info
+				auto lpCommand = gMatchCommand.GetInfo(CMD_PLAYER_VOTE_MAP);
+
+				// If is not null
+				if (lpCommand)
+				{
+					// Show message
+					gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%s^1 to nominate a map."), lpCommand->Name.c_str());
+				}
 			}
 			else
 			{
@@ -457,7 +475,16 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 								{
 									// Send messages
 									gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for pause match: %2.0f%% of votes to pause match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
-									gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to vote for a pause."));
+
+									// Get command info
+									auto lpCommand = gMatchCommand.GetInfo(CMD_PLAYER_VOTE_PAUSE);
+
+									// If is not null
+									if (lpCommand)
+									{
+										// Show message
+										gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%s^1 to vote for a pause."), lpCommand->Name.c_str());
+									}
 								}
 								else
 								{
@@ -540,7 +567,16 @@ bool CMatchVoteMenu::VoteRestart(CBasePlayer* Player)
 					{
 						// Send messages
 						gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 voted to restart ^3%s^1: %2.0f%% of votes to restart match."), STRING(Player->edict()->v.netname), gMatchBot.GetState(MatchState), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to restart match."));
+
+						// Get command info
+						auto lpCommand = gMatchCommand.GetInfo(CMD_PLAYER_VOTE_RESTART);
+
+						// If is not null
+						if (lpCommand)
+						{
+							// Show message
+							gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%s^1 to restart match."), lpCommand->Name.c_str());
+						}
 					}
 					else
 					{
@@ -583,63 +619,76 @@ bool CMatchVoteMenu::VoteSurrender(CBasePlayer* Player)
 		// If vote state is not running
 		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
 		{
-			// Get Players
-			auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);
-
-			// If player count match
-			if (gMatchBot.m_PlayerVoteSurrender->value && (Players.size() >= (size_t)round(gMatchBot.m_PlayerVoteSurrender->value)))
+			// If vote surrender is enabled
+			if (gMatchBot.m_PlayerVoteSurrender->value > 0.0f)
 			{
-				// If player not voted yet
-				if (!this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam])
+				// Get Players
+				auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);
+
+				// If player count match
+				if (Players.size() >= static_cast<size_t>(gMatchBot.m_PlayerVoteSurrender->value))
 				{
-					// Add Vote
-					this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam] = true;
-
-					// Needed votes
-					auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
-
-					// Get Vote Count
-					auto VoteCount = 0.0f;
-
-					// Loop Players in team
-					for (const auto& Temp : Players)
+					// If player not voted yet
+					if (!this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam])
 					{
-						// Count Vote if is true
-						if (this->m_Votes[Temp->entindex()].VoteSurrender[Temp->m_iTeam])
+						// Add Vote
+						this->m_Votes[Player->entindex()].VoteSurrender[Player->m_iTeam] = true;
+
+						// Needed votes
+						auto VotesNeed = (static_cast<float>(Players.size()) * gMatchBot.m_VotePercent->value);
+
+						// Get Vote Count
+						auto VoteCount = 0.0f;
+
+						// Loop Players in team
+						for (const auto& Temp : Players)
 						{
-							VoteCount += 1.0f;
+							// Count Vote if is true
+							if (this->m_Votes[Temp->entindex()].VoteSurrender[Temp->m_iTeam])
+							{
+								VoteCount += 1.0f;
+							}
 						}
-					}
 
-					// Vote Map Progress to change map
-					auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
+						// Vote Map Progress to change map
+						auto VoteProgress = ((VoteCount * 100.0f) / VotesNeed);
 
-					// If need more votes to change map
-					if (VoteProgress < 100.0f)
-					{
-						// Send messages
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for surrender: %2.0f%% of votes to surrender match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to vote for a surender."));
+						// If need more votes to change map
+						if (VoteProgress < 100.0f)
+						{
+							// Send messages
+							gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 from ^3%s^1 voted for surrender: %2.0f%% of votes to surrender match."), STRING(Player->edict()->v.netname), gMatchBot.GetTeam(Player->m_iTeam, false), VoteProgress);
+
+							// Get command info
+							auto lpCommand = gMatchCommand.GetInfo(CMD_PLAYER_VOTE_SURRENDER);
+
+							// If is not null
+							if (lpCommand)
+							{
+								// Show message
+								gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%s^1 to vote for a surrender."), lpCommand->Name.c_str());
+							}
+						}
+						else
+						{
+							// Stop Match with a loser and winner
+							gMatchBot.EndMatch(Player->m_iTeam, (Player->m_iTeam == TERRORIST) ? CT : TERRORIST);
+						}
 					}
 					else
 					{
-						// Stop Match with a loser and winner
-						gMatchBot.EndMatch(Player->m_iTeam, (Player->m_iTeam == TERRORIST) ? CT : TERRORIST);
+						// Send error message
+						gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("You already voted to surrender the game."));
 					}
 				}
 				else
 				{
-					// Send error message
-					gMatchUtil.SayText(Player->edict(), Player->entindex(), _T("You already voted to surrender the game."));
+					// Send message
+					gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), static_cast<int>(gMatchBot.m_PlayerVoteSurrender->value));
 				}
 
 				// Return result
 				return true;
-			}
-			else
-			{
-				// Send message
-				gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%d players is needed to enable that command."), (int)(gMatchBot.m_PlayerVoteSurrender->value));
 			}
 		}
 	}
@@ -699,7 +748,16 @@ bool CMatchVoteMenu::VoteStop(CBasePlayer* Player)
 					{
 						// Send messages
 						gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 voted to cancel the match: %2.0f%% of votes to cancel the match."), STRING(Player->edict()->v.netname), VoteProgress);
-						gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3.vote^1 to cancel the match."));
+
+						// Get command info
+						auto lpCommand = gMatchCommand.GetInfo(CMD_PLAYER_VOTE_STOP);
+
+						// If is not null
+						if (lpCommand)
+						{
+							// Show message
+							gMatchUtil.SayText(nullptr, Player->entindex(), _T("Say ^3%s^1 to cancel the match."), lpCommand->Name.c_str());
+						}
 					}
 					else
 					{

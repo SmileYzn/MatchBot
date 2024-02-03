@@ -8,6 +8,27 @@ void CMatchBot::ServerActivate()
 	// Match BOT is dead
 	this->m_State = STATE_DEAD;
 
+	// BOT deathmatch mode
+	this->m_BotDeathMatch = g_engfuncs.pfnCVarGetPointer("bot_deathmatch");
+
+	// Auto join team
+	this->m_AutoTeamJoin = g_engfuncs.pfnCVarGetPointer("mp_auto_join_team");
+
+	// Humans Join Team
+	this->m_HumansJoinTeam = g_engfuncs.pfnCVarGetPointer("humans_join_team");
+
+	// BOT join team
+	this->m_BotJoinTeam = g_engfuncs.pfnCVarGetPointer("bot_join_team");
+
+	// Allow Spectators
+	this->m_AllowSpectators = g_engfuncs.pfnCVarGetPointer("allow_spectators");
+
+	// Buy Time
+	this->m_BuyTime = g_engfuncs.pfnCVarGetPointer("mb_buytime");
+
+	// Freeze time
+	this->m_Freezetime = g_engfuncs.pfnCVarGetPointer("mp_freezetime");
+
 	// Match BOT Log Tag
 	this->m_MatchTag = gMatchUtil.CvarRegister("mb_log_tag", "BOT");
 
@@ -190,7 +211,7 @@ void CMatchBot::ServerDeactivate()
 		this->m_PlayKnifeRound = false;
 
 		// Disable BOT deathmatch
-		g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
+		g_engfuncs.pfnCvar_DirectSet(this->m_BotDeathMatch, "0");
 
 		// Execute command to run with all weapons
 		gMatchUtil.ServerCommand("bot_all_weapons");
@@ -351,7 +372,7 @@ void CMatchBot::SetState(int State)
 				gMatchWarmup.RemoveMapObjective(true);
 
 				// Set BOT to deathmatch
-				g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 1.0f);
+				g_engfuncs.pfnCvar_DirectSet(this->m_BotDeathMatch, "1");
 
 				// Execute command to run only with knives
 				gMatchUtil.ServerCommand("bot_knives_only");
@@ -365,7 +386,7 @@ void CMatchBot::SetState(int State)
 				gMatchWarmup.RemoveMapObjective(false);
 
 				// Disable BOT deathmatch
-				g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
+				g_engfuncs.pfnCvar_DirectSet(this->m_BotDeathMatch, "0");
 
 				// Execute command to run with all weapons
 				gMatchUtil.ServerCommand("bot_all_weapons");
@@ -662,7 +683,7 @@ bool CMatchBot::PlayerConnect(edict_t* pEntity, const char* pszName, const char*
 	auto EntityIndex = ENTINDEX(pEntity);
 
 	// If we not allow spectaors
-	if (g_engfuncs.pfnCVarGetFloat("allow_spectators") < 1.0f)
+	if (this->m_AllowSpectators->value < 1.0f)
 	{
 		// If player do not have reserved slots
 		if (!gMatchAdmin.Access(EntityIndex, ADMIN_LEVEL_B))
@@ -719,7 +740,7 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	if (Slot == MENU_SLOT_TEAM_SPECT)
 	{
 		// If we not allow spectators
-		if (!CVAR_GET_FLOAT("allow_spectators"))
+		if (this->m_AllowSpectators->value < 1.0f)
 		{
 			// Send message and block it
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3%s^1 are not allowed."), this->GetTeam(SPECTATOR, false));
@@ -1354,7 +1375,7 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 				gMatchWarmup.RemoveMapObjective(false);
 
 				// Disable BOT deathmatch
-				g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
+				g_engfuncs.pfnCvar_DirectSet(this->m_BotDeathMatch, "0");
 
 				// Execute command to run with all weapons
 				gMatchUtil.ServerCommand("bot_all_weapons");
@@ -1477,7 +1498,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 			gMatchWarmup.RemoveMapObjective(false);
 
 			// Disable BOT deathmatch
-			g_engfuncs.pfnCVarSetFloat("bot_deathmatch", 0.0f);
+			g_engfuncs.pfnCvar_DirectSet(this->m_BotDeathMatch, "0");
 
 			// Execute command to run with all weapons
 			gMatchUtil.ServerCommand("bot_all_weapons");
