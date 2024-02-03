@@ -195,6 +195,7 @@ public:
 	cvar_t* m_PlayRoundsOT = nullptr;
 	cvar_t* m_PlayMode = nullptr;
 	cvar_t* m_ReadyType = nullptr;
+	cvar_t* m_ReadyListType = nullptr;
 	cvar_t* m_ReadyTime = nullptr;
 	cvar_t* m_ReadyAuto = nullptr;
 	cvar_t* m_TeamPickupType = nullptr;

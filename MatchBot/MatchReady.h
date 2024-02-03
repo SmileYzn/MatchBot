@@ -3,10 +3,11 @@
 class CMatchReady
 {
 public:
-	void Init(int PlayersMin);
+	void Init();
 	void Stop(bool ChangeState);
 
 	static void Task(int PlayersMin);
+	static void TaskMinimal(int PlayersMin);
 
 	void PlayerGetIntoGame(CBasePlayer* Player);
 
@@ -18,7 +19,7 @@ public:
 
 private:
 	bool m_Running = false;
-	std::array<bool, MAX_CLIENTS + 1> m_Ready;
+	std::array<int, MAX_CLIENTS + 1> m_Ready;
 };
 
 extern CMatchReady gMatchReady;

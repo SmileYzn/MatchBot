@@ -1,5 +1,5 @@
 ﻿// File: 	language.txt
-// Updated: 	11:40 2023/08/26
+// Updated: 	08:57 2024/02/03
 // Description: This file is used to manage translation phrases.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 "Dead"
@@ -693,6 +693,20 @@ end
 	"bp"		"Prontos (%d de %d):"
 	"es"		"Preparado (%d de %d):"
 	"ru"		"Готовы (%d из %d):"
+end
+
+"Not Ready: %s^n%s"
+	"en"		"Not Ready: %s^n%s"
+	"bp"		"Aquecendo: %s^n%s"
+	"es"		"No Preparado: %s^n%s"
+	"ru"		"Не готовы: %s^n%s"
+end
+
+"Type .ready to get ready"
+	"en"		"Type .ready to get ready"
+	"bp"		"Digite .ready para ficar pronto"
+	"es"		"Escribe .ready para estar listo"
+	"ru"		"Введите .ready, чтобы подготовиться"
 end
 
 "^3%s^1 is ready."

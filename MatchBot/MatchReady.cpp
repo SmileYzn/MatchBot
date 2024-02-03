@@ -2,7 +2,7 @@
 
 CMatchReady gMatchReady;
 
-void CMatchReady::Init(int PlayersMin)
+void CMatchReady::Init()
 {
 	this->m_Running = true;
 
@@ -10,7 +10,7 @@ void CMatchReady::Init(int PlayersMin)
 
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Say ^4.ready^1 to continue."));
 
-	gMatchTask.Create(TASK_READY_SYSTEM, 0.5f, true, (void*)this->Task, PlayersMin);
+	gMatchTask.Create(TASK_READY_SYSTEM, 0.5f, true, (void*)this->Task, 1);
 }
 
 void CMatchReady::Stop(bool ChangeState)
@@ -42,7 +42,7 @@ void CMatchReady::Stop(bool ChangeState)
 	}
 }
 
-void CMatchReady::Task(int PlayersMin)
+void CMatchReady::Task(int Running)
 {
 	std::string PlayerList[2];
 
@@ -70,7 +70,7 @@ void CMatchReady::Task(int PlayersMin)
 		}
 	}
 
-	if (PlayerCount[1] >= PlayersMin)
+	if (PlayerCount[1] >= static_cast<int>(gMatchBot.m_PlayersMin->value))
 	{
 		gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("All players are ready!"));
 
@@ -78,13 +78,22 @@ void CMatchReady::Task(int PlayersMin)
 	}
 	else
 	{
-		gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 1), _T("Not Ready (%d of %d):"), PlayerCount[0], PlayersMin);
+		if (gMatchBot.m_ReadyListType->value <= 0.0f)
+		{
+			gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, 0.23, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 1), _T("Not Ready (%d of %d):"), PlayerCount[0], static_cast<int>(gMatchBot.m_PlayersMin->value));
 
-		gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, 0.58, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 2), _T("Ready (%d of %d):"), PlayerCount[1], PlayersMin);
+			gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, 0.58, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 2), _T("Ready (%d of %d):"), PlayerCount[1], static_cast<int>(gMatchBot.m_PlayersMin->value));
 
-		gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 4), "\n%s", PlayerList[0].c_str());
+			gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(255, 255, 225, 0.23, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 4), "\n%s", PlayerList[0].c_str());
 
-		gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(255, 255, 225, 0.58, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 3), "\n%s", PlayerList[1].c_str());
+			gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(255, 255, 225, 0.58, 0.02, 0, 0.0, 0.53, 0.0, 0.0, 3), "\n%s", PlayerList[1].c_str());
+		}
+		else
+		{
+			gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(0, 255, 0, 0.03, 0.18, 0, 0.0, 0.53, 0.0, 0.0, 1), _T("Not Ready: %s^n%s"), std::string(PlayerCount[0] + 1, '\n').c_str(), _T("Type .ready to get ready"));
+
+			gMatchUtil.HudMessage(nullptr, gMatchUtil.HudParam(255, 255, 225, 0.03, 0.18, 0, 0.0, 0.53, 0.0, 0.0, 4), "\n%s", PlayerList[0].c_str());
+		}
 	}
 }
 

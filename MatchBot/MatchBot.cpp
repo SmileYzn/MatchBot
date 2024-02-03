@@ -59,6 +59,9 @@ void CMatchBot::ServerActivate()
 	// Ready System type (0 Disabled, 1 Ready System, 2 Ready Timer)
 	this->m_ReadyType = gMatchUtil.CvarRegister("mb_ready_type", "1");
 
+	// Ready System player list type (0 Defaut, 1 Minimal List)
+	this->m_ReadyListType = gMatchUtil.CvarRegister("mb_ready_list_type", "0");
+
 	// Ready System timer delay in seconds
 	this->m_ReadyTime = gMatchUtil.CvarRegister("mb_ready_time", "60.0");
 
@@ -305,7 +308,7 @@ void CMatchBot::SetState(int State)
 			if (this->m_ReadyType->value == 1)
 			{
 				// Use Ready System
-				gMatchReady.Init(this->m_PlayersMin->value);
+				gMatchReady.Init();
 			}
 			// If ready type is 2
 			else if (this->m_ReadyType->value > 1)
@@ -422,7 +425,7 @@ void CMatchBot::SetState(int State)
 					if (this->m_ReadyType->value == 1.0f)
 					{
 						// Init Ready System
-						gMatchReady.Init(this->m_PlayersMin->value);
+						gMatchReady.Init();
 					}
 					// If ready type is 2
 					else if (this->m_ReadyType->value >= 2.0f)
