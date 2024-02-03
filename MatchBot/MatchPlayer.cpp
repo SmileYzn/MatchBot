@@ -96,6 +96,9 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEdict, const char* pszName, const cha
 				// Status
 				this->m_Player[AuthId].Status = 1;
 
+				// Disconnect reason
+				this->m_Player[AuthId].DcReason = "";
+
 				// Last Team
 				this->m_Player[AuthId].LastTeam = TeamName::UNASSIGNED;
 			}
@@ -136,6 +139,9 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 		// Status
 		this->m_Player[AuthId].Status = 2;
 
+		// Disconnect reason
+		this->m_Player[AuthId].DcReason = "";
+
 		// Last Team
 		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
 	}
@@ -171,28 +177,40 @@ void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 		// Status
 		this->m_Player[AuthId].Status = 2;
 
+		// Disconnect reason
+		this->m_Player[AuthId].DcReason = "";
+
 		// Last Team
 		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
 	}
 }
 
 // On Player Disconnect
-void CMatchPlayer::PlayerDisconnect(edict_t* pEdict)
+void CMatchPlayer::PlayerDisconnect(edict_t* pEntity, bool crash, const char* Reason)
 {
 	// If is not null entity
-	if (!FNullEnt(pEdict))
+	if (!FNullEnt(pEntity))
 	{
 		// Get Auth Index
-		auto AuthId = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+		auto AuthId = g_engfuncs.pfnGetPlayerAuthId(pEntity);
 
 		// If is not null
 		if (AuthId)
 		{
 			// If is not HLTV
-			if (!((pEdict->v.flags & FL_PROXY) == FL_PROXY))
+			if (!((pEntity->v.flags & FL_PROXY) == FL_PROXY))
 			{
 				// Status
 				this->m_Player[AuthId].Status = 0;
+
+				// Disconnect Reason
+				if (Reason)
+				{
+					if (Reason[0u] != '\0')
+					{
+						this->m_Player[AuthId].DcReason = Reason;
+					}
+				}
 			}
 		}
 	}

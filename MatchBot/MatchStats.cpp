@@ -61,6 +61,52 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 	}
 }
 
+// Player Put In Server
+void CMatchStats::PlayerPutInServer(edict_t* pEntity)
+{
+	// If entity is not null
+	if (!FNullEnt(pEntity))
+	{
+		// Get entity Index
+		auto EntityIndex = ENTINDEX(pEntity);
+
+		// If is an player
+		if (EntityIndex > 0 && EntityIndex <= gpGlobals->maxClients)
+		{
+			// Reset round damage
+			this->m_RoundDmg[EntityIndex].fill({});
+
+			// Reset round hits
+			this->m_RoundHit[EntityIndex].fill({});
+		}
+	}
+}
+
+// Player Disconnect
+void CMatchStats::PlayerDisconnect(edict_t* pEntity)
+{
+	// If entity is not null
+	if (!FNullEnt(pEntity))
+	{
+		// Get entity Index
+		auto EntityIndex = ENTINDEX(pEntity);
+
+		// If is an player
+		if (EntityIndex > 0 && EntityIndex <= gpGlobals->maxClients)
+		{
+			// Loop max clients
+			for (auto i = 0; i <= gpGlobals->maxClients; i++)
+			{
+				// Reset round damage
+				this->m_RoundDmg[i][EntityIndex] = 0;
+
+				// Reset round hits
+				this->m_RoundHit[i][EntityIndex] = 0;
+			}
+		}
+	}
+}
+
 // Player Damage Event
 void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
 {
@@ -89,7 +135,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 					if (CSGameRules()->FPlayerCanTakeDamage(Victim, Attacker))
 					{
 						// Attacker Round Damage
-						this->m_RoundDmg[AttackerIndex][VictimIndex] += (Victim->m_iLastClientHealth - static_cast<int>(clamp(Victim->edict()->v.health, 0.0f, Victim->edict()->v.health)));
+						this->m_RoundDmg[AttackerIndex][VictimIndex] += static_cast<int>(clamp(flDamage, 0.0f, 100.0f));
 
 						// Attacker Round Hits
 						this->m_RoundHit[AttackerIndex][VictimIndex]++;

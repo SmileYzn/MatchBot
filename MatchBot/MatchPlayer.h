@@ -9,6 +9,7 @@ typedef struct S_PLAYER_INFO
 	std::string Flags;
 	int AdminFlags;
 	int Status;				// 0 Disconnected, 1 Connected, 2 In Game
+	std::string DcReason;
 	TeamName LastTeam;
 } P_PLAYER_INFO, *LP_PLAYER_INFO;
 
@@ -34,7 +35,7 @@ public:
 	void PlayerSwitchTeam(CBasePlayer* Player);
 
 	// On Player Disconnect
-	void PlayerDisconnect(edict_t* pEdict);
+	void PlayerDisconnect(edict_t* pEntity, bool crash, const char* Reason);
 
 	// Player Menu
 	void PlayerMenu(CBasePlayer* Player);

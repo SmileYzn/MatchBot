@@ -30,7 +30,7 @@ bool CMatchRetry::PlayerConnect(edict_t* pEdict, const char* pszName, const char
 	return true;
 }
 
-void CMatchRetry::PlayerDisconnect(edict_t* pEdict, bool crash, const char* Reason)
+void CMatchRetry::PlayerDisconnect(edict_t* pEntity, bool crash, const char* Reason)
 {
 	if (gMatchBot.m_RetryMode->value > 0.0f)
 	{
@@ -38,9 +38,9 @@ void CMatchRetry::PlayerDisconnect(edict_t* pEdict, bool crash, const char* Reas
 		{
 			if (gMatchBot.GetState() != STATE_DEAD)
 			{
-				if (!FNullEnt(pEdict))
+				if (!FNullEnt(pEntity))
 				{
-					auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(pEdict));
+					auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(pEntity));
 
 					if (Player)
 					{
@@ -50,7 +50,7 @@ void CMatchRetry::PlayerDisconnect(edict_t* pEdict, bool crash, const char* Reas
 							{
 								if (!Player->IsBot() && !Player->IsDormant())
 								{
-									auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+									auto Auth = g_engfuncs.pfnGetPlayerAuthId(pEntity);
 
 									if (Auth)
 									{

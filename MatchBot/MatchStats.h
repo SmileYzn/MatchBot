@@ -22,6 +22,12 @@ public:
 	// Round End
 	void RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, float tmDelay);
 
+	// Player Put In Server
+	void PlayerPutInServer(edict_t* pEntity);
+
+	// Player Disconnect
+	void PlayerDisconnect(edict_t* pEntity);
+
 	// Player Damage
 	void PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType);
 

@@ -61,6 +61,8 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 
 	gDLL_FunctionTable_Post.pfnStartFrame = DLL_POST_StartFrame;
 
+	gDLL_FunctionTable_Post.pfnClientPutInServer = DLL_POST_ClientPutInServer;
+
 	memcpy(pFunctionTable, &gDLL_FunctionTable_Post, sizeof(DLL_FUNCTIONS));
 
 	return 1;
@@ -99,6 +101,13 @@ void DLL_POST_ServerDeactivate(void)
 void DLL_POST_StartFrame(void)
 {
 	gMatchTask.ServerFrame();
+
+	RETURN_META(MRES_IGNORED);
+}
+
+void DLL_POST_ClientPutInServer(edict_t* pEntity)
+{
+	gMatchStats.PlayerPutInServer(pEntity);
 
 	RETURN_META(MRES_IGNORED);
 }
