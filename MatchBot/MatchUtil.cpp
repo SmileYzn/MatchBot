@@ -243,7 +243,7 @@ std::array<int, SPECTATOR + 1> CMatchUtil::GetCount()
 	return TeamCount;
 }
 
-int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly)
+int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly, bool IncludeBots)
 {
 	int Num = 0;
 
@@ -257,22 +257,28 @@ int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly)
 		{
 			if (!Player->IsDormant())
 			{
-				if (((Player->edict->v.flags & FL_PROXY) == FL_PROXY))
+				if ((Player->edict()->v.flags & FL_PROXY) == FL_PROXY)
 				{
 					continue;
 				}
-				
+
 				if (InGameOnly)
 				{
-					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
+					if ((Player->m_iTeam != TERRORIST) && (Player->m_iTeam != CT))
 					{
-						Players[Num++] = Player;
+						continue;
 					}
 				}
-				else
+
+				if (!IncludeBots)
 				{
-					Players[Num++] = Player;
+					if (Player->IsBot())
+					{
+						continue;
+					}
 				}
+
+				Players[Num++] = Player;
 			}
 		}
 	}
@@ -280,7 +286,7 @@ int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly)
 	return Num;
 }
 
-std::vector<CBasePlayer*> CMatchUtil::GetPlayers(bool InGameOnly, bool ReturnBots)
+std::vector<CBasePlayer*> CMatchUtil::GetPlayers(bool InGameOnly, bool IncludeBots)
 {
 	std::vector<CBasePlayer*> Players;
 
@@ -292,22 +298,22 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(bool InGameOnly, bool ReturnBot
 		{
 			if (!Player->IsDormant())
 			{
-				if (((Player->edict->v.flags & FL_PROXY) == FL_PROXY))
+				if ((Player->edict()->v.flags & FL_PROXY) == FL_PROXY)
 				{
 					continue;
 				}
-				
-				if (Player->m_iTeam != TERRORIST && Player->m_iTeam != CT)
+
+				if (InGameOnly)
 				{
-					if (InGameOnly)
+					if ((Player->m_iTeam != TERRORIST) && (Player->m_iTeam != CT))
 					{
 						continue;
 					}
 				}
 
-				if (Player->IsBot())
+				if (!IncludeBots)
 				{
-					if (!ReturnBots)
+					if (Player->IsBot())
 					{
 						continue;
 					}
@@ -321,7 +327,7 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(bool InGameOnly, bool ReturnBot
 	return Players;
 }
 
-std::vector<CBasePlayer*> CMatchUtil::GetPlayers(TeamName Team, bool ReturnBots)
+std::vector<CBasePlayer*> CMatchUtil::GetPlayers(TeamName Team, bool IncludeBots)
 {
 	std::vector<CBasePlayer*> Players;
 
@@ -333,17 +339,18 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(TeamName Team, bool ReturnBots)
 		{
 			if (!Player->IsDormant())
 			{
-				if (Team != Player->m_iTeam)
+				if (Player->m_iTeam == Team)
 				{
-					continue;
-				}
+					if (!IncludeBots)
+					{
+						if (Player->IsBot())
+						{
+							continue;
+						}
+					}
 
-				if (!ReturnBots && Player->IsBot())
-				{
-					continue;
+					Players.push_back(Player);
 				}
-
-				Players.push_back(Player);
 			}
 		}
 	}
@@ -362,7 +369,7 @@ CBasePlayer* CMatchUtil::GetPlayerByUserId(int UserIndex)
 		{
 			if (!Player->IsDormant())
 			{
-				if (UserIndex == g_engfuncs.pfnGetPlayerUserId(Player->edict()))
+				if (g_engfuncs.pfnGetPlayerUserId(Player->edict()) == UserIndex)
 				{
 					return Player;
 				}

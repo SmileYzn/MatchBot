@@ -176,6 +176,7 @@ private:
 
 public:
 	// Server variables
+	cvar_t* m_SvRestart = nullptr;
 	cvar_t* m_BotDeathMatch = nullptr;
 	cvar_t* m_AutoTeamJoin = nullptr;
 	cvar_t* m_HumansJoinTeam = nullptr;

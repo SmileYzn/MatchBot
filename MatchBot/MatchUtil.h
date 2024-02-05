@@ -43,14 +43,14 @@ public:
 	// Get player count in teams
 	std::array<int, SPECTATOR + 1> GetCount();
 
-	// Get players array
-	int GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly);
+	// Get players as array and return count
+	int GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly, bool IncludeBots);
 
 	// Get players vector
-	std::vector<CBasePlayer*> GetPlayers(bool InGameOnly, bool ReturnBots);
+	std::vector<CBasePlayer*> GetPlayers(bool InGameOnly, bool IncludeBots);
 
 	// Get team players in vector
-	std::vector<CBasePlayer*> GetPlayers(TeamName Team, bool ReturnBots);
+	std::vector<CBasePlayer*> GetPlayers(TeamName Team, bool IncludeBots);
 
 	// Get player by user index
 	CBasePlayer* GetPlayerByUserId(int UserIndex);

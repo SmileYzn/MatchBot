@@ -666,17 +666,20 @@ void CMatchAdminMenu::SwapTeams(int EntityIndex)
 		// If is in Warmup state
 		if (gMatchBot.GetState() == STATE_WARMUP)
 		{
-			// Swap Teams and restart round
+			// If has game rules
 			if (g_pGameRules)
 			{
+				// Swap Teams
 				CSGameRules()->SwapAllPlayers();
-
-				CSGameRules()->RestartRound();
 			}
+
+			// Retart Round
+			g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, "1");
 
 			// Send message
 			gMatchUtil.SayText(nullptr, Player->entindex(), _T("^3%s^1 changed team sides manually."), STRING(Player->edict()->v.netname));
 
+			// Log message
 			gpMetaUtilFuncs->pfnLogMessage
 			(
 				&Plugin_info,

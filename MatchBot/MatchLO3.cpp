@@ -6,12 +6,12 @@ void CMatchLO3::Start()
 {
 	this->m_Restart = 3;
 
-	gMatchUtil.ServerCommand("sv_restart %d", this->m_Restart);
-
 	if (g_pGameRules)
 	{
 		CSGameRules()->m_bGameStarted = true;
 	}
+
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, gMatchUtil.FormatString("%d", this->m_Restart));
 
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Live in three restarts! ^3Get Ready!!"));
 } 
@@ -22,7 +22,7 @@ void CMatchLO3::RoundRestart()
 	{
 		this->m_Restart--;
 
-		gMatchUtil.ServerCommand("sv_restart %d", this->m_Restart);
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, gMatchUtil.FormatString("%d", this->m_Restart));
 
 		if (!this->m_Restart)
 		{

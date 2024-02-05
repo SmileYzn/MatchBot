@@ -8,6 +8,9 @@ void CMatchBot::ServerActivate()
 	// Match BOT is dead
 	this->m_State = STATE_DEAD;
 
+	// Server Restart
+	this->m_SvRestart = g_engfuncs.pfnCVarGetPointer("sv_restart");
+
 	// BOT deathmatch mode
 	this->m_BotDeathMatch = g_engfuncs.pfnCVarGetPointer("bot_deathmatch");
 
@@ -664,7 +667,7 @@ void CMatchBot::SwapTeams(int ShowMessage)
 	}
 
 	// Restart Round
-	gMatchUtil.ServerCommand("sv_restart 1");
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, "1");
 }
 
 // Get Knife Round Mode
@@ -1387,7 +1390,7 @@ void CMatchBot::StopMatch(CBasePlayer* Player)
 				this->m_PlayKnifeRound = false;
 
 				// Restart Round
-				gMatchUtil.ServerCommand("sv_restart 1");
+				g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, "1");
 			}
 
 			// Set end state

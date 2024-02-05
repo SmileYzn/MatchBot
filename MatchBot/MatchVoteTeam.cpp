@@ -244,7 +244,7 @@ void CMatchVoteTeam::TeamsRandomize()
 	CBasePlayer* Players[MAX_CLIENTS] = { nullptr };
 
 	// Get players that are joined in TR or CT
-	auto Num = gMatchUtil.GetPlayers(Players, true);
+	auto Num = gMatchUtil.GetPlayers(Players, true, true);
 
 	// Set first random team (TR or CT)
 	TeamName Team = (TeamName)RANDOM_LONG(TERRORIST, CT);
@@ -282,7 +282,7 @@ void CMatchVoteTeam::TeamsRandomize()
 	if (g_pGameRules)
 	{
 		// Restart Round
-		CSGameRules()->RestartRound();
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, "1");
 	}
 }
 
@@ -347,10 +347,6 @@ void CMatchVoteTeam::TeamsOptimize()
 		}
 	}
 
-	// If has CSGameRules
-	if (g_pGameRules)
-	{
-		// Restart Round
-		CSGameRules()->RestartRound();
-	}
+	// Restart Round
+	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, "1");
 }
