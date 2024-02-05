@@ -285,7 +285,7 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(bool InGameOnly, bool ReturnBot
 
 		if (Player)
 		{
-			if (!Player->IsDormant())
+			if (!Player->IsDormant() && Player->IsPlayer())
 			{
 				if (InGameOnly)
 				{
