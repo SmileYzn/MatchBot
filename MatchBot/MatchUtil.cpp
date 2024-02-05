@@ -257,6 +257,11 @@ int CMatchUtil::GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly)
 		{
 			if (!Player->IsDormant())
 			{
+				if (((Player->edict->v.flags & FL_PROXY) == FL_PROXY))
+				{
+					continue;
+				}
+				
 				if (InGameOnly)
 				{
 					if (Player->m_iTeam == TERRORIST || Player->m_iTeam == CT)
@@ -285,19 +290,27 @@ std::vector<CBasePlayer*> CMatchUtil::GetPlayers(bool InGameOnly, bool ReturnBot
 
 		if (Player)
 		{
-			if (!Player->IsDormant() && Player->IsPlayer())
+			if (!Player->IsDormant())
 			{
-				if (InGameOnly)
+				if (((Player->edict->v.flags & FL_PROXY) == FL_PROXY))
 				{
-					if (Player->m_iTeam != TERRORIST && Player->m_iTeam != CT)
+					continue;
+				}
+				
+				if (Player->m_iTeam != TERRORIST && Player->m_iTeam != CT)
+				{
+					if (InGameOnly)
 					{
 						continue;
 					}
 				}
 
-				if (!ReturnBots && Player->IsBot())
+				if (Player->IsBot())
 				{
-					continue;
+					if (!ReturnBots)
+					{
+						continue;
+					}
 				}
 
 				Players.push_back(Player);
