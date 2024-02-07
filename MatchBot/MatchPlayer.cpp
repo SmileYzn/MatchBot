@@ -61,22 +61,22 @@ LP_PLAYER_INFO CMatchPlayer::GetInfo(int UserIndex)
 }
 
 // On Player Connect
-bool CMatchPlayer::PlayerConnect(edict_t* pEdict, const char* pszName, const char* pszAddress, char szRejectReason[128])
+bool CMatchPlayer::PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
 	// If is not null entity
-	if (!FNullEnt(pEdict))
+	if (!FNullEnt(pEntity))
 	{
 		// Get Auth Index
-		auto AuthId = g_engfuncs.pfnGetPlayerAuthId(pEdict);
+		auto AuthId = gMatchUtil.GetPlayerAuthId(pEntity);
 
 		// If is not null
 		if (AuthId)
 		{
 			// If is not HLTV
-			if (!((pEdict->v.flags & FL_PROXY) == FL_PROXY))
+			if (!((pEntity->v.flags & FL_PROXY) == FL_PROXY))
 			{
 				// User Index
-				this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(pEdict);
+				this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(pEntity);
 
 				// Auth
 				this->m_Player[AuthId].Auth = AuthId;
@@ -88,10 +88,10 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEdict, const char* pszName, const cha
 				this->m_Player[AuthId].Address = (pszAddress != nullptr) ? pszAddress : "";
 
 				// Admin Flags
-				this->m_Player[AuthId].Flags = gMatchAdmin.GetFlags(pEdict);
+				this->m_Player[AuthId].Flags = gMatchAdmin.GetFlags(pEntity);
 
 				// Admin Flags
-				this->m_Player[AuthId].AdminFlags = gMatchAdmin.GetFlags(ENTINDEX(pEdict));
+				this->m_Player[AuthId].AdminFlags = gMatchAdmin.GetFlags(ENTINDEX(pEntity));
 
 				// Status
 				this->m_Player[AuthId].Status = 1;
@@ -113,7 +113,7 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEdict, const char* pszName, const cha
 void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 {
 	// Get Auth Index
-	auto AuthId = g_engfuncs.pfnGetPlayerAuthId(Player->edict());
+	auto AuthId = gMatchUtil.GetPlayerAuthId(Player->edict());
 
 	// If is not null
 	if (AuthId)
@@ -151,7 +151,7 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 {
 	// Get Auth Index
-	auto AuthId = g_engfuncs.pfnGetPlayerAuthId(Player->edict());
+	auto AuthId = gMatchUtil.GetPlayerAuthId(Player->edict());
 
 	// If is not null
 	if (AuthId)
@@ -192,7 +192,7 @@ void CMatchPlayer::PlayerDisconnect(edict_t* pEntity, bool crash, const char* Re
 	if (!FNullEnt(pEntity))
 	{
 		// Get Auth Index
-		auto AuthId = g_engfuncs.pfnGetPlayerAuthId(pEntity);
+		auto AuthId = gMatchUtil.GetPlayerAuthId(pEntity);
 
 		// If is not null
 		if (AuthId)
@@ -384,11 +384,11 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 								"\"%s<%i><%s><%s>\" kick \"%s<%i><%s><%s>\"",
 								STRING(Player->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Player->edict()),
-								g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+								gMatchUtil.GetPlayerAuthId(Player->edict()),
 								gMatchBot.GetTeam(Player->m_iTeam, true),
 								STRING(Target->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Target->edict()),
-								g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+								gMatchUtil.GetPlayerAuthId(Target->edict()),
 								gMatchBot.GetTeam(Target->m_iTeam, true)
 							);
 						}
@@ -413,11 +413,11 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 								"\"%s<%i><%s><%s>\" slays \"%s<%i><%s><%s>\"",
 								STRING(Player->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Player->edict()),
-								g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+								gMatchUtil.GetPlayerAuthId(Player->edict()),
 								gMatchBot.GetTeam(Player->m_iTeam, true),
 								STRING(Target->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Target->edict()),
-								g_engfuncs.pfnGetPlayerAuthId(Target->edict()),
+								gMatchUtil.GetPlayerAuthId(Target->edict()),
 								gMatchBot.GetTeam(Target->m_iTeam, true)
 							);
 						}
@@ -470,7 +470,7 @@ void CMatchPlayer::PlayerBanMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 				"\"%s<%i><%s><%s>\" banned \"%s<%i><%s><%s>\" for %d min(s)",
 				STRING(Player->edict()->v.netname),
 				g_engfuncs.pfnGetPlayerUserId(Player->edict()),
-				g_engfuncs.pfnGetPlayerAuthId(Player->edict()),
+				gMatchUtil.GetPlayerAuthId(Player->edict()),
 				gMatchBot.GetTeam(Player->m_iTeam, true),
 				Info->Name.c_str(),
 				"",

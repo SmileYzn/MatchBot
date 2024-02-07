@@ -26,7 +26,7 @@ public:
 	LP_PLAYER_INFO GetInfo(int UserIndex);
 
 	// On Player Connect
-	bool PlayerConnect(edict_t* pEdict, const char* pszName, const char* pszAddress, char szRejectReason[128]);
+	bool PlayerConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 
 	// On Player Join Game
 	void PlayerGetIntoGame(CBasePlayer* Player);

@@ -772,6 +772,7 @@ int CMatchUtil::ParseLinesAndColors(char* Buffer)
 	return offs;
 }
 
+// Get Steam ID with bots check
 CBasePlayer* CMatchUtil::FindPlayer(std::string Target)
 {
 	if (!Target.empty())
@@ -840,5 +841,25 @@ CBasePlayer* CMatchUtil::FindPlayer(std::string Target)
 		}
 	}
 
+	return nullptr;
+}
+
+const char* CMatchUtil::GetPlayerAuthId(edict_t* pEntity)
+{
+	// If entity is not null
+	if (!FNullEnt(pEntity))
+	{
+		// If is not fake client (BOT)
+		if (!(pEntity->v.flags & FL_FAKECLIENT))
+		{
+			// Return Auth Id
+			return g_engfuncs.pfnGetPlayerAuthId(pEntity);
+		}
+
+		// Return BOT name
+		return STRING(pEntity->v.netname);
+	}
+
+	// Return null
 	return nullptr;
 }

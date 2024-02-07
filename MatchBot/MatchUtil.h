@@ -91,6 +91,9 @@ public:
 	// Find Player
 	CBasePlayer* FindPlayer(std::string Target);
 
+	// Get Steam ID with bots check
+	const char* GetPlayerAuthId(edict_t* pEntity);
+
 private:
 	// Variables Pointer
 	std::map<std::string, cvar_t> m_CvarData;

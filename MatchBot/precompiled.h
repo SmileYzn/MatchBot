@@ -76,6 +76,7 @@
 #include "MatchCvarMenu.h"
 #include "MatchLanguage.h"
 #include "MatchLO3.h"
+#include "MatchMedic.h"
 #include "MatchMessage.h"
 #include "MatchMute.h"
 #include "MatchPause.h"
