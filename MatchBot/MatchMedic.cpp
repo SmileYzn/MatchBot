@@ -1,5 +1,7 @@
 #include "precompiled.h"
 
+CMatchMedic gMatchMedic;
+
 // Matchbot changed state
 void CMatchMedic::SetState(int State)
 {

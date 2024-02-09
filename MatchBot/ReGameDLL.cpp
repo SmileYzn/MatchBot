@@ -185,16 +185,16 @@ void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam* chain,
 	gMatchPlayer.PlayerSwitchTeam(Player);
 }
 
-void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain, CBasePlayer* pthis, int amount, RewardType type, bool bTrackChange)
+void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain, CBasePlayer* Player, int Amount, RewardType Type, bool TrackChange)
 {
-	if (gMatchWarmup.PlayerAddAccount(pthis, amount, type, bTrackChange))
+	if (gMatchWarmup.PlayerAddAccount(Player, Amount, Type, TrackChange))
 	{
-		amount = 0;
-	}
+		Amount = 0;
+	} 
 
-	chain->callNext(pthis, amount, type, bTrackChange);
+	chain->callNext(Player, Amount, Type, TrackChange);
 
-	gMatchMedic.PlayerAddAccount(pthis, amount, type, bTrackChange);
+	gMatchMedic.PlayerAddAccount(Player);
 }
 
 bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem* chain, CBasePlayer* pthis, ItemID item, ItemRestType type)
