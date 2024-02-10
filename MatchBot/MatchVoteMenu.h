@@ -6,16 +6,16 @@ typedef struct S_PLAYER_VOTES
 	std::array<bool, MAX_CLIENTS + 1> VoteKick;
 
 	// Vote Map Array
-	std::array<bool, MAX_VOTE_MAPS> VoteMap;
+	std::array<bool, MAX_VOTE_MAPS + 1> VoteMap;
 
 	// Vote Pause Array
-	std::array<bool, SPECTATOR + 1> VotePause;
+	std::array<bool, SPECTATOR + 1U> VotePause;
 
 	// Vote Restart Array
-	std::array<bool, STATE_END + 1> VoteRestart;
+	std::array<bool, STATE_END + 1U> VoteRestart;
 
 	// Vote Surrender Array
-	std::array<bool, SPECTATOR + 1> VoteSurrender;
+	std::array<bool, SPECTATOR + 1U> VoteSurrender;
 
 	// Vote Stop Array
 	std::array<bool, MAX_CLIENTS + 1> VoteStop;

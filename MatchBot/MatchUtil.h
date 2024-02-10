@@ -41,7 +41,7 @@ public:
 	int GetCount(TeamName Team);
 
 	// Get player count in teams
-	std::array<int, SPECTATOR + 1> GetCount();
+	std::array<int, SPECTATOR + 1U> GetCount();
 
 	// Get players as array and return count
 	int GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly, bool IncludeBots);

@@ -149,9 +149,6 @@ public:
 	// Score Info Engine Message
 	static bool ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity);
 
-	// Update Scoreboard
-	void UpdateScoreboard(int EntityIndex, int Score, int Deaths);
-
 private:
 	// Match Bot States
 	int m_State = STATE_DEAD;
@@ -160,19 +157,16 @@ private:
 	bool m_PlayKnifeRound = false;
 
 	// Scores
-	std::array<std::array<int, STATE_END + 1>, SPECTATOR + 1> m_Score;
+	std::array<std::array<int, STATE_END + 1U>, SPECTATOR + 1U> m_Score;
 
 	// Overtime Scores
-	std::array<int, SPECTATOR + 1> m_ScoreOvertime;
+	std::array<int, SPECTATOR + 1U> m_ScoreOvertime;
 
 	// Defaut game description
 	std::string m_GameDesc = "";
 
 	// Match Bot Config Variables
-	std::array<cvar_t*, STATE_END + 1> m_Config;
-
-	// Player Scoreboard frags / deaths
-	std::array<std::array<std::array<int, 2>, STATE_END + 1U>, MAX_CLIENTS + 1> m_Scoreboard;
+	std::array<cvar_t*, STATE_END + 1U> m_Config;
 
 public:
 	// Server variables

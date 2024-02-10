@@ -75,6 +75,9 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEntity, const char* pszName, const ch
 			// If is not HLTV
 			if (!((pEntity->v.flags & FL_PROXY) == FL_PROXY))
 			{
+				// Entity Index
+				this->m_Player[AuthId].EntityIndex = ENTINDEX(pEntity);
+
 				// User Index
 				this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(pEntity);
 
@@ -101,6 +104,15 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEntity, const char* pszName, const ch
 
 				// Last Team
 				this->m_Player[AuthId].LastTeam = TeamName::UNASSIGNED;
+
+				// Reset Frags
+				this->m_Player[AuthId].Frags.fill(0);
+
+				// Reset Deaths
+				this->m_Player[AuthId].Deaths.fill(0);
+
+				// Reset Money
+				this->m_Player[AuthId].Money = 0;
 			}
 		}
 	}
@@ -118,6 +130,9 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 	// If is not null
 	if (AuthId)
 	{
+		// Entity Index
+		this->m_Player[AuthId].EntityIndex = ENTINDEX(Player->edict());
+
 		// User Index
 		this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(Player->edict());
 
@@ -144,6 +159,15 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 
 		// Last Team
 		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
+
+		// Reset Frags
+		this->m_Player[AuthId].Frags.fill(0);
+
+		// Reset Deaths
+		this->m_Player[AuthId].Deaths.fill(0);
+
+		// Reset Money
+		this->m_Player[AuthId].Money = 0;
 	}
 }
 
@@ -156,6 +180,9 @@ void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 	// If is not null
 	if (AuthId)
 	{
+		// Entity Index
+		this->m_Player[AuthId].EntityIndex = ENTINDEX(Player->edict());
+
 		// User Index
 		this->m_Player[AuthId].UserId = g_engfuncs.pfnGetPlayerUserId(Player->edict());
 
@@ -182,6 +209,34 @@ void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 
 		// Last Team
 		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
+
+		// Reset Frags
+		this->m_Player[AuthId].Frags[gMatchBot.GetState()] = static_cast<int>(Player->edict()->v.frags);
+
+		// Reset Deaths
+		this->m_Player[AuthId].Deaths[gMatchBot.GetState()] = Player->m_iDeaths;
+
+		// Reset Money
+		this->m_Player[AuthId].Money = Player->m_iAccount;
+	}
+}
+
+void CMatchPlayer::PlayerAddAccount(CBasePlayer* Player, int Amount, RewardType Type, bool bTrackChange)
+{
+	// Get Auth Index
+	auto AuthId = gMatchUtil.GetPlayerAuthId(Player->edict());
+
+	// If is not null
+	if (AuthId)
+	{
+		// Reset Frags
+		this->m_Player[AuthId].Frags[gMatchBot.GetState()] = static_cast<int>(Player->edict()->v.frags);
+
+		// Reset Deaths
+		this->m_Player[AuthId].Deaths[gMatchBot.GetState()] = Player->m_iDeaths;
+
+		// Reset Money
+		this->m_Player[AuthId].Money = Player->m_iAccount;
 	}
 }
 
@@ -203,11 +258,13 @@ void CMatchPlayer::PlayerDisconnect(edict_t* pEntity, bool crash, const char* Re
 				// Status
 				this->m_Player[AuthId].Status = 0;
 
-				// Disconnect Reason
+				// If disconnect reason is not null
 				if (Reason)
 				{
+					// If disconnect reason is not empty
 					if (Reason[0u] != '\0')
 					{
+						// Set disconnect reason
 						this->m_Player[AuthId].DcReason = Reason;
 					}
 				}

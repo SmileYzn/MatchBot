@@ -368,9 +368,6 @@ void CMatchBot::SetState(int State)
 			// Clear OT Scores
 			this->m_ScoreOvertime.fill(0);
 
-			// Clear Scoreboard
-			this->m_Scoreboard.fill({});
-
 			// If is set to play knife round
 			if (this->m_PlayKnifeRound)
 			{
@@ -473,12 +470,6 @@ void CMatchBot::SetState(int State)
 
 			// Clear CTs Scores
 			this->m_Score[CT][this->m_State] = 0;
-
-			// Clear Scoreboard
-			for (auto i = 0; i <= gpGlobals->maxClients; i++)
-			{
-				this->m_Scoreboard[i][this->m_State].fill(0);
-			}
 
 			// Send messages
 			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
@@ -814,9 +805,6 @@ void CMatchBot::PlayerGetIntoGame(CBasePlayer* Player)
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("%s Build %s (^3%s^1)"), Plugin_info.name, Plugin_info.date, Plugin_info.author);
 			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("Say ^4.help^1 to view command list."));
 		}
-
-		// Clear Scoreboard
-		this->m_Scoreboard[Player->entindex()].fill({});
 	}
 }
 
@@ -1560,18 +1548,11 @@ bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edic
 // Score Info Engine Message
 bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
 {
-	// Update Scoreboards
-	gMatchBot.UpdateScoreboard(gMatchMessage.GetByte(0), gMatchMessage.GetShort(1), gMatchMessage.GetShort(2));
+	// Entity Index
+	auto EntityIndex = gMatchMessage.GetByte(0);
 
-	// Allow message
-	return false;
-}
-
-// Update Scoreboard
-void CMatchBot::UpdateScoreboard(int EntityIndex, int Score, int Deaths)
-{
 	// If has entity index
-	if (EntityIndex)
+	if (EntityIndex >= 0 && EntityIndex <= gpGlobals->maxClients)
 	{
 		// Get CBasePlayer
 		auto Player = UTIL_PlayerByIndex(EntityIndex);
@@ -1582,85 +1563,89 @@ void CMatchBot::UpdateScoreboard(int EntityIndex, int Score, int Deaths)
 			// If is player
 			if (Player->IsPlayer())
 			{
-				// If match is live
-				if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
-				{
-					// Store Frags
-					this->m_Scoreboard[EntityIndex][this->m_State][0] = Score;
-
-					// Store Deaths
-					this->m_Scoreboard[EntityIndex][this->m_State][1] = Deaths;
-				}
-
 				// If scoreboard player variable is not null
-				if (this->m_PlayerScore)
+				if (gMatchBot.m_PlayerScore)
 				{
 					// If scoreboard player variable is enabled
-					if (this->m_PlayerScore->value > 0.0f)
+					if (gMatchBot.m_PlayerScore->value > 0.0f)
 					{
-						// Switch match states
-						switch (this->m_State)
+						// Get User Index
+						auto UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+
+						// If is not empty
+						if (UserIndex)
 						{
-							case STATE_HALFTIME:
+							// Get Player Info
+							auto PlayerInfo = gMatchPlayer.GetInfo(UserIndex);
+
+							// If is not null
+							if (PlayerInfo)
 							{
-								// If is halftime of first period to second period (The Overtime is not started yet)
-								if (this->GetRound() < static_cast<int>(this->m_PlayRoundsOT->value))
+								// Switch match states
+								switch (gMatchBot.GetState())
 								{
-									// On halftime: Set Frags of first half
-									gMatchMessage.SetArgInt(1, this->m_Scoreboard[EntityIndex][STATE_FIRST_HALF][0]);
+									case STATE_HALFTIME:
+									{
+										// If is halftime of first period to second period (The Overtime is not started yet)
+										if (gMatchBot.GetRound() < static_cast<int>(gMatchBot.m_PlayRoundsOT->value))
+										{
+											// On halftime: Set Frags of first half
+											gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_FIRST_HALF]);
 
-									// On halftime: Set Deaths of first half
-									gMatchMessage.SetArgInt(2, this->m_Scoreboard[EntityIndex][STATE_FIRST_HALF][1]);
+											// On halftime: Set Deaths of first half
+											gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_FIRST_HALF]);
+										}
+										// If is overtime half time
+										else
+										{
+											// On halftime of OT: SetFrags of overtime itself
+											gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_OVERTIME]);
+
+											// On halftime of OT: Set Deaths of first half
+											gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_OVERTIME]);
+										}
+										break;
+									}
+									case STATE_SECOND_HALF:
+									{
+										// On second half: Set Frags + Frags of first half
+										gMatchMessage.SetArgInt(1, gMatchMessage.GetShort(1) + PlayerInfo->Frags[STATE_FIRST_HALF]);
+
+										// On second half: Set Deaths + Deaths of first half
+										gMatchMessage.SetArgInt(2, gMatchMessage.GetShort(2) + PlayerInfo->Deaths[STATE_FIRST_HALF]);
+										break;
+									}
+									case STATE_OVERTIME:
+									{
+										// On overtime: Set Frags + Frags of second half
+										gMatchMessage.SetArgInt(1, gMatchMessage.GetShort(1) + PlayerInfo->Frags[STATE_SECOND_HALF]);
+
+										// On overtime: Set Deaths + Deaths of second half
+										gMatchMessage.SetArgInt(2, gMatchMessage.GetShort(2) + PlayerInfo->Deaths[STATE_SECOND_HALF]);
+										break;
+									}
+									case STATE_END:
+									{
+										// If is end of second period (The Overtime was not played)
+										if (gMatchBot.GetRound() < static_cast<int>(gMatchBot.m_PlayRoundsOT->value))
+										{
+											// On finish: Set Frags of second half
+											gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_SECOND_HALF]);
+
+											// On finish: Set Deaths of second half
+											gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_SECOND_HALF]);
+										}
+										else
+										{
+											// On finish: Set Frags of second half
+											gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_OVERTIME]);
+
+											// On finish: Set Deaths of second half
+											gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_OVERTIME]);
+										}
+										break;
+									}
 								}
-								// If is overtime half time
-								else
-								{
-									// On halftime of OT: SetFrags of overtime itself
-									gMatchMessage.SetArgInt(1, this->m_Scoreboard[EntityIndex][STATE_OVERTIME][0]);
-
-									// On halftime of OT: Set Deaths of first half
-									gMatchMessage.SetArgInt(2, this->m_Scoreboard[EntityIndex][STATE_OVERTIME][1]);
-								}
-								break;
-							}
-							case STATE_SECOND_HALF:
-							{
-								// On second half: Set Frags + Frags of first half
-								gMatchMessage.SetArgInt(1, Score + this->m_Scoreboard[EntityIndex][STATE_FIRST_HALF][0]);
-
-								// On second half: Set Deaths + Deaths of first half
-								gMatchMessage.SetArgInt(2, Deaths + this->m_Scoreboard[EntityIndex][STATE_FIRST_HALF][1]);
-								break;
-							}
-							case STATE_OVERTIME:
-							{
-								// On overtime: Set Frags + Frags of second half
-								gMatchMessage.SetArgInt(1, Score + this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][0]);
-
-								// On overtime: Set Deaths + Deaths of second half
-								gMatchMessage.SetArgInt(2, Deaths + this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][1]);
-								break;
-							}
-							case STATE_END:
-							{
-								// If is end of second period (The Overtime was not played)
-								if (this->GetRound() < static_cast<int>(this->m_PlayRoundsOT->value))
-								{
-									// On finish: Set Frags of second half
-									gMatchMessage.SetArgInt(1, this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][0]);
-
-									// On finish: Set Deaths of second half
-									gMatchMessage.SetArgInt(2, this->m_Scoreboard[EntityIndex][STATE_SECOND_HALF][1]);
-								}
-								else
-								{
-									// On finish: Set Frags of second half
-									gMatchMessage.SetArgInt(1, this->m_Scoreboard[EntityIndex][STATE_OVERTIME][0]);
-
-									// On finish: Set Deaths of second half
-									gMatchMessage.SetArgInt(2, this->m_Scoreboard[EntityIndex][STATE_OVERTIME][1]);
-								}
-								break;
 							}
 						}
 					}
@@ -1668,4 +1653,7 @@ void CMatchBot::UpdateScoreboard(int EntityIndex, int Score, int Deaths)
 			}
 		}
 	}
+
+	// Allow normal message
+	return false;
 }

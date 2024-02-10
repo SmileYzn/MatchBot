@@ -54,11 +54,11 @@ void CMatchWarmup::RemoveMapObjective(bool Remove)
 	}
 }
 
-bool CMatchWarmup::PlayerAddAccount(CBasePlayer* Player, int amount, RewardType type, bool bTrackChange)
+bool CMatchWarmup::PlayerAddAccount(CBasePlayer* Player, int Amount, RewardType Type, bool bTrackChange)
 {
 	if (this->m_Running)
 	{
-		if (type == RT_PLAYER_BOUGHT_SOMETHING)
+		if (Type == RT_PLAYER_BOUGHT_SOMETHING)
 		{
 			return true;
 		}

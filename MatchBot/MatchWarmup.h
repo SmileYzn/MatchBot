@@ -8,7 +8,7 @@ public:
 
 	void RemoveMapObjective(bool Remove);
 
-	bool PlayerAddAccount(CBasePlayer* Player, int amount, RewardType type, bool bTrackChange);
+	bool PlayerAddAccount(CBasePlayer* Player, int Amount, RewardType Type, bool bTrackChange);
 
 private:
 	bool m_Running = false;

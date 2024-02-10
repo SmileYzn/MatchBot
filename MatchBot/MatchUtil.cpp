@@ -223,9 +223,9 @@ int CMatchUtil::GetCount(TeamName Team)
 	return Result;
 }
 
-std::array<int, SPECTATOR + 1> CMatchUtil::GetCount()
+std::array<int, SPECTATOR + 1U> CMatchUtil::GetCount()
 {
-	std::array<int, SPECTATOR + 1> TeamCount = { 0 };
+	std::array<int, SPECTATOR + 1U> TeamCount = { 0 };
 
 	for (int i = 1; i <= gpGlobals->maxClients; ++i)
 	{
