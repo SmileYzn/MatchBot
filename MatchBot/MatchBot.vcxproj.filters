@@ -106,9 +106,6 @@
     <Filter Include="MatchBot\MatchCvarMenu">
       <UniqueIdentifier>{73296d2e-78f5-4fc7-9abd-ba3969953f9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MatchBot\MatchMedic">
-      <UniqueIdentifier>{435091d1-e3a7-4e47-94fc-f9c33cd0d038}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatchBot.h">
@@ -212,9 +209,6 @@
     </ClInclude>
     <ClInclude Include="MatchCvarMenu.h">
       <Filter>MatchBot\MatchCvarMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchMedic.h">
-      <Filter>MatchBot\MatchMedic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +318,6 @@
     </ClCompile>
     <ClCompile Include="MatchCvarMenu.cpp">
       <Filter>MatchBot\MatchCvarMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="MatchMedic.cpp">
-      <Filter>MatchBot\MatchMedic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

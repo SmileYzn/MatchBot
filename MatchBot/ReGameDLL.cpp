@@ -173,8 +173,6 @@ bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame* chai
 
 	gMatchPlayer.PlayerGetIntoGame(Player);
 
-	gMatchMedic.PlayerGetIntoGame(Player);
-
 	return ret;
 }
 
@@ -193,8 +191,6 @@ void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain,
 	} 
 
 	chain->callNext(Player, Amount, Type, TrackChange);
-
-	gMatchMedic.PlayerAddAccount(Player);
 }
 
 bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem* chain, CBasePlayer* pthis, ItemID item, ItemRestType type)

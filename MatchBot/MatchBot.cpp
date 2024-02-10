@@ -548,9 +548,6 @@ void CMatchBot::SetState(int State)
 		}
 	};
 
-	// Match Medic
-	gMatchMedic.SetState(this->m_State);
-
 	// Match Stats
 	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
 
