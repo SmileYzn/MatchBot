@@ -1584,6 +1584,26 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 								// If is not null
 								if (PlayerInfo)
 								{
+									// Set frags argument
+									auto Frags = 0;
+
+									// Set deaths argument
+									auto Deaths = 0;
+
+									// If has CSGameRules()
+									if (g_pGameRules)
+									{
+										// If game is not restarting
+										if (!CSGameRules()->m_bCompleteReset)
+										{
+											// Get frags argument
+											Frags = gMatchMessage.GetShort(1);
+
+											// Get deaths argument
+											Deaths = gMatchMessage.GetShort(2);
+										}
+									}
+
 									// Switch match states
 									switch (gMatchBot.GetState())
 									{
@@ -1612,19 +1632,19 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 										case STATE_SECOND_HALF:
 										{
 											// On second half: Set Frags + Frags of first half
-											gMatchMessage.SetArgInt(1, gMatchMessage.GetShort(1) + PlayerInfo->Frags[STATE_FIRST_HALF]);
+											gMatchMessage.SetArgInt(1, Frags + PlayerInfo->Frags[STATE_FIRST_HALF]);
 
 											// On second half: Set Deaths + Deaths of first half
-											gMatchMessage.SetArgInt(2, gMatchMessage.GetShort(2) + PlayerInfo->Deaths[STATE_FIRST_HALF]);
+											gMatchMessage.SetArgInt(2, Deaths + PlayerInfo->Deaths[STATE_FIRST_HALF]);
 											break;
 										}
 										case STATE_OVERTIME:
 										{
 											// On overtime: Set Frags + Frags of second half
-											gMatchMessage.SetArgInt(1, gMatchMessage.GetShort(1) + PlayerInfo->Frags[STATE_SECOND_HALF]);
+											gMatchMessage.SetArgInt(1, Frags + PlayerInfo->Frags[STATE_SECOND_HALF]);
 
 											// On overtime: Set Deaths + Deaths of second half
-											gMatchMessage.SetArgInt(2, gMatchMessage.GetShort(2) + PlayerInfo->Deaths[STATE_SECOND_HALF]);
+											gMatchMessage.SetArgInt(2, Deaths + PlayerInfo->Deaths[STATE_SECOND_HALF]);
 											break;
 										}
 										case STATE_END:
