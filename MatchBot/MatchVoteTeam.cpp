@@ -217,7 +217,7 @@ void CMatchVoteTeam::SetMode(int GameMode)
 				CSGameRules()->SwapAllPlayers();
 			}
 
-			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Swaping teams now."));
+			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Swapping teams now."));
 			break;
 		}
 		case 5:

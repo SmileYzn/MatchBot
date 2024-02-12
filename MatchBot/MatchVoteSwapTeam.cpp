@@ -110,7 +110,7 @@ void CMatchVoteSwapTeam::Stop(int WinnerTeam)
             }
 
             // Send Message
-            gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Swaping teams now."));
+            gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Swapping teams now."));
         }
     }
     else
