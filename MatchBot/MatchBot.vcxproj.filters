@@ -67,9 +67,6 @@
     <Filter Include="MetaMod\Precompiled">
       <UniqueIdentifier>{8409f983-aca8-47c7-bc99-ddecf18efa94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MatchBot\MatchStats">
-      <UniqueIdentifier>{80673ccc-358f-4df3-8322-1a77e26aa2a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MatchBot\MatchPause">
       <UniqueIdentifier>{a182acc5-8b25-4692-ac35-0ae0c7253333}</UniqueIdentifier>
     </Filter>
@@ -105,6 +102,9 @@
     </Filter>
     <Filter Include="MatchBot\MatchCvarMenu">
       <UniqueIdentifier>{73296d2e-78f5-4fc7-9abd-ba3969953f9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MatchBot\MatchRound">
+      <UniqueIdentifier>{80673ccc-358f-4df3-8322-1a77e26aa2a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,8 +153,8 @@
     <ClInclude Include="MatchMenu.h">
       <Filter>MatchBot\MatchMenu</Filter>
     </ClInclude>
-    <ClInclude Include="MatchStats.h">
-      <Filter>MatchBot\MatchStats</Filter>
+    <ClInclude Include="MatchRound.h">
+      <Filter>MatchBot\MatchRound</Filter>
     </ClInclude>
     <ClInclude Include="MatchVoteTeam.h">
       <Filter>MatchBot\MatchVoteTeam</Filter>
@@ -262,8 +262,8 @@
     <ClCompile Include="MatchMenu.cpp">
       <Filter>MatchBot\MatchMenu</Filter>
     </ClCompile>
-    <ClCompile Include="MatchStats.cpp">
-      <Filter>MatchBot\MatchStats</Filter>
+    <ClCompile Include="MatchRound.cpp">
+      <Filter>MatchBot\MatchRound</Filter>
     </ClCompile>
     <ClCompile Include="MatchVoteTeam.cpp">
       <Filter>MatchBot\MatchVoteTeam</Filter>

@@ -78,7 +78,7 @@ void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 	gMatchAdmin.ServerActivate();
 
-	gMatchStats.ServerActivate();
+	gMatchRound.ServerActivate();
 
 	gMatchPlayer.ServerActivate();
 
@@ -107,7 +107,7 @@ void DLL_POST_StartFrame(void)
 
 void DLL_POST_ClientPutInServer(edict_t* pEntity)
 {
-	gMatchStats.PlayerPutInServer(pEntity);
+	gMatchRound.PlayerPutInServer(pEntity);
 
 	RETURN_META(MRES_IGNORED);
 }

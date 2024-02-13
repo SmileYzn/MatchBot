@@ -1,14 +1,14 @@
 #include "precompiled.h"
 
-CMatchStats gMatchStats;
+CMatchRound gMatchRound;
 
-void CMatchStats::ServerActivate()
+void CMatchRound::ServerActivate()
 {
 	// Match stats commands
 	this->m_StatsCommandFlags = CMD_ALL;
 }
 
-void CMatchStats::SetState(int State, bool KnifeRound)
+void CMatchRound::SetState(int State, bool KnifeRound)
 {
 	// New Match State
 	this->m_State = State;
@@ -33,7 +33,7 @@ void CMatchStats::SetState(int State, bool KnifeRound)
 }
 
 // Round Start
-void CMatchStats::RoundStart()
+void CMatchRound::RoundStart()
 {
 	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
@@ -47,7 +47,7 @@ void CMatchStats::RoundStart()
 }
 
 // Round End
-void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, float tmDelay)
+void CMatchRound::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, float tmDelay)
 {
 	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
@@ -62,7 +62,7 @@ void CMatchStats::RoundEnd(int winStatus, ScenarioEventEndRound eventScenario, f
 }
 
 // Player Put In Server
-void CMatchStats::PlayerPutInServer(edict_t* pEntity)
+void CMatchRound::PlayerPutInServer(edict_t* pEntity)
 {
 	// If entity is not null
 	if (!FNullEnt(pEntity))
@@ -83,7 +83,7 @@ void CMatchStats::PlayerPutInServer(edict_t* pEntity)
 }
 
 // Player Disconnect
-void CMatchStats::PlayerDisconnect(edict_t* pEntity)
+void CMatchRound::PlayerDisconnect(edict_t* pEntity)
 {
 	// If entity is not null
 	if (!FNullEnt(pEntity))
@@ -108,7 +108,7 @@ void CMatchStats::PlayerDisconnect(edict_t* pEntity)
 }
 
 // Player Damage Event
-void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
+void CMatchRound::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
 {
 	// If match is live
 	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
@@ -155,7 +155,7 @@ void CMatchStats::PlayerDamage(CBasePlayer* Victim, entvars_t* pevInflictor, ent
 }
 
 // Show Enemy HP
-bool CMatchStats::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
+bool CMatchRound::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
 {
 	if (!Command || (this->m_StatsCommandFlags & CMD_HP))
 	{
@@ -210,7 +210,7 @@ bool CMatchStats::ShowHP(CBasePlayer* Player, bool Command, bool InConsole)
 }
 
 // Show Damage
-bool CMatchStats::ShowDamage(CBasePlayer* Player, bool Command, bool InConsole)
+bool CMatchRound::ShowDamage(CBasePlayer* Player, bool Command, bool InConsole)
 {
 	if (!Command || (this->m_StatsCommandFlags & CMD_DMG))
 	{
@@ -280,7 +280,7 @@ bool CMatchStats::ShowDamage(CBasePlayer* Player, bool Command, bool InConsole)
 }
 
 // Show Received Damage
-bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player, bool Command, bool InConsole)
+bool CMatchRound::ShowReceivedDamage(CBasePlayer* Player, bool Command, bool InConsole)
 {
 	if (!Command || (this->m_StatsCommandFlags & CMD_RDMG))
 	{
@@ -332,7 +332,7 @@ bool CMatchStats::ShowReceivedDamage(CBasePlayer* Player, bool Command, bool InC
 }
 
 // Show Round Summary
-bool CMatchStats::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
+bool CMatchRound::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
 {
 	if (!Command || (this->m_StatsCommandFlags & CMD_SUM))
 	{
@@ -408,7 +408,7 @@ bool CMatchStats::ShowSummary(CBasePlayer* Player, bool Command, bool InConsole)
 }
 
 // Round End Stats
-void CMatchStats::RoundEndStats(int State)
+void CMatchRound::RoundEndStats(int State)
 {
 	// Get round end stats type
 	auto Type = (int)(gMatchBot.m_RoundEndStats->value);
@@ -425,12 +425,12 @@ void CMatchStats::RoundEndStats(int State)
 			// Show Damage command
 			if (Type == 1 || Type == 3)
 			{
-				gMatchStats.ShowDamage(Player, false, (Type == 3));
+				gMatchRound.ShowDamage(Player, false, (Type == 3));
 			}
 			// Show Summary command
 			else if (Type == 2 || Type == 4)
 			{
-				gMatchStats.ShowSummary(Player, false, (Type == 4));
+				gMatchRound.ShowSummary(Player, false, (Type == 4));
 			}
 		}
 	}

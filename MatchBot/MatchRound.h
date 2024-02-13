@@ -7,7 +7,7 @@ constexpr auto CMD_DMG	= BIT(1);	/* flag "b" */
 constexpr auto CMD_RDMG = BIT(2);	/* flag "c" */
 constexpr auto CMD_SUM	= BIT(3);	/* flag "d" */
 
-class CMatchStats
+class CMatchRound
 {
 public:
 	// On Server activate
@@ -60,4 +60,4 @@ private:
 	int m_StatsCommandFlags = CMD_ALL;
 };
 
-extern CMatchStats gMatchStats;
+extern CMatchRound gMatchRound;

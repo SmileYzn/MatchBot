@@ -183,22 +183,22 @@ bool CMatchCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const c
 				}
 				case CMD_PLAYER_HP:
 				{
-					gMatchStats.ShowHP(Player, true, false);
+					gMatchRound.ShowHP(Player, true, false);
 					return true;
 				}
 				case CMD_PLAYER_DMG:
 				{
-					gMatchStats.ShowDamage(Player, true, false);
+					gMatchRound.ShowDamage(Player, true, false);
 					return true;
 				}
 				case CMD_PLAYER_RDMG:
 				{
-					gMatchStats.ShowReceivedDamage(Player, true, false);
+					gMatchRound.ShowReceivedDamage(Player, true, false);
 					return true;
 				}
 				case CMD_PLAYER_SUM:
 				{
-					gMatchStats.ShowSummary(Player, true, false);
+					gMatchRound.ShowSummary(Player, true, false);
 					return true;
 				}
 				case CMD_PLAYER_HELP:

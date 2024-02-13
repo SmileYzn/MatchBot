@@ -228,7 +228,7 @@ void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreez
 
 	gMatchBot.RoundStart();
 
-	gMatchStats.RoundStart();
+	gMatchRound.RoundStart();
 }
 
 void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
@@ -244,7 +244,7 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
 {
-	gMatchStats.RoundEnd(winStatus, event, tmDelay);
+	gMatchRound.RoundEnd(winStatus, event, tmDelay);
 
 	auto ret = chain->callNext(winStatus, event, tmDelay);
 
@@ -257,7 +257,7 @@ int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage* chain, 
 {
 	int ret = chain->callNext(pThis, pevInflictor, pevAttacker, flDamage, bitsDamageType);
 
-	gMatchStats.PlayerDamage(pThis, pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	gMatchRound.PlayerDamage(pThis, pevInflictor, pevAttacker, flDamage, bitsDamageType);
 
 	return ret;
 }
