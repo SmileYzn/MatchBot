@@ -32,6 +32,12 @@ void CMatchBot::ServerActivate()
 	// Freeze time
 	this->m_Freezetime = g_engfuncs.pfnCVarGetPointer("mp_freezetime");
 
+	// Hostname
+	this->m_Hostname = g_engfuncs.pfnCVarGetPointer("hostname");
+	
+	// Address
+	this->m_NetAddress = g_engfuncs.pfnCVarGetPointer("net_address");
+
 	// Match BOT Log Tag
 	this->m_MatchTag = gMatchUtil.CvarRegister("mb_log_tag", "BOT");
 
@@ -540,6 +546,9 @@ void CMatchBot::SetState(int State)
 	};
 
 	// Match Stats
+	gMatchStats.SetState(this->m_State, this->m_PlayKnifeRound);
+
+	// Match Round Stats
 	gMatchRound.SetState(this->m_State, this->m_PlayKnifeRound);
 
 	// Player Vote Menu

@@ -178,6 +178,8 @@ public:
 	cvar_t* m_AllowSpectators = nullptr;
 	cvar_t* m_BuyTime = nullptr;
 	cvar_t* m_Freezetime = nullptr;
+	cvar_t* m_Hostname = nullptr;
+	cvar_t* m_NetAddress = nullptr;
 
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;

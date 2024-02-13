@@ -84,6 +84,7 @@
 #include "MatchRestrictItem.h"
 #include "MatchRetry.h"
 #include "MatchRound.h"
+#include "MatchStats.h"
 #include "MatchTimer.h"
 #include "MatchTask.h"
 #include "MatchVoteMap.h"

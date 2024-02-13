@@ -103,6 +103,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->registerHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
+	g_ReGameHookchains->CBotManager_OnEvent()->registerHook(ReGameDLL_CBotManager_OnEvent);
+
 	return true;
 }
 
@@ -133,6 +135,8 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
 	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->unregisterHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
+
+	g_ReGameHookchains->CBotManager_OnEvent()->unregisterHook(ReGameDLL_CBotManager_OnEvent);
 
 	return true;
 }
@@ -279,4 +283,11 @@ bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayer
 	}
 
 	return ret;
+}
+
+void ReGameDLL_CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent* chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther)
+{
+	chain->callNext(event, pEntity, pOther);
+
+	gMatchStats.CBotManager_OnEvent(event, pEntity, pOther);
 }

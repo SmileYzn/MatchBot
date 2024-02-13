@@ -21,3 +21,4 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage* chain, CBasePlayer* pThis, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType);
 void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade* chain, CGrenade* pthis);
 bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer* chain, CBasePlayer* pListener, CBasePlayer* pSender);
+void ReGameDLL_CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent* chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther);
