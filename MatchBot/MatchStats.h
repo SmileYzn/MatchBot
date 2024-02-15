@@ -15,11 +15,11 @@ typedef struct S_MATCH_DATA
 	// BETA: [0] Match Start Time, [1] Match End Time
 	std::array<time_t, 2> Time;
 
-	// TODO: Game Mode: 0 Leaders Sorted, 1 Random Teams, 2 Not Sorted, 3 Skill Sorted, 4 Swap Teams, 5 Knife Round
+	// BETA: Game Mode: 0 Leaders Sorted, 1 Random Teams, 2 Not Sorted, 3 Skill Sorted, 4 Swap Teams, 5 Knife Round
 	int GameMode;
 
-	// TODO: Match will have Knife Round
-	int KnifeRound;
+	// BETA: Match will have Knife Round
+	bool KnifeRound;
 
 	// Reset all data
 	void Reset()
@@ -43,7 +43,7 @@ typedef struct S_MATCH_DATA
 		this->KnifeRound = 0;
 
 	}
-} P_MATCH_DATA, * LP_MATCH_DATA;
+} P_MATCH_DATA, *LP_MATCH_DATA;
 
 // Round Events
 typedef struct S_ROUND_EVENT
@@ -85,20 +85,6 @@ typedef struct S_ROUND_EVENT
 	int	ItemIndex;
 } P_ROUND_EVENT, *LP_ROUND_EVENT;
 
-// Round Data
-typedef struct S_ROUND_DATA
-{
-	// BETA: Round Bomb Planter Index
-	int BombPlanter;
-
-	// Reset Round Data
-	void Reset()
-	{
-		// Reset bomb planter
-		this->BombPlanter = 0;
-	}
-} P_ROUND_DATA, *LP_ROUND_DATA;
-
 // Weapon Stats
 typedef struct S_WEAPON_STATS
 {
@@ -123,6 +109,7 @@ typedef struct S_ROUND_STATS
 	int HitsReceived;		// TODO: Hits Received
 	int Damage;				// TODO: Damage Taken
 	int DamageReceived;		// TODO: Damage Receeived
+	int BombPlanter;		// BETA: Is Bomb Planter
 	bool BombDefused;		// TODO: Bomb Defused
 	bool BombExploded;		// TODO: Bomb Exploded
 	int Versus;				// TODO: Player is versus X players
@@ -142,12 +129,13 @@ typedef struct S_ROUND_STATS
 		this->HitsReceived = 0;
 		this->Damage = 0;
 		this->DamageReceived = 0;
+		this->BombPlanter = 0;
 		this->BombDefused = 0;
 		this->BombExploded = 0;
 		this->Versus = 0;
 		this->KillTime = 0.0f ;
 	}
-} P_ROUND_STATS, * LP_ROUND_STATS;
+} P_ROUND_STATS, *LP_ROUND_STATS;
 
 // Player Stats
 typedef struct S_PLAYER_STATS
@@ -165,7 +153,7 @@ typedef struct S_PLAYER_STATS
 	long Money;					// TODO: Money Balance from player
 	int Suicides;				// TODO: Suicide Count
 
-	// BETA: Round Win Share stats
+	// TODO: Round Win Share stats
 	float RoundWinShare;
 
 	// Sick Stats
@@ -202,10 +190,10 @@ typedef struct S_PLAYER_STATS
 	int BombDefusedKit;			// TODO: Bomb Defuses with Kit
 
 	// TODO: Kill streak
-	std::array<int, (MAX_CLIENTS / 2)> KillStreak;
+	std::array<int, MAX_CLIENTS + 1> KillStreak;
 
 	// TODO: Versus: 1 vs X win situations
-	std::array<int, (MAX_CLIENTS / 2)> Versus;
+	std::array<int, MAX_CLIENTS + 1> Versus;
 
 	// TODO: HitBox (0 Hits, 1 Damage, 2 Hits Received, 3 Damage Received)
 	std::array<std::array<int, 4>, 9> HitBox;
@@ -279,30 +267,45 @@ typedef struct S_PLAYER_STATS
 // Player Chat
 typedef struct S_PLAYER_CHAT
 {
+	// TODO: Global Time
 	time_t Time;
+
+	// TODO: Match State
 	int State;
+
+	// TODO: Player Team
 	int Team;
+
+	// TODO: Alive
 	int Alive;
+
+	// TODO: Message
 	std::string Message;
 } P_PLAYER_CHAT, *LP_PLAYER_CHAT;
 
 // Player Data
 typedef struct S_PLAYER_DATA
 {
-	// TODO: Timers
-	time_t JoinGameTime;		// BETA: Joined Game Time
-	time_t DisconnectTime;		// BETA: Disconnected Time
+	// BETA: Joined Game Time
+	time_t JoinGameTime;	
 
-	// TODO: Player Data
-	std::string Name;			// BETA: Player Name
-	int Team;					// BETA: Plyer Team
-	int	Winner;					// BETA: Is Winner of match
+	// BETA: Disconnected Time
+	time_t DisconnectTime;		
+
+	// BETA: Player Name
+	std::string Name;
+
+	// BETA: Player Team
+	int Team;
+
+	// BETA: Is Winner of match
+	int	Winner;
 
 	// TODO: Player Stats
 	std::map<int, P_PLAYER_STATS> Stats;
 
 	// TODO: Player chat log
-	std::vector<P_PLAYER_CHAT> ChatLog;
+	std::vector<P_PLAYER_CHAT> Chat;
 
 	// TODO: Round Stats
 	P_ROUND_STATS Round;
@@ -313,6 +316,18 @@ class CMatchStats
 public:
 	// On match bot new state
 	void SetState(int State, bool KnifeRound);
+
+	// On player enter in game
+	void PlayerGetIntoGame(CBasePlayer* Player);
+
+	// On player disconnect
+	void PlayerDisconnect(edict_t* pEntity);
+
+	// On player switch team
+	void PlayerSwitchTeam(CBasePlayer* Player);
+
+	// On Round Restart
+	void RoundRestart();
 
 	// On BOT manager event
 	void CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
@@ -327,14 +342,14 @@ public:
 	void RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
 	
 private:
-	// TODO: Match Time
+	// BETA: Match Data
 	P_MATCH_DATA m_Match;
 
-	// TODO: Round Events
+	// BETA: Round Events
 	std::vector<P_ROUND_EVENT> m_Event;
 
-	// TODO: Round Data
-	P_ROUND_DATA m_RoundData;
+	// TODO: Player Data
+	std::map<std::string, P_PLAYER_DATA> m_Player;
 };
 
 extern CMatchStats gMatchStats;

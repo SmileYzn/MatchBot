@@ -68,6 +68,9 @@ public:
 	// Set a new match state
 	void SetState(int State);
 
+	// Get what team is winning match
+	TeamName GetWinner();
+
 	// Get score of team
 	int GetScore(TeamName Team);
 

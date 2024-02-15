@@ -177,6 +177,8 @@ bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame* chai
 
 	gMatchPlayer.PlayerGetIntoGame(Player);
 
+	gMatchStats.PlayerGetIntoGame(Player);
+
 	return ret;
 }
 
@@ -185,6 +187,8 @@ void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam* chain,
 	chain->callNext(Player);
 
 	gMatchPlayer.PlayerSwitchTeam(Player);
+
+	gMatchStats.PlayerSwitchTeam(Player);
 }
 
 void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain, CBasePlayer* Player, int Amount, RewardType Type, bool TrackChange)
@@ -244,6 +248,8 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 	gMatchPause.RoundRestart();
 
 	gMatchRestrictItem.RoundRestart();
+
+	gMatchStats.RoundRestart();
 }
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)

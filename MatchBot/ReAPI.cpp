@@ -109,6 +109,8 @@ void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, 
 		gMatchPlayer.PlayerDisconnect(pEntity, crash, Reason);
 
 		gMatchRound.PlayerDisconnect(pEntity);
+
+		gMatchStats.PlayerDisconnect(pEntity);
 	}
 
 	chain->callNext(client, crash, Reason);
