@@ -203,17 +203,24 @@ void CMatchStats::RoundRestart()
 	}
 }
 
+// On send death message
+void CMatchStats::SendDeathMessage(CBaseEntity* Killer, CBasePlayer* Victim, CBasePlayer* Assister, entvars_t* pevInflictor, const char* killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
+{
+	// If match is live
+	if ((this->m_State == STATE_FIRST_HALF) || (this->m_State == STATE_SECOND_HALF) || (this->m_State == STATE_OVERTIME))
+	{
+
+	}
+}
+
 // On BOT manager event
 void CMatchStats::CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther)
 {
-	// Player Event Data
-	this->PlayerEvent(GameEvent, pEntity, pOther);
-
 	// If match is live
 	if ((this->m_State == STATE_FIRST_HALF) || (this->m_State == STATE_SECOND_HALF) || (this->m_State == STATE_OVERTIME))
 	{
 		// Player Event Data
-		//this->PlayerEvent(GameEvent, pEntity, pOther);
+		this->PlayerEvent(GameEvent, pEntity, pOther);
 
 		// Match Event Data
 		this->MatchEvent(GameEvent, pEntity, pOther);
@@ -368,6 +375,23 @@ void CMatchStats::PlayerEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBa
 							// Set blind death
 							this->m_Player[VictimAuth].Stats[this->m_State].BlindDeaths++;
 						}
+
+						// If has CSGameRules instance
+						if (g_pGameRules)
+						{
+							// Set count variables
+							auto NumAliveTR = 0, NumAliveCT = 0, NumDeadTR = 0, NumDeadCT = 0;
+
+							// Intialize player counts
+							CSGameRules()->InitializePlayerCounts(NumAliveTR, NumAliveCT, NumDeadTR, NumDeadCT);
+
+							// If no one was dead
+							if ((NumDeadTR == 0) && (NumDeadCT == 0))
+							{
+								// Set player as entry death of round
+								this->m_Player[VictimAuth].Stats[this->m_State].EntryDeaths++;
+							}
+						}
 					}
 				}
 			}
@@ -435,6 +459,60 @@ void CMatchStats::PlayerEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBa
 						{
 							// Set blind frags
 							this->m_Player[KillerAuth].Stats[this->m_State].BlindFrags++;
+						}
+
+						// If has CSGameRules instance
+						if (g_pGameRules)
+						{
+							// Set count variables
+							auto NumAliveTR = 0, NumAliveCT = 0, NumDeadTR = 0, NumDeadCT = 0;
+
+							// Intialize player counts
+							CSGameRules()->InitializePlayerCounts(NumAliveTR, NumAliveCT, NumDeadTR, NumDeadCT);
+
+							// If no one was dead
+							if ((NumDeadTR == 0) && (NumDeadCT == 0))
+							{
+								// Set player as entry death of round
+								this->m_Player[KillerAuth].Stats[this->m_State].EntryFrags++;
+							}
+						}
+
+						// If entity is not null
+						if (!FNullEnt(pEntity))
+						{
+							// Cast to CBasePlayer
+							auto TempVictim = static_cast<CBasePlayer*>(pEntity);
+
+							// If is not null
+							if (TempVictim)
+							{
+								// If is not killed by AWP
+								if (ItemIndex != WEAPON_AWP)
+								{
+									// If victim has full health
+									if (TempVictim->m_iLastClientHealth >= 100)
+									{
+										// If killer damage has more than full heath
+										if (Killer->m_lastDamageAmount >= 100)
+										{
+											// Set one shot
+											this->m_Player[KillerAuth].Stats[this->m_State].OneShot++;
+										}
+									}
+								}
+
+								// If victim is not on ground
+								if (!(TempVictim->edict()->v.flags & FL_ONGROUND))
+								{
+									// If plaer was falling
+									if (TempVictim->m_flFallVelocity > 0.0f)
+									{
+										// Set fying frags
+										this->m_Player[KillerAuth].Stats[this->m_State].FlyFrags++;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -535,57 +613,76 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBas
 		// Set what event is
 		Event.GameEvent = GameEvent;
 
+		// Round scenario event
+		Event.ScenarioEvent = ROUND_NONE;
+
 		// Switch events
 		switch (GameEvent)
 		{
 			case EVENT_PLAYER_DIED:
 			{
+				// If entity is not null
 				if (!FNullEnt(pEntity))
 				{
+					// Cast to CBasePlayer
 					auto Victim = static_cast<CBasePlayer*>(pEntity);
 
+					// If is not null
 					if (Victim)
 					{
+						// Set Steam ID
 						Event.Victim = gMatchUtil.GetPlayerAuthId(Victim->edict());
 
+						// Set Origin
 						Event.VictimOrigin = Victim->edict()->v.origin;
 
-						Event.ScenarioEvent = ROUND_NONE;
-
+						// Set loser team
 						Event.Loser = Victim->m_iTeam;
 
+						// Is headshot
 						Event.IsHeadShot = Victim->m_bHeadshotKilled;
 
+						// If is killed by bomb
 						if (Victim->m_bKilledByBomb)
 						{
+							// Set item
 							Event.ItemIndex = WEAPON_C4;
 						}
 
+						// If is killed by HE
 						if (Victim->m_bKilledByGrenade)
 						{
+							// Set item
 							Event.ItemIndex = WEAPON_HEGRENADE;
 						}
 					}
 				}
 
+				// If entity is not null
 				if (!FNullEnt(pOther))
 				{
+					// Cast to CBasePlayer
 					auto Killer = static_cast<CBasePlayer*>(pOther);
 
+					// If is not null
 					if (Killer)
 					{
+						// Set Steam ID
 						Event.Killer = gMatchUtil.GetPlayerAuthId(Killer->edict());
 
+						// Set origin
 						Event.KillerOrigin = Killer->edict()->v.origin;
 
-						Event.ScenarioEvent = ROUND_NONE;
-
+						// Set winner
 						Event.Winner = Killer->m_iTeam;
 
+						// If has active item
 						if (Killer->m_pActiveItem)
 						{
+							// If is not set by last victim
 							if (Event.ItemIndex == WEAPON_NONE)
 							{
+								// Set item index
 								Event.ItemIndex = Killer->m_pActiveItem->m_iId;
 							}
 						}
@@ -596,8 +693,6 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBas
 			}
 			case EVENT_BOMB_PLANTED:
 			{
-				Event.ScenarioEvent = ROUND_NONE;
-
 				if (!FNullEnt(pEntity))
 				{
 					auto Player = UTIL_PlayerByIndexSafe(pEntity->entindex());
@@ -633,12 +728,13 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBas
 			}
 			case EVENT_BOMB_PICKED_UP:
 			{
-				Event.ScenarioEvent = ROUND_NONE;
-
+				// If is not null
 				if (!FNullEnt(pEntity))
 				{
-					auto Player = UTIL_PlayerByIndexSafe(pEntity->entindex());
+					// Get CBasePlayer
+					auto Player = static_cast<CBasePlayer*>(pEntity);
 
+					// If is not null
 					if (Player)
 					{
 						Event.Killer = gMatchUtil.GetPlayerAuthId(pEntity->edict());
@@ -663,32 +759,43 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBas
 			}
 			case EVENT_BOMB_DEFUSED:
 			{
+				// If is not null
 				if (!FNullEnt(pEntity))
 				{
-					auto Player = UTIL_PlayerByIndexSafe(pEntity->entindex());
+					// Get CBasePlayer
+					auto Player = static_cast<CBasePlayer*>(pEntity);
 
+					// If is not null
 					if (Player)
 					{
+						// Set killer
 						Event.Killer = gMatchUtil.GetPlayerAuthId(pEntity->edict());
 
+						// Set origin
 						Event.KillerOrigin = Player->edict()->v.origin;
 
+						// Set victim
 						Event.Victim = "";
 
+						// Set origin
 						Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
 
+						// Is headshot (Defuser)
 						Event.IsHeadShot = Player->m_bHasDefuser;
 					}
 
+					// Scenario event
 					Event.ScenarioEvent = ROUND_BOMB_DEFUSED;
 
+					// Set event winner
 					Event.Winner = CT;
 
+					// Set event loser
 					Event.Loser = TERRORIST;
 
+					// Set item index
 					Event.ItemIndex = WEAPON_C4;
 				}
-
 				break;
 			}
 			case EVENT_BOMB_EXPLODED:
@@ -727,7 +834,6 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBas
 				Event.Loser = CT;
 
 				Event.ItemIndex = WEAPON_C4;
-
 				break;
 			}
 			case EVENT_TERRORISTS_WIN:
@@ -749,11 +855,11 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBas
 				Event.IsHeadShot = false;
 
 				Event.ItemIndex = WEAPON_NONE;
-
 				break;
 			}
 			case EVENT_CTS_WIN:
 			{
+				// Set screnario Event
 				Event.ScenarioEvent = ROUND_CTS_WIN;
 
 				Event.Winner = CT;

@@ -166,8 +166,8 @@ typedef struct S_PLAYER_STATS
 	int Dominations;			// TODO: Killer player began dominating the victim (NOTE: this flag is set once) (KILLRARITY_DOMINATION_BEGAN)
 	int DominationRepeats;		// TODO: Continues domination by the killer (KILLRARITY_DOMINATION)
 	int Revenges;				// TODO: Revenge by the killer (KILLRARITY_REVENGE)
-	int OneShot;				// TODO: One Shot Frags (Except for AWP)
-	int FlyFrags;				// TODO: Flying Frags
+	int OneShot;				// BETA: One Shot Frags (Except for AWP)
+	int FlyFrags;				// BETA: Flying Frags
 	int	GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
 	int DoubleKill;				// BETA: Double Kill
 	int Blind;					// BETA: Player was blinded
@@ -179,8 +179,8 @@ typedef struct S_PLAYER_STATS
 	std::array<int, 2> KnifeDuels;
 
 	// Entries
-	int EntryFrags;				// TODO: Entry Frag of round
-	int EntryDeaths;			// TODO: Entry Death of round
+	int EntryFrags;				// BETA: Entry Frag of round
+	int EntryDeaths;			// BETA: Entry Death of round
 
 	// Rounds
 	int RoundPlay;				// TODO: Rounds Play
@@ -346,6 +346,9 @@ public:
 
 	// On Round Restart
 	void RoundRestart();
+
+	// On send death message
+	void SendDeathMessage(CBaseEntity* Killer, CBasePlayer* Victim, CBasePlayer* Assister, entvars_t* pevInflictor, const char* killerWeaponName, int iDeathMessageFlags, int iRarityOfKill);
 
 	// On BOT manager event
 	void CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);

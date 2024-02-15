@@ -103,6 +103,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->registerHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
+	g_ReGameHookchains->CSGameRules_SendDeathMessage()->registerHook(ReGameDLL_CSGameRules_SendDeathMessage);
+
 	g_ReGameHookchains->CBotManager_OnEvent()->registerHook(ReGameDLL_CBotManager_OnEvent);
 
 	return true;
@@ -135,6 +137,8 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
 
 	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->unregisterHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
+
+	g_ReGameHookchains->CSGameRules_SendDeathMessage()->unregisterHook(ReGameDLL_CSGameRules_SendDeathMessage);
 
 	g_ReGameHookchains->CBotManager_OnEvent()->unregisterHook(ReGameDLL_CBotManager_OnEvent);
 
@@ -289,6 +293,13 @@ bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayer
 	}
 
 	return ret;
+}
+
+void ReGameDLL_CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage* chain, CBaseEntity* pKiller, CBasePlayer* pVictim, CBasePlayer* pAssister, entvars_t* pevInflictor, const char* killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
+{
+	chain->callNext(pKiller, pVictim, pAssister, pevInflictor, killerWeaponName, iDeathMessageFlags, iRarityOfKill);
+
+	gMatchStats.SendDeathMessage(pKiller, pVictim, pAssister, pevInflictor, killerWeaponName, iDeathMessageFlags, iRarityOfKill);
 }
 
 void ReGameDLL_CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent* chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther)
