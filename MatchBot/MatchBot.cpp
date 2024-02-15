@@ -1,4 +1,5 @@
 #include "precompiled.h"
+#include "MatchBot.h"
 
 CMatchBot gMatchBot;
 
@@ -27,7 +28,7 @@ void CMatchBot::ServerActivate()
 	this->m_AllowSpectators = g_engfuncs.pfnCVarGetPointer("allow_spectators");
 
 	// Buy Time
-	this->m_BuyTime = g_engfuncs.pfnCVarGetPointer("mb_buytime");
+	this->m_BuyTime = g_engfuncs.pfnCVarGetPointer("mp_buytime");
 
 	// Freeze time
 	this->m_Freezetime = g_engfuncs.pfnCVarGetPointer("mp_freezetime");
@@ -573,6 +574,36 @@ void CMatchBot::SetState(int State)
 	}
 }
 
+// Get what team is winning match
+TeamName CMatchBot::GetWinner()
+{
+	// Get Score TRs
+	auto ScoreTR = this->GetScore(TERRORIST);
+
+	// Get score CTs
+	auto ScoreCT = this->GetScore(CT);
+
+	// If is not tied
+	if (ScoreTR != ScoreCT)
+	{
+		// If TRs are winning
+		if (ScoreTR > ScoreCT)
+		{
+			// Return TRs
+			return TERRORIST;
+		}
+		// If CTs are winning
+		else if (ScoreTR < ScoreCT)
+		{
+			// return CTs
+			return CT;
+		}
+	}
+
+	// Return default team
+	return UNASSIGNED;
+}
+
 // Get Final score for a team
 int CMatchBot::GetScore(TeamName Team)
 {
@@ -998,7 +1029,7 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 void CMatchBot::RoundStart()
 {
 	// If match is running
-	if (this->m_State == STATE_FIRST_HALF || this->m_State == STATE_SECOND_HALF || this->m_State == STATE_OVERTIME)
+	if ((this->m_State == STATE_FIRST_HALF) || (this->m_State == STATE_SECOND_HALF) || (this->m_State == STATE_OVERTIME))
 	{
 		// Send scores on start
 		this->Scores(nullptr, false);
@@ -1570,7 +1601,7 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 				auto EntityIndex = gMatchMessage.GetByte(0);
 
 				// If has entity index
-				if (EntityIndex >= 0 && EntityIndex <= gpGlobals->maxClients)
+				if (EntityIndex > 0 && EntityIndex <= gpGlobals->maxClients)
 				{
 					// Get CBasePlayer
 					auto Player = UTIL_PlayerByIndex(EntityIndex);
