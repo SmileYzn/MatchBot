@@ -5,8 +5,11 @@ CMatchStats gMatchStats;
 // On match bot new state
 void CMatchStats::SetState(int State, bool KnifeRound)
 {
+	// Set current state
+	this->m_State = State;
+
 	// Switch states
-	switch (State)
+	switch (this->m_State)
 	{
 		case STATE_DEAD:
 		{
@@ -175,7 +178,7 @@ void CMatchStats::PlayerSwitchTeam(CBasePlayer* Player)
 void CMatchStats::RoundRestart()
 {
 	// If match is not dead
-	if (gMatchBot.GetState() != STATE_DEAD)
+	if (this->m_State != STATE_DEAD)
 	{
 		// If has CSGameRules
 		if (g_pGameRules)
@@ -203,11 +206,14 @@ void CMatchStats::RoundRestart()
 // On BOT manager event
 void CMatchStats::CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther)
 {
+	// Player Event Data
+	this->PlayerEvent(GameEvent, pEntity, pOther);
+
 	// If match is live
-	if ((gMatchBot.GetState() == STATE_FIRST_HALF) || (gMatchBot.GetState() == STATE_SECOND_HALF) || (gMatchBot.GetState() == STATE_OVERTIME))
+	if ((this->m_State == STATE_FIRST_HALF) || (this->m_State == STATE_SECOND_HALF) || (this->m_State == STATE_OVERTIME))
 	{
 		// Player Event Data
-		this->PlayerEvent(GameEvent, pEntity, pOther);
+		//this->PlayerEvent(GameEvent, pEntity, pOther);
 
 		// Match Event Data
 		this->MatchEvent(GameEvent, pEntity, pOther);
@@ -217,12 +223,138 @@ void CMatchStats::CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEnt
 	}
 }
 
+#include <pm_defs.h>
+#include <pm_movevars.h>
+
 // On Player event
 void CMatchStats::PlayerEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther)
 {
 	// Switch event
 	switch (GameEvent)
 	{
+		case EVENT_PLAYER_BLINDED_BY_FLASHBANG:
+		{
+			// If entity is not null
+			if (!FNullEnt(pEntity))
+			{
+				// Cast to CBasePlayer
+				auto Player = static_cast<CBasePlayer*>(pEntity);
+
+				// If is not null
+				if (Player)
+				{
+					// If is blind
+					if (Player->IsBlind())
+					{
+						// If is full blind
+						if (Player->m_blindAlpha >= 255)
+						{
+							// Get Steam ID
+							auto Auth = gMatchUtil.GetPlayerAuthId(Player->edict());
+
+							// If is not null
+							if (Auth)
+							{
+								// Player blind count
+								this->m_Player[Auth].Stats[this->m_State].Blind++;
+							}
+						}
+					}
+				}
+			}
+			break;
+		}
+		case EVENT_PLAYER_FOOTSTEP:
+		{
+			// If entity is not null
+			if (!FNullEnt(pEntity))
+			{
+				// Cast to CBasePlayer
+				auto Player = static_cast<CBasePlayer*>(pEntity);
+
+				// If is not null
+				if (Player)
+				{
+					// Get player move vars
+					auto pMove = g_ReGameApi->GetPlayerMove();
+
+					// If is not null
+					if (pMove)
+					{
+						// If steps left is equal of next step sound
+						if (pMove->iStepLeft == pMove->flTimeStepSound)
+						{
+							// Get Steam ID
+							auto Auth = gMatchUtil.GetPlayerAuthId(Player->edict());
+
+							// If is not null
+							if (Auth)
+							{
+								// Player footsteps count
+								this->m_Player[Auth].Stats[this->m_State].Footsteps++;
+							}
+						}
+					}
+				}
+			}
+			break;
+		}
+		case EVENT_PLAYER_JUMPED:
+		{
+			// If entity is not null
+			if (!FNullEnt(pEntity))
+			{
+				// Cast to CBasePlayer
+				auto Player = static_cast<CBasePlayer*>(pEntity);
+
+				// If is not null
+				if (Player)
+				{
+					// Get Steam ID
+					auto Auth = gMatchUtil.GetPlayerAuthId(Player->edict());
+
+					// If is not null
+					if (Auth)
+					{
+						// Player jump count
+						this->m_Player[Auth].Stats[this->m_State].Jumps++;
+					}
+				}
+			}
+			break;
+		}
+		case EVENT_PLAYER_DIED:
+		{
+			break;
+		}
+		case EVENT_PLAYER_LANDED_FROM_HEIGHT:
+		{
+			// If entity is not null
+			if (!FNullEnt(pEntity))
+			{
+				// Cast to CBasePlayer
+				auto Player = static_cast<CBasePlayer*>(pEntity);
+
+				// If is not null
+				if (Player)
+				{
+					// Get Steam ID
+					auto Auth = gMatchUtil.GetPlayerAuthId(Player->edict());
+
+					// If is not null
+					if (Auth)
+					{
+						// Player landed from height count
+						this->m_Player[Auth].Stats[this->m_State].LandedFromHeight++;
+					}
+				}
+			}
+			break;
+		}
+		case EVENT_PLAYER_TOOK_DAMAGE:
+		{
+			break;
+		}
 		case EVENT_PLAYER_CHANGED_TEAM:
 		{
 			// If entity is not null

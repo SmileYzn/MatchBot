@@ -144,7 +144,6 @@ typedef struct S_PLAYER_STATS
 	int Frags;					// TODO: Player Frags
 	int Deaths;					// TODO: Player Deaths
 	int Assists;				// TODO: Player Kill Assists
-	int Headshots;				// TODO: Headshots by player
 	int Shots;					// TODO: Shots by player
 	int Hits;					// TODO: Hits done by player
 	int HitsReceived;			// TODO: Hits received by player
@@ -156,15 +155,25 @@ typedef struct S_PLAYER_STATS
 	// TODO: Round Win Share stats
 	float RoundWinShare;
 
-	// Sick Stats
-	int BlindFrags;				// TODO: Player frags when blinded by flashbang
+	// Kill Rarity (Sick Stats)
+	int Headshots;				// TODO: Headshots by player (KILLRARITY_HEADSHOT)
+	int BlindFrags;				// TODO: Killer was blind (KILLRARITY_KILLER_BLIND)
 	int BlindDeaths;			// TODO: Player deaths when blinded by flashbang
+	int NoScope;				// TODO: No Scope Frags (KILLRARITY_NOSCOPE)
+	int WallFrags;				// TODO: Wallbang Frags (KILLRARITY_PENETRATED)
+	int SmokeFrags;				// TODO: Frags inside smoke (KILLRARITY_THRUSMOKE)
+	int AssistedFlash;			// TODO: Flash Assists (KILLRARITY_ASSISTEDFLASH)
+	int Dominations;			// TODO: Killer player began dominating the victim (NOTE: this flag is set once) (KILLRARITY_DOMINATION_BEGAN)
+	int DominationRepeats;		// TODO: Continues domination by the killer (KILLRARITY_DOMINATION)
+	int Revenges;				// TODO: Revenge by the killer (KILLRARITY_REVENGE)
 	int OneShot;				// TODO: One Shot Frags (Except for AWP)
-	int NoScope;				// TODO: No Scope Frags
 	int FlyFrags;				// TODO: Flying Frags
-	int WallFrags;				// TODO: Wallbang Frags
 	int	GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
 	int DoubleKill;				// TODO: Double Kill
+	int Blind;					// BETA: Player was blinded
+	int Footsteps;				// BETA: Footstep count
+	int Jumps;					// BETA: Jump count
+	int LandedFromHeight;		// BETA: Player is fell with some damage
 
 	// TODO: Count of Knife Duels in match (0 Wins, 1 Loses)
 	std::array<int, 2> KnifeDuels;
@@ -208,7 +217,6 @@ typedef struct S_PLAYER_STATS
 		this->Frags = 0;
 		this->Deaths = 0;
 		this->Assists = 0;
-		this->Headshots = 0;
 		this->Shots = 0;
 		this->Hits = 0;
 		this->HitsReceived = 0;
@@ -220,15 +228,25 @@ typedef struct S_PLAYER_STATS
 		// Round Win Share stats
 		this->RoundWinShare = 0.0f;
 
-		// Sick Frags
+		// Kill Rarity
+		this->Headshots = 0;
 		this->BlindFrags = 0;
 		this->BlindDeaths = 0;
-		this->OneShot = 0;
 		this->NoScope = 0;
-		this->FlyFrags = 0;
 		this->WallFrags = 0;
+		this->SmokeFrags = 0;
+		this->AssistedFlash = 0;
+		this->Dominations = 0;
+		this->DominationRepeats = 0;
+		this->Revenges = 0;
+		this->OneShot = 0;
+		this->FlyFrags = 0;
 		this->GodLikes = 0;
 		this->DoubleKill = 0;
+		this->Blind = 0;
+		this->Footsteps = 0;
+		this->Jumps = 0;
+		this->LandedFromHeight = 0;
 
 		// Entries
 		this->EntryFrags = 0;
@@ -342,6 +360,9 @@ public:
 	void RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
 	
 private:
+	// Match State
+	int m_State = STATE_DEAD;
+
 	// BETA: Match Data
 	P_MATCH_DATA m_Match;
 
