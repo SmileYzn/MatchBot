@@ -37,6 +37,7 @@
 // CSSDK
 #include <extdll.h>
 #include <eiface.h>
+#include <pm_defs.h>
 
 // MetaMod SDK
 #include <meta_api.h> 

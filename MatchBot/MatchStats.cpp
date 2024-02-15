@@ -223,9 +223,6 @@ void CMatchStats::CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEnt
 	}
 }
 
-#include <pm_defs.h>
-#include <pm_movevars.h>
-
 // On Player event
 void CMatchStats::PlayerEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther)
 {
@@ -325,6 +322,124 @@ void CMatchStats::PlayerEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBa
 		}
 		case EVENT_PLAYER_DIED:
 		{
+			// Item index
+			auto ItemIndex = 0;
+
+			// Headshot
+			auto LastHitGroup = 0;
+
+			// If entity is not null
+			if (!FNullEnt(pEntity))
+			{
+				// Cast to CBasePlayer
+				auto Victim = static_cast<CBasePlayer*>(pEntity);
+
+				// If is not null
+				if (Victim)
+				{
+					// Get Steam ID
+					auto VictimAuth = gMatchUtil.GetPlayerAuthId(Victim->edict());
+
+					// If is not null
+					if (VictimAuth)
+					{
+						// If is killed by HE Grenade
+						if (Victim->m_bKilledByGrenade)
+						{
+							// Weapon HE Grenade
+							ItemIndex = WEAPON_HEGRENADE;
+						}
+
+						// Victim hit group
+						LastHitGroup = Victim->m_LastHitGroup;
+
+						// Set deaths
+						this->m_Player[VictimAuth].Stats[this->m_State].Deaths++;
+
+						// Set weapon deaths
+						this->m_Player[VictimAuth].Stats[this->m_State].Weapon[ItemIndex].Deaths++;
+
+						// Set round deaths
+						this->m_Player[VictimAuth].Round.Deaths++;
+
+						// If victim is blinded by flash
+						if (Victim->IsBlind())
+						{
+							// Set blind death
+							this->m_Player[VictimAuth].Stats[this->m_State].BlindDeaths++;
+						}
+					}
+				}
+			}
+
+			// If entity is not null
+			if (!FNullEnt(pOther))
+			{
+				// Cast to CBasePlayer
+				auto Killer = static_cast<CBasePlayer*>(pOther);
+
+				// If is not null
+				if (Killer)
+				{
+					// Get Steam ID
+					auto KillerAuth = gMatchUtil.GetPlayerAuthId(Killer->edict());
+
+					// If is not null
+					if (KillerAuth)
+					{
+						// If weapon is not set yet
+						if (ItemIndex == WEAPON_NONE)
+						{
+							// If killer has active item
+							if (Killer->m_pActiveItem)
+							{
+								// Set item index
+								ItemIndex = Killer->m_pActiveItem->m_iId;
+							}
+						}
+
+						// Set frags
+						this->m_Player[KillerAuth].Stats[this->m_State].Frags++;
+
+						// Set weapon frags
+						this->m_Player[KillerAuth].Stats[this->m_State].Weapon[ItemIndex].Frags++;
+
+						// Set round frags
+						this->m_Player[KillerAuth].Round.Frags++;
+
+						// Check kill time to set double kill
+						if ((gpGlobals->time - this->m_Player[KillerAuth].Round.KillTime) < 0.25f)
+						{
+							// Increment double kills
+							this->m_Player[KillerAuth].Stats[this->m_State].DoubleKill++;
+						}
+
+						// Set kill time
+						this->m_Player[KillerAuth].Round.KillTime = gpGlobals->time;
+
+						// If victim last hit group is head (1)
+						if (LastHitGroup == 1)
+						{
+							// Set headshots
+							this->m_Player[KillerAuth].Stats[this->m_State].Headshots++;
+
+							// Set headshots
+							this->m_Player[KillerAuth].Stats[this->m_State].Weapon[ItemIndex].Headshots++;
+
+							// Set headshots
+							this->m_Player[KillerAuth].Round.Headshots++;
+						}
+
+						// If killer is blinded by flash
+						if (Killer->IsBlind())
+						{
+							// Set blind frags
+							this->m_Player[KillerAuth].Stats[this->m_State].BlindFrags++;
+						}
+					}
+				}
+			}
+
 			break;
 		}
 		case EVENT_PLAYER_LANDED_FROM_HEIGHT:

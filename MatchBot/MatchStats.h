@@ -88,22 +88,22 @@ typedef struct S_ROUND_EVENT
 // Weapon Stats
 typedef struct S_WEAPON_STATS
 {
-	int Frags;
-	int Deaths;
-	int Headshots;
-	int Shots;
-	int Hits;
-	int HitsReceived;
-	int Damage;
-	int DamageReceived;
+	int Frags;				// BETA: Player Frags
+	int Deaths;				// BETA: Player Deaths
+	int Headshots;			// BETA: Headshots
+	int Shots;				// TODO: Shots
+	int Hits;				// TODO: Hits
+	int HitsReceived;		// TODO: Hits Received
+	int Damage;				// TODO: Damage Taken
+	int DamageReceived;		// TODO: Damage Receeived
 } P_WEAPON_STATS, * LP_WEAPON_STATS;
 
 // Round Stats
 typedef struct S_ROUND_STATS
 {
-	int Frags;				// TODO: Player Frags
-	int Deaths;				// TODO: Player Deaths
-	int Headshots;			// TODO: Headshots
+	int Frags;				// BETA: Player Frags
+	int Deaths;				// BETA: Player Deaths
+	int Headshots;			// BETA: Headshots
 	int Shots;				// TODO: Shots
 	int Hits;				// TODO: Hits
 	int HitsReceived;		// TODO: Hits Received
@@ -113,7 +113,7 @@ typedef struct S_ROUND_STATS
 	bool BombDefused;		// TODO: Bomb Defused
 	bool BombExploded;		// TODO: Bomb Exploded
 	int Versus;				// TODO: Player is versus X players
-	float KillTime;			// TODO: Last Kill Time
+	float KillTime;			// BETA: Last Kill Time
 
 	// Damage dealt to other players
 	std::map<std::string, int> PlayerDamage;
@@ -141,8 +141,8 @@ typedef struct S_ROUND_STATS
 typedef struct S_PLAYER_STATS
 {
 	// Stats
-	int Frags;					// TODO: Player Frags
-	int Deaths;					// TODO: Player Deaths
+	int Frags;					// BETA: Player Frags
+	int Deaths;					// BETA: Player Deaths
 	int Assists;				// TODO: Player Kill Assists
 	int Shots;					// TODO: Shots by player
 	int Hits;					// TODO: Hits done by player
@@ -156,9 +156,9 @@ typedef struct S_PLAYER_STATS
 	float RoundWinShare;
 
 	// Kill Rarity (Sick Stats)
-	int Headshots;				// TODO: Headshots by player (KILLRARITY_HEADSHOT)
-	int BlindFrags;				// TODO: Killer was blind (KILLRARITY_KILLER_BLIND)
-	int BlindDeaths;			// TODO: Player deaths when blinded by flashbang
+	int Headshots;				// BETA: Headshots by player (KILLRARITY_HEADSHOT)
+	int BlindFrags;				// BETA: Killer was blind (KILLRARITY_KILLER_BLIND)
+	int BlindDeaths;			// BETA: Player deaths when blinded by flashbang
 	int NoScope;				// TODO: No Scope Frags (KILLRARITY_NOSCOPE)
 	int WallFrags;				// TODO: Wallbang Frags (KILLRARITY_PENETRATED)
 	int SmokeFrags;				// TODO: Frags inside smoke (KILLRARITY_THRUSMOKE)
@@ -169,7 +169,7 @@ typedef struct S_PLAYER_STATS
 	int OneShot;				// TODO: One Shot Frags (Except for AWP)
 	int FlyFrags;				// TODO: Flying Frags
 	int	GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
-	int DoubleKill;				// TODO: Double Kill
+	int DoubleKill;				// BETA: Double Kill
 	int Blind;					// BETA: Player was blinded
 	int Footsteps;				// BETA: Footstep count
 	int Jumps;					// BETA: Jump count
