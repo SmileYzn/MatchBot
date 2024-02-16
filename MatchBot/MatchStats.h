@@ -88,9 +88,9 @@ typedef struct S_ROUND_EVENT
 // Weapon Stats
 typedef struct S_WEAPON_STATS
 {
-	int Frags;				// BETA: Player Frags
-	int Deaths;				// BETA: Player Deaths
-	int Headshots;			// BETA: Headshots
+	int Frags;				// TODO: Player Frags
+	int Deaths;				// TODO: Player Deaths
+	int Headshots;			// TODO: Headshots
 	int Shots;				// TODO: Shots
 	int Hits;				// TODO: Hits
 	int HitsReceived;		// TODO: Hits Received
@@ -101,19 +101,18 @@ typedef struct S_WEAPON_STATS
 // Round Stats
 typedef struct S_ROUND_STATS
 {
-	int Frags;				// BETA: Player Frags
-	int Deaths;				// BETA: Player Deaths
-	int Headshots;			// BETA: Headshots
+	int Frags;				// TODO: Player Frags
+	int Deaths;				// TODO: Player Deaths
+	int Headshots;			// TODO: Headshots
 	int Shots;				// TODO: Shots
 	int Hits;				// TODO: Hits
 	int HitsReceived;		// TODO: Hits Received
 	int Damage;				// TODO: Damage Taken
 	int DamageReceived;		// TODO: Damage Receeived
-	int BombPlanter;		// BETA: Is Bomb Planter
 	bool BombDefused;		// TODO: Bomb Defused
 	bool BombExploded;		// TODO: Bomb Exploded
 	int Versus;				// TODO: Player is versus X players
-	float KillTime;			// BETA: Last Kill Time
+	float KillTime;			// TODO: Last Kill Time
 
 	// Damage dealt to other players
 	std::map<std::string, int> PlayerDamage;
@@ -129,7 +128,6 @@ typedef struct S_ROUND_STATS
 		this->HitsReceived = 0;
 		this->Damage = 0;
 		this->DamageReceived = 0;
-		this->BombPlanter = 0;
 		this->BombDefused = 0;
 		this->BombExploded = 0;
 		this->Versus = 0;
@@ -141,8 +139,8 @@ typedef struct S_ROUND_STATS
 typedef struct S_PLAYER_STATS
 {
 	// Stats
-	int Frags;					// BETA: Player Frags
-	int Deaths;					// BETA: Player Deaths
+	int Frags;					// TODO: Player Frags
+	int Deaths;					// TODO: Player Deaths
 	int Assists;				// TODO: Player Kill Assists
 	int Shots;					// TODO: Shots by player
 	int Hits;					// TODO: Hits done by player
@@ -156,9 +154,9 @@ typedef struct S_PLAYER_STATS
 	float RoundWinShare;
 
 	// Kill Rarity (Sick Stats)
-	int Headshots;				// BETA: Headshots by player (KILLRARITY_HEADSHOT)
-	int BlindFrags;				// BETA: Killer was blind (KILLRARITY_KILLER_BLIND)
-	int BlindDeaths;			// BETA: Player deaths when blinded by flashbang
+	int Headshots;				// TODO: Headshots by player (KILLRARITY_HEADSHOT)
+	int BlindFrags;				// TODO: Killer was blind (KILLRARITY_KILLER_BLIND)
+	int BlindDeaths;			// TODO: Player deaths when blinded by flashbang
 	int NoScope;				// TODO: No Scope Frags (KILLRARITY_NOSCOPE)
 	int WallFrags;				// TODO: Wallbang Frags (KILLRARITY_PENETRATED)
 	int SmokeFrags;				// TODO: Frags inside smoke (KILLRARITY_THRUSMOKE)
@@ -166,21 +164,24 @@ typedef struct S_PLAYER_STATS
 	int Dominations;			// TODO: Killer player began dominating the victim (NOTE: this flag is set once) (KILLRARITY_DOMINATION_BEGAN)
 	int DominationRepeats;		// TODO: Continues domination by the killer (KILLRARITY_DOMINATION)
 	int Revenges;				// TODO: Revenge by the killer (KILLRARITY_REVENGE)
-	int OneShot;				// BETA: One Shot Frags (Except for AWP)
-	int FlyFrags;				// BETA: Flying Frags
+	int OneShot;				// TODO: One Shot Frags (Except for AWP)
+	int FlyFrags;				// TODO: Flying Frags
 	int	GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
-	int DoubleKill;				// BETA: Double Kill
+	int DoubleKill;				// TODO: Double Kill
 	int Blind;					// BETA: Player was blinded
 	int Footsteps;				// BETA: Footstep count
 	int Jumps;					// BETA: Jump count
 	int LandedFromHeight;		// BETA: Player is fell with some damage
+	int WeaponFired;			// BETA: Player is attack
+	int WeaponFiredEmpty;		// BETA: Player is attack without clip ammo
+	int WeaponReloaded;			// BETA: Player is reloading his weapon
 
 	// TODO: Count of Knife Duels in match (0 Wins, 1 Loses)
 	std::array<int, 2> KnifeDuels;
 
 	// Entries
-	int EntryFrags;				// BETA: Entry Frag of round
-	int EntryDeaths;			// BETA: Entry Death of round
+	int EntryFrags;				// TODO: Entry Frag of round
+	int EntryDeaths;			// TODO: Entry Death of round
 
 	// Rounds
 	int RoundPlay;				// TODO: Rounds Play
@@ -247,6 +248,9 @@ typedef struct S_PLAYER_STATS
 		this->Footsteps = 0;
 		this->Jumps = 0;
 		this->LandedFromHeight = 0;
+		this->WeaponFired = 0;
+		this->WeaponFiredEmpty = 0;
+		this->WeaponReloaded = 0;
 
 		// Entries
 		this->EntryFrags = 0;
@@ -353,14 +357,8 @@ public:
 	// On BOT manager event
 	void CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
 
-	// On player event
-	void PlayerEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
-
-	// On match event
-	void MatchEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
-
 	// On Round event
-	void RoundEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
+	void RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBasePlayer* Victim);
 	
 private:
 	// Match State
