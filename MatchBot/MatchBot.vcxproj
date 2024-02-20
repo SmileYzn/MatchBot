@@ -89,7 +89,7 @@
       </AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>.\PostCompile.bat</Command>
+      <Command>Powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\PostCompile.ps1"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
