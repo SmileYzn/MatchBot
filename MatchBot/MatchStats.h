@@ -1,5 +1,21 @@
 #pragma once
 
+//
+constexpr auto PLAYERDEATH_POSITION = 0x001;
+constexpr auto PLAYERDEATH_ASSISTANT = 0x002;
+constexpr auto PLAYERDEATH_KILLRARITY = 0x004;
+
+//
+constexpr auto KILLRARITY_HEADSHOT = 0x001;			// Headshot
+constexpr auto KILLRARITY_KILLER_BLIND = 0x002;		// Killer was blind
+constexpr auto KILLRARITY_NOSCOPE = 0x004;			// No-scope sniper rifle kill
+constexpr auto KILLRARITY_PENETRATED = 0x008;		// Penetrated kill (through walls)
+constexpr auto KILLRARITY_THRUSMOKE = 0x010;		// Smoke grenade penetration kill (bullets went through smoke)
+constexpr auto KILLRARITY_ASSISTEDFLASH = 0x020;	// Assister helped with a flash
+constexpr auto KILLRARITY_DOMINATION_BEGAN = 0x040; // Killer player began dominating the victim (NOTE: this flag is set once)
+constexpr auto KILLRARITY_DOMINATION = 0x080;		// Continues domination by the killer
+constexpr auto KILLRARITY_REVENGE = 0x100;			// Revenge by the killer
+
 // Match Data
 typedef struct S_MATCH_DATA
 {
@@ -88,9 +104,9 @@ typedef struct S_ROUND_EVENT
 // Weapon Stats
 typedef struct S_WEAPON_STATS
 {
-	int Frags;				// TODO: Player Frags
-	int Deaths;				// TODO: Player Deaths
-	int Headshots;			// TODO: Headshots
+	int Frags;				// BETA: Player Frags
+	int Deaths;				// BETA: Player Deaths
+	int Headshots;			// BETA: Headshots
 	int Shots;				// TODO: Shots
 	int Hits;				// TODO: Hits
 	int HitsReceived;		// TODO: Hits Received
@@ -101,9 +117,9 @@ typedef struct S_WEAPON_STATS
 // Round Stats
 typedef struct S_ROUND_STATS
 {
-	int Frags;				// TODO: Player Frags
-	int Deaths;				// TODO: Player Deaths
-	int Headshots;			// TODO: Headshots
+	int Frags;				// BETA: Player Frags
+	int Deaths;				// BETA: Player Deaths
+	int Headshots;			// BETA: Headshots
 	int Shots;				// TODO: Shots
 	int Hits;				// TODO: Hits
 	int HitsReceived;		// TODO: Hits Received
@@ -139,8 +155,8 @@ typedef struct S_ROUND_STATS
 typedef struct S_PLAYER_STATS
 {
 	// Stats
-	int Frags;					// TODO: Player Frags
-	int Deaths;					// TODO: Player Deaths
+	int Frags;					// BETA: Player Frags
+	int Deaths;					// BETA: Player Deaths
 	int Assists;				// TODO: Player Kill Assists
 	int Shots;					// TODO: Shots by player
 	int Hits;					// TODO: Hits done by player
@@ -154,16 +170,16 @@ typedef struct S_PLAYER_STATS
 	float RoundWinShare;
 
 	// Kill Rarity (Sick Stats)
-	int Headshots;				// TODO: Headshots by player (KILLRARITY_HEADSHOT)
-	int BlindFrags;				// TODO: Killer was blind (KILLRARITY_KILLER_BLIND)
+	int Headshots;				// BETA: Headshots by player (KILLRARITY_HEADSHOT)
+	int BlindFrags;				// BETA: Killer was blind (KILLRARITY_KILLER_BLIND)
 	int BlindDeaths;			// TODO: Player deaths when blinded by flashbang
-	int NoScope;				// TODO: No Scope Frags (KILLRARITY_NOSCOPE)
-	int WallFrags;				// TODO: Wallbang Frags (KILLRARITY_PENETRATED)
-	int SmokeFrags;				// TODO: Frags inside smoke (KILLRARITY_THRUSMOKE)
-	int AssistedFlash;			// TODO: Flash Assists (KILLRARITY_ASSISTEDFLASH)
-	int Dominations;			// TODO: Killer player began dominating the victim (NOTE: this flag is set once) (KILLRARITY_DOMINATION_BEGAN)
-	int DominationRepeats;		// TODO: Continues domination by the killer (KILLRARITY_DOMINATION)
-	int Revenges;				// TODO: Revenge by the killer (KILLRARITY_REVENGE)
+	int NoScope;				// BETA: No Scope Frags (KILLRARITY_NOSCOPE)
+	int WallFrags;				// BETA: Wallbang Frags (KILLRARITY_PENETRATED)
+	int SmokeFrags;				// BETA: Frags inside smoke (KILLRARITY_THRUSMOKE)
+	int AssistedFlash;			// BETA: Flash Assists (KILLRARITY_ASSISTEDFLASH)
+	int Dominations;			// BETA: Killer player began dominating the victim (NOTE: this flag is set once) (KILLRARITY_DOMINATION_BEGAN)
+	int DominationRepeats;		// BETA: Continues domination by the killer (KILLRARITY_DOMINATION)
+	int Revenges;				// BETA: Revenge by the killer (KILLRARITY_REVENGE)
 	int OneShot;				// TODO: One Shot Frags (Except for AWP)
 	int FlyFrags;				// TODO: Flying Frags
 	int	GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
@@ -352,7 +368,7 @@ public:
 	void RoundRestart();
 
 	// On send death message
-	void SendDeathMessage(CBaseEntity* Killer, CBasePlayer* Victim, CBasePlayer* Assister, entvars_t* pevInflictor, const char* killerWeaponName, int iDeathMessageFlags, int iRarityOfKill);
+	void SendDeathMessage(CBaseEntity* KillerEntity, CBasePlayer* Victim, CBasePlayer* Assister, entvars_t* pevInflictor, const char* killerWeaponName, int iDeathMessageFlags, int iRarityOfKill);
 
 	// On BOT manager event
 	void CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEntity, CBaseEntity* pOther);
