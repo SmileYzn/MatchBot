@@ -307,6 +307,23 @@ void CMatchStats::SendDeathMessage(CBaseEntity* KillerEntity, CBasePlayer* Victi
 						// Set revenge
 						this->m_Player[KillerAuth].Stats[this->m_State].Revenges++;
 					}
+
+					// 
+					//if (!Killer->IsBot())
+					//{
+					//	LOG_CONSOLE
+					//	(
+					//		PLID,
+					//		"[%s][%s] F %d A %d AF %d D %d HS %d",
+					//		__func__,
+					//		KillerAuth,
+					//		this->m_Player[KillerAuth].Stats[this->m_State].Frags,
+					//		this->m_Player[KillerAuth].Stats[this->m_State].Assists,
+					//		this->m_Player[KillerAuth].Stats[this->m_State].AssistedFlash,
+					//		this->m_Player[KillerAuth].Stats[this->m_State].Deaths,
+					//		this->m_Player[KillerAuth].Stats[this->m_State].Headshots
+					//	);
+					//}
 				}
 			}
 		}
