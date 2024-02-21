@@ -85,6 +85,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->CBasePlayer_SwitchTeam()->registerHook(ReGameDLL_CBasePlayer_SwitchTeam);
 
+	g_ReGameHookchains->CBasePlayer_RoundRespawn()->registerHook(ReGameDLL_CBasePlayer_RoundRespawn);
+
 	g_ReGameHookchains->CBasePlayer_AddAccount()->registerHook(ReGameDLL_CBasePlayer_AddAccount);
 
 	g_ReGameHookchains->CBasePlayer_HasRestrictItem()->registerHook(ReGameDLL_CBasePlayer_HasRestrictItem);
@@ -119,6 +121,8 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->CBasePlayer_GetIntoGame()->unregisterHook(ReGameDLL_CBasePlayer_GetIntoGame);
 
 	g_ReGameHookchains->CBasePlayer_SwitchTeam()->unregisterHook(ReGameDLL_CBasePlayer_SwitchTeam);
+
+	g_ReGameHookchains->CBasePlayer_RoundRespawn()->unregisterHook(ReGameDLL_CBasePlayer_RoundRespawn);
 
 	g_ReGameHookchains->CBasePlayer_AddAccount()->unregisterHook(ReGameDLL_CBasePlayer_AddAccount);
 
@@ -195,6 +199,13 @@ void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam* chain,
 	gMatchStats.PlayerSwitchTeam(Player);
 }
 
+void ReGameDLL_CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn* chain, CBasePlayer* Player)
+{
+	chain->callNext(Player);
+
+	gMatchStats.PlayerRespawn(Player);
+}
+
 void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain, CBasePlayer* Player, int Amount, RewardType Type, bool TrackChange)
 {
 	if (gMatchWarmup.PlayerAddAccount(Player, Amount, Type, TrackChange))
@@ -245,6 +256,8 @@ void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreez
 
 void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
 {
+	gMatchStats.RoundRestart();
+
 	chain->callNext();
 
 	gMatchLO3.RoundRestart();
@@ -252,8 +265,6 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 	gMatchPause.RoundRestart();
 
 	gMatchRestrictItem.RoundRestart();
-
-	gMatchStats.RoundRestart();
 }
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)

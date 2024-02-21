@@ -1,11 +1,11 @@
 #pragma once
 
-//
+// TODO: Wait an update of CSSDK?
 constexpr auto PLAYERDEATH_POSITION = 0x001;
 constexpr auto PLAYERDEATH_ASSISTANT = 0x002;
 constexpr auto PLAYERDEATH_KILLRARITY = 0x004;
 
-//
+// TODO: Wait an update of CSSDK?
 constexpr auto KILLRARITY_HEADSHOT = 0x001;			// Headshot
 constexpr auto KILLRARITY_KILLER_BLIND = 0x002;		// Killer was blind
 constexpr auto KILLRARITY_NOSCOPE = 0x004;			// No-scope sniper rifle kill
@@ -130,9 +130,6 @@ typedef struct S_ROUND_STATS
 	int Versus;				// TODO: Player is versus X players
 	float KillTime;			// TODO: Last Kill Time
 
-	// Damage dealt to other players
-	std::map<std::string, int> PlayerDamage;
-
 	// Reset
 	void Reset()
 	{
@@ -147,7 +144,7 @@ typedef struct S_ROUND_STATS
 		this->BombDefused = 0;
 		this->BombExploded = 0;
 		this->Versus = 0;
-		this->KillTime = 0.0f ;
+		this->KillTime = 0.0f;
 	}
 } P_ROUND_STATS, *LP_ROUND_STATS;
 
@@ -157,14 +154,14 @@ typedef struct S_PLAYER_STATS
 	// Stats
 	int Frags;					// BETA: Player Frags
 	int Deaths;					// BETA: Player Deaths
-	int Assists;				// TODO: Player Kill Assists
+	int Assists;				// BETA: Player Kill Assists
 	int Shots;					// TODO: Shots by player
 	int Hits;					// TODO: Hits done by player
 	int HitsReceived;			// TODO: Hits received by player
 	int Damage;					// TODO: Damage taken by player
 	int DamageReceived;			// TODO: Damage received by player
 	long Money;					// TODO: Money Balance from player
-	int Suicides;				// TODO: Suicide Count
+	int Suicides;				// BETA: Suicides Count
 
 	// TODO: Round Win Share stats
 	float RoundWinShare;
@@ -363,6 +360,9 @@ public:
 
 	// On player switch team
 	void PlayerSwitchTeam(CBasePlayer* Player);
+
+	// On player respawn
+	void PlayerRespawn(CBasePlayer* Player);
 
 	// On Round Restart
 	void RoundRestart();

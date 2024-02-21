@@ -174,6 +174,24 @@ void CMatchStats::PlayerSwitchTeam(CBasePlayer* Player)
 	}
 }
 
+// On player respawn
+void CMatchStats::PlayerRespawn(CBasePlayer* Player)
+{
+	// If match is not dead
+	if (this->m_State != STATE_DEAD)
+	{
+		// Get Steam ID
+		auto Auth = gMatchUtil.GetPlayerAuthId(Player->edict());
+
+		// If is not null
+		if (Auth)
+		{
+			// Reset round stats
+			this->m_Player[Auth].Round.Reset();
+		}
+	}
+}
+
 // On Round Restart
 void CMatchStats::RoundRestart()
 {
@@ -186,14 +204,11 @@ void CMatchStats::RoundRestart()
 			// If is complete reset
 			if (CSGameRules()->m_bCompleteReset)
 			{
-				// Get match state
-				auto State = gMatchBot.GetState();
-
 				// Loop all saved players
 				for (auto& Player : this->m_Player)
 				{
 					// Reset player stats of this state
-					Player.second.Stats[State].Reset();
+					Player.second.Stats[this->m_State].Reset();
 
 					// Reset round stats
 					Player.second.Round.Reset();
@@ -221,109 +236,141 @@ void CMatchStats::SendDeathMessage(CBaseEntity* KillerEntity, CBasePlayer* Victi
 				// Get CBasePlayer
 				auto Killer = static_cast<CBasePlayer*>(KillerEntity);
 
-				// Set Item Index
-				ItemIndex = static_cast<WeaponIdType>((Victim->m_bKilledByGrenade) ? WEAPON_HEGRENADE : ((Killer->m_pActiveItem) ? Killer->m_pActiveItem->m_iId : WEAPON_NONE));
-
 				// Get auth id
 				auto KillerAuth = gMatchUtil.GetPlayerAuthId(Killer->edict());
 
 				// If is not null
 				if (KillerAuth)
 				{
-					// Set frags
-					this->m_Player[KillerAuth].Stats[this->m_State].Frags++;
-
-					// Set weapon frags
-					this->m_Player[KillerAuth].Stats[this->m_State].Weapon[ItemIndex].Frags++;
-
-					// Set round frags
-					this->m_Player[KillerAuth].Round.Frags++;
-
-					// Is Headshot
-					if (iRarityOfKill & KILLRARITY_HEADSHOT)
+					// If is not killed self
+					if (Killer->entindex() != Victim->entindex())
 					{
-						// Set headshots
-						this->m_Player[KillerAuth].Stats[this->m_State].Headshots++;
+						// Set Item Index
+						ItemIndex = static_cast<WeaponIdType>((Victim->m_bKilledByGrenade) ? WEAPON_HEGRENADE : ((Killer->m_pActiveItem) ? Killer->m_pActiveItem->m_iId : WEAPON_NONE));
 
-						// Set weapon headshots
-						this->m_Player[KillerAuth].Stats[this->m_State].Weapon[ItemIndex].Headshots++;
+						// Set frags
+						this->m_Player[KillerAuth].Stats[this->m_State].Frags++;
 
-						// Set round headshots
-						this->m_Player[KillerAuth].Round.Headshots++;
+						// Set weapon frags
+						this->m_Player[KillerAuth].Stats[this->m_State].Weapon[ItemIndex].Frags++;
+
+						// Set round frags
+						this->m_Player[KillerAuth].Round.Frags++;
+
+						// If has player assistant
+						if (iDeathMessageFlags & PLAYERDEATH_ASSISTANT)
+						{
+							// If is not null
+							if (Assister)
+							{
+								// If is player
+								if (Assister->IsPlayer())
+								{
+									// Get auth id
+									auto AssisterAuth = gMatchUtil.GetPlayerAuthId(Assister->edict());
+
+									// If is not null
+									if (AssisterAuth)
+									{
+										// Set assists
+										this->m_Player[AssisterAuth].Stats[this->m_State].Assists++;
+									}
+								}
+
+							}
+						}
+
+						// Is Headshot
+						if (iRarityOfKill & KILLRARITY_HEADSHOT)
+						{
+							// Set headshots
+							this->m_Player[KillerAuth].Stats[this->m_State].Headshots++;
+
+							// Set weapon headshots
+							this->m_Player[KillerAuth].Stats[this->m_State].Weapon[ItemIndex].Headshots++;
+
+							// Set round headshots
+							this->m_Player[KillerAuth].Round.Headshots++;
+						}
+
+						// Is blind
+						if (iRarityOfKill & KILLRARITY_KILLER_BLIND)
+						{
+							// Set blind frags
+							this->m_Player[KillerAuth].Stats[this->m_State].BlindFrags++;
+						}
+
+						// Is no scoped
+						if (iRarityOfKill & KILLRARITY_NOSCOPE)
+						{
+							// Set no scoped frags
+							this->m_Player[KillerAuth].Stats[this->m_State].NoScope++;
+						}
+
+						// Is penetrated frag
+						if (iRarityOfKill & KILLRARITY_PENETRATED)
+						{
+							// Set wall frags
+							this->m_Player[KillerAuth].Stats[this->m_State].WallFrags++;
+						}
+
+						// Is through smoke
+						if (iRarityOfKill & KILLRARITY_THRUSMOKE)
+						{
+							// Set smoke frags
+							this->m_Player[KillerAuth].Stats[this->m_State].SmokeFrags++;
+						}
+
+						// Is assisted flash
+						if (iRarityOfKill & KILLRARITY_ASSISTEDFLASH)
+						{
+							// Set assisted flash frags
+							this->m_Player[KillerAuth].Stats[this->m_State].AssistedFlash++;
+						}
+
+						// Is domination
+						if (iRarityOfKill & KILLRARITY_DOMINATION_BEGAN)
+						{
+							// Set domination
+							this->m_Player[KillerAuth].Stats[this->m_State].Dominations++;
+						}
+
+						// Is domination
+						if (iRarityOfKill & KILLRARITY_DOMINATION)
+						{
+							// Set domination
+							this->m_Player[KillerAuth].Stats[this->m_State].DominationRepeats++;
+						}
+
+						// Is revenge
+						if (iRarityOfKill & KILLRARITY_REVENGE)
+						{
+							// Set revenge
+							this->m_Player[KillerAuth].Stats[this->m_State].Revenges++;
+						}
+
+						// TEST
+						if (!Killer->IsBot())
+						{
+							LOG_CONSOLE
+							(
+								PLID,
+								"[%s][%s] F %d A %d AF %d D %d HS %d",
+								__func__,
+								KillerAuth,
+								this->m_Player[KillerAuth].Stats[this->m_State].Frags,
+								this->m_Player[KillerAuth].Stats[this->m_State].Assists,
+								this->m_Player[KillerAuth].Stats[this->m_State].AssistedFlash,
+								this->m_Player[KillerAuth].Stats[this->m_State].Deaths,
+								this->m_Player[KillerAuth].Stats[this->m_State].Headshots
+							);
+						}
 					}
-
-					// Is blind
-					if (iRarityOfKill & KILLRARITY_KILLER_BLIND)
+					else
 					{
-						// Set blind frags
-						this->m_Player[KillerAuth].Stats[this->m_State].BlindFrags++;
+						// Set suicides
+						this->m_Player[KillerAuth].Stats[this->m_State].Suicides++;
 					}
-
-					// Is no scoped
-					if (iRarityOfKill & KILLRARITY_NOSCOPE)
-					{
-						// Set no scoped frags
-						this->m_Player[KillerAuth].Stats[this->m_State].NoScope++;
-					}
-
-					// Is penetrated frag
-					if (iRarityOfKill & KILLRARITY_PENETRATED)
-					{
-						// Set wall frags
-						this->m_Player[KillerAuth].Stats[this->m_State].WallFrags++;
-					}
-
-					// Is through smoke
-					if (iRarityOfKill & KILLRARITY_THRUSMOKE)
-					{
-						// Set smoke frags
-						this->m_Player[KillerAuth].Stats[this->m_State].SmokeFrags++;
-					}
-
-					// Is assisted flash
-					if (iRarityOfKill & KILLRARITY_ASSISTEDFLASH)
-					{
-						// Set assisted flash frags
-						this->m_Player[KillerAuth].Stats[this->m_State].AssistedFlash++;
-					}
-
-					// Is domination
-					if (iRarityOfKill & KILLRARITY_DOMINATION_BEGAN)
-					{
-						// Set domination
-						this->m_Player[KillerAuth].Stats[this->m_State].Dominations++;
-					}
-
-					// Is domination
-					if (iRarityOfKill & KILLRARITY_DOMINATION)
-					{
-						// Set domination
-						this->m_Player[KillerAuth].Stats[this->m_State].DominationRepeats++;
-					}
-
-					// Is revenge
-					if (iRarityOfKill & KILLRARITY_REVENGE)
-					{
-						// Set revenge
-						this->m_Player[KillerAuth].Stats[this->m_State].Revenges++;
-					}
-
-					// 
-					//if (!Killer->IsBot())
-					//{
-					//	LOG_CONSOLE
-					//	(
-					//		PLID,
-					//		"[%s][%s] F %d A %d AF %d D %d HS %d",
-					//		__func__,
-					//		KillerAuth,
-					//		this->m_Player[KillerAuth].Stats[this->m_State].Frags,
-					//		this->m_Player[KillerAuth].Stats[this->m_State].Assists,
-					//		this->m_Player[KillerAuth].Stats[this->m_State].AssistedFlash,
-					//		this->m_Player[KillerAuth].Stats[this->m_State].Deaths,
-					//		this->m_Player[KillerAuth].Stats[this->m_State].Headshots
-					//	);
-					//}
 				}
 			}
 		}
@@ -376,7 +423,7 @@ void CMatchStats::CBotManager_OnEvent(GameEventType GameEvent, CBaseEntity* pEnt
 						// If is not null
 						if (Auth)
 						{
-							// Player blind count
+							// Player weapon fired count
 							this->m_Player[Auth].Stats[this->m_State].WeaponFired++;
 						}
 					}
