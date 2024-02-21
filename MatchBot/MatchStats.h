@@ -65,22 +65,22 @@ typedef struct S_MATCH_DATA
 typedef struct S_ROUND_EVENT
 {
 	// BETA: Round Count
-	int	Round;
+	int Round;
 
 	// BETA: Round Time Seconds;
 	float Time;
 
 	// BETA: Game Event (GameEvent.h)
-	int	GameEvent;
+	int GameEvent;
 
 	// BETA: Scenario Event
-	int	ScenarioEvent;
+	int ScenarioEvent;
 
 	// BETA: Winner team of event
-	int	Winner;
+	int Winner;
 
 	// BETA: Loser team of event
-	int	Loser;
+	int Loser;
 
 	// BETA: Killer Steam Id
 	std::string Killer;
@@ -98,7 +98,7 @@ typedef struct S_ROUND_EVENT
 	bool IsHeadShot;
 
 	// BETA: Item Index of event
-	int	ItemIndex;
+	int ItemIndex;
 } P_ROUND_EVENT, *LP_ROUND_EVENT;
 
 // Weapon Stats
@@ -179,7 +179,7 @@ typedef struct S_PLAYER_STATS
 	int Revenges;				// BETA: Revenge by the killer (KILLRARITY_REVENGE)
 	int OneShot;				// TODO: One Shot Frags (Except for AWP)
 	int FlyFrags;				// TODO: Flying Frags
-	int	GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
+	int GodLikes;				// TODO: Count of times when a player killed the other accompanied by the wall
 	int DoubleKill;				// TODO: Double Kill
 	int Blind;					// BETA: Player was blinded
 	int Footsteps;				// BETA: Footstep count
@@ -334,7 +334,7 @@ typedef struct S_PLAYER_DATA
 	int Team;
 
 	// BETA: Is Winner of match
-	int	Winner;
+	int Winner;
 
 	// TODO: Player Stats
 	std::map<int, P_PLAYER_STATS> Stats;
