@@ -762,15 +762,11 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 	// Do not allow auto selection, this broken team systems
 	if (Slot == MENU_SLOT_TEAM_RANDOM)
 	{
-		// If player is unassigned
-		if (Player->m_iTeam != UNASSIGNED)
-		{
-			// Send message and block it
-			gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3Auto Team Select^1 is not allowed."));
+		// Send message and block it
+		gMatchUtil.SayText(Player->edict(), PRINT_TEAM_DEFAULT, _T("^3Auto Team Select^1 is not allowed."));
 
-			// Block it
-			return true;
-		}
+		// Block it
+		return true;
 	}
 
 	// If is spectator
