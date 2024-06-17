@@ -61,7 +61,7 @@ jobs:
     - name: Download accuracy-fix
       run: |
         # Get latest release version of accuracy-fix
-        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.0.7/accuracyfix-linux.zip
+        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.0/accuracyfix-linux.zip
 
         # Unzip accuracy-fix library to metamod folder
         unzip -p accuracyfix-linux.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
