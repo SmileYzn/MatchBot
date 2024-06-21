@@ -45,7 +45,7 @@ jobs:
     - name: Download metamod-r
       run: |
         # Get latest release version of metamod-r
-        wget --quiet https://github.com/theAsmodai/metamod-r/releases/download/1.3.0.138/metamod-bin-1.3.0.138.zip
+        wget --quiet https://github.com/theAsmodai/metamod-r/releases/download/1.3.0.149/metamod-bin-1.3.0.149.zip
 
         # Unzip metamod library to metamod folder
         unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > publish/addons/metamod/metamod_i386.so
@@ -61,7 +61,7 @@ jobs:
     - name: Download accuracy-fix
       run: |
         # Get latest release version of accuracy-fix
-        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.0/accuracyfix-linux.zip
+        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.1/accuracyfix-linux.zip
 
         # Unzip accuracy-fix library to metamod folder
         unzip -p accuracyfix-linux.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
