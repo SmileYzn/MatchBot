@@ -593,7 +593,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 			catch (...)
 			{
 				// Catch for erros
-				 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] %s", __func__, lpMemScript->GetError().c_str());
+				gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s][%s] %s", __func__, MB_MAP_LIST_FILE, lpMemScript->GetError().c_str());
 			}
 		}
 
