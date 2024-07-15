@@ -1,5 +1,5 @@
-﻿// File: 	maplist.txt
-// Updated: 	09:50 2023/08/26
+// File: 	maplist.txt
+// Updated: 	17:20 2024/07/15
 // Description: This file is used to list maps to map menus.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 de_dust2

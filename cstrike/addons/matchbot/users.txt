@@ -1,5 +1,5 @@
-﻿// File: 	users.txt
-// Updated: 	09:20 2023/08/26
+// File: 	users.txt
+// Updated: 	17:20 2024/07/15
 // Description: This file is used to manage admins and flags.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Name			The nickname of user;
