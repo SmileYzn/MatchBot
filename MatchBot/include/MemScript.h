@@ -43,6 +43,8 @@ public:
 	{
 		this->m_Path = Path;
 
+		this->SetError(0);
+
 		std::ifstream File(Path, std::ios::binary);
 
 		if (!File)
@@ -273,27 +275,27 @@ public:
 		{
 			case 0:
 			{
-				this->m_Code = "[" + this->m_Path + "] The file were not configured correctly.";
+				this->m_Code = "[MemScript] The file were not configured correctly.";
 				break;
 			}
 			case 1:
 			{
-				this->m_Code = "[" + this->m_Path + "] Could not open file.";
+				this->m_Code = "[MemScript] Could not open file.";
 				break;
 			}
 			case 2:
 			{
-				this->m_Code = "[" + this->m_Path + "] Could not alloc file buffer.";
+				this->m_Code = "[MemScript] Could not alloc file buffer.";
 				break;
 			}
 			case 3:
 			{
-				this->m_Code = "[" + this->m_Path + "] Could not get file buffer.";
+				this->m_Code = "[MemScript] Could not get file buffer.";
 				break;
 			}
 			case 4:
 			{
-				this->m_Code = "[" + this->m_Path + "] The file were not configured correctly.";
+				this->m_Code = "[MemScript] The file were not configured correctly.";
 				break;
 			}
 		}
