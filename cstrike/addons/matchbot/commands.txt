@@ -1,5 +1,5 @@
 // File: 	commands.txt
-// Updated: 	23:58 2024/02/02
+// Updated: 	17:39 2024/07/15
 // Description: This file is used to manage commands and access.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // ID			Index of command;

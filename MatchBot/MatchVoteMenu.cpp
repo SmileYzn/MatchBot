@@ -431,7 +431,7 @@ bool CMatchVoteMenu::VotePause(CBasePlayer* Player)
 		if (gMatchBot.GetState() == STATE_FIRST_HALF || gMatchBot.GetState() == STATE_SECOND_HALF || gMatchBot.GetState() == STATE_OVERTIME)
 		{
 			// If pause timer is enabled and pause limit have value
-			if (gMatchBot.m_PauseTime->value > 0.0f && gMatchBot.m_PlayerVotePause->value > 0.0f)
+			if ((gMatchBot.m_PauseTime->value > 0.0f) && (gMatchBot.m_PlayerVotePause->value > 0.0f))
 			{
 				// Get Players
 				auto Players = gMatchUtil.GetPlayers(Player->m_iTeam, true);

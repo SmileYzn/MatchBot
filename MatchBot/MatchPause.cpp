@@ -140,6 +140,9 @@ void CMatchPause::Pause()
 {
 	// Is paused
 	this->m_Paused = true;
+	
+	// Pause Time integer (Set to default if not exists: 60)
+	auto PauseTime = (gMatchBot.m_PauseTime && (gMatchBot.m_PauseTime->value > 0.0f)) ? static_cast<int>(gMatchBot.m_PauseTime->value) : 60;
 
 	// If has CS game rules
 	if (g_pGameRules)
@@ -151,18 +154,18 @@ void CMatchPause::Pause()
 			this->m_BuyTime = gMatchBot.m_BuyTime->value;
 		}
 
-		// Set buytime
-		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BuyTime, std::to_string(gMatchBot.m_PauseTime->value).c_str());
+		// Set buytime the same value of pause time
+		g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_BuyTime, std::to_string(PauseTime).c_str());
 	}
 
-	// Pause for 60 seconds
-	this->SetRoundTime(static_cast<int>(gMatchBot.m_PauseTime->value) + 1, true);
+	// Pause for specified time in seconds plus 1
+	this->SetRoundTime(PauseTime + 1, true);
 
 	// Create Pause Timer Task
-	gMatchTask.Create(TASK_PAUSE_MATCH, 0.5f, true, (void*)this->PauseTimer, static_cast<int>(gMatchBot.m_PauseTime->value));
+	gMatchTask.Create(TASK_PAUSE_MATCH, 0.5f, true, (void*)this->PauseTimer, PauseTime);
 
 	// Remain time in seconds
-	time_t RemainTime = static_cast<time_t>(gMatchBot.m_PauseTime->value);
+	time_t RemainTime = static_cast<time_t>(PauseTime);
 
 	// Create time struct
 	struct tm* tm_info = localtime(&RemainTime);
@@ -171,7 +174,7 @@ void CMatchPause::Pause()
 	if (tm_info)
 	{
 		// Time String
-		char Time[16];
+		char Time[16] = { 0 };
 
 		// If formated string with time 
 		if (strftime(Time, sizeof(Time), "%M:%S", tm_info) > 0)
