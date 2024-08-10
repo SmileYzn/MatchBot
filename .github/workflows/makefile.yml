@@ -27,18 +27,20 @@ jobs:
       run: |
         mkdir temp
         cd temp
+        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
+        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/lib32gcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libx32gcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8_4.8.5-4ubuntu8_amd64.deb
         wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
-        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-multilib_4.8.5-4ubuntu8_i386.deb
         wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
-        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8-multilib_4.8.5-4ubuntu8_i386.deb
         wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
-        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_i386.deb
+        sudo apt install -qq -y ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
+        sudo apt install -qq -y ./lib32gcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        sudo apt install -qq -y ./libx32gcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        sudo apt install -qq -y ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb
         sudo apt install -qq -y ./gcc-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
-        sudo apt install -qq -y ./gcc-4.8-multilib_4.8.5-4ubuntu8_i386.deb
         sudo apt install -qq -y ./g++-4.8-multilib_4.8.5-4ubuntu8_amd64.deb
-        sudo apt install -qq -y ./g++-4.8-multilib_4.8.5-4ubuntu8_i386.deb
         sudo apt install -qq -y ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
-        sudo apt install -qq -y ./libgcc-4.8-dev_4.8.5-4ubuntu8_i386.deb
         cd ..
 
     - name: Run build
