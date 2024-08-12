@@ -36,15 +36,13 @@ jobs:
         wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_amd64.deb  
         sudo apt install ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./libasan0_4.8.5-4ubuntu8_amd64.deb ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
         cd ..
-
+        
     - name: Update GCC and G++ alternatives
       run: |
-        sudo update-alternatives --remove-all gcc
-        sudo update-alternatives --remove-all g++
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
-        sudo update-alternatives --config gcc
-        sudo update-alternatives --config g++
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50 
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50 
+        sudo update-alternatives --config gcc 
+        sudo update-alternatives --config g++ 
 
     - name: Run build
       working-directory: ./MatchBot
