@@ -44,6 +44,9 @@ jobs:
         sudo update-alternatives --config gcc 
         sudo update-alternatives --config g++ 
 
+    - name: G++ version
+      run: g++ --version
+
     - name: Run build
       working-directory: ./MatchBot
       run: make
