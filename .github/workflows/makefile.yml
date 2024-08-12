@@ -16,6 +16,9 @@ jobs:
       
     - name: Add i386 architecture
       run: sudo dpkg --add-architecture i386
+
+    - name: Add toolchain test PPA
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test
       
     - name: Update repository
       run: sudo apt-get update
@@ -24,19 +27,17 @@ jobs:
       run: sudo apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib libgcc1:i386
 
     - name: Instal GCC G++ 4.8
+      run: sudo apt-get install gcc-4.8 g++-4.8
+
+    - name: Update GCC and G++ alternatives
       run: |
-        mkdir temp
-        cd temp
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8_4.8.5-4ubuntu8_amd64.deb 
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb 
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb 
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8_4.8.5-4ubuntu8_amd64.deb 
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb 
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/cpp-4.8_4.8.5-4ubuntu8_amd64.deb 
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_amd64.deb  
-        sudo apt install ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./libasan0_4.8.5-4ubuntu8_amd64.deb ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
-        cd ..
-        
+        sudo update-alternatives --remove-all gcc
+        sudo update-alternatives --remove-all g++
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
+        sudo update-alternatives --config gcc
+        sudo update-alternatives --config g++
+
     - name: Check G++ version
       run: g++ --version
 
