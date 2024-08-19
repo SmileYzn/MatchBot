@@ -89,7 +89,7 @@ jobs:
     - name: Download Accuracy Fix
       run: |
         # Get latest release version of Accuracy Fix
-        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.3/linux32.zip
+        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.4/linux32.zip
 
         # Unzip accuracy-fix library to metamod folder
         unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
@@ -189,7 +189,7 @@ jobs:
     - name: Download Accuracy Fix
       run: |
         # Set assets data
-        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.3/win32.zip"
+        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.4/win32.zip"
 
         # Get ZIP file name
         $zipName = "win32.zip"
