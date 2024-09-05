@@ -13,8 +13,8 @@ jobs:
     container: ubuntu:18.04
 
     steps:
-    #- name: Setup Checkout
-    #  uses: actions/checkout@v4
+    - name: Setup Checkout
+      uses: actions/checkout@v3
       
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
@@ -29,9 +29,9 @@ jobs:
       run: update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
 
     - name: Run build
-      run: |
-        ls .
-        
+      working-directory: ./MatchBot
+      run: make
+
     - name: Move release file to publish
       run: |
         # Make Match BOT path
