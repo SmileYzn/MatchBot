@@ -13,9 +13,6 @@ jobs:
     container: ubuntu:18.04
 
     steps:
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
     - uses: actions/checkout@v4
       
     - name: Add i386 architecture
