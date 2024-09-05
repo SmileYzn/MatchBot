@@ -30,8 +30,7 @@ jobs:
 
     - name: Run build
       run: |
-        ls
-        ls ${{github.workspace}}
+        ls .
         
     - name: Move release file to publish
       run: |
