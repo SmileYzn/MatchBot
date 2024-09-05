@@ -23,35 +23,33 @@ jobs:
     - name: Install build dependencies
       run: sudo apt-get install -qq -y wget unzip
 
-    - name: Instal GCC G++ 4.8 (multilib)
+    - name: Instal GCC 4.7 (multilib)
       run: |
         mkdir temp
         cd temp
 
         # amd64
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8_4.8.5-4ubuntu8_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8_4.8.5-4ubuntu8_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/cpp-4.8_4.8.5-4ubuntu8_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_amd64.deb
-        sudo apt install ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./libasan0_4.8.5-4ubuntu8_amd64.deb ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/g++-4.7_4.7.4-3ubuntu12_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libstdc++6-4.7-dev_4.7.4-3ubuntu12_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7-base_4.7.4-3ubuntu12_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7_4.7.4-3ubuntu12_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libgcc-4.7-dev_4.7.4-3ubuntu12_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/cpp-4.7_4.7.4-3ubuntu12_amd64.deb
+        sudo apt install ./gcc-4.7_4.7.4-3ubuntu12_amd64.deb ./gcc-4.7-base_4.7.4-3ubuntu12_amd64.deb ./libstdc++6-4.7-dev_4.7.4-3ubuntu12_amd64.deb ./cpp-4.7_4.7.4-3ubuntu12_amd64.deb ./libgcc-4.7-dev_4.7.4-3ubuntu12_amd64.deb ./g++-4.7_4.7.4-3ubuntu12_amd64.deb
 
         # i386
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8_4.8.5-4ubuntu8_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libstdc++-4.8-dev_4.8.5-4ubuntu8_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8_4.8.5-4ubuntu8_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/cpp-4.8_4.8.5-4ubuntu8_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_i386.deb
-        sudo apt install ./gcc-4.8_4.8.5-4ubuntu8_i386.deb ./gcc-4.8-base_4.8.5-4ubuntu8_i386.deb ./libstdc++-4.8-dev_4.8.5-4ubuntu8_i386.deb ./cpp-4.8_4.8.5-4ubuntu8_i386.deb ./libgcc-4.8-dev_4.8.5-4ubuntu8_i386.deb ./libasan0_4.8.5-4ubuntu8_i386.deb ./g++-4.8_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/g++-4.7_4.7.4-3ubuntu12_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libstdc++6-4.7-dev_4.7.4-3ubuntu12_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7-base_4.7.4-3ubuntu12_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7_4.7.4-3ubuntu12_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libgcc-4.7-dev_4.7.4-3ubuntu12_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/cpp-4.7_4.7.4-3ubuntu12_i386.deb
+        sudo apt install ./gcc-4.7_4.7.4-3ubuntu12_i386.deb ./gcc-4.7-base_4.7.4-3ubuntu12_i386.deb ./libstdc++6-4.7-dev_4.7.4-3ubuntu12_i386.deb ./cpp-4.7_4.7.4-3ubuntu12_i386.deb ./libgcc-4.7-dev_4.7.4-3ubuntu12_i386.deb ./g++-4.7_4.7.4-3ubuntu12_i386.deb
         
     - name: Update GCC and G++ alternatives
       run: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 50
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 50
         sudo update-alternatives --config gcc
         sudo update-alternatives --config g++
 
