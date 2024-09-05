@@ -19,7 +19,7 @@ jobs:
       
     - name: Update repository
       run: |
-        sudo echo "deb http://br.archive.ubuntu.com/ubuntu/bionic main universe multiverse restricted" >> /etc/apt/sources.list
+        sudo su -c "echo 'deb http://br.archive.ubuntu.com/ubuntu/bionic main universe multiverse restricted' >> /etc/apt/sources.list"
         sudo apt-get update
 
     - name: Install build dependencies
