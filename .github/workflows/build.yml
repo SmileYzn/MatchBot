@@ -19,6 +19,8 @@ jobs:
       
     - name: Update repository
       run: |
+        sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 40976EAF437D05B5
+        sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32
         sudo su -c "echo 'deb http://archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse' >> /etc/apt/sources.list"
         sudo apt-get update
 
