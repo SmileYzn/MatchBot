@@ -29,8 +29,9 @@ jobs:
       run: update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
 
     - name: Run build
-      working-directory: ./MatchBot
-      run: make
+      run: |
+        ls
+        make
         
     - name: Move release file to publish
       run: |
