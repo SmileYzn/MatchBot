@@ -30,7 +30,7 @@ jobs:
 
     - name: Run build
       run: |
-        ls
+        cd MatchBot
         make
         
     - name: Move release file to publish
