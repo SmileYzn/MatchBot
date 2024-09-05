@@ -18,33 +18,16 @@ jobs:
       run: sudo dpkg --add-architecture i386
       
     - name: Update repository
-      run: sudo apt-get update
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
 
     - name: Install build dependencies
       run: sudo apt-get install -qq -y wget unzip
 
     - name: Instal GCC 4.7 (multilib)
       run: |
-        mkdir temp
-        cd temp
-
-        # amd64
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/g++-4.7_4.7.4-3ubuntu12_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libstdc++6-4.7-dev_4.7.4-3ubuntu12_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7-base_4.7.4-3ubuntu12_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7_4.7.4-3ubuntu12_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libgcc-4.7-dev_4.7.4-3ubuntu12_amd64.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/cpp-4.7_4.7.4-3ubuntu12_amd64.deb
-        sudo apt install ./gcc-4.7_4.7.4-3ubuntu12_amd64.deb ./gcc-4.7-base_4.7.4-3ubuntu12_amd64.deb ./libstdc++6-4.7-dev_4.7.4-3ubuntu12_amd64.deb ./cpp-4.7_4.7.4-3ubuntu12_amd64.deb ./libgcc-4.7-dev_4.7.4-3ubuntu12_amd64.deb ./g++-4.7_4.7.4-3ubuntu12_amd64.deb
-
-        # i386
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/g++-4.7_4.7.4-3ubuntu12_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libstdc++6-4.7-dev_4.7.4-3ubuntu12_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7-base_4.7.4-3ubuntu12_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/gcc-4.7_4.7.4-3ubuntu12_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/libgcc-4.7-dev_4.7.4-3ubuntu12_i386.deb
-        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.7/cpp-4.7_4.7.4-3ubuntu12_i386.deb
-        sudo apt install ./gcc-4.7_4.7.4-3ubuntu12_i386.deb ./gcc-4.7-base_4.7.4-3ubuntu12_i386.deb ./libstdc++6-4.7-dev_4.7.4-3ubuntu12_i386.deb ./cpp-4.7_4.7.4-3ubuntu12_i386.deb ./libgcc-4.7-dev_4.7.4-3ubuntu12_i386.deb ./g++-4.7_4.7.4-3ubuntu12_i386.deb
+        sudo apt-get install gcc-4.7
         
     - name: Update GCC and G++ alternatives
       run: |
@@ -215,5 +198,4 @@ jobs:
       with:
         name: win32
         path: publish/*
-
-
+        
