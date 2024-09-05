@@ -13,11 +13,6 @@ jobs:
     container: ubuntu:18.04
 
     steps:
-    - name: Setup NodeJS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-
     - name: Setup Checkout
       uses: actions/checkout@v4
       
