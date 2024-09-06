@@ -10,7 +10,6 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: ubuntu:18.04
 
     steps:
     - name: Setup Checkout
@@ -23,7 +22,7 @@ jobs:
       run: sudo apt-get update
 
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y wget unzip build-essential gcc-4.8-multilib g++-4.8-multilib libgcc1:i386
+      run: sudo apt-get install -qq -y wget unzip build-essential mingw32
     
     - name: Update alternatives
       run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
