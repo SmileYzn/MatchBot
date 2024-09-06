@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Setup Checkout
-      uses: actions/checkout@v3.5.3
+      uses: actions/checkout@v4
       
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
@@ -82,7 +82,8 @@ jobs:
       BUILD_CONFIGURATION: Release
   
     steps:
-    - uses: actions/checkout@v4
+    - name: Setup Checkout
+      uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
