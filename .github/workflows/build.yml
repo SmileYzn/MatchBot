@@ -24,8 +24,8 @@ jobs:
     - name: Install build dependencies
       run: sudo apt-get install -qq -y wget unzip build-essential mingw32
     
-    - name: Update alternatives
-      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+    #- name: Update alternatives
+    #  run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
 
     - name: Run build
       working-directory: ./MatchBot
