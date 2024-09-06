@@ -10,7 +10,7 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: ubuntu:18.04.6
+    container: ubuntu:18.04
 
     steps:
     - name: Setup Checkout
@@ -32,40 +32,32 @@ jobs:
       working-directory: ./MatchBot
       run: make
 
-    - name: Move release file to publish
-      run: |
-        # Make Match BOT path
-        mkdir -p publish/addons/matchbot/dlls
+    - name: Make Match BOT path
+      run: mkdir -p publish/addons/matchbot/dlls
 
-        # Move released file to dlls
-        mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
+    - name: Move released file to dlls
+      run: mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
 
-        # Copy cstrike contents to publish dir
-        cp -ar cstrike/. publish
+    - name: Copy cstrike contents to publish dir
+      run: cp -ar cstrike/. publish
 
-    - name: Download metamod-r
-      run: |
-        # Get latest release version of metamod-r
-        wget --quiet https://github.com/theAsmodai/metamod-r/releases/download/1.3.0.149/metamod-bin-1.3.0.149.zip
+    - name: Get latest release version of metamod-r
+      run: wget --quiet https://github.com/theAsmodai/metamod-r/releases/download/1.3.0.149/metamod-bin-1.3.0.149.zip
 
-        # Unzip metamod library to metamod folder
-        unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > publish/addons/metamod/metamod_i386.so
+    - name: Unzip metamod library to metamod folder
+      run: unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > publish/addons/metamod/metamod_i386.so
 
-    - name: Download hitbox_fixer
-      run: |
-        # Get latest release version of hitbox_fixer
-        wget --quiet https://github.com/Garey27/hitbox_fixer/releases/download/1.1.5/hitbox_fix-bin-1.1.5.zip
+    - name: Get latest release version of hitbox_fixer
+      run: wget --quiet https://github.com/Garey27/hitbox_fixer/releases/download/1.1.5/hitbox_fix-bin-1.1.5.zip
 
-        # Unzip hitbox_fixer library to metamod folder
-        unzip -p hitbox_fix-bin*.zip addons/hitbox_fix/hitbox_fix_mm_i386.so > publish/addons/hitbox_fix/hitbox_fix_mm_i386.so
+    - name: Unzip hitbox_fixer library to metamod folder
+      run: unzip -p hitbox_fix-bin*.zip addons/hitbox_fix/hitbox_fix_mm_i386.so > publish/addons/hitbox_fix/hitbox_fix_mm_i386.so
 
     - name: Download Accuracy Fix
-      run: |
-        # Get latest release version of Accuracy Fix
-        wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.4/linux32.zip
+      run: wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.15/linux32.zip
 
-        # Unzip accuracy-fix library to metamod folder
-        unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
+    - name: Unzip accuracy-fix library to metamod folder
+      run: unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
