@@ -10,15 +10,14 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
+    container: ubuntu:18.04.6
 
     steps:
     - name: Setup Checkout
       uses: actions/checkout@v4
       
     - name: Add i386 architecture
-      run: |
-        sudo dpkg --add-architecture i386
-        sudo su -c "echo 'deb http://archive.ubuntu.com/ubuntu/bionic main restricted universe multiverse' >> /etc/apt/sources.list"
+      run: sudo dpkg --add-architecture i386
       
     - name: Update repository
       run: sudo apt-get update
