@@ -20,7 +20,7 @@ jobs:
       run: pacman --noconfirm -Syyu
       
     - name: Update repository
-      run: pacman --noconfirm -S --needed git base-devel wget unzip mingw-w64 lib32-gcc-libs lib32-glibc lib32-curl
+      run: yes | pacman --noconfirm -S --needed git base-devel wget unzip mingw-w64 lib32-gcc-libs lib32-glibc
 
     - name: Run build
       working-directory: ./MatchBot
