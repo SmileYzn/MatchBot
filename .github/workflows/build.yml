@@ -10,6 +10,7 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
+    container: archlinux
 
     steps:
     - name: Setup Checkout
