@@ -11,7 +11,7 @@ NAME 		= matchbot
 BIN_DIR 	= Release
 
 # G++
-COMPILER 	= g++
+COMPILER 	= x86_64-linux-gnu-g++
 OBJECTS 	= *.cpp
 
 # Linker Libs
