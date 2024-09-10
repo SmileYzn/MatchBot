@@ -16,14 +16,11 @@ jobs:
     - name: Setup Checkout
       uses: actions/checkout@v4
       
-    - name: Add i386 architecture
-      run: sudo dpkg --add-architecture i386
+    - name: Update Repository
+      run: sudo pacman --noconfirm -Syyu
       
     - name: Update repository
-      run: sudo apt-get update
-
-    - name: Install build dependencies
-      run: sudo apt-get install -qq -y wget unzip build-essential mingw-w64
+      run: sudo pacman --noconfirm -S --needed git base-devel wget unzip mingw-w64
 
     - name: Run build
       working-directory: ./MatchBot
