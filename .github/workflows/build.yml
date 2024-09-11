@@ -16,25 +16,26 @@ jobs:
     - name: Setup Checkout
       uses: actions/checkout@v4
       
-    - name: Update Repository
+    - name: Update System
       run: pacman --noconfirm -Syyu
       
-    - name: Update repository
+    - name: Install base packages
       run: yes | pacman --noconfirm --needed -S git base-devel wget unzip lib32-gcc-libs lib32-glibc
 
-    - name: Install AUR Helper (YAY)
+    - name: Install AUR Helper (PARU)
       run: |
-        mkdir -p /tmp/yay-build
+        mkdir -p /tmp/paru-build
         useradd -m -G wheel builder && passwd -d builder
-        chown -R builder:builder /tmp/yay-build
+        chown -R builder:builder /tmp/paru-build
         echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-        su - builder -c "git clone https://aur.archlinux.org/yay.git /tmp/yay-build/yay"
-        su - builder -c "cd /tmp/yay-build/yay && makepkg -si --noconfirm"
+        su - builder -c "git clone https://aur.archlinux.org/paru.git /tmp/paru-build/paru"
+        su - builder -c "cd /tmp/paru-build/yay && makepkg -si --noconfirm"
+        rm -rf /tmp/yay-build
         
     - name: Install GCC 4.9
       run: |
         su - builder
-        yes | yay --noconfirm --needed -S gcc49 gcc49-multilib
+        yes | paru --noconfirm --needed -S gcc49 gcc49-multilib
 
     - name: Run build
       working-directory: ./MatchBot
