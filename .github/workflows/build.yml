@@ -29,8 +29,8 @@ jobs:
         chown -R builder:builder /tmp/paru-build
         echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
         su - builder -c "git clone https://aur.archlinux.org/paru.git /tmp/paru-build/paru"
-        su - builder -c "cd /tmp/paru-build/yay && makepkg -si --noconfirm"
-        rm -rf /tmp/yay-build
+        su - builder -c "cd /tmp/paru-build/paru && makepkg -si --noconfirm"
+        rm -rf /tmp/paru-build
         
     - name: Install GCC 4.9
       run: |
