@@ -34,8 +34,7 @@ jobs:
         
     - name: Install GCC 4.9
       run: |
-        su - builder
-        yes | paru --noconfirm --needed -S gcc49 gcc49-multilib
+        su - builder -c "yes | paru --noconfirm --needed -S gcc49"
 
     - name: Run build
       working-directory: ./MatchBot
