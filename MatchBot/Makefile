@@ -15,15 +15,7 @@ COMPILER 	= x86_64-linux-gnu-g++
 OBJECTS 	= *.cpp
 
 # Linker Libs
-LINKER 		= -static-libgcc -static-libstdc++
-
-# Compiler version check to static linking
-RES_COMPILER_VERSION := $(shell expr "`$(COMPILER) -dumpversion`" ">=" "5")
-
-# Link static lib if compiler is newer than minimum version
-ifeq "$(RES_COMPILER_VERSION)" "1"
-LINKER += -static-libgcc -static-libstdc++
-endif
+LINKER 		= -Wl,-Bstatic
 
 # C flags
 CFLAGS 		= -std=gnu++11 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -m32 -msse3 -msse4.1 -shared
@@ -42,15 +34,15 @@ $(BIN_DIR)/%.o: %.c
 
 all:
 	mkdir -p $(BIN_DIR)
-
-	$(MAKE) $(NAME) && strip -x $(BIN_DIR)/$(NAME)_mm.so
+	$(MAKE) $(NAME)
+	strip -x $(BIN_DIR)/$(NAME)_mm.so
 
 $(NAME): $(OBJ_LINUX)
 
 	$(COMPILER) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINKER) -o$(BIN_DIR)/$(NAME)_mm.so
 
 check:
-	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=gnu++11 -DNDEBUG -Dlinux -D__linux__ -U_FORTIFY_SOURCE .
+	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=gnu++11 -DNDEBUG -Dlinux -D__linux__ -D_GLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE .
 
 default: all
 
