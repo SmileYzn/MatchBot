@@ -20,7 +20,16 @@ jobs:
       run: pacman --noconfirm -Syyu
       
     - name: Update repository
-      run: yes | pacman --noconfirm -S --needed git base-devel wget unzip lib32-gcc-libs lib32-glibc
+      run: yes | pacman -S --noconfirm --needed git base-devel wget unzip lib32-gcc-libs lib32-glibc
+
+    - name: Install AUR Helper (YAY)
+      run: |
+        echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+        su - builder -c "git clone https://aur.archlinux.org/yay.git /tmp/yay-build/yay"
+        su - builder -c "cd yay && makepkg -si --noconfirm"
+        
+    - name: Install GCC 4.9
+      run: yes | yay -S --noconfirm --needed gcc49 gcc49-multilib
 
     - name: Run build
       working-directory: ./MatchBot
