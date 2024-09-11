@@ -10,7 +10,7 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: archlinux
+    container: archlinux:multilib-devel
 
     steps:
     - name: Setup Checkout
@@ -20,7 +20,7 @@ jobs:
       run: pacman --noconfirm -Syyu
       
     - name: Update repository
-      run: yes | pacman --noconfirm -S --needed git base-devel multilib-devel wget unzip yay lib32-gcc-libs lib32-glibc
+      run: yes | pacman --noconfirm -S --needed git base-devel wget unzip yay lib32-gcc-libs lib32-glibc
 
     - name: Run build
       working-directory: ./MatchBot
