@@ -32,7 +32,9 @@ jobs:
         su - builder -c "cd /tmp/yay-build/yay && makepkg -si --noconfirm"
         
     - name: Install GCC 4.9
-      run: yes | yay --noconfirm --needed -S gcc49 gcc49-multilib
+      run: |
+        su - builder
+        yes | yay --noconfirm --needed -S gcc49 gcc49-multilib
 
     - name: Run build
       working-directory: ./MatchBot
