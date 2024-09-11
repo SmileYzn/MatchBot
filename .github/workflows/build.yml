@@ -10,31 +10,49 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: archlinux:multilib-devel
 
     steps:
     - name: Setup Checkout
       uses: actions/checkout@v4
       
-    - name: Update System
-      run: pacman --noconfirm -Syyu
+    - name: Add i386 architecture
+      run: sudo dpkg --add-architecture i386
       
-    - name: Install base packages
-      run: yes | pacman --noconfirm --needed -S git base-devel wget unzip lib32-gcc-libs lib32-glibc
+    - name: Update repository
+      run: sudo apt-get update
 
-    - name: Install AUR Helper (YAY)
+    - name: Install build dependencies
+      run: sudo apt-get install -qq -y wget unzip
+
+    - name: Instal GCC G++ 4.8 (multilib)
       run: |
-        mkdir -p /tmp/yay-build
-        useradd -m -G wheel builder && passwd -d builder
-        chown -R builder:builder /tmp/yay-build
-        echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-        su - builder -c "git clone https://aur.archlinux.org/yay.git /tmp/yay-build/yay"
-        su - builder -c "cd /tmp/yay-build/yay && makepkg -si --noconfirm --log"
-        rm -rf /tmp/yay-build
+        mkdir temp
+        cd temp
+        # amd64
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/cpp-4.8_4.8.5-4ubuntu8_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_amd64.deb
+        sudo apt install ./gcc-4.8_4.8.5-4ubuntu8_amd64.deb ./gcc-4.8-base_4.8.5-4ubuntu8_amd64.deb ./libstdc++-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./cpp-4.8_4.8.5-4ubuntu8_amd64.deb ./libgcc-4.8-dev_4.8.5-4ubuntu8_amd64.deb ./libasan0_4.8.5-4ubuntu8_amd64.deb ./g++-4.8_4.8.5-4ubuntu8_amd64.deb
+        # i386
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/g++-4.8_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libstdc++-4.8-dev_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8-base_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/gcc-4.8_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libgcc-4.8-dev_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/cpp-4.8_4.8.5-4ubuntu8_i386.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-4.8/libasan0_4.8.5-4ubuntu8_i386.deb
+        sudo apt install ./gcc-4.8_4.8.5-4ubuntu8_i386.deb ./gcc-4.8-base_4.8.5-4ubuntu8_i386.deb ./libstdc++-4.8-dev_4.8.5-4ubuntu8_i386.deb ./cpp-4.8_4.8.5-4ubuntu8_i386.deb ./libgcc-4.8-dev_4.8.5-4ubuntu8_i386.deb ./libasan0_4.8.5-4ubuntu8_i386.deb ./g++-4.8_4.8.5-4ubuntu8_i386.deb
         
-    - name: Install GCC 4.9
+    - name: Update GCC and G++ alternatives
       run: |
-        su - builder -c "yes | yay --noconfirm --quiet --needed -S gcc49"
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 100
+        sudo update-alternatives --config gcc
+        sudo update-alternatives --config g++
 
     - name: Run build
       working-directory: ./MatchBot
