@@ -22,6 +22,12 @@ jobs:
     - name: Update repository
       run: yes | pacman --noconfirm -S --needed git base-devel wget unzip mingw-w64 lib32-gcc-libs lib32-glibc
 
+    - name: Install AUR Helper (YAY)
+      run: |
+        git clone https://aur.archlinux.org/yay.git
+        cd yay
+        yes | makepkg -si
+
     - name: Run build
       working-directory: ./MatchBot
       run: make
