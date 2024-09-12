@@ -56,7 +56,7 @@ jobs:
       run: unzip -p hitbox_fix-bin*.zip addons/hitbox_fix/hitbox_fix_mm_i386.so > publish/addons/hitbox_fix/hitbox_fix_mm_i386.so
 
     - name: Download Accuracy Fix
-      run: wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.15/linux32.zip
+      run: wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.16/linux32.zip
 
     - name: Unzip accuracy-fix library to metamod folder
       run: unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
@@ -157,7 +157,7 @@ jobs:
     - name: Download Accuracy Fix
       run: |
         # Set assets data
-        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.4/win32.zip"
+        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.16/win32.zip"
 
         # Get ZIP file name
         $zipName = "win32.zip"
