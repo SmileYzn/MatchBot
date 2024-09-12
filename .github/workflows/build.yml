@@ -22,7 +22,7 @@ jobs:
       run: sudo apt-get update -qq
 
     - name: Install build dependencies
-      run: sudo apt-get install -qq -y wget unzip
+      run: sudo apt-get install -qq -y wget unzip libgcc1 libgcc1:i386 libc6-dev libc6-dev-i386
 
     - name: Crete and open temporary directory
       run: mkdir temp && cd temp
