@@ -11,14 +11,14 @@ NAME 		= matchbot
 BIN_DIR 	= Release
 
 # G++
-COMPILER 	= -c++
+COMPILER 	= g++
 OBJECTS 	= *.cpp
 
 # Linker Libs
 LINKER 		= -static-libgcc -static-libstdc++
 
 # C flags
-CFLAGS 		= -std=c++11 -shared -m32 -msse3 -msse4.1 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -DGLIBCXX_USE_CXX11_ABI=0 -D_FORTIFY_SOURCE=0
+CFLAGS 		= -std=gnu++11 -shared -m32 -msse3 -msse4.1 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -DGLIBCXX_USE_CXX11_ABI=0 -D_FORTIFY_SOURCE=0
 
 # Include directory
 INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
@@ -42,7 +42,7 @@ $(NAME): $(OBJ_LINUX)
 	$(COMPILER) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINKER) -o$(BIN_DIR)/$(NAME)_mm.so
 
 check:
-	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=c++11 -DNDEBUG -Dlinux -D__linux__ -DGLIBCXX_USE_CXX11_ABI=0 -D_FORTIFY_SOURCE=0 .
+	cppcheck $(INCLUDE) --quiet --max-configs=100 --std=gnu++11 -DNDEBUG -Dlinux -D__linux__ -DGLIBCXX_USE_CXX11_ABI=0 -D_FORTIFY_SOURCE=0 .
 
 default: all
 
