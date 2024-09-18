@@ -10,7 +10,7 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: ubuntu:18.04
+    container: centos:7
 
     env:
       ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
@@ -21,18 +21,22 @@ jobs:
     - name: Setup Checkout
       uses: actions/checkout@v3
 
-    - name: Add i386 architecture
-      run: dpkg --add-architecture i386
-      
-    - name: Update repository
-      run: apt-get -qq update
+    - name: Fix CentOS 7 EOL repositories
+      run: |
+        sed -i.bak 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+        sed -i.bak 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+    - name: Update cache
+      run: yes | yum -y --assumeyes makecache
 
     - name: Install build dependencies
-      run: apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib libgcc1 libgcc1:i386 libc6-dev libc6-dev-i386
+      run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libgcc.i686 libstdc++-static.i686 wget
 
     - name: Run build
-      working-directory: ./MatchBot
-      run: make
+      working-directory: ./AccuracyFix
+      run: |
+        export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
+        make
 
     - name: Make Match BOT path
       run: mkdir -p publish/addons/matchbot/dlls
