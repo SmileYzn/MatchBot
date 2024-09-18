@@ -33,7 +33,7 @@ jobs:
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libgcc.i686 libstdc++-static.i686 wget
 
     - name: Run build
-      working-directory: ./AccuracyFix
+      working-directory: ./MatchBot
       run: |
         export CPATH=$CPATH:/usr/include/c++/4.8.5/i686-redhat-linux
         make
