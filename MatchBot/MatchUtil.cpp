@@ -382,19 +382,19 @@ CBasePlayer* CMatchUtil::GetPlayerByUserId(int UserIndex)
 
 void CMatchUtil::ServerCommand(const char* Format, ...)
 {
-	char cmd[255] = { 0 };
+	static char szCmd[255] = { 0 };
 
-	va_list	argptr;
+	va_list	ArgPtr;
 
-	va_start(argptr, Format);
+	va_start(ArgPtr, Format);
 
-	vsnprintf(cmd, sizeof(cmd), Format, argptr);
+	vsnprintf(szCmd, sizeof(szCmd), Format, ArgPtr);
 
-	va_end(argptr);
+	va_end(ArgPtr);
 
-	Q_strncat(cmd, "\n", 1);
+	strcat(szCmd, "\n");
 
-	g_engfuncs.pfnServerCommand(cmd);
+	g_engfuncs.pfnServerCommand(szCmd);
 }
 
 unsigned short CMatchUtil::FixedUnsigned16(float value, float scale)
@@ -513,7 +513,7 @@ const char* CMatchUtil::FormatString(const char* Format, ...)
 {
 	va_list argList;
 
-	static char VarArgs[512];
+	static char VarArgs[256];
 
 	va_start(argList, Format);
 
