@@ -5,8 +5,8 @@ CMatchLanguage gMatchLanguage;
 // On server activate
 void CMatchLanguage::Load()
 {
-	// Clear Current translation system data
-	this->m_Data.clear();
+    // Clear Current translation system data
+    this->m_Data.clear();
 
     // Memory Script instance
     CMemScript* lpMemScript = new CMemScript;
@@ -61,7 +61,7 @@ void CMatchLanguage::Load()
             catch (...)
             {
                 // Catch for erros
-                gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s][%s] %s", __func__, MB_LANGUAGE_FILE, lpMemScript->GetError().c_str());
+                // gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s][%s] %s", __func__, MB_LANGUAGE_FILE, lpMemScript->GetError().c_str());
             }
         }
 
