@@ -27,7 +27,7 @@ jobs:
     - name: CentOS 8 Power Tools
       run: |
         yes | yum -y --assumeyes install dnf-plugins-core
-        yum config-manager --set-enabled PowerTools
+        yes | yum -y --assumeyes config-manager --set-enabled powertools
 
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libgcc.i686 libstdc++-static.i686 wget
