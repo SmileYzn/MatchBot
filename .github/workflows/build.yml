@@ -12,22 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     container: centos:8
 
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
-      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
-
     steps:
     - name: Setup Checkout
       uses: actions/checkout@v3
 
-    - name: Fix CentOS 7 EOL repositories
+    - name: Fix CentOS 8 EOL repositories
       run: |
         sed -i.bak 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
         sed -i.bak 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
     - name: Update cache
       run: yes | yum -y --assumeyes makecache
+
+    - name: CentOS 8 Power Tools
+      run: |
+        yes | yum -y --assumeyes install dnf-plugins-core
+        yum config-manager --set-enabled PowerTools
 
     - name: Install build dependencies
       run: yes | yum -y --assumeyes install @'Development Tools' glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libgcc.i686 libstdc++-static.i686 wget
