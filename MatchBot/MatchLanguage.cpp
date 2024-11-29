@@ -80,7 +80,7 @@ const char* CMatchLanguage::Get(const char* Key)
 		if (gMatchBot.m_Language)
 		{
 			// If language variable has value
-			if (gMatchBot.m_Language->string)
+			if (gMatchBot.m_Language->string && (gMatchBot.m_Language->string[0U] != '\0'))
 			{
 				// If contain the given key
 				if (this->m_Data.find(Key) != this->m_Data.end())
@@ -89,7 +89,7 @@ const char* CMatchLanguage::Get(const char* Key)
 					if (this->m_Data[Key].find(gMatchBot.m_Language->string) != this->m_Data[Key].end())
 					{
 						// Return pointer
-                        return this->m_Data[Key][gMatchBot.m_Language->string].c_str();
+						return this->m_Data[Key][gMatchBot.m_Language->string].c_str();
 					}
 				}
 			}
