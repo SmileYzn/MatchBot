@@ -4,6 +4,9 @@ CMatchVoteTeam gMatchVoteTeam;
 
 void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 {
+	// Reset minimum of required players
+	this->m_PlayerMin = PlayersMin;
+
 	// If team pickup method is vote
 	if (TeamPickupType == -1)
 	{
@@ -35,7 +38,6 @@ void CMatchVoteTeam::Init(int TeamPickupType, int PlayersMin)
 		this->m_Data.push_back({ 4, 0, _T("Swap Teams") });
 		this->m_Data.push_back({ 5, 0, _T("Knife Round") });
 
-		this->m_PlayerMin = PlayersMin;
 		this->m_PlayerNum = 0;
 		this->m_VoteCount = 0;
 		this->m_GameMode = 0;
