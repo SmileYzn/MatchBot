@@ -14,7 +14,7 @@ constexpr auto PRINT_CENTER = 4;
 constexpr auto PRINT_RADIO = 5;
 
 // Map List File
-constexpr auto MB_MAP_LIST_FILE = "cstrike/addons/matchbot/maplist.txt";
+char MB_MAP_LIST_FILE[] = "cstrike/addons/matchbot/maplist.txt";
 
 class CMatchUtil
 {

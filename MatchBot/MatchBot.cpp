@@ -972,7 +972,7 @@ void CMatchBot::Scores(CBasePlayer* Player, bool Method)
 void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 {
 	// Default Help File Path
-	char Path[MAX_PATH] = "cstrike/addons/matchbot/users_help.html";
+	char Path[] = "cstrike/addons/matchbot/users_help.html";
 
 	// If has admin flag
 	if (AdminHelp && gMatchAdmin.Access(Player->entindex(), ADMIN_LEVEL_C))

@@ -1,7 +1,7 @@
 #pragma once
 
 // Default cvar menu file
-constexpr auto MB_CVAR_MENU_FILE = "cstrike/addons/matchbot/cvars.txt";
+char MB_CVAR_MENU_FILE[] = "cstrike/addons/matchbot/cvars.txt";
 
 typedef struct S_CVAR_MENU_INFO
 {
