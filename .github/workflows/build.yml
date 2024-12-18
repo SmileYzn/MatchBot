@@ -55,6 +55,11 @@ jobs:
         sudo update-alternatives --config gcc
         sudo update-alternatives --config g++
 
+    - name: Test g++ version
+      run: |
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+        g++ --version
+
     - name: Run build
       working-directory: ./MatchBot
       run: make
