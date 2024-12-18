@@ -78,7 +78,7 @@ jobs:
       run: wget --quiet https://github.com/Garey27/hitbox_fixer/releases/download/2.0.3/hitbox_fix-bin-2.0.3.zip
 
     - name: Unzip hitbox_fixer library to metamod folder
-      run: unzip -p hitbox_fix-bin*.zip addons/hitbox_fix/hitbox_fix_mm_i386.so > publish/addons/hitbox_fix/hitbox_fix_mm_i386.so
+      run: unzip -p hitbox_fix-bin*.zip addons/hitboxfixer/hitbox_fix_mm_i386.so > publish/addons/hitbox_fix/hitbox_fix_mm_i386.so
 
     - name: Download Accuracy Fix
       run: wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.16/linux32.zip
@@ -171,10 +171,10 @@ jobs:
         $baseName = (Get-Item $zipName).BaseName
 
         # DLL from path
-        $fromPath = ".\" + $baseName + "\addons\hitbox_fix\hitbox_fix_mm.dll"
+        $fromPath = ".\" + $baseName + "\addons\hitboxfixer\hitbox_fix_mm.dll"
 
         # DLL dest path
-        $DestPath = ".\publish\addons\hitbox_fix\hitbox_fix_mm.dll"
+        $DestPath = ".\publish\addons\hitboxfixer\hitbox_fix_mm.dll"
         
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
