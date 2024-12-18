@@ -55,7 +55,7 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 {
 	memset(&gDLL_FunctionTable_Post, 0, sizeof(DLL_FUNCTIONS));
 
-	//gDLL_FunctionTable_Post.pfnServerActivate = DLL_POST_ServerActivate;
+	gDLL_FunctionTable_Post.pfnServerActivate = DLL_POST_ServerActivate;
 
 	gDLL_FunctionTable_Post.pfnServerDeactivate = DLL_POST_ServerDeactivate;
 
