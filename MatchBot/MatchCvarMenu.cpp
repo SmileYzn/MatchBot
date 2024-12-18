@@ -67,7 +67,7 @@ void CMatchCvarMenu::ServerActivate()
 					}
 				}
 			}
-			catch (...)
+			catch (int ErrorCode)
 			{
 				// Catch for erros
 				//gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_CVAR_MENU_FILE, lpMemScript->GetError().c_str());

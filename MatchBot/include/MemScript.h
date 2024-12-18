@@ -131,7 +131,7 @@ public:
 
 	eTokenResult GetToken()
 	{
-		if ((std::time(NULL) - this->m_Timer) > 0)
+		if ((std::time(NULL) - this->m_Timer) > 1000)
 		{
 			this->SetError(4);
 			throw 1;

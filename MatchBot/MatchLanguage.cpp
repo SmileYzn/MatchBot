@@ -58,7 +58,7 @@ void CMatchLanguage::Load()
                     }
                 }
             }
-            catch (...)
+            catch (int ErrorCode)
             {
                 // Catch for erros
                 // gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_LANGUAGE_FILE, lpMemScript->GetError().c_str());
