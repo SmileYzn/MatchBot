@@ -39,7 +39,7 @@ public:
 		this->m_String.clear();
 	};
 
-	bool SetBuffer(const std::string Path)
+	bool SetBuffer(std::string Path)
 	{
 		this->m_Path = Path;
 
