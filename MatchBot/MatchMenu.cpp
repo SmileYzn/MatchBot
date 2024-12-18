@@ -4,8 +4,6 @@ std::array<CMatchMenu, MAX_CLIENTS + 1> gMatchMenu;
 
 void CMatchMenu::Clear()
 {
-	this->m_Text = "";
-
 	this->m_Data.clear();
 
 	this->m_Page = -1;

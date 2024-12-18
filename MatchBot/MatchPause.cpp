@@ -9,7 +9,7 @@ void CMatchPause::ServerActivate()
 
 	this->m_Paused = false;
 
-	this->m_PauseTeam = "";
+	this->m_PauseTeam;
 
 	this->m_BuyTime = 0.0f;
 }

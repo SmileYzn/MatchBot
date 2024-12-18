@@ -22,32 +22,26 @@ int CMatchUtil::MakeDirectory(const char* Path)
 // Register console variable
 cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 {
-	// Get cvar pointer
 	cvar_t* Pointer = g_engfuncs.pfnCVarGetPointer(Name);
 
-	// If not exists
 	if (!Pointer)
 	{
-		// Variable for Cvar Helper
-		this->m_CvarData[Name].name = Name;
-
-		// Set name
-		this->m_CvarData[Name].string = (char*)(Value);
-		
-		// Set flags
-		this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_SPONLY);
-
-		// Register the variable
-		g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);
-
-		// Get created pointer
-		Pointer = g_engfuncs.pfnCVarGetPointer(this->m_CvarData[Name].name);
-
-		// If is not null
-		if(Pointer)
+		if (Name)
 		{
-			// We can set values
-			g_engfuncs.pfnCvar_DirectSet(Pointer, Value);
+			this->m_CvarData[Name].name = Name;
+
+			this->m_CvarData[Name].string = strdup(Value);
+
+			this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
+
+			g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);
+
+			Pointer = g_engfuncs.pfnCVarGetPointer(this->m_CvarData[Name].name);
+
+			if (Pointer)
+			{
+				g_engfuncs.pfnCvar_DirectSet(Pointer, Value);
+			}
 		}
 	}
 

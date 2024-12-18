@@ -41,13 +41,13 @@ typedef struct S_MATCH_DATA
 	void Reset()
 	{
 		// Reset host name
-		this->HostName = "";
+		this->HostName.clear();
 
 		// Reset Map Name
-		this->Map = "";
+		this->Map.clear();
 
 		// Reset Address
-		this->Address = "";
+		this->Address.clear();
 
 		// Reset match time
 		this->Time.fill(0U);

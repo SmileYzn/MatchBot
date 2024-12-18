@@ -1152,14 +1152,24 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 // Update Game Name
 void CMatchBot::UpdateGameName()
 {
+	// Game Name
+	static char GameDesc[32];
+	
 	// If has CSGameRules loaded
 	if (g_pGameRules)
 	{
 		// Store original game description
-		if (!this->m_GameDesc.empty())
+		if (this->m_GameDesc.empty())
 		{
 			// Get default game name
-			this->m_GameDesc = CSGameRules()->GetGameDescription();
+			if (CSGameRules()->GetGameDescription())
+			{
+				this->m_GameDesc = CSGameRules()->GetGameDescription();
+			}
+			else
+			{
+				this->m_GameDesc = "Counter-Strike";
+			}
 		}
 
 		// If is enabled
@@ -1172,30 +1182,27 @@ void CMatchBot::UpdateGameName()
 			if (State == STATE_DEAD)
 			{
 				// Restore default game name
-				Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc.c_str());
+				Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
 			}
 			else if (State == STATE_WARMUP || State == STATE_START)
 			{
 				// Set game name from state name
-				Q_strcpy(CSGameRules()->m_GameDesc, gMatchBot.GetState(State));
+				Q_strncpy(GameDesc, gMatchBot.GetState(State), sizeof(GameDesc));
 			}
 			else if (State >= STATE_FIRST_HALF && State <= STATE_END)
 			{
-				// Game Name
-				static char GameName[32];
-
 				// Format game name with teams and scores
-				Q_snprintf(GameName, sizeof(GameName), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
-
-				// Set to game description
-				Q_strcpy_s(CSGameRules()->m_GameDesc, GameName);
+				Q_snprintf(GameDesc, sizeof(GameDesc), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 			}
 		}
 		else
 		{
 			// Restore default game name
-			Q_strcpy(CSGameRules()->m_GameDesc, this->m_GameDesc.c_str());
+			Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
 		}
+
+		// Set
+		CSGameRules()->m_GameDesc = GameDesc;
 	}
 }
 

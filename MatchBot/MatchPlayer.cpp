@@ -100,7 +100,7 @@ bool CMatchPlayer::PlayerConnect(edict_t* pEntity, const char* pszName, const ch
 				this->m_Player[AuthId].Status = 1;
 
 				// Disconnect reason
-				this->m_Player[AuthId].DcReason = "";
+				this->m_Player[AuthId].DcReason.clear();
 
 				// Last Team
 				this->m_Player[AuthId].LastTeam = TeamName::UNASSIGNED;
@@ -155,7 +155,7 @@ void CMatchPlayer::PlayerGetIntoGame(CBasePlayer* Player)
 		this->m_Player[AuthId].Status = 2;
 
 		// Disconnect reason
-		this->m_Player[AuthId].DcReason = "";
+		this->m_Player[AuthId].DcReason.clear();
 
 		// Last Team
 		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
@@ -205,7 +205,7 @@ void CMatchPlayer::PlayerSwitchTeam(CBasePlayer* Player)
 		this->m_Player[AuthId].Status = 2;
 
 		// Disconnect reason
-		this->m_Player[AuthId].DcReason = "";
+		this->m_Player[AuthId].DcReason.clear();
 
 		// Last Team
 		this->m_Player[AuthId].LastTeam = Player->m_iTeam;
@@ -437,7 +437,7 @@ void CMatchPlayer::PlayerMenuActionHandle(int EntityIndex, P_MENU_ITEM Item)
 
 							gpMetaUtilFuncs->pfnLogMessage
 							(
-								&Plugin_info,
+								PLID,
 								"\"%s<%i><%s><%s>\" kick \"%s<%i><%s><%s>\"",
 								STRING(Player->edict()->v.netname),
 								g_engfuncs.pfnGetPlayerUserId(Player->edict()),

@@ -693,7 +693,7 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 			}
 
 			// Set victim
-			Event.Victim = "";
+			Event.Victim.clear();
 
 			// Set origin
 			Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
@@ -715,7 +715,7 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 		case EVENT_BOMB_DROPPED:
 		{
 			// Set killer
-			Event.Killer = "";
+			Event.Killer.clear();
 
 			// Set origin
 			Event.KillerOrigin = { 0.0f, 0.0f, 0.0f };
@@ -755,7 +755,7 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 			}
 
 			// Set victim
-			Event.Victim = "";
+			Event.Victim.clear();
 
 			// Set origin
 			Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
@@ -790,7 +790,7 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 			}
 
 			// Set victim
-			Event.Victim = "";
+			Event.Victim.clear();
 
 			// Set origin
 			Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
@@ -821,7 +821,7 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 			}
 
 			// Set victim
-			Event.Victim = "";
+			Event.Victim.clear();
 
 			// Set origin
 			Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
@@ -854,13 +854,13 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 			Event.Loser = CT;
 
 			// Set killer
-			Event.Killer = "";
+			Event.Killer.clear();
 
 			// Set origin
 			Event.KillerOrigin = { 0.0f, 0.0f, 0.0f };
 
 			// Set victim
-			Event.Victim = "";
+			Event.Victim.clear();
 
 			// Set origin
 			Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
@@ -884,13 +884,13 @@ void CMatchStats::RoundEvent(GameEventType GameEvent, CBasePlayer* Killer, CBase
 			Event.Loser = TERRORIST;
 
 			// Set killer
-			Event.Killer = "";
+			Event.Killer.clear();
 
 			// Set origin
 			Event.KillerOrigin = { 0.0f, 0.0f, 0.0f };
 
 			// Set victim
-			Event.Victim = "";
+			Event.Victim.clear();
 
 			// Set origin
 			Event.VictimOrigin = { 0.0f, 0.0f, 0.0f };
