@@ -1,7 +1,7 @@
 #pragma once
 
 // Default commands file
-char MB_COMMANDS_FILE[] = "cstrike/addons/matchbot/commands.txt";
+#define MB_COMMANDS_FILE "cstrike/addons/matchbot/commands.txt"
 
 // Command info
 typedef struct S_COMMAND_INFO

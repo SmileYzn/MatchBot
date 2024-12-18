@@ -1,7 +1,7 @@
 #pragma once
 
 // Admin settings file
-char MB_ADMIN_LIST_FILE[] = "cstrike/addons/matchbot/users.txt";
+#define MB_ADMIN_LIST_FILE "cstrike/addons/matchbot/users.txt"
 
 // Admin struct info
 typedef struct S_ADMIN_INFO

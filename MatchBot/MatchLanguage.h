@@ -4,7 +4,7 @@
 #define _T(TextString) gMatchLanguage.Get(TextString)
 
 // Default language file
-char MB_LANGUAGE_FILE[] = "cstrike/addons/matchbot/language.txt";
+#define MB_LANGUAGE_FILE "cstrike/addons/matchbot/language.txt"
 
 class CMatchLanguage
 {
