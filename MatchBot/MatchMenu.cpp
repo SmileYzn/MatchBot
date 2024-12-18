@@ -163,7 +163,7 @@ void CMatchMenu::Display(int EntityIndex, int Page)
 
 	auto PageCount = (int)this->m_Data.size() > this->m_PageOption ? (this->m_Data.size() / this->m_PageOption + ((this->m_Data.size() % this->m_PageOption) ? 1 : 0)) : 1;
 
-	std::string MenuText = "";
+	std::string MenuText;
 
 	MenuText = "\\y" + this->m_Text;
 

@@ -166,7 +166,7 @@ private:
 	std::array<int, SPECTATOR + 1U> m_ScoreOvertime;
 
 	// Defaut game description
-	std::string m_GameDesc = "";
+	std::string m_GameDesc;
 
 	// Match Bot Config Variables
 	std::array<cvar_t*, STATE_END + 1U> m_Config;
