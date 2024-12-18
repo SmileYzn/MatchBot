@@ -22,17 +22,15 @@ void CMatchTask::Create(int Index, float Time, bool Loop, void* FunctionCallback
 
 void CMatchTask::Remove(int Index)
 {
-	auto it = this->m_Data.find(Index);
-
-	if (it != this->m_Data.end())
+	if (this->m_Data.find(Index) != this->m_Data.end())
 	{
-		it->second.Free = true;
+		this->m_Data[Index].Free = true;
 	}
 }
 
 void CMatchTask::ServerFrame()
 {
-	for (auto it = this->m_Data.begin(); it != this->m_Data.end();it++)
+	for (auto it = this->m_Data.begin(); it != this->m_Data.end(); it++)
 	{
 		if (gpGlobals->time >= it->second.EndTime)
 		{

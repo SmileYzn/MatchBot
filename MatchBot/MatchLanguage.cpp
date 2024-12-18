@@ -61,7 +61,7 @@ void CMatchLanguage::Load()
             catch (...)
             {
                 // Catch for erros
-                // gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s][%s] %s", __func__, MB_LANGUAGE_FILE, lpMemScript->GetError().c_str());
+                // gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_LANGUAGE_FILE, lpMemScript->GetError().c_str());
             }
         }
 

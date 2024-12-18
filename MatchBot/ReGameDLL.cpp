@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-IReGameApi			*g_ReGameApi;
-const ReGameFuncs_t	*g_ReGameFuncs;
-IReGameHookchains	*g_ReGameHookchains;
-CGameRules			*g_pGameRules;
+IReGameApi *g_ReGameApi;
+const ReGameFuncs_t *g_ReGameFuncs;
+IReGameHookchains *g_ReGameHookchains;
+CGameRules *g_pGameRules;
 
 bool ReGameDLL_Init()
 {
@@ -11,7 +11,7 @@ bool ReGameDLL_Init()
 
 	if (!szGameDLLModule)
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to get GameDLL module", Plugin_info.logtag);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Failed to get GameDLL module", Plugin_info.logtag);
 		return false;
 	}
 
@@ -19,7 +19,7 @@ bool ReGameDLL_Init()
 
 	if (!gameModule)
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to locate GameDLL module", Plugin_info.logtag);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Failed to locate GameDLL module", Plugin_info.logtag);
 		return false;
 	}
 
@@ -27,7 +27,7 @@ bool ReGameDLL_Init()
 
 	if (!ifaceFactory)
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to locate interface factory in GameDLL module", Plugin_info.logtag);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Failed to locate interface factory in GameDLL module", Plugin_info.logtag);
 		return false;
 	}
 
@@ -37,7 +37,7 @@ bool ReGameDLL_Init()
 
 	if (!g_ReGameApi)
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Failed to locate retrieve rehlds api interface from GameDLL module, return code is %d", Plugin_info.logtag, retCode);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Failed to locate retrieve rehlds api interface from GameDLL module, return code is %d", Plugin_info.logtag, retCode);
 		return false;
 	}
 
@@ -46,15 +46,15 @@ bool ReGameDLL_Init()
 
 	if (majorVersion != REGAMEDLL_API_VERSION_MAJOR)
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] ReGameDLL API major version mismatch; expected %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] ReGameDLL API major version mismatch; expected %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
 
 		if (majorVersion < REGAMEDLL_API_VERSION_MAJOR)
 		{
-			 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Please update the ReGameDLL up to a major version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR);
+			gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Please update the ReGameDLL up to a major version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR);
 		}
 		else if (majorVersion > REGAMEDLL_API_VERSION_MAJOR)
 		{
-			 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Please update the %s up to a major version API >= %d", Plugin_info.logtag, Plugin_info.logtag, majorVersion);
+			gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Please update the %s up to a major version API >= %d", Plugin_info.logtag, Plugin_info.logtag, majorVersion);
 		}
 
 		return false;
@@ -62,8 +62,8 @@ bool ReGameDLL_Init()
 
 	if (minorVersion < REGAMEDLL_API_VERSION_MINOR)
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] ReGameDLL API minor version mismatch; expected at least %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Please update the ReGameDLL up to a minor version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] ReGameDLL API minor version mismatch; expected at least %d, real %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Please update the ReGameDLL up to a minor version API >= %d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR);
 		return false;
 	}
 
@@ -73,7 +73,7 @@ bool ReGameDLL_Init()
 
 	if (!g_ReGameApi->BGetICSEntity(CSENTITY_API_INTERFACE_VERSION))
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Interface CCSEntity API version '%s' not found", Plugin_info.logtag, CSENTITY_API_INTERFACE_VERSION);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Interface CCSEntity API version '%s' not found", Plugin_info.logtag, CSENTITY_API_INTERFACE_VERSION);
 		return false;
 	}
 
@@ -149,23 +149,23 @@ bool ReGameDLL_Stop()
 	return true;
 }
 
-CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules* chain)
+CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules *chain)
 {
 	auto gamerules = chain->callNext();
 
 	if (!g_ReGameApi->BGetIGameRules(GAMERULES_API_INTERFACE_VERSION))
 	{
-		 gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s] Interface GameRules API version '%s' not found", Plugin_info.logtag, GAMERULES_API_INTERFACE_VERSION);
+		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Interface GameRules API version '%s' not found", Plugin_info.logtag, GAMERULES_API_INTERFACE_VERSION);
 	}
 	else
 	{
 		g_pGameRules = gamerules;
 	}
-	
+
 	return gamerules;
 }
 
-BOOL ReGameDLL_HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer* Player, int Slot)
+BOOL ReGameDLL_HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam *chain, CBasePlayer *Player, int Slot)
 {
 	if (gMatchBot.PlayerJoinTeam(Player, Slot))
 	{
@@ -175,7 +175,7 @@ BOOL ReGameDLL_HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, C
 	return chain->callNext(Player, Slot);
 }
 
-bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame* chain, CBasePlayer* Player)
+bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame *chain, CBasePlayer *Player)
 {
 	bool ret = chain->callNext(Player);
 
@@ -190,7 +190,7 @@ bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame* chai
 	return ret;
 }
 
-void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam* chain, CBasePlayer* Player)
+void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam *chain, CBasePlayer *Player)
 {
 	chain->callNext(Player);
 
@@ -199,26 +199,26 @@ void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam* chain,
 	gMatchStats.PlayerSwitchTeam(Player);
 }
 
-void ReGameDLL_CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn* chain, CBasePlayer* Player)
+void ReGameDLL_CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn *chain, CBasePlayer *Player)
 {
 	chain->callNext(Player);
 
 	gMatchStats.PlayerRespawn(Player);
 }
 
-void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain, CBasePlayer* Player, int Amount, RewardType Type, bool TrackChange)
+void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *Player, int Amount, RewardType Type, bool TrackChange)
 {
 	if (gMatchWarmup.PlayerAddAccount(Player, Amount, Type, TrackChange))
 	{
 		Amount = 0;
-	} 
+	}
 
 	chain->callNext(Player, Amount, Type, TrackChange);
 
 	gMatchPlayer.PlayerAddAccount(Player, Amount, Type, TrackChange);
 }
 
-bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem* chain, CBasePlayer* pthis, ItemID item, ItemRestType type)
+bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem *chain, CBasePlayer *pthis, ItemID item, ItemRestType type)
 {
 	auto ret = chain->callNext(pthis, item, type);
 
@@ -230,7 +230,7 @@ bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictIt
 	return ret;
 }
 
-void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEntity, const char* pcmd, const char* parg1)
+void ReGameDLL_InternalCommand(IReGameHook_InternalCommand *chain, edict_t *pEntity, const char *pcmd, const char *parg1)
 {
 	auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(pEntity));
 
@@ -245,7 +245,7 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 	chain->callNext(pEntity, pcmd, parg1);
 }
 
-void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd* chain)
+void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd *chain)
 {
 	chain->callNext();
 
@@ -254,7 +254,7 @@ void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreez
 	gMatchRound.RoundStart();
 }
 
-void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
+void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound *chain)
 {
 	gMatchStats.RoundRestart();
 
@@ -267,7 +267,7 @@ void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* ch
 	gMatchRestrictItem.RoundRestart();
 }
 
-bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
+bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
 {
 	gMatchRound.RoundEnd(winStatus, event, tmDelay);
 
@@ -278,7 +278,7 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 	return ret;
 }
 
-int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage* chain, CBasePlayer* pThis, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
+int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pThis, entvars_t *pevInflictor, entvars_t *pevAttacker, float &flDamage, int bitsDamageType)
 {
 	int ret = chain->callNext(pThis, pevInflictor, pevAttacker, flDamage, bitsDamageType);
 
@@ -287,14 +287,14 @@ int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage* chain, 
 	return ret;
 }
 
-void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade* chain, CGrenade* pthis)
+void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade *chain, CGrenade *pthis)
 {
 	chain->callNext(pthis);
 
 	gMatchBugFix.ExplodeSmokeGrenade(pthis);
 }
 
-bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer* chain, CBasePlayer* pListener, CBasePlayer* pSender)
+bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer *chain, CBasePlayer *pListener, CBasePlayer *pSender)
 {
 	auto ret = chain->callNext(pListener, pSender);
 
@@ -306,14 +306,14 @@ bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayer
 	return ret;
 }
 
-void ReGameDLL_CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage* chain, CBaseEntity* pKiller, CBasePlayer* pVictim, CBasePlayer* pAssister, entvars_t* pevInflictor, const char* killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
+void ReGameDLL_CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage *chain, CBaseEntity *pKiller, CBasePlayer *pVictim, CBasePlayer *pAssister, entvars_t *pevInflictor, const char *killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
 {
 	chain->callNext(pKiller, pVictim, pAssister, pevInflictor, killerWeaponName, iDeathMessageFlags, iRarityOfKill);
 
 	gMatchStats.SendDeathMessage(pKiller, pVictim, pAssister, pevInflictor, killerWeaponName, iDeathMessageFlags, iRarityOfKill);
 }
 
-void ReGameDLL_CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent* chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther)
+void ReGameDLL_CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent *chain, GameEventType event, CBaseEntity *pEntity, CBaseEntity *pOther)
 {
 	chain->callNext(event, pEntity, pOther);
 

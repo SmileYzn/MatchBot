@@ -70,7 +70,7 @@ void CMatchCvarMenu::ServerActivate()
 			catch (...)
 			{
 				// Catch for erros
-				gpMetaUtilFuncs->pfnLogConsole(&Plugin_info, "[%s][%s] %s", __func__, MB_CVAR_MENU_FILE, lpMemScript->GetError().c_str());
+				//gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_CVAR_MENU_FILE, lpMemScript->GetError().c_str());
 			}
 		}
 

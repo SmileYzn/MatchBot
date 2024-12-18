@@ -18,7 +18,7 @@ OBJECTS 	= *.cpp
 LINKER 		= -static-libgcc -static-libstdc++
 
 # C flags
-CFLAGS 		= -std=gnu++11 -shared -m32 -mtune=generic -msse3 -msse4.1 -pipe -g0 -O3 -s -flto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -DGLIBCXX_USE_CXX11_ABI=1 -U_FORTIFY_SOURCE
+CFLAGS 		= -std=gnu++11 -shared -m32 -mtune=generic -msse3 -msse4.1 -pipe -g0 -O3 -s -flto=auto -funroll-loops -fno-stack-protector -g -DNDEBUG -Dlinux -D__linux__ -DGLIBCXX_USE_CXX11_ABI=0 -U_FORTIFY_SOURCE
 
 # Include directory
 INCLUDE 	= -I. -I$(CSSDK)/common -I$(CSSDK)/dlls -I$(CSSDK)/engine -I$(CSSDK)/game_shared -I$(CSSDK)/pm_shared -I$(CSSDK)/public -I$(METAMOD)
