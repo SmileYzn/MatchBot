@@ -237,7 +237,7 @@ bool CMatchMessage::WriteString(const char* szValue)
 
 		Param.Type = MESSAGE_TYPE_STRING;
 
-		Q_strncpy(Param.szValue, szValue, sizeof(Param.szValue));
+		Q_strcpy(Param.szValue, szValue);
 
 		this->m_Data.Param[this->m_Data.Param.size()] = Param;
 
@@ -421,6 +421,6 @@ void CMatchMessage::SetArgString(int Id, const char* szValue)
 	if (this->m_Data.Param.find(Id) != this->m_Data.Param.end())
 	{
 		// Set string value
-		Q_strncpy(this->m_Data.Param[Id].szValue, szValue, sizeof(this->m_Data.Param[Id].szValue));
+		Q_strcpy(this->m_Data.Param[Id].szValue, szValue);
 	}
 }

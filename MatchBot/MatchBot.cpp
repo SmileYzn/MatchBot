@@ -1153,7 +1153,7 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 void CMatchBot::UpdateGameName()
 {
 	// Game Name
-	static char GameDesc[32];
+	static char GameDesc[33];
 	
 	// If has CSGameRules loaded
 	if (g_pGameRules)
@@ -1182,23 +1182,23 @@ void CMatchBot::UpdateGameName()
 			if (State == STATE_DEAD)
 			{
 				// Restore default game name
-				Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
+				Q_strcpy(GameDesc, this->m_GameDesc.c_str());
 			}
 			else if (State == STATE_WARMUP || State == STATE_START)
 			{
 				// Set game name from state name
-				Q_strncpy(GameDesc, gMatchBot.GetState(State), sizeof(GameDesc));
+				Q_strcpy(GameDesc, gMatchBot.GetState(State));
 			}
 			else if (State >= STATE_FIRST_HALF && State <= STATE_END)
 			{
 				// Format game name with teams and scores
-				Q_snprintf(GameDesc, sizeof(GameDesc), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+				Q_sprintf(GameDesc, "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
 			}
 		}
 		else
 		{
 			// Restore default game name
-			Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
+			Q_strcpy(GameDesc, this->m_GameDesc.c_str());
 		}
 
 		// Set

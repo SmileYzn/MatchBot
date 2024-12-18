@@ -227,7 +227,7 @@ P_MAP_ITEM CMatchVoteMap::GetWinner()
     return Winner;
 }
 
-bool CMatchVoteMap::ChangeRandomMap()
+void CMatchVoteMap::ChangeRandomMap()
 {
     // Load map list from maps.ini skipping current map
     auto MapList = gMatchUtil.GetMapList(false);
@@ -252,7 +252,7 @@ bool CMatchVoteMap::ChangeRandomMap()
     if (!Item->second.empty())
     {
         // Dump Map Name to pointer
-        auto Map = Q_strdup(Item->second.data());
+        auto Map = Q_strdup(Item->second.c_str());
 
         // Check if is a valid map
         if (g_engfuncs.pfnIsMapValid(Map))
@@ -267,7 +267,7 @@ bool CMatchVoteMap::ChangeRandomMap()
             gMatchChangeMap.ChangeMap(Item->second, 5.0f, true);
 
             // Return Result
-            return true;
+            return;
         }
     }
 
@@ -275,5 +275,5 @@ bool CMatchVoteMap::ChangeRandomMap()
     this->ChangeRandomMap();
 
     // Return Result
-    return false;
+    return;
 }

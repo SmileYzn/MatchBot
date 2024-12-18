@@ -261,7 +261,7 @@ void CMatchMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text
 					{
 						char szChunk[MAX_BUFFER_MENU + 1] = { 0 };
 
-						strncpy(szChunk, pMenuList, MAX_BUFFER_MENU);
+						Q_strcpy(szChunk, pMenuList);
 
 						szChunk[MAX_BUFFER_MENU] = 0;
 
