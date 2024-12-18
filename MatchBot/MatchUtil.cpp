@@ -30,7 +30,7 @@ cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 		{
 			this->m_CvarData[Name].name = Name;
 
-			this->m_CvarData[Name].string = strdup(Value);
+			this->m_CvarData[Name].string = _strdup(Value);
 
 			this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
 
@@ -584,7 +584,7 @@ std::map<int, std::string> CMatchUtil::GetMapList(bool CurrentMap)
 					}
 				}
 			}
-			catch (int ErrorCode)
+			catch (...)
 			{
 				// Catch for erros
 				//gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_MAP_LIST_FILE, lpMemScript->GetError().c_str());

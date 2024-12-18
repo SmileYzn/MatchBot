@@ -48,7 +48,7 @@ void CMatchAdmin::ServerActivate()
                     this->m_Data.insert(std::make_pair(Info.Auth, Info));
                 }
             }
-            catch (int ErrorCode)
+            catch (...)
             {
                 // Catch for erros
                 //gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_ADMIN_LIST_FILE, lpMemScript->GetError().c_str());

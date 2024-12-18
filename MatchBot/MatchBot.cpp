@@ -1152,58 +1152,58 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 // Update Game Name
 void CMatchBot::UpdateGameName()
 {
-	// // Game Name
-	// static char GameDesc[32];
+	// Game Name
+	static char GameDesc[32];
 	
-	// // If has CSGameRules loaded
-	// if (g_pGameRules)
-	// {
-	// 	// Store original game description
-	// 	if (this->m_GameDesc.empty())
-	// 	{
-	// 		// Get default game name
-	// 		if (CSGameRules()->GetGameDescription())
-	// 		{
-	// 			this->m_GameDesc = CSGameRules()->GetGameDescription();
-	// 		}
-	// 		else
-	// 		{
-	// 			this->m_GameDesc = "Counter-Strike";
-	// 		}
-	// 	}
+	// If has CSGameRules loaded
+	if (g_pGameRules)
+	{
+		// Store original game description
+		if (this->m_GameDesc.empty())
+		{
+			// Get default game name
+			if (CSGameRules()->GetGameDescription())
+			{
+				this->m_GameDesc = CSGameRules()->GetGameDescription();
+			}
+			else
+			{
+				this->m_GameDesc = "Counter-Strike";
+			}
+		}
 
-	// 	// If is enabled
-	// 	if (this->m_GameName && this->m_GameName->value)
-	// 	{
-	// 		// Get match state
-	// 		auto State = gMatchBot.GetState();
+		// If is enabled
+		if (this->m_GameName && this->m_GameName->value)
+		{
+			// Get match state
+			auto State = gMatchBot.GetState();
 
-	// 		// If is not running, set default name
-	// 		if (State == STATE_DEAD)
-	// 		{
-	// 			// Restore default game name
-	// 			Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
-	// 		}
-	// 		else if (State == STATE_WARMUP || State == STATE_START)
-	// 		{
-	// 			// Set game name from state name
-	// 			Q_strncpy(GameDesc, gMatchBot.GetState(State), sizeof(GameDesc));
-	// 		}
-	// 		else if (State >= STATE_FIRST_HALF && State <= STATE_END)
-	// 		{
-	// 			// Format game name with teams and scores
-	// 			Q_snprintf(GameDesc, sizeof(GameDesc), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		// Restore default game name
-	// 		Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
-	// 	}
+			// If is not running, set default name
+			if (State == STATE_DEAD)
+			{
+				// Restore default game name
+				Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
+			}
+			else if (State == STATE_WARMUP || State == STATE_START)
+			{
+				// Set game name from state name
+				Q_strncpy(GameDesc, gMatchBot.GetState(State), sizeof(GameDesc));
+			}
+			else if (State >= STATE_FIRST_HALF && State <= STATE_END)
+			{
+				// Format game name with teams and scores
+				Q_snprintf(GameDesc, sizeof(GameDesc), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+			}
+		}
+		else
+		{
+			// Restore default game name
+			Q_strncpy(GameDesc, this->m_GameDesc.c_str(), sizeof(GameDesc));
+		}
 
-	// 	// Set
-	// 	CSGameRules()->m_GameDesc = GameDesc;
-	// }
+		// Set
+		CSGameRules()->m_GameDesc = GameDesc;
+	}
 }
 
 // Start vote map

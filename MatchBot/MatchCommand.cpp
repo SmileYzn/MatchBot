@@ -39,7 +39,7 @@ void CMatchCommand::ServerActivate()
 					this->m_Data[Name] = {Index, Name, Flag};
 				}
 			}
-			catch (int ErrorCode)
+			catch (...)
 			{
 				// Catch for erros
 				//gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_COMMANDS_FILE, lpMemScript->GetError().c_str());
