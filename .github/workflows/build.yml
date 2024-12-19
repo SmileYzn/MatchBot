@@ -17,7 +17,17 @@ jobs:
       ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
       ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
 
-    steps:        
+    steps:
+    - name: Run on old node
+      run: |
+        apt update && apt -y install wget
+        touch "$HOME/.bashrc"
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+        nvm install 14.21.3
+        # node 14 is now available.
+              
     - name: Setup Checkout
       uses: actions/checkout@v4
 
