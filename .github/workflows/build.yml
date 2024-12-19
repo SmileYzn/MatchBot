@@ -20,10 +20,6 @@ jobs:
     steps:
     - name: Setup Checkout
       uses: actions/checkout@v4
-      with:
-        node-version: 16
-    - run: npm ci
-    - run: npm test
       
     - name: Setup node
       uses: actions/setup-node@v4
