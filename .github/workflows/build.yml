@@ -18,14 +18,14 @@ jobs:
       ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
 
     steps:
-    - name: Setup Checkout
-      uses: actions/checkout@v3
-
     - name: Test
       run: |
         export ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         export ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
         export ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+        
+    - name: Setup Checkout
+      uses: actions/checkout@v3
 
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
