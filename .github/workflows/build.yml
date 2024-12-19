@@ -10,31 +10,23 @@ jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: ubuntu:18.04
-
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node18
-      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node18
+    container: ubuntu:20.04
 
     steps:
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-    - run: npm ci
-    - run: npm test
+    - name: Setup Checkout
+      uses: actions/checkout@v4
 
     - name: Add i386 architecture
-      run: dpkg --add-architecture i386
+      run: sudo dpkg --add-architecture i386
       
     - name: Update repository
-      run: apt-get update
+      run: sudo  apt-get update
 
     - name: Install build dependencies
-      run: apt-get install -qq -y wget unzip build-essential gcc-4.8-multilib g++-4.8-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386
+      run: sudo  apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386
     
     - name: Update alternatives
-      run: update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+      run: sudo  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
 
     - name: Run build
       working-directory: ./MatchBot
