@@ -18,15 +18,15 @@ jobs:
       ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
 
     steps:
-    - name: Setup Checkout
-      uses: actions/checkout@v4
-      
     - name: Setup node
       uses: actions/setup-node@v4
       with:
         node-version: 16
     - run: npm ci
     - run: npm test
+    
+    - name: Setup Checkout
+      uses: actions/checkout@v4
 
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
