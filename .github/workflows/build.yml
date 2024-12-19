@@ -19,7 +19,7 @@ jobs:
 
     steps:        
     - name: Setup Checkout
-      uses: actions/checkout@v3.6.0
+      uses: actions/checkout@v4
 
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
