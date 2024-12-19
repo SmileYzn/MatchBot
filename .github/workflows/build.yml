@@ -29,7 +29,7 @@ jobs:
         # node 14 is now available.
               
     - name: Setup Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Add i386 architecture
       run: dpkg --add-architecture i386
