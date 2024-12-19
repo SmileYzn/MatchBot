@@ -14,17 +14,10 @@ jobs:
 
     env:
       ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
-      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node18
+      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node18
 
     steps:
-    - name: Setup node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 16
-    - run: npm ci
-    - run: npm test
-    
     - name: Setup Checkout
       uses: actions/checkout@v4
 
