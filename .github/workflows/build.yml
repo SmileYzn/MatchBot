@@ -9,8 +9,7 @@ on:
 jobs:
   linux:
     name: Linux Build
-    runs-on: ubuntu-latest
-    container: ubuntu:20.04
+    runs-on: ubuntu:20.04
 
     steps:
     - name: Setup Checkout
