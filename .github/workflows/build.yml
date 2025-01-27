@@ -1,70 +1,82 @@
-name: Build C/C++
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+name: Action Build System
+on: [push]
+env:
+  CONTAINER: ubuntu:18.04
 
 jobs:
   linux:
     name: Linux Build
     runs-on: ubuntu-latest
-    container: ubuntu:20.04
 
     steps:
-    - name: Setup Checkout
-      uses: actions/checkout@v4
 
-    - name: Add i386 architecture
-      run: dpkg --add-architecture i386
-      
-    - name: Update repository
-      run: apt-get update
+    - uses: actions/checkout@v4
 
-    - name: Install build dependencies
-      run: apt-get install -qq -y wget unzip build-essential gcc-multilib g++-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386
+    - name: Start Docker Container
+      run: |
+        docker pull $CONTAINER
+        docker run --name build-container -d -v ${{github.workspace}}:/desktop $CONTAINER tail -f /dev/null
+
+    - name: Install Development Tools Packages
+      env:
+        SCRIPT: |
+          # Add i386 architecture
+          dpkg --add-architecture i386
+
+          # Update repository
+          apt-get update > /dev/null
+
+          # Install build dependencies
+          apt-get install -qq -y wget unzip build-essential gcc-4.8-multilib g++-4.8-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386 > /dev/null
+
+          # Update alternatives
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+      run: docker exec build-container bash -c "$SCRIPT"
+
+    - name: Execute Build
+      env:
+        SCRIPT: |
+          # Open makefile directory
+          cd /desktop/MatchBot
+
+          # Make Release Directory
+          mkdir -p Release
+
+          # Make linux (Without post build script)
+          make
+
+          # Make dlls path
+          mkdir -p ../cstrike/addons/matchbot/dlls
+
+          # Copy release file
+          cp ./Release/matchbot_mm.so ../cstrike/addons/matchbot/dlls
+
+          # Get latest release version of metamod-r
+          wget --quiet https://github.com/rehlds/Metamod-R/releases/download/1.3.0.149/metamod-bin-1.3.0.149.zip
     
-    - name: Update alternatives
-      run: g++ --version
-      
-    - name: Run build
-      working-directory: ./MatchBot
-      run: make
+          # Unzip metamod library to metamod folder
+          unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > ../cstrike/addons/metamod/metamod_i386.so
+    
+          # Get latest release version of hitbox_fixer
+          wget --quiet https://github.com/Garey27/hitbox_fixer/releases/download/2.0.3/hitbox_fix-bin-2.0.3.zip
+    
+          # Unzip hitbox_fixer library to metamod folder
+          unzip -p hitbox_fix-bin*.zip addons/hitboxfixer/hitbox_fix_mm_i386.so > ../cstrike/addons/hitboxfixer/hitbox_fix_mm_i386.so
+    
+          # Download Accuracy Fix
+          wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.17/linux32.zip
+    
+          # Unzip accuracy-fix library to metamod folder
+          unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > ../cstrike/addons/accuracyfix/accuracyfix_mm.so
 
-    - name: Make Match BOT path
-      run: mkdir -p publish/addons/matchbot/dlls
-
-    - name: Move released file to dlls
-      run: mv ./MatchBot/Release/matchbot_mm.so publish/addons/matchbot/dlls
-
-    - name: Copy cstrike contents to publish dir
-      run: cp -ar cstrike/. publish
-
-    - name: Get latest release version of metamod-r
-      run: wget --quiet https://github.com/rehlds/Metamod-R/releases/download/1.3.0.149/metamod-bin-1.3.0.149.zip
-
-    - name: Unzip metamod library to metamod folder
-      run: unzip -p metamod-bin*.zip addons/metamod/metamod_i386.so > publish/addons/metamod/metamod_i386.so
-
-    - name: Get latest release version of hitbox_fixer
-      run: wget --quiet https://github.com/Garey27/hitbox_fixer/releases/download/2.0.3/hitbox_fix-bin-2.0.3.zip
-
-    - name: Unzip hitbox_fixer library to metamod folder
-      run: unzip -p hitbox_fix-bin*.zip addons/hitboxfixer/hitbox_fix_mm_i386.so > publish/addons/hitboxfixer/hitbox_fix_mm_i386.so
-
-    - name: Download Accuracy Fix
-      run: wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.16/linux32.zip
-
-    - name: Unzip accuracy-fix library to metamod folder
-      run: unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > publish/addons/accuracyfix/accuracyfix_mm.so
+      run: docker exec build-container bash -c "$SCRIPT"
 
     - name: Deploy artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: linux32
-        path: publish/*
-        
+        path: ${{github.workspace}}/cstrike
+
   windows:
     name: Windows Build
     runs-on: windows-latest
@@ -72,6 +84,7 @@ jobs:
     env:
       SOLUTION_FILE_PATH: .
       BUILD_CONFIGURATION: Release
+      BUILD_PROJECT: MatchBot
   
     steps:
     - name: Setup Checkout
@@ -80,16 +93,12 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
 
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-
     - name: Run Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+      working-directory: ${{github.workspace}}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Move release file to publish
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+      working-directory: ${{github.workspace}}
       run: |
         # Make publish directory
         mkdir publish\addons\matchbot\dlls
@@ -106,7 +115,7 @@ jobs:
         $assets = "https://github.com/rehlds/Metamod-R/releases/download/1.3.0.149/metamod-bin-1.3.0.149.zip"
 
         # Get ZIP file name
-        $zipName = "metamod-bin-1.3.0.138.zip"
+        $zipName = "metamod-bin-1.3.0.149.zip"
 
         # Download ZIP file
         Invoke-WebRequest -Uri $assets -Out $zipName
@@ -132,7 +141,7 @@ jobs:
         $assets = "https://github.com/Garey27/hitbox_fixer/releases/download/2.0.3/hitbox_fix-bin-2.0.3.zip"
 
         # Get ZIP file name
-        $zipName = "hitbox_fix-bin-1.1.5.zip"
+        $zipName = "hitbox_fix-bin-2.0.3.zip"
 
         # Download ZIP file
         Invoke-WebRequest -Uri $assets -Out $zipName
@@ -155,7 +164,7 @@ jobs:
     - name: Download Accuracy Fix
       run: |
         # Set assets data
-        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.16/win32.zip"
+        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.17/win32.zip"
 
         # Get ZIP file name
         $zipName = "win32.zip"
