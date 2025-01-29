@@ -1165,57 +1165,57 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 // Update Game Name
 void CMatchBot::UpdateGameName()
 {
-	// Game Name
-	static char GameDesc[33];
-	
 	// If has CSGameRules loaded
 	if (g_pGameRules)
 	{
-		// Store original game description
-		if (this->m_GameDesc.empty())
+		// Check if is empty
+		if (this->m_GameDesc[0u] == '\0')
 		{
-			// Get default game name
-			if (CSGameRules()->GetGameDescription())
-			{
-				this->m_GameDesc = CSGameRules()->GetGameDescription();
-			}
-			else
-			{
-				this->m_GameDesc = "Counter-Strike";
-			}
+			// Store original game description
+			Q_strncpy(this->m_GameDesc, "Counter-Strike", sizeof(this->m_GameDesc));
 		}
 
 		// If is enabled
-		if (this->m_GameName && this->m_GameName->value)
+		if (this->m_GameName)
 		{
-			// Get match state
-			auto State = gMatchBot.GetState();
+			// If is enabled
+			if (this->m_GameName->value > 0.0f)
+			{
+				// Get match state
+				auto State = gMatchBot.GetState();
 
-			// If is not running, set default name
-			if (State == STATE_DEAD)
-			{
-				// Restore default game name
-				Q_strcpy(GameDesc, this->m_GameDesc.c_str());
-			}
-			else if (State == STATE_WARMUP || State == STATE_START)
-			{
-				// Set game name from state name
-				Q_strcpy(GameDesc, gMatchBot.GetState(State));
-			}
-			else if (State >= STATE_FIRST_HALF && State <= STATE_END)
-			{
-				// Format game name with teams and scores
-				Q_sprintf(GameDesc, "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+				// Warmuo or Start
+				if (State == STATE_WARMUP || State == STATE_START)
+				{
+					// Set game name from state name
+					Q_snprintf(this->m_GameDesc, sizeof(this->m_GameDesc), "%s", gMatchBot.GetState(State));
+				}
+				else if (State >= STATE_FIRST_HALF && State <= STATE_END)
+				{
+					// Format game name with teams and scores
+					Q_snprintf(this->m_GameDesc, sizeof(this->m_GameDesc), "%s %d : %d %s", gMatchBot.GetTeam(TERRORIST, true), gMatchBot.GetScore(TERRORIST), gMatchBot.GetScore(CT), gMatchBot.GetTeam(CT, true));
+				}
+				else
+				{
+					// Restore default game name
+					Q_strncpy(this->m_GameDesc, "Counter-Strike", sizeof(this->m_GameDesc));
+				}
 			}
 		}
 		else
 		{
 			// Restore default game name
-			Q_strcpy(GameDesc, this->m_GameDesc.c_str());
+			Q_strncpy(this->m_GameDesc, "Counter-Strike", sizeof(this->m_GameDesc));
 		}
 
-		// Set
-		CSGameRules()->m_GameDesc = GameDesc;
+		if (g_pGameRules)
+		{
+			// If has Game description
+			if (g_pGameRules->m_GameDesc)
+			{
+				g_ReGameFuncs->ChangeString(g_pGameRules->m_GameDesc, this->m_GameDesc);
+			}
+		}
 	}
 }
 

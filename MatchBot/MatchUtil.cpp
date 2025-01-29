@@ -23,21 +23,23 @@ int CMatchUtil::MakeDirectory(const char* Path)
 // Register console variable
 cvar_t* CMatchUtil::CvarRegister(const char* Name, const char* Value)
 {
+	static std::map<std::string, cvar_t> CvarData;
+
 	cvar_t* Pointer = g_engfuncs.pfnCVarGetPointer(Name);
 
 	if (!Pointer)
 	{
 		if (Name)
 		{
-			this->m_CvarData[Name].name = Name;
+			CvarData[Name].name = Name;
 
-			this->m_CvarData[Name].string = _strdup(Value);
+			CvarData[Name].string = _strdup(Value);
 
-			this->m_CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
+			CvarData[Name].flags = (FCVAR_SERVER | FCVAR_PROTECTED | FCVAR_SPONLY | FCVAR_UNLOGGED);
 
-			g_engfuncs.pfnCVarRegister(&this->m_CvarData[Name]);
+			g_engfuncs.pfnCVarRegister(&CvarData[Name]);
 
-			Pointer = g_engfuncs.pfnCVarGetPointer(this->m_CvarData[Name].name);
+			Pointer = g_engfuncs.pfnCVarGetPointer(Name);
 
 			if (Pointer)
 			{
