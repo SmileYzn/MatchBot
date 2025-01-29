@@ -10,28 +10,28 @@ struct P_MAP_ITEM
 class CMatchVoteMap
 {
 public:
-	//
+	// Init vote map
 	void Init(int VoteMapType, int VoteMapFail);
 
-	//
+	// Return loaded map list
 	std::vector<P_MAP_ITEM> Load();
 
-	//
+	// Stop vote map
 	static void Stop(int VoteFailType);
 
-	//
+	// Increment vote
 	void AddVote(int Item, int Vote);
 
-	//
+	// Vote menu handler
 	static void MenuHandle(int EntityIndex, P_MENU_ITEM Item);
 
-	//
+	// Updte vote hud list message task
 	static void UpdateVoteList(int PlayerCount);
 
-	//
+	// Updte vote hud list message
 	void VoteList();
 
-	//
+	// Get map winner of vote map
 	P_MAP_ITEM GetWinner();
 
 	// Change to a random map

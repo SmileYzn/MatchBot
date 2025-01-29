@@ -11,6 +11,8 @@ void CMatchLO3::Start()
 		CSGameRules()->m_bGameStarted = true;
 	}
 
+	gMatchBot.RecordDemo(nullptr);
+
 	g_engfuncs.pfnCvar_DirectSet(gMatchBot.m_SvRestart, std::to_string(this->m_Restart).c_str());
 
 	gMatchUtil.SayText(nullptr, PRINT_TEAM_RED, _T("Live in three restarts! ^3Get Ready!!"));

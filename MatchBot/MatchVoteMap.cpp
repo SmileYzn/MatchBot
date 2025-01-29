@@ -271,9 +271,6 @@ void CMatchVoteMap::ChangeRandomMap()
         }
     }
 
-    // Try to change to a random map until this function returns true
-    this->ChangeRandomMap();
-
     // Return Result
     return;
 }

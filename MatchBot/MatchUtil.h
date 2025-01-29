@@ -37,6 +37,9 @@ public:
 	// Print client text message
 	void ClientPrint(edict_t* pEntity, int msg_dest, const char* Format, ...);
 
+	// Send client console commands
+	void ClientCommand(edict_t *pEntity, const char *Format, ...);
+
 	// Get player count in team
 	int GetCount(TeamName Team);
 

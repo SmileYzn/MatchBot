@@ -1,4 +1,5 @@
 #include "precompiled.h"
+#include "MatchBot.h"
 
 CMatchBot gMatchBot;
 
@@ -142,6 +143,9 @@ void CMatchBot::ServerActivate()
 
 	// Extra Smokegranade explosion fix (0 to disable fix, or the number of extra smoke puffs)
 	this->m_ExtraSmokeCount = gMatchUtil.CvarRegister("mb_extra_smoke_count", "2");
+
+	// Auto demo record on client side while match is started or running (0 Disable, 1 Enable)
+	this->m_AutoDemoRecord = gMatchUtil.CvarRegister("mb_auto_demo_record", "0");
 
 	// Amount of seconds to pause match (0 Disable, or number of seconds to pause the match)
 	this->m_PauseTime = gMatchUtil.CvarRegister("mb_pause_time", "60.0");
@@ -823,6 +827,13 @@ bool CMatchBot::PlayerJoinTeam(CBasePlayer* Player, int Slot)
 		}
 	}
 
+	// If match is running
+	if (this->m_State >= STATE_FIRST_HALF && this->m_State <= STATE_OVERTIME)
+	{
+		// Try to record demo on client side
+		this->RecordDemo(Player->edict());
+	}
+
 	// Allow any thing
 	return false;
 }
@@ -1203,6 +1214,31 @@ void CMatchBot::UpdateGameName()
 
 		// Set
 		CSGameRules()->m_GameDesc = GameDesc;
+	}
+}
+
+// Record demo on client side
+void CMatchBot::RecordDemo(edict_t *pEntity)
+{
+	// If is enabled
+	if (this->m_AutoDemoRecord->value > 0.0f)
+	{
+		struct tm* tm_info = localtime(NULL);
+
+		if (tm_info)
+		{
+			char Date[32] = { 0 };
+
+			strftime(Date, sizeof(Date), "%F-%H-%M-%S", tm_info);
+
+			char Name[64] = { 0 };
+
+			Q_sprintf(Name, "match-%s", Date);
+
+			gMatchUtil.ClientCommand(pEntity, "record \"%s\";", Name);
+
+			gMatchUtil.SayText(pEntity, PRINT_TEAM_DEFAULT, _T("Recording demo to ^3%s.dem^1 in your client."), Name);
+		}
 	}
 }
 

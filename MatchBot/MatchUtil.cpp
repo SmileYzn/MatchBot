@@ -1,4 +1,5 @@
 #include "precompiled.h"
+#include "MatchUtil.h"
 
 CMatchUtil gMatchUtil;
 
@@ -194,6 +195,52 @@ void CMatchUtil::ClientPrint(edict_t* pEntity, int msg_dest, const char* Format,
 	}
 }
 
+void CMatchUtil::ClientCommand(edict_t *pEntity, const char *Format, ...)
+{
+	static char Command[256] = { 0 };
+
+	va_list	ArgList;
+
+	va_start(ArgList, Format);
+
+	vsnprintf(Command, sizeof(Command), Format, ArgList);
+
+	va_end(ArgList);
+
+	strcat(Command, "\n");
+
+	if (!FNullEnt(pEntity))
+	{
+		g_engfuncs.pfnClientCommand(pEntity, Command);
+	}
+	else
+	{
+		for (int i = 1; i <= gpGlobals->maxClients; ++i)
+		{
+			pEntity = INDEXENT(i);
+
+			if (!FNullEnt(pEntity))
+			{
+				if ((pEntity->v.flags & FL_DORMANT) == FL_DORMANT)
+				{
+					continue;
+				}
+
+				if ((pEntity->v.flags & FL_PROXY) == FL_PROXY)
+				{
+					continue;
+				}
+
+				if ((pEntity->v.flags & FL_FAKECLIENT) == FL_FAKECLIENT)
+				{
+					continue;
+				}
+
+				g_engfuncs.pfnClientCommand(pEntity, Command);
+			}
+		}
+	}
+}
 int CMatchUtil::GetCount(TeamName Team)
 {
 	int Result = 0;

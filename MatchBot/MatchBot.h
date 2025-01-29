@@ -128,6 +128,9 @@ public:
 	// Update game description
 	void UpdateGameName();
 
+	// Record demo on client side
+	void RecordDemo(edict_t* pEntity);
+
 	// Start vote map
 	void StartVoteMap(CBasePlayer* Player);
 
@@ -227,6 +230,7 @@ public:
 	cvar_t* m_RoundGrenadeCount = nullptr;
 	cvar_t* m_RoundSmokeCount = nullptr;
 	cvar_t* m_RoundFlashCount = nullptr;
+	cvar_t* m_AutoDemoRecord = nullptr;
 	cvar_t* m_HelpFile = nullptr;
 	cvar_t* m_HelpFileAdmin = nullptr;
 };
