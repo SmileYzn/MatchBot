@@ -186,6 +186,7 @@ public:
 	cvar_t* m_Freezetime = nullptr;
 	cvar_t* m_Hostname = nullptr;
 	cvar_t* m_NetAddress = nullptr;
+	cvar_t* m_RoundRestartDelay = nullptr;
 
 	// Match Bot Variables
 	cvar_t* m_MatchTag = nullptr;

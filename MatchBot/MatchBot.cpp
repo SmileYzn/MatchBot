@@ -1,5 +1,4 @@
 #include "precompiled.h"
-#include "MatchBot.h"
 
 CMatchBot gMatchBot;
 
@@ -38,6 +37,9 @@ void CMatchBot::ServerActivate()
 	
 	// Address
 	this->m_NetAddress = g_engfuncs.pfnCVarGetPointer("net_address");
+
+	// Round restart delay
+	this->m_RoundRestartDelay = g_engfuncs.pfnCVarGetPointer("mp_round_restart_delay");
 
 	// Match BOT Log Tag
 	this->m_MatchTag = gMatchUtil.CvarRegister("mb_log_tag", "BOT");
@@ -305,7 +307,7 @@ void CMatchBot::SetState(int State)
 		case STATE_DEAD:
 		{
 			// Run next Warmup State
-			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_WARMUP);
+			gMatchTask.Create(TASK_CHANGE_STATE, this->m_RoundRestartDelay->value + 1.0f, false, (void*)this->NextState, STATE_WARMUP);
 			break;
 		}
 		// Warmup State: Waiting for players until match starts
@@ -450,12 +452,12 @@ void CMatchBot::SetState(int State)
 					if (this->GetRound() < static_cast<int>(this->m_PlayRounds->value))
 					{
 						// Play second Half
-						gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_SECOND_HALF);
+						gMatchTask.Create(TASK_CHANGE_STATE, this->m_RoundRestartDelay->value + 1.0f, false, (void*)this->NextState, STATE_SECOND_HALF);
 					}
 					else
 					{
 						// Play Overtime rounds
-						gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, STATE_OVERTIME);
+						gMatchTask.Create(TASK_CHANGE_STATE, this->m_RoundRestartDelay->value + 1.0f, false, (void*)this->NextState, STATE_OVERTIME);
 					}
 				}
 			}
@@ -543,7 +545,7 @@ void CMatchBot::SetState(int State)
 			}
 
 			// Set next state, match needed to run again
-			gMatchTask.Create(TASK_CHANGE_STATE, 6.0f, false, (void*)this->NextState, NextState);
+			gMatchTask.Create(TASK_CHANGE_STATE, this->m_RoundRestartDelay->value + 1.0f, false, (void*)this->NextState, NextState);
 
 			break;
 		}
@@ -681,7 +683,7 @@ void CMatchBot::SwapScores()
 	SWAP(this->m_ScoreOvertime[TERRORIST], this->m_ScoreOvertime[CT]);
 
 	// Swap team sides
-	gMatchTask.Create(TASK_SWAP_TEAMS, 3.0f, false, (void*)this->SwapTeams, 1);
+	gMatchTask.Create(TASK_SWAP_TEAMS, this->m_RoundRestartDelay->value, false, (void*)this->SwapTeams, 1);
 }
 
 // Swap teams function
@@ -873,7 +875,7 @@ void CMatchBot::PlayerDisconnect()
 			if (PlayerCount[SPECTATOR] < 2)
 			{
 				// End match
-				gMatchTask.Create(TASK_CHANGE_STATE, 2.0f, false, (void*)this->NextState, STATE_END);
+				gMatchTask.Create(TASK_CHANGE_STATE, 3.0f, false, (void*)this->NextState, STATE_END);
 			}
 		}
 	}
@@ -1580,7 +1582,7 @@ void CMatchBot::EndMatch(TeamName Loser, TeamName Winner)
 		}
 
 		// Set end state
-		gMatchTask.Create(TASK_CHANGE_STATE, 0.5f, false, (void*)this->NextState, STATE_END);
+		gMatchTask.Create(TASK_CHANGE_STATE, 1.0f, false, (void*)this->NextState, STATE_END);
 	}
 }
 
