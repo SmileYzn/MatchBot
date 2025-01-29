@@ -24,6 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Paste Here the output of commands (If you have AMX Mod X Installed or others):**
+ - version
  - meta list
  - amxx plugins
  - amxx version
