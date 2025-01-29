@@ -1,5 +1,5 @@
-// File: 	language.txt
-// Updated: 	08:57 2024/02/03
+// File: 		language.txt
+// Updated: 	11:41 2025/01/29
 // Description: This file is used to manage translation phrases.
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 "Dead"
@@ -1430,3 +1430,9 @@ end
 	"ru"		"Меню переменных"
 end
 
+"Recording demo to ^3%s.dem^1 in your client."
+	"en"		"Recording demo to ^3%s.dem^1 in your client."
+	"bp"		"Gravando demo em ^3%s.dem^1 no seu cliente."
+	"es"		"Grabación de demo en ^3%s.dem^1 en tu cliente."
+	"ru"		"Запись демо на ^3%s.dem^1 в вашем клиенте."
+end
