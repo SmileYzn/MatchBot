@@ -1235,7 +1235,7 @@ void CMatchBot::RecordDemo(edict_t *pEntity)
 
 			Q_sprintf(Name, "match-%s", Date);
 
-			gMatchUtil.ClientCommand(pEntity, "record \"%s\";", Name);
+			gMatchUtil.ClientCommand(pEntity, "stop; record \"%s\";", Name);
 
 			gMatchUtil.SayText(pEntity, PRINT_TEAM_DEFAULT, _T("Recording demo to ^3%s.dem^1 in your client."), Name);
 		}
