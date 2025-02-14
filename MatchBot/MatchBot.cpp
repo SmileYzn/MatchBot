@@ -1225,21 +1225,22 @@ void CMatchBot::RecordDemo(edict_t *pEntity)
 	// If is enabled
 	if (this->m_AutoDemoRecord->value > 0.0f)
 	{
-		struct tm* tm_info = localtime(NULL);
-
-		if (tm_info)
+		if (!FNullEnt(pEntity))
 		{
-			char Date[32] = { 0 };
+			time_t Temp = time(NULL);
+			
+			struct tm *tm_info = localtime(&Temp);
 
-			strftime(Date, sizeof(Date), "%F-%H-%M-%S", tm_info);
-
-			char Name[64] = { 0 };
-
-			Q_sprintf(Name, "match-%s", Date);
-
-			gMatchUtil.ClientCommand(pEntity, "stop; record \"%s\";", Name);
-
-			gMatchUtil.SayText(pEntity, PRINT_TEAM_DEFAULT, _T("Recording demo to ^3%s.dem^1 in your client."), Name);
+			if (tm_info)
+			{
+				char DateTime[32] = { 0 };
+	
+				strftime(DateTime, sizeof(DateTime), "%F-%H-%M-%S", tm_info);
+	
+				gMatchUtil.ClientCommand(pEntity, "stop; record \"mb-%s\";", DateTime);
+	
+				gMatchUtil.SayText(pEntity, PRINT_TEAM_DEFAULT, _T("Recording demo to ^3mb-%s.dem^1 in your client."), DateTime);
+			}
 		}
 	}
 }
