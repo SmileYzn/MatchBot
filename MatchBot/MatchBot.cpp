@@ -863,7 +863,7 @@ void CMatchBot::PlayerDisconnect()
 	auto PlayerCount = gMatchUtil.GetCount();
 
 	// Minimum player count in each team
-	auto MinimumCount = (int)((this->m_PlayersMin->value / 2.0f) - 1.0f);
+	auto MinimumCount = (int)(this->m_PlayersMinCheck->value);
 
 	// If server was lacking minimum of players
 	if (PlayerCount[TERRORIST] < MinimumCount || PlayerCount[CT] < MinimumCount)
