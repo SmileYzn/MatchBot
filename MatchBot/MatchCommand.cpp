@@ -5,6 +5,9 @@ CMatchCommand gMatchCommand;
 // On Server Activate
 void CMatchCommand::ServerActivate()
 {
+	// Clear
+	this->m_Data.clear();
+	
 	// Memory Script instance
 	CMemScript* lpMemScript = new CMemScript;
 
@@ -26,23 +29,25 @@ void CMatchCommand::ServerActivate()
 						break;
 					}
 
+					P_COMMAND_INFO Info = { };
+
 					// Command Index
-					auto Index = lpMemScript->GetNumber();
+					Info.Index = lpMemScript->GetNumber();
 
 					//  Command String
-					auto Name = lpMemScript->GetAsString();
+					Info.Name = lpMemScript->GetAsString();
 
 					// Command Flag
-					auto Flag = gMatchAdmin.ReadFlags(lpMemScript->GetAsString().c_str());
+					Info.Flag = gMatchAdmin.ReadFlags(lpMemScript->GetAsString().c_str());
 
 					// Insert to container
-					this->m_Data[Name] = {Index, Name, Flag};
+					this->m_Data.insert(std::make_pair(Name , Info));
 				}
 			}
 			catch (...)
 			{
 				// Catch for erros
-				//gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_COMMANDS_FILE, lpMemScript->GetError().c_str());
+				gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s][%s] %s", __func__, MB_COMMANDS_FILE, lpMemScript->GetError().c_str());
 			}
 		}
 
