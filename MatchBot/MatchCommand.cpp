@@ -41,7 +41,7 @@ void CMatchCommand::ServerActivate()
 					Info.Flag = gMatchAdmin.ReadFlags(lpMemScript->GetAsString().c_str());
 
 					// Insert to container
-					this->m_Data.insert(std::make_pair(Name , Info));
+					this->m_Data.insert(std::make_pair(Info.Name , Info));
 				}
 			}
 			catch (...)
