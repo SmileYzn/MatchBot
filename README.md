@@ -3,7 +3,7 @@
 
 <p align="center">
     <a href="https://github.com/SmileYzn/MatchBot/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues-raw/smileyzn/MatchBot?style=flat-square"></a>
-    <a href="https://github.com/SmileYzn/MatchBot/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/SmileYzn/MatchBot/build.yml?branch=main&label=Build Status&style=flat-square"></a>
+    <a href="https://github.com/SmileYzn/MatchBot/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/SmileYzn/MatchBot/build.yml?branch=main&style=flat-square"></a>
     <a href="https://github.com/SmileYzn/MatchBot/releases/latest"><img src="https://img.shields.io/github/downloads/SmileYzn/MatchBot/total?label=Download%40latest&style=flat-square&logo=github&logoColor=white" alt="Download"></a>
 </p>
 
