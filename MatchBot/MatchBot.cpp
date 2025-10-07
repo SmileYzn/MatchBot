@@ -1651,10 +1651,10 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 		            if (lpInfo)
 		            {
 						// Set Frags
-		                gMatchMessage.SetArgInt(1, lpInfo->Frags[STATE_FIRST_HALF] + PlayerInfo->Frags[STATE_SECOND_HALF] + PlayerInfo->Frags[STATE_OVERTIME]);
+		                gMatchMessage.SetArgInt(1, lpInfo->Frags[STATE_FIRST_HALF] + lpInfo->Frags[STATE_SECOND_HALF] + lpInfo->Frags[STATE_OVERTIME]);
 
 						// Set Deaths
-		                gMatchMessage.SetArgInt(2, lpInfo->Deaths[STATE_FIRST_HALF] + PlayerInfo->Deaths[STATE_SECOND_HALF] + PlayerInfo->Deaths[STATE_OVERTIME]);
+		                gMatchMessage.SetArgInt(2, lpInfo->Deaths[STATE_FIRST_HALF] + lpInfo->Deaths[STATE_SECOND_HALF] + lpInfo->Deaths[STATE_OVERTIME]);
 		            }
 		        }
 			}
