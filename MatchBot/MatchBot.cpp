@@ -1638,123 +1638,25 @@ bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edic
 			// If scoreboard player variable is enabled
 			if (gMatchBot.m_PlayerScore->value > 0.0f)
 			{
-				// Entity Index
-				auto EntityIndex = gMatchMessage.GetByte(0);
+				// Get CBasePlayer
+				auto Player = UTIL_PlayerByIndexSafe(gMatchMessage.GetByte(0));
 
-				// If has entity index
-				if (EntityIndex > 0 && EntityIndex <= gpGlobals->maxClients)
-				{
-					// Get CBasePlayer
-					auto Player = UTIL_PlayerByIndex(EntityIndex);
+				// If is not null
+		        if (Player)
+		        {
+					// Find player match info
+		            auto lpInfo = gMatchPlayer.GetInfo(g_engfuncs.pfnGetPlayerUserId(Player->edict()));
 
 					// If is not null
-					if (Player)
-					{
-						// If is player
-						if (Player->IsPlayer())
-						{
-							// Get User Index
-							auto UserIndex = g_engfuncs.pfnGetPlayerUserId(Player->edict());
+		            if (lpInfo)
+		            {
+						// Set Frags
+		                gMatchMessage.SetArgInt(1, lpInfo->Frags[STATE_FIRST_HALF] + PlayerInfo->Frags[STATE_SECOND_HALF] + PlayerInfo->Frags[STATE_OVERTIME]);
 
-							// If is not empty
-							if (UserIndex)
-							{
-								// Get Player Info
-								auto PlayerInfo = gMatchPlayer.GetInfo(UserIndex);
-
-								// If is not null
-								if (PlayerInfo)
-								{
-									// Set frags argument
-									auto Frags = 0;
-
-									// Set deaths argument
-									auto Deaths = 0;
-
-									// If has CSGameRules()
-									if (g_pGameRules)
-									{
-										// If game is not restarting
-										if (!CSGameRules()->m_bCompleteReset)
-										{
-											// Get frags argument
-											Frags = gMatchMessage.GetShort(1);
-
-											// Get deaths argument
-											Deaths = gMatchMessage.GetShort(2);
-										}
-									}
-
-									// Switch match states
-									switch (gMatchBot.GetState())
-									{
-										case STATE_HALFTIME:
-										{
-											// If is halftime of first period to second period (The Overtime is not started yet)
-											if (gMatchBot.GetRound() < static_cast<int>(gMatchBot.m_PlayRoundsOT->value))
-											{
-												// On halftime: Set Frags of first half
-												gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_FIRST_HALF]);
-
-												// On halftime: Set Deaths of first half
-												gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_FIRST_HALF]);
-											}
-											// If is overtime half time
-											else
-											{
-												// On halftime of OT: SetFrags of overtime itself
-												gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_OVERTIME]);
-
-												// On halftime of OT: Set Deaths of first half
-												gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_OVERTIME]);
-											}
-											break;
-										}
-										case STATE_SECOND_HALF:
-										{
-											// On second half: Set Frags + Frags of first half
-											gMatchMessage.SetArgInt(1, Frags + PlayerInfo->Frags[STATE_FIRST_HALF]);
-
-											// On second half: Set Deaths + Deaths of first half
-											gMatchMessage.SetArgInt(2, Deaths + PlayerInfo->Deaths[STATE_FIRST_HALF]);
-											break;
-										}
-										case STATE_OVERTIME:
-										{
-											// On overtime: Set Frags + Frags of second half
-											gMatchMessage.SetArgInt(1, Frags + PlayerInfo->Frags[STATE_SECOND_HALF]);
-
-											// On overtime: Set Deaths + Deaths of second half
-											gMatchMessage.SetArgInt(2, Deaths + PlayerInfo->Deaths[STATE_SECOND_HALF]);
-											break;
-										}
-										case STATE_END:
-										{
-											// If is end of second period (The Overtime was not played)
-											if (gMatchBot.GetRound() < static_cast<int>(gMatchBot.m_PlayRoundsOT->value))
-											{
-												// On finish: Set Frags of second half
-												gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_SECOND_HALF]);
-
-												// On finish: Set Deaths of second half
-												gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_SECOND_HALF]);
-											}
-											else
-											{
-												// On finish: Set Frags of second half
-												gMatchMessage.SetArgInt(1, PlayerInfo->Frags[STATE_OVERTIME]);
-
-												// On finish: Set Deaths of second half
-												gMatchMessage.SetArgInt(2, PlayerInfo->Deaths[STATE_OVERTIME]);
-											}
-											break;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+						// Set Deaths
+		                gMatchMessage.SetArgInt(2, lpInfo->Deaths[STATE_FIRST_HALF] + PlayerInfo->Deaths[STATE_SECOND_HALF] + PlayerInfo->Deaths[STATE_OVERTIME]);
+		            }
+		        }
 			}
 		}
 	}
