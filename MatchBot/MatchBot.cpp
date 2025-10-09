@@ -1065,6 +1065,13 @@ void CMatchBot::RoundEnd(int winStatus, ScenarioEventEndRound event, float tmDel
 				this->m_ScoreOvertime[Winner]++;
 			}
 
+			// If has CSGameRules
+			if (g_pGameRules)
+			{
+				// Send update scores message
+				CSGameRules()->UpdateTeamScores();
+			}
+
 			// Print a console message to all players
 			gMatchUtil.ClientPrint(nullptr, PRINT_CONSOLE, _T("* Round %d won by: %s"), this->GetRound(), this->GetTeam(Winner, false));
 
