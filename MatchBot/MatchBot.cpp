@@ -1605,26 +1605,17 @@ bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edic
 				// If is not null
 				if (TeamName)
 				{
-					// Original Score
-					auto Score = gMatchMessage.GetArgInt(1);
-					
 					// If TERRORIST
 					if (TeamName[0u] == 'T')
 					{
-						// Score TR
-						auto ScoreTR = gMatchBot.GetScore(TERRORIST);
-						
 						// Set Score parameter for TERRORIST
-						gMatchMessage.SetArgInt(1, Score > ScoreTR ? Score : ScoreTR);
+						gMatchMessage.SetArgInt(1, gMatchBot.GetScore(TERRORIST));
 					}
 					// If CT
 					else if (TeamName[0u] == 'C')
 					{
-						// Score CT
-						auto ScoreCT = gMatchBot.GetScore(CT);
-						
 						// Set Score parameter for CT
-						gMatchMessage.SetArgInt(1, Score > ScoreCT ? Score : ScoreCT);
+						gMatchMessage.SetArgInt(1, gMatchBot.GetScore(CT));
 					}
 				}
 			}
