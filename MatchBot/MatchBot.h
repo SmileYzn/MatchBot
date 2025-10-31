@@ -80,6 +80,12 @@ public:
 	// Get current match round
 	int GetRound();
 
+	// Get Player Points
+	int GetPlayerPoint(int EntityIndex, int Type);
+
+	// Set Player Points
+    void SetPlayerPoint(int State, int EntityIndex, int Type, int Point);
+
 	// Get Match BOT tag
 	const char* GetTag();
 
@@ -119,7 +125,10 @@ public:
 	// Show MOTD help
 	void Help(CBasePlayer* Player, bool AdminHelp);
 
-	// Round estart event
+	// Round Restart
+	void RoundRestart();
+
+	// Round Start
 	void RoundStart();
 
 	// Round end event
@@ -173,6 +182,9 @@ private:
 
 	// Match Bot Config Variables
 	std::array<cvar_t*, STATE_END + 1U> m_Config;
+
+	// Player Scores
+	std::array<std::array<std::array<int, 2>, STATE_END + 1U>, MAX_CLIENTS + 1U> m_Point;
 
 public:
 	// Server variables

@@ -8,6 +8,18 @@ void CMatchBot::ServerActivate()
 	// Match BOT is dead
 	this->m_State = STATE_DEAD;
 
+	// Reset Play Knife Round
+	this->m_PlayKnifeRound = false;
+
+	// Reset Scores
+	this->m_Score = {};
+
+	// Reset OT Score
+	this->m_ScoreOvertime = {};
+
+	// Reset Player Points
+	this->m_Point = {};
+
 	// Server Restart
 	this->m_SvRestart = g_engfuncs.pfnCVarGetPointer("sv_restart");
 
@@ -306,6 +318,9 @@ void CMatchBot::SetState(int State)
 		// Match BOT is Dead, nothing is running
 		case STATE_DEAD:
 		{
+			// Reset Player Points
+			this->m_Point = {};
+
 			// Run next Warmup State
 			gMatchTask.Create(TASK_CHANGE_STATE, this->m_RoundRestartDelay->value + 1.0f, false, (void*)this->NextState, STATE_WARMUP);
 			break;
@@ -313,6 +328,9 @@ void CMatchBot::SetState(int State)
 		// Warmup State: Waiting for players until match starts
 		case STATE_WARMUP:
 		{
+			// Reset Player Points
+			this->m_Point = {};
+
 			// Display message when starts
 			gMatchUtil.SayText(nullptr, PRINT_TEAM_DEFAULT, _T("Starting ^4%s^1, Get Ready!"), this->GetState(this->m_State));
 
@@ -337,6 +355,9 @@ void CMatchBot::SetState(int State)
 		// Start Vote Map or Teams Vote
 		case STATE_START:
 		{
+			// Reset Player Points
+			this->m_Point = {};
+
 			// If has votemap
 			if (this->m_VoteMap->value)
 			{
@@ -371,6 +392,9 @@ void CMatchBot::SetState(int State)
 		// Match Is Live: First Half
 		case STATE_FIRST_HALF:
 		{
+			// Reset Player Points
+			this->m_Point = {};
+
 			// Stop warmup things
 			gMatchWarmup.Stop();
 
@@ -418,6 +442,9 @@ void CMatchBot::SetState(int State)
 		// Half Time: Match is paused to swap teams
 		case STATE_HALFTIME:
 		{
+			// Reset Player Points
+			this->m_Point[State] = {};
+
 			// Swap team scores
 			this->SwapScores();
 
@@ -474,6 +501,9 @@ void CMatchBot::SetState(int State)
 		// Second Half: Match is running
 		case STATE_SECOND_HALF:
 		{
+			// Reset Player Points
+			this->m_Point[State] = {};
+
 			// Stop warmup things
 			gMatchWarmup.Stop();
 
@@ -627,6 +657,26 @@ int CMatchBot::GetRound()
 	return this->GetScore(TERRORIST) + this->GetScore(CT);
 }
 
+// Get Player Points
+int CMatchBot::GetPlayerPoint(int EntityIndex, int Type)
+{
+    if (EntityIndex >= 1 && EntityIndex <= gpGlobals->maxClients)
+    {
+        return (this->m_Point[STATE_FIRST_HALF][EntityIndex][Type] + this->m_Point[STATE_SECOND_HALF][EntityIndex][Type] + this->m_Point[STATE_FIRST_OT][EntityIndex][Type] + this->m_Point[STATE_SECOND_OT][EntityIndex][Type]);
+    }
+
+    return 0;
+}
+
+// Set Player Points
+void CMatchBot::SetPlayerPoint(int State, int EntityIndex, int Type, int Point)
+{
+    if (EntityIndex >= 1 && EntityIndex <= gpGlobals->maxClients)
+    {
+        this->m_Point[State][EntityIndex][Type] = Point;
+    }
+}
+
 // Return log tag to functions
 const char* CMatchBot::GetTag()
 {
@@ -664,6 +714,9 @@ void CMatchBot::SwapScores()
 		// If scores are tied (This dettermine that OT is starting or restarting)
 		if (this->GetScore(TERRORIST) == this->GetScore(CT))
 		{
+			// Reset First OT Player Scores
+			this->m_Point[this->m_State] = {};
+
 			// Reset Overtime scores (We are restarting OT)
 			this->m_ScoreOvertime.fill(0);
 
@@ -1031,6 +1084,18 @@ void CMatchBot::Help(CBasePlayer* Player, bool AdminHelp)
 
 	// Show motd
 	gMatchUtil.ShowMotd(Player->edict(), Path, strlen(Path));
+}
+
+// On Round Restart
+void CMatchBot::RoundRestart()
+{
+    if (g_pGameRules)
+    {
+        if (CSGameRules()->m_bCompleteReset)
+        {
+            this->m_Point[this->m_State] = {};
+        }
+    }
 }
 
 // On Round Start: After freezetime end
@@ -1634,40 +1699,26 @@ bool CMatchBot::TeamScore(int msg_dest, int msg_type, const float* pOrigin, edic
 }
 
 // Score Info Engine Message
-bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEntity)
+bool CMatchBot::ScoreInfo(int msg_dest, int msg_type, const float *pOrigin, edict_t *pEntity)
 {
-	// If match is running
-	if (gMatchBot.GetState() >= STATE_HALFTIME)
-	{
-		// If scoreboard player variable is not null
-		if (gMatchBot.m_PlayerScore)
-		{
-			// If scoreboard player variable is enabled
-			if (gMatchBot.m_PlayerScore->value > 0.0f)
-			{
-				// Get CBasePlayer
-				auto Player = UTIL_PlayerByIndexSafe(gMatchMessage.GetByte(0));
+    auto State = gMatchBot.GetState();
 
-				// If is not null
-		        if (Player)
-		        {
-					// Find player match info
-		            auto lpInfo = gMatchPlayer.GetInfo(g_engfuncs.pfnGetPlayerUserId(Player->edict()));
+    if (State >= STATE_FIRST_HALF && State <= STATE_OVERTIME)
+    {
+        if (gMatchBot.m_PlayerScore->value > 0.0f)
+        {
+            auto EntityIndex = gMatchMessage.GetByte(0);
 
-					// If is not null
-		            if (lpInfo)
-		            {
-						// Set Frags
-		                gMatchMessage.SetArgInt(1, lpInfo->Frags[STATE_FIRST_HALF] + lpInfo->Frags[STATE_SECOND_HALF] + lpInfo->Frags[STATE_OVERTIME]);
+            if (EntityIndex >= 1 && EntityIndex <= gpGlobals->maxClients)
+            {
+                gMatchBot.SetPlayerPoint(State, EntityIndex, 0, gMatchMessage.GetShort(1));
+                gMatchBot.SetPlayerPoint(State, EntityIndex, 1, gMatchMessage.GetShort(2));
 
-						// Set Deaths
-		                gMatchMessage.SetArgInt(2, lpInfo->Deaths[STATE_FIRST_HALF] + lpInfo->Deaths[STATE_SECOND_HALF] + lpInfo->Deaths[STATE_OVERTIME]);
-		            }
-		        }
-			}
-		}
-	}
+                gMatchMessage.SetArgInt(1, gMatchBot.GetPlayerPoint(EntityIndex, 0));
+                gMatchMessage.SetArgInt(2, gMatchBot.GetPlayerPoint(EntityIndex, 1));
+            }
+        }
+    }
 
-	// Allow normal message
-	return false;
+    return false;
 }
