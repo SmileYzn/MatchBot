@@ -63,11 +63,11 @@ jobs:
           # Unzip hitbox_fixer library to metamod folder
           unzip -p hitbox_fix-bin*.zip addons/hitboxfixer/hitbox_fix_mm_i386.so > ../cstrike/addons/hitboxfixer/hitbox_fix_mm_i386.so
     
-          # Download Accuracy Fix
-          wget --quiet https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.17/linux32.zip
+          # Download Spread Fix
+          wget --quiet https://github.com/SmileYzn/spread/releases/download/0.0.2/linux32.zip
     
-          # Unzip accuracy-fix library to metamod folder
-          unzip -p linux32.zip addons/accuracyfix/dlls/accuracyfix_mm.so > ../cstrike/addons/accuracyfix/accuracyfix_mm.so
+          # Unzip spread_mm library to metamod folder
+          unzip -p linux32.zip addons/spread/dlls/spread_mm.so > ../cstrike/addons/spread/dlls/spread_mm.so
 
       run: docker exec build-container bash -c "$SCRIPT"
 
@@ -161,10 +161,10 @@ jobs:
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
 
-    - name: Download Accuracy Fix
+    - name: Download Spread Fix
       run: |
         # Set assets data
-        $assets = "https://github.com/SmileYzn/AccuracyFix/releases/download/1.1.17/win32.zip"
+        $assets = "https://github.com/SmileYzn/spread/releases/download/0.0.2/win32.zip"
 
         # Get ZIP file name
         $zipName = "win32.zip"
@@ -179,10 +179,10 @@ jobs:
         $baseName = (Get-Item $zipName).BaseName
 
         # DLL from path
-        $fromPath = ".\" + $baseName + "\addons\accuracyfix\dlls\accuracyfix_mm.dll"
+        $fromPath = ".\" + $baseName + "\addons\spread\dlls\spread_mm.dll"
 
         # DLL dest path
-        $DestPath = ".\publish\addons\accuracyfix\accuracyfix_mm.dll"
+        $DestPath = ".\publish\addons\spread\dlls\spread_mm.dll"
         
         # Copy item
         Copy-Item -Path $fromPath -Destination $DestPath
