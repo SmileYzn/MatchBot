@@ -47,6 +47,7 @@ jobs:
 
           # Make dlls path
           mkdir -p ../cstrike/addons/matchbot/dlls
+          mkdir -p ../cstrike/addons/spread/dlls
 
           # Copy release file
           cp ./Release/matchbot_mm.so ../cstrike/addons/matchbot/dlls
@@ -165,6 +166,9 @@ jobs:
       run: |
         # Set assets data
         $assets = "https://github.com/SmileYzn/spread/releases/download/0.0.2/win32.zip"
+
+        # Make DLL path
+        mkdir publish\addons\spread\dlls
 
         # Get ZIP file name
         $zipName = "win32.zip"
