@@ -662,7 +662,7 @@ int CMatchBot::GetPlayerPoint(int EntityIndex, int Type)
 {
     if (EntityIndex >= 1 && EntityIndex <= gpGlobals->maxClients)
     {
-        return (this->m_Point[STATE_FIRST_HALF][EntityIndex][Type] + this->m_Point[STATE_SECOND_HALF][EntityIndex][Type] + this->m_Point[STATE_FIRST_OT][EntityIndex][Type] + this->m_Point[STATE_SECOND_OT][EntityIndex][Type]);
+        return (this->m_Point[STATE_FIRST_HALF][EntityIndex][Type] + this->m_Point[STATE_SECOND_HALF][EntityIndex][Type] + this->m_Point[STATE_OVERTIME][EntityIndex][Type]);
     }
 
     return 0;
